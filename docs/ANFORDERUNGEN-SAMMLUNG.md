@@ -68,6 +68,6 @@ Flutter (Sprache Dart): eine gemeinsame Codebasis für Android-Phone, Android-Ta
 | F-10 | Bietet die Uhr „Heart Rate Push" / Herzfrequenz-Übertragung per Bluetooth an? (an der Uhr nachsehen) | Ja, als Mini-App „Heart Rate Push" (2026-10-10) |
 | F-11 | Ist die Zepp-App bereits mit Strava verbunden? | Ja (2026-10-10) |
 | F-12 | Beim Joggen: Phone dabei (dann Phone-GPS live) oder nur Uhr? | Joggen meist ohne Phone; Spaziergänge/Wanderungen mit Phone; Option trotzdem für alle Sportarten (2026-10-10) |
+| F-13 | Wo sollen die synchronisierten Daten liegen: eigener Cloud-Speicher (z. B. Google Drive) oder Server-Dienst? | Google Drive (2026-10-10) |
 | F-14 | Ändert das Challenge Bike den Widerstand in Kinomap oder QZ von selbst, oder nur per Handrad? | offen |
 | F-15 | Welche Auswertungen sind wichtig? | Wochenumfang, Pulszonen, Bestzeiten (2026-10-10) |
-| F-13 | Wo sollen die synchronisierten Daten liegen: eigener Cloud-Speicher (z. B. Google Drive) oder Server-Dienst? | Google Drive (2026-10-10) |
