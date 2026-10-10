@@ -25,7 +25,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
 | I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
 | I-005 | Amazfit-Uhr einbinden | Geräte | ? | Neu | Nutzer |
-| I-006 | Lauf-Aufzeichnung draußen (GPS, Puls, Tempo, Distanz) | Aufzeichnung | L | Neu | Nutzer |
+| I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Geklärt | Nutzer |
 | I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen | Programme | L | Neu | Nutzer |
 | I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Neu | Nutzer |
 | I-009 | Trainingshistorie mit Auswertung | Auswertung | M | Neu | Vorschlag |
@@ -34,7 +34,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Geklärt | Nutzer |
 | I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Neu | Nutzer |
 | I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
-| I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop | Daten | L | Neu | Nutzer |
+| I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Geklärt | Nutzer |
 | I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Geklärt | Nutzer |
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Neu | Vorschlag |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
@@ -56,14 +56,14 @@ Läuft über FTMS, vom Nutzer bestätigt (bereits mit QZ, Kinomap und der Domyos
 ### I-005 – Amazfit-Uhr
 Gewünscht: Daten der Uhr nutzen, vor allem ihr GPS. Amazfit bietet keine offene Schnittstelle, über die eine Fremd-App die Uhr live auslesen kann. Wege (Recherche 2026-10-10):
 
-1. **Puls live:** Zepp-OS-Uhren ab Version 3.0 können den Puls per Bluetooth senden („Heart Rate Push"), teils nur während eines laufenden Workouts. Für die Bip 6 nicht bestätigt – an der Uhr zu testen. Dann wäre sie wie ein Brustgurt nutzbar (I-001).
+1. **Puls live:** Zepp-OS-Uhren ab Version 3.0 können den Puls per Bluetooth senden („Heart Rate Push"), teils nur während eines laufenden Workouts. Der Nutzer findet an seiner Uhr keine solche Option (2026-10-10); dieser Weg entfällt vorerst. Live-Puls kommt vom Brustgurt (I-001).
 2. **GPS und komplette Aufzeichnung nachträglich:** Die Zepp-App synchronisiert zu Strava; von dort kann unsere App die Aktivität samt GPS-Strecke holen (I-017). Alternativ Datei-Import (I-010).
 3. **GPS live:** nur über eine eigene Mini-App auf der Uhr denkbar (I-018), aufwendig und unsicher.
 
 Health Connect als Weg ist nicht bestätigt.
 
 ### I-006 – Lauf-Aufzeichnung draußen
-GPS-Strecke, Puls, Tempo, Distanz, Höhenmeter, Rundenzeiten. Erfordert Aufzeichnung im Hintergrund bei ausgeschaltetem Display.
+GPS-Strecke, Puls, Tempo, Distanz, Höhenmeter, Rundenzeiten. Erfordert Aufzeichnung im Hintergrund bei ausgeschaltetem Display. Sportarten: Laufen, Spazieren, Wandern. Hauptnutzung sind Spaziergänge und Wanderungen (Phone dabei); beim Joggen bleibt das Phone meist zu Hause, die Option soll es dort trotzdem geben.
 
 ### I-007 – Trainingsprogramme
 Übungsbibliothek plus daraus zusammengesetzte Programme. Offen: Herkunft der Inhalte (selbst pflegen oder mitgeliefert), Darstellung (Text, Bild, Video).
@@ -90,7 +90,7 @@ Die App spricht Standardprofile statt einzelner Modelle: Fitnessgeräte (FTMS: L
 Optional. Gleiche App am Laptop. Bluetooth unter Windows ist das Hauptrisiko und früh zu testen; GPS-Aufzeichnung entfällt dort.
 
 ### I-015 – Synchronisation
-Trainings, Programme und Timer-Vorlagen sind auf allen Geräten gleich. Jedes Gerät funktioniert weiter ohne Netz und gleicht ab, sobald es online ist. Offen ist der Ablageort: eigener Cloud-Speicher des Nutzers (z. B. Google Drive, kein eigener Server nötig) oder ein Server-Dienst (nötig, sobald weitere Nutzer dazukommen).
+Trainings, Programme und Timer-Vorlagen sind auf allen Geräten gleich. Jedes Gerät funktioniert weiter ohne Netz und gleicht ab, sobald es online ist. Ablageort: das Google Drive des Nutzers (entschieden 2026-10-10), kein eigener Server nötig. Zu regeln: Verhalten, wenn dasselbe Training auf zwei Geräten geändert wurde.
 
 ### I-016 – Strava-Upload
 Laut Strava-Dokumentation (Stand 2026-10-10) machbar:

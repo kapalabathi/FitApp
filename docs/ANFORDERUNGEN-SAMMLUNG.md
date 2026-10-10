@@ -33,9 +33,15 @@ Eine Fitness-App, die alle vorhandenen Trainingsgeräte und Sensoren in einer An
 - Daten aus mehreren Quellen sammeln und koppeln, z. B. Puls vom Brustgurt mit den Werten des Laufbands (I-012)
 - Stabil und schnell; Wahl von Programmiersprache und Technik liegt bei Claude
 
-## Technik (Vorschlag, noch nicht entschieden)
+## Technik (entschieden 2026-10-10, Wahl dem Entwickler überlassen)
 
-Flutter (Sprache Dart): eine gemeinsame Codebasis für Android-Phone, Android-Tablet und Windows. Daten lokal in einer SQLite-Datenbank. Risiko: Bluetooth unter Windows ist weniger ausgereift als unter Android und wird früh mit einem Prototyp geprüft.
+Flutter (Sprache Dart): eine gemeinsame Codebasis für Android-Phone, Android-Tablet und Windows. Daten lokal in einer SQLite-Datenbank, Synchronisation über das Google Drive des Nutzers. Risiko: Bluetooth unter Windows ist weniger ausgereift als unter Android und wird früh mit einem Prototyp geprüft.
+
+## Nutzungsgewohnheiten
+
+- Joggen: in der Regel ohne Phone, nur mit Uhr. Die Strecke kommt dann nachträglich von der Uhr (I-017).
+- Spaziergänge und Wanderungen: mit Phone. Aufzeichnung per Phone-GPS (I-006).
+- Die Phone-Aufzeichnung soll trotzdem auch fürs Joggen wählbar sein.
 
 ## Funktionsbereiche
 
@@ -59,7 +65,7 @@ Flutter (Sprache Dart): eine gemeinsame Codebasis für Android-Phone, Android-Ta
 | F-07 | Trainingsprogramme: Inhalte selbst anlegen oder mitgeliefert? Mit Bildern/Videos? | offen |
 | F-08 | Soll der Intervall-Timer das Laufband aktiv steuern oder nur ansagen? | offen |
 | F-09 | Anbindung an Strava, Garmin Connect o. Ä. gewünscht? | Strava-Upload gewünscht, I-016 (2026-10-10) |
-| F-10 | Bietet die Uhr „Heart Rate Push" / Herzfrequenz-Übertragung per Bluetooth an? (an der Uhr nachsehen) | offen |
+| F-10 | Bietet die Uhr „Heart Rate Push" / Herzfrequenz-Übertragung per Bluetooth an? (an der Uhr nachsehen) | Keine solche Option gefunden (2026-10-10); ggf. noch im App-Store der Zepp-App nachsehen |
 | F-11 | Ist die Zepp-App bereits mit Strava verbunden? | offen |
-| F-12 | Beim Joggen: Phone dabei (dann Phone-GPS live) oder nur Uhr? | offen |
-| F-13 | Wo sollen die synchronisierten Daten liegen: eigener Cloud-Speicher (z. B. Google Drive) oder Server-Dienst? | offen |
+| F-12 | Beim Joggen: Phone dabei (dann Phone-GPS live) oder nur Uhr? | Joggen meist ohne Phone; Spaziergänge/Wanderungen mit Phone; Option trotzdem für alle Sportarten (2026-10-10) |
+| F-13 | Wo sollen die synchronisierten Daten liegen: eigener Cloud-Speicher (z. B. Google Drive) oder Server-Dienst? | Google Drive (2026-10-10) |

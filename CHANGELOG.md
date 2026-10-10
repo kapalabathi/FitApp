@@ -7,6 +7,7 @@ Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSP
 ## [Unveröffentlicht]
 
 ### Geändert
+- 2026-10-10: Technik entschieden (Flutter), Synchronisation über Google Drive festgelegt (I-015). I-006 um Spazieren und Wandern erweitert. Live-Puls von der Uhr entfällt vorerst (I-005). Fragen F-10, F-12, F-13 beantwortet.
 - 2026-10-10: Geräteschnittstellen bestätigt (SkiErg mit PM5, Laufband und Bike über FTMS); I-002 bis I-004 und I-012 auf „Geklärt". Fragen F-01, F-03, F-04 beantwortet. Zielplattformen und Leitziele in der Anforderungssammlung ergänzt, Technikvorschlag (Flutter) eingetragen.
 - 2026-10-10: Strava-API und Amazfit-Anbindung recherchiert; Ergebnisse in I-005 und I-016. Fragen F-02, F-05, F-06, F-09 beantwortet, F-10 bis F-13 neu.
 
