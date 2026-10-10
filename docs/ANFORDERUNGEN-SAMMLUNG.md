@@ -62,10 +62,12 @@ Flutter (Sprache Dart): eine gemeinsame Codebasis für Android-Phone, Android-Ta
 | F-04 | Hat das Laufband Bluetooth, und mit welcher App wurde es bisher verbunden? | Ja, FTMS; QZ, Kinomap, Domyos-App (2026-10-10) |
 | F-05 | Welche Rolle soll die Uhr spielen: nur Pulsquelle, oder auch Anzeige/Steuerung am Handgelenk? | Datenquelle, vor allem GPS (2026-10-10) |
 | F-06 | Sollen Daten nur lokal auf dem Gerät liegen oder über mehrere Geräte synchronisiert werden? | Synchronisation gewünscht, I-015 (2026-10-10) |
-| F-07 | Trainingsprogramme: Inhalte selbst anlegen oder mitgeliefert? Mit Bildern/Videos? | offen |
-| F-08 | Soll der Intervall-Timer das Laufband aktiv steuern oder nur ansagen? | offen |
+| F-07 | Trainingsprogramme: Inhalte selbst anlegen oder mitgeliefert? Mit Bildern/Videos? | Kleine Vorauswahl mitliefern (2026-10-10); Bilder/Videos offen |
+| F-08 | Soll der Intervall-Timer das Laufband aktiv steuern oder nur ansagen? | Aktiv steuern; Bike ebenfalls gewünscht, I-019 (2026-10-10) |
 | F-09 | Anbindung an Strava, Garmin Connect o. Ä. gewünscht? | Strava-Upload gewünscht, I-016 (2026-10-10) |
-| F-10 | Bietet die Uhr „Heart Rate Push" / Herzfrequenz-Übertragung per Bluetooth an? (an der Uhr nachsehen) | Keine solche Option gefunden (2026-10-10); ggf. noch im App-Store der Zepp-App nachsehen |
-| F-11 | Ist die Zepp-App bereits mit Strava verbunden? | offen |
+| F-10 | Bietet die Uhr „Heart Rate Push" / Herzfrequenz-Übertragung per Bluetooth an? (an der Uhr nachsehen) | Ja, als Mini-App „Heart Rate Push" (2026-10-10) |
+| F-11 | Ist die Zepp-App bereits mit Strava verbunden? | Ja (2026-10-10) |
 | F-12 | Beim Joggen: Phone dabei (dann Phone-GPS live) oder nur Uhr? | Joggen meist ohne Phone; Spaziergänge/Wanderungen mit Phone; Option trotzdem für alle Sportarten (2026-10-10) |
+| F-14 | Ändert das Challenge Bike den Widerstand in Kinomap oder QZ von selbst, oder nur per Handrad? | offen |
+| F-15 | Welche Auswertungen sind wichtig? | Wochenumfang, Pulszonen, Bestzeiten (2026-10-10) |
 | F-13 | Wo sollen die synchronisierten Daten liegen: eigener Cloud-Speicher (z. B. Google Drive) oder Server-Dienst? | Google Drive (2026-10-10) |

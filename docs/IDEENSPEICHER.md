@@ -24,20 +24,21 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-002 | Concept2 SkiErg (PM5) koppeln | Geräte | M | Geklärt | Nutzer |
 | I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
 | I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
-| I-005 | Amazfit-Uhr einbinden | Geräte | ? | Neu | Nutzer |
+| I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | Geklärt | Nutzer |
 | I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Geklärt | Nutzer |
-| I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen | Programme | L | Neu | Nutzer |
+| I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Neu | Nutzer |
 | I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Neu | Nutzer |
-| I-009 | Trainingshistorie mit Auswertung | Auswertung | M | Neu | Vorschlag |
+| I-009 | Trainingshistorie mit Auswertung (Wochenumfang, Pulszonen, Bestzeiten) | Auswertung | L | Geklärt | Nutzer |
 | I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | Neu | Vorschlag |
-| I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | Neu | Vorschlag |
+| I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | Geklärt | Nutzer |
 | I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Geklärt | Nutzer |
 | I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Neu | Nutzer |
 | I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
 | I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Geklärt | Nutzer |
 | I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Geklärt | Nutzer |
-| I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Neu | Vorschlag |
+| I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Geklärt | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
+| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | ? | Neu | Nutzer |
 
 ## Details
 
@@ -56,7 +57,7 @@ Läuft über FTMS, vom Nutzer bestätigt (bereits mit QZ, Kinomap und der Domyos
 ### I-005 – Amazfit-Uhr
 Gewünscht: Daten der Uhr nutzen, vor allem ihr GPS. Amazfit bietet keine offene Schnittstelle, über die eine Fremd-App die Uhr live auslesen kann. Wege (Recherche 2026-10-10):
 
-1. **Puls live:** Zepp-OS-Uhren ab Version 3.0 können den Puls per Bluetooth senden („Heart Rate Push"), teils nur während eines laufenden Workouts. Der Nutzer findet an seiner Uhr keine solche Option (2026-10-10); dieser Weg entfällt vorerst. Live-Puls kommt vom Brustgurt (I-001).
+1. **Puls live:** Zepp-OS-Uhren ab Version 3.0 können den Puls per Bluetooth senden („Heart Rate Push"), teils nur während eines laufenden Workouts. Auf der Uhr des Nutzers ist das die Mini-App „Heart Rate Push" aus dem App-Store der Zepp-App (vorhanden, 2026-10-10). Die Uhr ist damit voraussichtlich wie ein Brustgurt koppelbar (I-001); mit dem ersten Prototyp zu testen.
 2. **GPS und komplette Aufzeichnung nachträglich:** Die Zepp-App synchronisiert zu Strava; von dort kann unsere App die Aktivität samt GPS-Strecke holen (I-017). Alternativ Datei-Import (I-010).
 3. **GPS live:** nur über eine eigene Mini-App auf der Uhr denkbar (I-018), aufwendig und unsicher.
 
@@ -66,13 +67,18 @@ Health Connect als Weg ist nicht bestätigt.
 GPS-Strecke, Puls, Tempo, Distanz, Höhenmeter, Rundenzeiten. Erfordert Aufzeichnung im Hintergrund bei ausgeschaltetem Display. Sportarten: Laufen, Spazieren, Wandern. Hauptnutzung sind Spaziergänge und Wanderungen (Phone dabei); beim Joggen bleibt das Phone meist zu Hause, die Option soll es dort trotzdem geben.
 
 ### I-007 – Trainingsprogramme
-Übungsbibliothek plus daraus zusammengesetzte Programme. Offen: Herkunft der Inhalte (selbst pflegen oder mitgeliefert), Darstellung (Text, Bild, Video).
+Übungsbibliothek plus daraus zusammengesetzte Programme. Die App bringt eine kleine Vorauswahl zum Ausprobieren mit; eigene Übungen und Programme lassen sich anlegen und ändern. Offen: Darstellung (Text, Bild, Video).
 
 ### I-008 – Intervall-Timer
+Der Timer soll Geräte aktiv ansteuern, nicht nur ansagen (Laufband: I-011, Bike: I-019). Ohne gekoppeltes Gerät, z. B. draußen, bleibt es bei Ansage und Signal.
+
 Frei editierbare Abschnitte mit Dauer und Zielgeschwindigkeit, als Vorlage speicherbar. Signal beim Abschnittswechsel (Ton, Vibration, Sprache).
 
 ### I-009 – Trainingshistorie
-Liste aller Einheiten, Wochen-/Monatsübersicht, Verlauf von Puls, Distanz, Leistung.
+Liste aller Einheiten, dazu ein Mix aus:
+- Wochenumfang (Zeit, Distanz, Anzahl Einheiten; auch je Monat)
+- Pulszonen (Zeit je Zone pro Einheit und Zeitraum; setzt Maximalpuls oder eigene Zonengrenzen voraus)
+- Bestzeiten (z. B. schnellste 1 km / 5 km / 10 km, beste Leistung auf Bike und SkiErg)
 
 ### I-010 – Export / Import
 Daten bleiben nutzbar außerhalb der App; Übergabe an andere Plattformen. Das Erzeugen von FIT- oder TCX-Dateien ist zugleich Voraussetzung für den Strava-Upload (I-016).
@@ -110,3 +116,6 @@ Aktivitäten aus dem eigenen Konto lesen (`activity:read_all`), inklusive GPS-St
 
 ### I-018 – Mini-App auf der Uhr
 Eigene Zepp-OS-App, die Sensordaten live ans Phone schickt. Ob GPS und Puls so in brauchbarer Rate herauskommen, ist ungeklärt. Nur verfolgen, wenn die Wege 1 und 2 aus I-005 nicht reichen.
+
+### I-019 – Bike-Widerstand steuern
+FTMS sieht drei Steuerarten vor: Widerstandsstufe setzen, Zielleistung in Watt halten, Steigung simulieren. Welche davon das Challenge Bike annimmt, meldet das Gerät selbst und wird mit dem ersten Prototyp ausgelesen. Verstellt das Bike den Widerstand nur per Handrad, ist keine Steuerung möglich; dann bleibt die Ansage.
