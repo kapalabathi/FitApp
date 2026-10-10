@@ -26,7 +26,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
 | I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | Geklärt | Nutzer |
 | I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Geklärt | Nutzer |
-| I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Neu | Nutzer |
+| I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Geklärt | Nutzer |
 | I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Neu | Nutzer |
 | I-009 | Trainingshistorie mit Auswertung (Wochenumfang, Pulszonen, Bestzeiten) | Auswertung | L | Geklärt | Nutzer |
 | I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | Neu | Vorschlag |
@@ -38,7 +38,8 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Geklärt | Nutzer |
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Geklärt | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
-| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | ? | Neu | Nutzer |
+| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | Geklärt | Nutzer |
+| I-020 | Kleine Comic-Grafiken zu den Übungen | Programme | L | Neu | Nutzer |
 
 ## Details
 
@@ -67,7 +68,7 @@ Health Connect als Weg ist nicht bestätigt.
 GPS-Strecke, Puls, Tempo, Distanz, Höhenmeter, Rundenzeiten. Erfordert Aufzeichnung im Hintergrund bei ausgeschaltetem Display. Sportarten: Laufen, Spazieren, Wandern. Hauptnutzung sind Spaziergänge und Wanderungen (Phone dabei); beim Joggen bleibt das Phone meist zu Hause, die Option soll es dort trotzdem geben.
 
 ### I-007 – Trainingsprogramme
-Übungsbibliothek plus daraus zusammengesetzte Programme. Die App bringt eine kleine Vorauswahl zum Ausprobieren mit; eigene Übungen und Programme lassen sich anlegen und ändern. Offen: Darstellung (Text, Bild, Video).
+Übungsbibliothek plus daraus zusammengesetzte Programme. Die App bringt eine kleine Vorauswahl zum Ausprobieren mit; eigene Übungen und Programme lassen sich anlegen und ändern. Darstellung: Textbeschreibung plus Comic-Grafik je Übung (I-020), keine Videos.
 
 ### I-008 – Intervall-Timer
 Der Timer soll Geräte aktiv ansteuern, nicht nur ansagen (Laufband: I-011, Bike: I-019). Ohne gekoppeltes Gerät, z. B. draußen, bleibt es bei Ansage und Signal.
@@ -77,14 +78,14 @@ Frei editierbare Abschnitte mit Dauer und Zielgeschwindigkeit, als Vorlage speic
 ### I-009 – Trainingshistorie
 Liste aller Einheiten, dazu ein Mix aus:
 - Wochenumfang (Zeit, Distanz, Anzahl Einheiten; auch je Monat)
-- Pulszonen (Zeit je Zone pro Einheit und Zeitraum; setzt Maximalpuls oder eigene Zonengrenzen voraus)
+- Pulszonen (Zeit je Zone pro Einheit und Zeitraum). Der Maximalpuls wird per Faustformel aus dem Alter berechnet und ist von Hand überschreibbar; dafür braucht das Profil ein Geburtsjahr
 - Bestzeiten (z. B. schnellste 1 km / 5 km / 10 km, beste Leistung auf Bike und SkiErg)
 
 ### I-010 – Export / Import
 Daten bleiben nutzbar außerhalb der App; Übergabe an andere Plattformen. Das Erzeugen von FIT- oder TCX-Dateien ist zugleich Voraussetzung für den Strava-Upload (I-016).
 
 ### I-011 – Timer steuert Laufband
-FTMS sieht Steuerbefehle grundsätzlich vor; ob das Laufband sie annimmt, ist am Gerät zu testen (hängt an I-004). Sicherheitsaspekt beachten: Geschwindigkeitsänderungen ankündigen, jederzeit abbrechbar.
+FTMS sieht Steuerbefehle grundsätzlich vor; das Laufband nimmt sie an (laut Nutzer hat QZ die Geschwindigkeit verstellt, 2026-10-10). Sicherheitsaspekt beachten: Geschwindigkeitsänderungen ankündigen, jederzeit abbrechbar.
 
 ### I-012 – Daten mehrerer Geräte koppeln
 Mehrere Quellen laufen gleichzeitig in dieselbe Einheit, z. B. Geschwindigkeit vom Laufband und Puls vom Brustgurt, auf einer gemeinsamen Zeitachse. Zu regeln: welche Quelle gilt, wenn zwei Geräte denselben Wert liefern (z. B. Puls von Gurt und Uhr).
@@ -118,4 +119,7 @@ Aktivitäten aus dem eigenen Konto lesen (`activity:read_all`), inklusive GPS-St
 Eigene Zepp-OS-App, die Sensordaten live ans Phone schickt. Ob GPS und Puls so in brauchbarer Rate herauskommen, ist ungeklärt. Nur verfolgen, wenn die Wege 1 und 2 aus I-005 nicht reichen.
 
 ### I-019 – Bike-Widerstand steuern
-FTMS sieht drei Steuerarten vor: Widerstandsstufe setzen, Zielleistung in Watt halten, Steigung simulieren. Welche davon das Challenge Bike annimmt, meldet das Gerät selbst und wird mit dem ersten Prototyp ausgelesen. Verstellt das Bike den Widerstand nur per Handrad, ist keine Steuerung möglich; dann bleibt die Ansage.
+FTMS sieht drei Steuerarten vor: Widerstandsstufe setzen, Zielleistung in Watt halten, Steigung simulieren. Das Challenge Bike lässt sich steuern (laut Nutzer hat Kinomap den Widerstand verstellt, 2026-10-10). Welche der drei Arten es annimmt, meldet das Gerät selbst und wird mit dem ersten Prototyp ausgelesen.
+
+### I-020 – Comic-Grafiken zu den Übungen
+Je Übung eine kleine, einheitlich gestaltete Comic-Grafik. Der Aufwand hängt an der Anzahl der Übungen in der Vorauswahl. Offen: Herstellung (selbst gezeichnete Vektorgrafiken, KI-generiert oder lizenzierte Sammlung) und Stil. Eigene Übungen des Nutzers brauchen eine Möglichkeit, ein eigenes Bild zu hinterlegen.
