@@ -128,8 +128,10 @@ def als_data_url(pfad):
     return f"data:{typ};base64,{base64.b64encode(pfad.read_bytes()).decode()}"
 
 
-def bild_anfordern(schluessel, modell, prompt, vorlage, transparent):
-    rumpf = {"model": modell, "prompt": prompt, "aspect_ratio": "1:1", "resolution": "1K"}
+def bild_anfordern(schluessel, modell, prompt, vorlage, transparent, qualitaet):
+    rumpf = {"model": modell, "prompt": prompt, "aspect_ratio": "1:1"}
+    if qualitaet:
+        rumpf["quality"] = qualitaet
     if vorlage:
         rumpf["input_references"] = [{"type": "image_url", "image_url": {"url": vorlage}}]
     if transparent:
@@ -149,7 +151,7 @@ def bild_anfordern(schluessel, modell, prompt, vorlage, transparent):
 def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     p = argparse.ArgumentParser(description="Übungsgrafiken über OpenRouter erzeugen")
-    p.add_argument("--modell", default="sourceful/riverflow-v2.5-fast")
+    p.add_argument("--modell", default="openai/gpt-5.4-image-2")
     p.add_argument("--nur", help="z. B. G-001,G-005 oder G-021-G-040")
     p.add_argument("--vorlage", default=str(WURZEL / "grafiken" / "stilvorlage.webp"),
                    help="Stilvorlage (Bilddatei)")
@@ -157,6 +159,8 @@ def main():
     p.add_argument("--neu", action="store_true", help="vorhandene Dateien überschreiben")
     p.add_argument("--transparent", action="store_true",
                    help="transparenten Hintergrund anfordern (nicht jedes Modell kann das)")
+    p.add_argument("--qualitaet", choices=["low", "medium", "high"],
+                   help="Bildqualität, sofern das Modell sie kennt (ohne Angabe: Modellstandard)")
     p.add_argument("--trocken", action="store_true",
                    help="nichts senden, nur zeigen, was erzeugt würde")
     p.add_argument("--pause", type=float, default=1.0, help="Sekunden zwischen den Aufrufen")
@@ -193,7 +197,7 @@ def main():
             try:
                 inhalt, endung, kosten = bild_anfordern(
                     schluessel, a.modell, prompt_bauen(g, a.transparent), vorlage_url,
-                    a.transparent)
+                    a.transparent, a.qualitaet)
                 for alt in vorhanden:
                     alt.unlink()
                 (ziel / (g["datei"] + endung)).write_bytes(inhalt)
