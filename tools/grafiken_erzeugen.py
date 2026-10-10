@@ -8,7 +8,7 @@ Der API-Schlüssel wird aus der Umgebungsvariable OPENROUTER_API_KEY gelesen.
 Beispiele:
     python tools/grafiken_erzeugen.py --trocken
     python tools/grafiken_erzeugen.py --nur G-001,G-024,G-045
-    python tools/grafiken_erzeugen.py --nur G-021-G-040 --modell openai/gpt-image-1
+    python tools/grafiken_erzeugen.py --nur G-021-G-040 --modell sourceful/riverflow-v2.5-pro
     python tools/grafiken_erzeugen.py --nur G-031 --neu
     python tools/grafiken_erzeugen.py
 """
@@ -129,12 +129,11 @@ def als_data_url(pfad):
 
 
 def bild_anfordern(schluessel, modell, prompt, vorlage, transparent):
-    rumpf = {"model": modell, "prompt": prompt, "aspect_ratio": "1:1"}
+    rumpf = {"model": modell, "prompt": prompt, "aspect_ratio": "1:1", "resolution": "1K"}
     if vorlage:
         rumpf["input_references"] = [{"type": "image_url", "image_url": {"url": vorlage}}]
     if transparent:
         rumpf["background"] = "transparent"
-        rumpf["output_format"] = "png"
     anfrage = urllib.request.Request(
         API, data=json.dumps(rumpf).encode(),
         headers={"Authorization": f"Bearer {schluessel}", "Content-Type": "application/json"})
@@ -150,7 +149,7 @@ def bild_anfordern(schluessel, modell, prompt, vorlage, transparent):
 def main():
     sys.stdout.reconfigure(encoding="utf-8", errors="replace")
     p = argparse.ArgumentParser(description="Übungsgrafiken über OpenRouter erzeugen")
-    p.add_argument("--modell", default="google/gemini-2.5-flash-image")
+    p.add_argument("--modell", default="sourceful/riverflow-v2.5-fast")
     p.add_argument("--nur", help="z. B. G-001,G-005 oder G-021-G-040")
     p.add_argument("--vorlage", default=str(WURZEL / "grafiken" / "stilvorlage.webp"),
                    help="Stilvorlage (Bilddatei)")

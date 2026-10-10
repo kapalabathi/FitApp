@@ -7,6 +7,7 @@ Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSP
 ## [Unveröffentlicht]
 
 ### Geändert
+- 2026-10-10: Grafik-Skript nutzt standardmäßig das Modell `sourceful/riverflow-v2.5-fast` (Wahl des Nutzers), Auflösung 1K.
 - 2026-10-10: Steuerbarkeit von Laufband und Bike bestätigt (I-011, I-019). Pulszonen per Faustformel (I-009). Übungen mit Text und Comic-Grafik (I-007). Fragen F-14, F-16 beantwortet, F-17 neu.
 - 2026-10-10: Uhr liefert Live-Puls über die Mini-App „Heart Rate Push" (I-005). Strava-Import (I-017), Laufband-Steuerung (I-011) und Auswertung (I-009) vom Nutzer bestätigt. Vorauswahl an Trainingsprogrammen festgelegt (I-007). Fragen F-07, F-08, F-10, F-11 beantwortet, F-14 neu.
 - 2026-10-10: Technik entschieden (Flutter), Synchronisation über Google Drive festgelegt (I-015). I-006 um Spazieren und Wandern erweitert. Live-Puls von der Uhr entfällt vorerst (I-005). Fragen F-10, F-12, F-13 beantwortet.
