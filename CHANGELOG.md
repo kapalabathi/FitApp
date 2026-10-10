@@ -14,6 +14,7 @@ Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSP
 - 2026-10-10: Strava-API und Amazfit-Anbindung recherchiert; Ergebnisse in I-005 und I-016. Fragen F-02, F-05, F-06, F-09 beantwortet, F-10 bis F-13 neu.
 
 ### Hinzugefügt
+- 2026-10-10: Grafikliste mit 80 Übungen und Vorgaben für die Comic-Grafiken (G-001 bis G-080, zu I-020 und I-007).
 - 2026-10-10: Idee I-020 (Comic-Grafiken zu den Übungen).
 - 2026-10-10: Idee I-019 (Bike-Widerstand aus der App steuern).
 - 2026-10-10: Git-Repository angelegt.

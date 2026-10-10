@@ -72,4 +72,4 @@ Flutter (Sprache Dart): eine gemeinsame Codebasis für Android-Phone, Android-Ta
 | F-14 | Ändert das Challenge Bike den Widerstand in Kinomap oder QZ von selbst, oder nur per Handrad? | Kinomap verstellt das Bike, QZ das Laufband (2026-10-10) |
 | F-15 | Welche Auswertungen sind wichtig? | Wochenumfang, Pulszonen, Bestzeiten (2026-10-10) |
 | F-16 | Pulszonen: Maximalpuls bekannt oder Faustformel? | Faustformel-Rechner (2026-10-10) |
-| F-17 | Comic-Grafiken: wie hergestellt, welcher Stil, wie viele Übungen zum Start? | offen |
+| F-17 | Comic-Grafiken: wie hergestellt, welcher Stil, wie viele Übungen zum Start? | 20 je Kategorie; Nutzer lässt sie nach der [Grafikliste](GRAFIKLISTE.md) erstellen (2026-10-10) |

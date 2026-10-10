@@ -39,7 +39,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Geklärt | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
 | I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | Geklärt | Nutzer |
-| I-020 | Kleine Comic-Grafiken zu den Übungen | Programme | L | Neu | Nutzer |
+| I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | Geklärt | Nutzer |
 
 ## Details
 
@@ -68,7 +68,7 @@ Health Connect als Weg ist nicht bestätigt.
 GPS-Strecke, Puls, Tempo, Distanz, Höhenmeter, Rundenzeiten. Erfordert Aufzeichnung im Hintergrund bei ausgeschaltetem Display. Sportarten: Laufen, Spazieren, Wandern. Hauptnutzung sind Spaziergänge und Wanderungen (Phone dabei); beim Joggen bleibt das Phone meist zu Hause, die Option soll es dort trotzdem geben.
 
 ### I-007 – Trainingsprogramme
-Übungsbibliothek plus daraus zusammengesetzte Programme. Die App bringt eine kleine Vorauswahl zum Ausprobieren mit; eigene Übungen und Programme lassen sich anlegen und ändern. Darstellung: Textbeschreibung plus Comic-Grafik je Übung (I-020), keine Videos.
+Übungsbibliothek plus daraus zusammengesetzte Programme. Die App bringt eine Vorauswahl von 20 Übungen je Kategorie mit (siehe [Grafikliste](GRAFIKLISTE.md)); eigene Übungen und Programme lassen sich anlegen und ändern. Darstellung: Textbeschreibung plus Comic-Grafik je Übung (I-020), keine Videos.
 
 ### I-008 – Intervall-Timer
 Der Timer soll Geräte aktiv ansteuern, nicht nur ansagen (Laufband: I-011, Bike: I-019). Ohne gekoppeltes Gerät, z. B. draußen, bleibt es bei Ansage und Signal.
@@ -122,4 +122,4 @@ Eigene Zepp-OS-App, die Sensordaten live ans Phone schickt. Ob GPS und Puls so i
 FTMS sieht drei Steuerarten vor: Widerstandsstufe setzen, Zielleistung in Watt halten, Steigung simulieren. Das Challenge Bike lässt sich steuern (laut Nutzer hat Kinomap den Widerstand verstellt, 2026-10-10). Welche der drei Arten es annimmt, meldet das Gerät selbst und wird mit dem ersten Prototyp ausgelesen.
 
 ### I-020 – Comic-Grafiken zu den Übungen
-Je Übung eine kleine, einheitlich gestaltete Comic-Grafik. Der Aufwand hängt an der Anzahl der Übungen in der Vorauswahl. Offen: Herstellung (selbst gezeichnete Vektorgrafiken, KI-generiert oder lizenzierte Sammlung) und Stil. Eigene Übungen des Nutzers brauchen eine Möglichkeit, ein eigenes Bild zu hinterlegen.
+Je Übung eine kleine, einheitlich gestaltete Comic-Grafik. Umfang: 80 Grafiken, 20 je Kategorie. Der Nutzer lässt sie extern erstellen; Vorgaben und Einzelbeschreibungen stehen in der [Grafikliste](GRAFIKLISTE.md) (G-001 bis G-080). In der App bleibt das Einbinden. Eigene Übungen des Nutzers brauchen eine Möglichkeit, ein eigenes Bild zu hinterlegen.
