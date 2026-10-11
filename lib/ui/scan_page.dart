@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:universal_ble/universal_ble.dart';
 
 import '../ble/device_kind.dart';
-import 'device_page.dart';
 
-/// Sucht Bluetooth-Geräte in der Nähe und listet sie auf.
+/// Sucht Bluetooth-Geräte in der Nähe. Ein Tipp auf ein Gerät schließt die
+/// Seite und gibt es als Ergebnis zurück.
 class ScanPage extends StatefulWidget {
   const ScanPage({super.key});
 
@@ -87,10 +87,7 @@ class _ScanPageState extends State<ScanPage> {
 
   Future<void> _open(BleDevice device) async {
     await _stopScan();
-    if (!mounted) return;
-    await Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => DevicePage(device: device)),
-    );
+    if (mounted) Navigator.of(context).pop(device);
   }
 
   @override
@@ -103,7 +100,7 @@ class _ScanPageState extends State<ScanPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Geräte suchen'),
+        title: const Text('Gerät hinzufügen'),
         bottom: _scanning
             ? const PreferredSize(
                 preferredSize: Size.fromHeight(4),
@@ -112,6 +109,7 @@ class _ScanPageState extends State<ScanPage> {
             : null,
       ),
       floatingActionButton: FloatingActionButton.extended(
+        heroTag: 'scan',
         onPressed: _scanning ? _stopScan : _startScan,
         icon: Icon(_scanning ? Icons.stop : Icons.search),
         label: Text(_scanning ? 'Stopp' : 'Suchen'),

@@ -151,7 +151,7 @@ class _DevicePageState extends State<DevicePage> {
         final known = _raw.containsKey(Uuids.full(c.uuid)) || c.isSubscribed;
         final notifies = c.properties.any((p) => p.name == 'notify');
         final relevant = Uuids.same(s.uuid, Uuids.ftmsService) ||
-            Uuids.same(s.uuid, Uuids.pm5Service);
+            Uuids.full(s.uuid).startsWith('ce0600');
         if (!known && notifies && relevant) {
           await _subscribe(s.uuid, c.uuid, (_) {});
         }

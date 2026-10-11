@@ -13,6 +13,12 @@ abstract final class Uuids {
   static const batteryService = '180f';
   static const pm5Service = 'ce060000-43e5-11e4-916c-0800200c9a66';
 
+  // Concept2 PM5: Der Trainingsdienst ist ein eigener Dienst neben dem,
+  // mit dem sich das Gerät in der Suche zeigt.
+  static const pm5RowingService = 'ce060030-43e5-11e4-916c-0800200c9a66';
+  static const pm5GeneralStatus = 'ce060031-43e5-11e4-916c-0800200c9a66';
+  static const pm5AdditionalStatus = 'ce060032-43e5-11e4-916c-0800200c9a66';
+
   // Herzfrequenz
   static const heartRateMeasurement = '2a37';
 
@@ -55,6 +61,9 @@ abstract final class Uuids {
       deviceInformationService: 'Geräteinformation',
       batteryService: 'Batterie',
       pm5Service: 'Concept2 PM5',
+      pm5RowingService: 'Concept2 Training',
+      pm5GeneralStatus: 'Concept2 Status',
+      pm5AdditionalStatus: 'Concept2 Zusatzstatus',
       heartRateMeasurement: 'Herzfrequenz-Messwert',
       ftmsFeature: 'FTMS-Fähigkeiten',
       treadmillData: 'Laufband-Daten',

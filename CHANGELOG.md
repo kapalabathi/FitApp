@@ -4,7 +4,25 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
-## [Unveröffentlicht]
+## [0.2.0] – 2026-10-11 (M1: Indoor-Aufzeichnung)
+
+### Hinzugefügt
+- Training aufzeichnen mit Start, Pause, Fortsetzen und Beenden für Laufband, Indoor-Bike, SkiErg und Sonstiges (A-020).
+- Live-Anzeige mit großen Kacheln; Spaltenzahl passt sich Phone und Tablet an (A-021, A-070).
+- Geräte merken, umbenennen, entfernen; gemerkte Geräte verbinden sich beim Trainingsstart von selbst. Die Geräteauswahl wird je Sportart gemerkt (A-001).
+- Laufband und Indoor-Bike über FTMS sowie Concept2 PM5 als Datenquellen (A-003, A-004, A-005). Der PM5 ist noch nicht am Gerät getestet.
+- Mehrere Geräte gleichzeitig auf einer gemeinsamen Zeitachse. Der Pulssensor hat Vorrang vor dem Puls des Fitnessgeräts; die Pulsquelle ist im Training umschaltbar (A-007).
+- Automatisches Wiederverbinden nach Verbindungsabbruch; Lücken bleiben in den Daten als Lücken erhalten (A-011).
+- Jede Sekunde wird sofort gespeichert. Ein nicht beendetes Training wird beim nächsten App-Start gerettet (A-024).
+- Verlauf mit Filter nach Sportart und Zeitraum, Detailansicht mit Kennzahlen und Verlaufskurven, Löschen (A-050).
+- Lokale SQLite-Datenbank; die App braucht kein Internet (A-060).
+- 28 weitere automatische Tests (insgesamt 42) für Aufzeichnung, Datenbank, Gerätedaten und Oberfläche.
+
+### Geändert
+- Die Gerätesuche dient jetzt dem Hinzufügen; der Gerätebericht ist über „Geräte" → Menü → „Prüfen und Gerätebericht" erreichbar.
+- Der Bildschirm bleibt während des Trainings an.
+
+## [0.1.0] – 2026-10-11 (Planung und M0: Technik-Prototyp)
 
 ### Geändert
 - 2026-10-11: Lastenheft als Version 1.0 freigegeben. Mindestversion Android 14, neue Anforderung A-067 (Hinweis auf ähnliche Strava-Aktivität vor dem Upload), Reihenfolge der Meilensteine bestätigt.
