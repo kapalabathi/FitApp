@@ -152,6 +152,17 @@ class AppDatabase {
       builtinPrograms.forEach(saveProgram);
       _db.execute('PRAGMA user_version = 3');
     }
+    if (version < 4) {
+      // Spazieren und Wandern sind zu einer Sportart zusammengelegt.
+      _db.execute(
+          "UPDATE workouts SET sport = 'hiking', updated_at = ? "
+          "WHERE sport = 'walking'",
+          [_now()]);
+      _db.execute("INSERT OR IGNORE INTO sport_devices (sport, device_id) "
+          "SELECT 'hiking', device_id FROM sport_devices WHERE sport = 'walking'");
+      _db.execute("DELETE FROM sport_devices WHERE sport = 'walking'");
+      _db.execute('PRAGMA user_version = 4');
+    }
   }
 
   /// Zum Ausprobieren und als Muster für eigene Vorlagen.

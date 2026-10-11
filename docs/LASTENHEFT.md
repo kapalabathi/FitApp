@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 1.0 (freigegeben am 2026-10-11) |
+| Version | 1.1 (1.0 freigegeben am 2026-10-11; 1.1: Spazieren und Wandern zusammengelegt) |
 | Stand | 2026-10-11 |
 | Auftraggeber | Kapalabathi |
 | Arbeitstitel | FitApp |
@@ -76,7 +76,7 @@ Spalte „Idee" verweist auf den Ideenspeicher.
 
 | Nr. | Anforderung | Prio | Idee |
 |-----|-------------|------|------|
-| A-020 | Training starten, pausieren, fortsetzen, beenden. Sportarten: Laufband, Indoor-Bike, SkiErg, Laufen, Spazieren, Wandern, Yoga, Crossfit, Calisthenics, Dehnen, Sonstiges. | Muss | – |
+| A-020 | Training starten, pausieren, fortsetzen, beenden. Sportarten: Laufband, Indoor-Bike, SkiErg, Laufen, Spazieren/Wandern (seit 2026-10-11 eine gemeinsame Sportart, Wunsch des Auftraggebers), Yoga, Crossfit, Calisthenics, Dehnen, Sonstiges. | Muss | – |
 | A-021 | Live-Anzeige aller verfügbaren Werte, gut ablesbar aus Trainingsabstand; auf dem Tablet großflächig. | Muss | – |
 | A-022 | Aufzeichnung im Freien per Phone-GPS: Strecke, Distanz, Tempo, Höhenmeter. Läuft bei ausgeschaltetem Display und im Hintergrund weiter. Für alle Outdoor-Sportarten wählbar. | Muss | I-006 |
 | A-023 | Runden: automatisch je Kilometer und manuell per Tipp. | Soll | I-006 |

@@ -28,8 +28,7 @@ enum Sport {
       indoorMachine: true),
   skiErg('ski_erg', 'SkiErg', Icons.downhill_skiing, indoorMachine: true),
   running('running', 'Laufen', Icons.directions_run),
-  walking('walking', 'Spazieren', Icons.directions_walk),
-  hiking('hiking', 'Wandern', Icons.hiking),
+  hiking('hiking', 'Spazieren/Wandern', Icons.hiking),
   yoga('yoga', 'Yoga', Icons.self_improvement),
   crossfit('crossfit', 'Crossfit', Icons.fitness_center),
   calisthenics('calisthenics', 'Calisthenics', Icons.sports_gymnastics),
@@ -40,7 +39,7 @@ enum Sport {
 
   /// Wird im Freien mit dem GPS des Phones aufgezeichnet.
   bool get usesGps =>
-      this == Sport.running || this == Sport.walking || this == Sport.hiking;
+      this == Sport.running || this == Sport.hiking;
 
   /// Schneller bewegt man sich in dieser Sportart nicht; höhere Werte vom
   /// GPS sind Messfehler.
@@ -63,8 +62,12 @@ enum Sport {
         _ => 'Trittfrequenz',
       };
 
-  static Sport fromId(String id) =>
-      values.firstWhere((s) => s.id == id, orElse: () => Sport.other);
+  /// Früher eine eigene Sportart, seit Version 0.4.2 Teil von [hiking].
+  static const _formerWalkingId = 'walking';
+
+  static Sport fromId(String id) => id == _formerWalkingId
+      ? Sport.hiking
+      : values.firstWhere((s) => s.id == id, orElse: () => Sport.other);
 }
 
 enum WorkoutStatus {

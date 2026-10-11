@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.4.2] – 2026-10-11
+
+### Geändert
+- Spazieren und Wandern sind zu einer Sportart „Spazieren/Wandern" zusammengelegt (Wunsch des Nutzers, Lastenheft 1.1, A-020). Bereits aufgezeichnete Spaziergänge erscheinen im Verlauf unter der gemeinsamen Sportart; ihre Daten bleiben unverändert.
+
 ## [0.4.1] – 2026-10-11
 
 ### Behoben

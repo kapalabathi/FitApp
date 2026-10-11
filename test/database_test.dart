@@ -67,6 +67,11 @@ void main() {
     expect(db.workout(a)!.uuid, isNot(db.workout(b)!.uuid));
   });
 
+  test('frühere Spaziergänge gehören zur Sportart Spazieren/Wandern', () {
+    expect(Sport.fromId('walking'), Sport.hiking);
+    expect(Sport.values.where((s) => s.usesGps), [Sport.running, Sport.hiking]);
+  });
+
   group('Geräte', () {
     const gurt = SavedDevice(
         deviceId: 'AA:BB', name: 'Brustgurt', kind: DeviceKind.heartRate);
