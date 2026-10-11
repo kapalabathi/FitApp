@@ -568,14 +568,30 @@ class AppDatabase {
       .map((r) => r['strava_id'] as int)
       .toSet();
 
-  /// Legt ein von Strava übernommenes Training mit seinen Messpunkten an und
-  /// gibt seine Nummer zurück.
+  /// Ob es schon ein Training gibt, das höchstens [tolerance] vor oder nach
+  /// [start] begonnen hat. Gelöschte zählen nicht.
+  bool hasWorkoutNear(DateTime start,
+      {Duration tolerance = const Duration(minutes: 1)}) {
+    final ms = start.millisecondsSinceEpoch;
+    return _db.select(
+      'SELECT 1 FROM workouts WHERE deleted = 0 AND status != ? '
+      'AND started_at BETWEEN ? AND ? LIMIT 1',
+      [
+        WorkoutStatus.recording.id,
+        ms - tolerance.inMilliseconds,
+        ms + tolerance.inMilliseconds,
+      ],
+    ).isNotEmpty;
+  }
+
+  /// Legt ein von Strava oder aus einer Datei übernommenes Training mit
+  /// seinen Messpunkten an und gibt seine Nummer zurück.
   int importWorkout({
     required Sport sport,
     required DateTime startedAt,
     required String title,
-    required int stravaId,
     required List<Sample> samples,
+    int? stravaId,
     int? ascentM,
   }) {
     _db.execute('BEGIN');

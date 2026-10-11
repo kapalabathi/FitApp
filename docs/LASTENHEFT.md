@@ -189,7 +189,7 @@ Begründung der Reihenfolge: M0 klärt die technischen Risiken, bevor viel gebau
 | R-03 | Laufband oder Bike nehmen nur einen Teil der Steuerbefehle an. | Auslesen in M0; der Timer nutzt, was das Gerät anbietet, sonst Ansage. |
 | R-04 | Android beendet die GPS-Aufzeichnung im Hintergrund (Stromsparfunktionen einzelner Hersteller). | Vordergrunddienst mit Benachrichtigung; Test auf dem eigenen Phone in M4. |
 | R-05 | Doppelte Aktivitäten bei Strava, wenn Uhr und App dasselbe Training aufzeichnen. | Hinweis und Nachfrage vor dem Upload (A-067). |
-| R-06 | Strava ändert Bedingungen oder Grenzen seiner Schnittstelle. | FIT-Export (A-062) bleibt als unabhängiger Weg. |
+| R-06 | Strava ändert Bedingungen oder Grenzen seiner Schnittstelle. | FIT-Export (A-062) bleibt als unabhängiger Weg. **Eingetreten 2026-10-11:** Strava verlangt für die Schnittstelle ein Abo, das der Auftraggeber nicht hat. Upload von Hand per FIT-Datei, Uhr-Läufe über den Datei-Import (A-063). A-064 bis A-067 sind umgesetzt, aber nur mit Abo nutzbar und ungetestet. |
 | R-07 | Synchronisationskonflikte führen zu Datenverlust. | Einfache Regel (A-061), gelöschte Einträge werden zunächst nur markiert. |
 
 ## 9. Offene Punkte

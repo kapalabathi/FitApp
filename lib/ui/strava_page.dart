@@ -166,7 +166,12 @@ class _StravaPageState extends State<StravaPage> {
                   ),
                 ] else ...[
                   const Text(
-                    'So richtest du die Verbindung ein:\n\n'
+                    'Strava erlaubt die direkte Verbindung nur Mitgliedern '
+                    'mit Abo. Ohne Abo exportierst du Trainings als FIT-'
+                    'Datei und lädst sie bei Strava von Hand hoch; Läufe '
+                    'von der Uhr holst du über den Datei-Import im '
+                    'Verlauf.\n\n'
+                    'Mit Abo richtest du die Verbindung so ein:\n\n'
                     '1. Auf strava.com unter Einstellungen → „Meine API-'
                     'Anwendung" eine Anwendung anlegen.\n'
                     '2. Als „Authorization Callback Domain" dort localhost '

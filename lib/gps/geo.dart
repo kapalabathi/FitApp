@@ -35,3 +35,21 @@ double distanceMeters(double lat1, double lon1, double lat2, double lon2) {
       cos(rad(lat1)) * cos(rad(lat2)) * sin(dLon / 2) * sin(dLon / 2);
   return earthRadiusM * 2 * atan2(sqrt(a), sqrt(1 - a));
 }
+
+/// Summe der Anstiege eines Höhenverlaufs in Metern. Änderungen unter
+/// [threshold] gelten als Messrauschen und zählen nicht.
+double ascentMeters(Iterable<double> heights, {double threshold = 3}) {
+  double? reference;
+  var ascent = 0.0;
+  for (final h in heights) {
+    if (reference == null) {
+      reference = h;
+    } else if (h - reference >= threshold) {
+      ascent += h - reference;
+      reference = h;
+    } else if (reference - h >= threshold) {
+      reference = h;
+    }
+  }
+  return ascent;
+}

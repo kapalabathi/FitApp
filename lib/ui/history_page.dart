@@ -246,7 +246,16 @@ class _HistoryPageState extends State<HistoryPage> {
                 icon: const Icon(Icons.delete_outline),
                 onPressed: _deleteSelected,
               ),
-            ] else
+            ] else ...[
+              IconButton(
+                tooltip: 'Dateien importieren',
+                icon: const Icon(Icons.file_open_outlined),
+                onPressed: () async {
+                  if (await importFiles(context, widget.db) && mounted) {
+                    _load();
+                  }
+                },
+              ),
               IconButton(
                 tooltip: 'Strava',
                 icon: const Icon(Icons.cloud_sync_outlined),
@@ -260,6 +269,7 @@ class _HistoryPageState extends State<HistoryPage> {
                   if (mounted) _load();
                 },
               ),
+            ],
           ],
           bottom: const TabBar(
             isScrollable: true,

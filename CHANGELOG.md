@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.7.0] – 2026-10-11
+
+### Hinzugefügt
+- Import von FIT-, GPX- und TCX-Dateien (A-063) über das Datei-Symbol im Verlauf, auch mehrere auf einmal. Übernommen werden Strecke, Zeit, Höhe, Puls, Frequenz, Leistung und Geschwindigkeit, soweit die Datei sie enthält; fehlende Strecke und Geschwindigkeit werden aus den Standorten berechnet. Dieser Weg ersetzt den Strava-Import für Nutzer ohne Strava-Abo.
+- Die Sportart kommt aus der Datei; nennt sie keine, entscheidet das Durchschnittstempo. Sie lässt sich danach ändern.
+- Eine Datei, deren Training schon vorhanden ist (gleicher Beginn), wird nicht doppelt importiert; unlesbare Dateien werden mit Grund genannt.
+- Zehn weitere automatische Tests (insgesamt 139), darunter das Wiedereinlesen der eigenen FIT- und TCX-Exporte.
+
+### Geändert
+- Hinweis in der App: Strava erlaubt die direkte Verbindung nur Mitgliedern mit Abo (Stand der Strava-Dokumentation vom 2026-10-11). Ohne Abo: FIT exportieren und bei Strava von Hand hochladen.
+
 ## [0.6.1] – 2026-10-11
 
 ### Hinzugefügt

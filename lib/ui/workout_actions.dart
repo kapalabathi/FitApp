@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
@@ -11,6 +13,7 @@ import '../data/database.dart';
 import '../data/models.dart';
 import '../export/fit_writer.dart';
 import '../export/xml_writers.dart';
+import '../import/file_import.dart';
 import '../strava/strava_api.dart';
 import '../strava/strava_service.dart';
 import 'format.dart';
@@ -104,8 +107,8 @@ Future<bool> uploadToStrava(
   final service = StravaService(db, createStravaApi());
   try {
     if (!await service.api.isConnected) {
-      say('Die App ist nicht mit Strava verbunden. Die Verbindung richtest '
-          'du im Verlauf über das Wolken-Symbol ein.');
+      say('Die App ist nicht mit Strava verbunden. Ohne Strava-Abo geht es '
+          'so: als FIT exportieren und bei Strava von Hand hochladen.');
       return false;
     }
     final similar = await service.similarActivity(w);
@@ -154,4 +157,64 @@ Future<void> autoUploadIfEnabled(
     BuildContext context, AppDatabase db, Workout w) async {
   if (!db.flag(StravaService.autoUploadKey, fallback: false)) return;
   await uploadToStrava(context, db, w, askOnSimilar: false);
+}
+
+/// Das Ergebnis eines Datei-Imports, als Satz für den Nutzer.
+class ImportSummary {
+  int imported = 0;
+  int duplicates = 0;
+  final List<String> failures = [];
+
+  String get message => [
+        imported == 1 ? '1 Training importiert' : '$imported Trainings importiert',
+        if (duplicates > 0) '$duplicates schon vorhanden',
+        if (failures.isNotEmpty) 'nicht lesbar: ${failures.join('; ')}',
+      ].join(', ');
+}
+
+/// Übernimmt eine gelesene Datei als Training, sofern es nicht schon eines
+/// mit demselben Beginn gibt.
+void importParsedFile(
+    AppDatabase db, String name, List<int> bytes, ImportSummary summary) {
+  try {
+    final activity = parseActivityFile(name, Uint8List.fromList(bytes));
+    if (db.hasWorkoutNear(activity.startedAt)) {
+      summary.duplicates++;
+      return;
+    }
+    db.importWorkout(
+      sport: activity.sport,
+      startedAt: activity.startedAt,
+      title: activity.title ?? '',
+      samples: activity.samples,
+      ascentM: activity.ascentM,
+    );
+    summary.imported++;
+  } on ImportException catch (e) {
+    summary.failures.add('$name (${e.message})');
+  }
+}
+
+/// Lässt den Nutzer FIT-, GPX- und TCX-Dateien wählen und übernimmt sie als
+/// Trainings (Lastenheft A-063). Gibt zurück, ob etwas importiert wurde.
+Future<bool> importFiles(BuildContext context, AppDatabase db) async {
+  final messenger = ScaffoldMessenger.of(context);
+  final summary = ImportSummary();
+  try {
+    final files = await FilePicker.pickFiles(
+        dialogTitle: 'FIT-, GPX- oder TCX-Dateien wählen');
+    if (files.isEmpty) return false;
+    for (final file in files) {
+      importParsedFile(db, file.name, await file.readAsBytes(), summary);
+    }
+  } catch (e) {
+    messenger.showSnackBar(
+        SnackBar(content: Text('Import fehlgeschlagen: $e')));
+    return false;
+  }
+  messenger.showSnackBar(SnackBar(
+    content: Text(summary.message),
+    duration: Duration(seconds: summary.failures.isEmpty ? 4 : 10),
+  ));
+  return summary.imported > 0;
 }
