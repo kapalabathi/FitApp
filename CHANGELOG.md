@@ -4,6 +4,29 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.4.0] – 2026-10-11 (M3: Trainingsprogramme, M4: Outdoor)
+
+### Hinzugefügt – Trainingsprogramme (M3)
+- Neuer Bereich „Programme" mit Übungsbibliothek: 80 mitgelieferte Übungen, je 20 für Yoga, Crossfit, Calisthenics und Dehnen, jeweils mit Anleitung (A-040).
+- 57 Übungsgrafiken eingebunden, verkleinert auf 512 px; die 23 fehlenden zeigen einen Platzhalter (A-046, I-020).
+- Eigene Übungen anlegen, ändern, löschen; eigenes Bild aus der Galerie (A-041).
+- Programme zusammenstellen: Reihenfolge per Ziehen, je Übung Zeit oder Wiederholungen, Pause danach, Rundenzahl (A-042).
+- Geführtes Abspielen: Grafik, Anleitung, Countdown oder Wiederholungszahl mit „Fertig", Pausen mit Vorschau, Töne, Vibration und Ansage (A-043).
+- Sieben mitgelieferte Programme (A-044).
+- Ein absolviertes Programm wird als Training gespeichert, mit Puls von den gewählten Pulssensoren (A-045).
+- Skript `tools/uebungen_erzeugen.py`: erzeugt Übungsdaten und verkleinerte Bilder aus der Grafikliste; nach neuen Bildern erneut ausführen.
+
+### Hinzugefügt – Outdoor (M4)
+- Sportarten Laufen, Spazieren und Wandern mit Aufzeichnung über das GPS des Phones: Strecke, Distanz, Tempo, Anstieg (A-022).
+- Aufzeichnung läuft bei ausgeschaltetem Display und im Hintergrund weiter, über einen Dienst mit dauerhafter Benachrichtigung. **Noch nicht im Freien erprobt.**
+- Runden: automatisch nach jedem Kilometer mit Ansage der Rundenzeit (auch auf dem Laufband), zusätzlich von Hand über das Fähnchen (A-023).
+- Streckenkarte (OpenStreetMap), Rundentabelle und Höhenprofil in der Detailansicht (A-025).
+- Filter gegen ungenaue Standorte, Zittern im Stand und Höhenrauschen; der Weg während einer Pause zählt nicht.
+
+### Geändert
+- Die Aufzeichnung richtet sich nach der Uhr statt nach dem Zeitgeber: Sekunden, die Android im Hintergrund verschluckt, werden nachgeholt.
+- 17 weitere automatische Tests (insgesamt 80).
+
 ## [0.3.1] – 2026-10-11
 
 ### Behoben

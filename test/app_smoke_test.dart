@@ -1,6 +1,8 @@
 import 'package:fitapp/ble/device_kind.dart';
 import 'package:fitapp/data/database.dart';
 import 'package:fitapp/data/models.dart';
+import 'package:fitapp/interval/signals.dart';
+import 'package:fitapp/programs/program_models.dart';
 import 'package:fitapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -9,7 +11,11 @@ import 'package:intl/date_symbol_data_local.dart';
 void main() {
   late AppDatabase db;
 
-  setUpAll(() => initializeDateFormatting('de'));
+  setUpAll(() {
+    // In Tests gibt es weder Lautsprecher noch Sprachausgabe.
+    createSignals = (_) => const SilentSignals();
+    return initializeDateFormatting('de');
+  });
   setUp(() => db = AppDatabase.inMemory());
   tearDown(() => db.close());
 
@@ -54,6 +60,17 @@ void main() {
           tester.widget<CheckboxListTile>(find.byType(CheckboxListTile)).value,
           isTrue);
       expect(find.textContaining('gerettet'), findsOneWidget);
+
+      // Programme: mitgelieferte Programme und die Übungsbibliothek
+      await tester.tap(find.text('Programme').first);
+      await tester.pumpAndSettle();
+      expect(find.text('Calisthenics: Grundlagen'), findsOneWidget);
+      await tester.tap(find.text('Übungen'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(ChoiceChip, 'Crossfit'));
+      await tester.pumpAndSettle();
+      expect(find.text('Bear Crawl'), findsOneWidget);
+      expect(find.text('Baum'), findsNothing);
 
       // Intervalle: die mitgelieferten Beispielvorlagen
       await tester.tap(find.text('Intervalle'));
@@ -182,6 +199,62 @@ void main() {
       await tester.pumpAndSettle();
       expect(db.workouts().single.durationS, greaterThanOrEqualTo(5));
     });
+  });
+
+  testWidgets('ein Programm wird geführt abgespielt und als Training gespeichert',
+      (tester) async {
+    // Hochformat wie auf einem Phone, damit die ganze Übung sichtbar ist.
+    tester.view.physicalSize = const Size(500, 1000);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    final ids = {for (final e in db.exercises()) e.builtinKey: e.uuid};
+    db.saveProgram(Program(
+      name: 'Aaa Testprogramm',
+      category: ExerciseCategory.yoga,
+      items: [
+        ProgramItem(
+            exerciseUuid: ids['yoga_01_berghaltung']!,
+            timed: true,
+            amount: 5,
+            restS: 3),
+        ProgramItem(
+            exerciseUuid: ids['cali_01_liegestuetz']!, timed: false, amount: 10),
+      ],
+    ));
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Programme').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Aaa Testprogramm'));
+    await tester.pumpAndSettle();
+    expect(find.text('10 Wiederholungen'), findsOneWidget);
+    await tester.tap(find.text('Start'));
+    await tester.pumpAndSettle();
+
+    // Erste Übung auf Zeit
+    expect(find.text('Berghaltung (Tadasana)'), findsOneWidget);
+    expect(find.text('Danach: Liegestütz'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
+
+    // Pause mit Vorschau
+    expect(find.text('Pause – danach:'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 3));
+
+    // Übung mit Wiederholungen wartet auf „Fertig"
+    expect(find.text('10 ×'), findsOneWidget);
+    expect(find.text('Letzte Übung'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
+    await tester.tap(find.text('Fertig'));
+    await tester.pump();
+    expect(find.text('Programm beendet'), findsOneWidget);
+
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+    final workout = db.workouts().single;
+    expect(workout.sport, Sport.yoga);
+    expect(workout.durationS, 12);
+    expect(find.text('Dauer'), findsOneWidget);
   });
 
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {

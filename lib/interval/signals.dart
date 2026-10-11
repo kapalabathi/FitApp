@@ -6,7 +6,7 @@ import '../data/database.dart';
 import 'interval_models.dart';
 import 'interval_run.dart';
 
-/// Welche Signale der Intervall-Timer gibt. Wird in der Datenbank gemerkt.
+/// Welche Signale die App im Training gibt. Wird in der Datenbank gemerkt.
 class SignalSettings {
   const SignalSettings({
     this.tone = true,
@@ -35,8 +35,25 @@ class SignalSettings {
   }
 }
 
-/// Der gesprochene Text zu einem Ereignis, oder `null`, wenn nichts zu sagen
-/// ist.
+/// Die Signale, die Timer, Programme und Rundenansagen auslösen.
+abstract class Signals {
+  /// Kurzer Ton: gleich wechselt etwas.
+  void warn();
+
+  /// Langer Ton und Vibration: ein neuer Abschnitt beginnt.
+  void change();
+
+  /// Tonfolge und Vibration: der Ablauf ist zu Ende.
+  void finish();
+
+  /// Sprachansage.
+  void say(String text);
+
+  void dispose();
+}
+
+/// Der gesprochene Text zu einem Intervall-Ereignis, oder `null`, wenn
+/// nichts zu sagen ist.
 String? announcement(IntervalEvent event, TargetKind kind) {
   String describe(PlannedStep step) {
     final target = step.target;
@@ -52,21 +69,44 @@ String? announcement(IntervalEvent event, TargetKind kind) {
   };
 }
 
-/// Gibt die Signale des Intervall-Timers aus.
-abstract class Signals {
-  void handle(IntervalEvent event, TargetKind kind);
-  void dispose();
+/// Gibt die Signale zu einem Intervall-Ereignis aus.
+void signalInterval(Signals signals, IntervalEvent event, TargetKind kind) {
+  switch (event) {
+    case StepEnding(:final secondsLeft) when secondsLeft <= 3:
+      signals.warn();
+    case StepStarted():
+      signals.change();
+    case IntervalFinished():
+      signals.finish();
+    case StepEnding():
+      break;
+  }
+  final text = announcement(event, kind);
+  if (text != null) signals.say(text);
 }
 
 class SilentSignals implements Signals {
   const SilentSignals();
 
   @override
-  void handle(IntervalEvent event, TargetKind kind) {}
+  void warn() {}
+
+  @override
+  void change() {}
+
+  @override
+  void finish() {}
+
+  @override
+  void say(String text) {}
 
   @override
   void dispose() {}
 }
+
+/// Erzeugt die Signale für ein Training. Tests setzen hier stumme Signale
+/// ein, weil es dort weder Lautsprecher noch Sprachausgabe gibt.
+Signals Function(SignalSettings settings) createSignals = DeviceSignals.new;
 
 /// Töne, Vibration und Sprachansage über das Gerät.
 class DeviceSignals implements Signals {
@@ -87,21 +127,23 @@ class DeviceSignals implements Signals {
   final FlutterTts _tts = FlutterTts();
 
   @override
-  void handle(IntervalEvent event, TargetKind kind) {
-    switch (event) {
-      case StepEnding(:final secondsLeft) when secondsLeft <= 3:
-        _play('warn');
-      case StepStarted():
-        _play('change');
-        _vibrate();
-      case IntervalFinished():
-        _play('finish');
-        _vibrate();
-      case StepEnding():
-        break;
-    }
-    final text = announcement(event, kind);
-    if (text != null && settings.voice) _tts.speak(text);
+  void warn() => _play('warn');
+
+  @override
+  void change() {
+    _play('change');
+    _vibrate();
+  }
+
+  @override
+  void finish() {
+    _play('finish');
+    _vibrate();
+  }
+
+  @override
+  void say(String text) {
+    if (settings.voice) _tts.speak(text);
   }
 
   void _play(String sound) {

@@ -56,8 +56,8 @@ class _LivePageState extends State<LivePage> {
 
     final ({String label, String? value}) pace = sport == Sport.skiErg
         ? (label: 'Tempo /500 m', value: formatPace(speed, perMeters: 500))
-        : sport == Sport.treadmill
-            ? (label: 'Tempo /km', value: formatPace(speed))
+        : sport == Sport.treadmill || sport.usesGps
+            ? (label: 'Tempo /km', value: formatPace(speed) ?? '–')
             : (label: '', value: null);
 
     final candidates = <({String label, String? value})>[
@@ -71,6 +71,12 @@ class _LivePageState extends State<LivePage> {
       (label: 'Steigung %', value: number(Metric.incline, decimals: 1)),
       (label: 'Widerstand', value: number(Metric.resistance)),
       (label: 'Energie kcal', value: r.energyKcal?.toString()),
+      (label: 'Anstieg m', value: r.ascentM?.toString()),
+      if (r.laps.isNotEmpty)
+        (
+          label: 'Runde ${r.laps.length + 1}',
+          value: formatDuration(r.elapsedS - r.laps.last.t),
+        ),
     ];
     return [
       for (final c in candidates)
@@ -120,6 +126,11 @@ class _LivePageState extends State<LivePage> {
                   ? '${_session.sport.label} – pausiert'
                   : _session.sport.label),
               actions: [
+                IconButton(
+                  tooltip: 'Runde',
+                  icon: const Icon(Icons.flag_outlined),
+                  onPressed: r.paused ? null : _session.markLap,
+                ),
                 if (hrSources.length > 1)
                   IconButton(
                     tooltip: 'Pulsquelle wählen',
@@ -131,12 +142,17 @@ class _LivePageState extends State<LivePage> {
             body: SafeArea(
               child: Column(
                 children: [
-                  if (_session.connections.isNotEmpty)
+                  if (_session.connections.isNotEmpty || _session.sport.usesGps)
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 12),
                       child: Wrap(
                         spacing: 8,
                         children: [
+                          if (_session.sport.usesGps)
+                            _GpsChip(
+                              accuracyM: r.gpsAccuracyM,
+                              error: _session.gpsError,
+                            ),
                           for (final c in _session.connections)
                             _LinkChip(connection: c),
                         ],
@@ -394,6 +410,36 @@ class _IntervalPanel extends StatelessWidget {
             ],
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Zeigt, ob das GPS gerade einen brauchbaren Standort liefert.
+class _GpsChip extends StatelessWidget {
+  const _GpsChip({required this.accuracyM, required this.error});
+
+  final double? accuracyM;
+  final String? error;
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final accuracy = accuracyM;
+    return Tooltip(
+      message: error ?? 'Genauigkeit des Standorts',
+      child: Chip(
+        avatar: accuracy == null
+            ? const SizedBox(
+                width: 16,
+                height: 16,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              )
+            : const Icon(Icons.gps_fixed, size: 18),
+        label: Text(accuracy == null
+            ? (error == null ? 'GPS: suche Standort …' : 'GPS: Fehler')
+            : 'GPS ±${accuracy.round()} m'),
+        backgroundColor: accuracy == null ? scheme.errorContainer : null,
       ),
     );
   }

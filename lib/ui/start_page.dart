@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../ble/device_kind.dart';
 import '../data/database.dart';
 import '../data/models.dart';
+import '../gps/phone_gps.dart';
 import '../interval/interval_models.dart';
 import '../interval/signals.dart';
 import '../session/workout_session.dart';
@@ -22,8 +23,9 @@ class StartPage extends StatefulWidget {
 }
 
 class _StartPageState extends State<StartPage> {
-  // Sportarten mit GPS oder Übungsprogramm folgen in späteren Meilensteinen.
-  static final _sports = Sport.values.where((s) => s.indoorMachine).toList();
+  // Yoga, Crossfit, Calisthenics und Dehnen laufen über den Bereich
+  // „Programme".
+  static final _sports = Sport.values.where((s) => s.freeRecording).toList();
 
   Sport _sport = Sport.treadmill;
   List<SavedDevice> _devices = [];
@@ -59,6 +61,15 @@ class _StartPageState extends State<StartPage> {
   }
 
   Future<void> _start() async {
+    if (_sport.usesGps) {
+      final problem = await PhoneGps.prepare();
+      if (!mounted) return;
+      if (problem != null) {
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text(problem)));
+        return;
+      }
+    }
     widget.db.setDevicesForSport(_sport, _selected);
     final template = _template;
     final session = WorkoutSession(
@@ -67,11 +78,14 @@ class _StartPageState extends State<StartPage> {
       devices:
           _devices.where((d) => _selected.contains(d.deviceId)).toList(),
       template: template,
+      positions: _sport.usesGps ? PhoneGps.positions() : null,
       controlMachine: _canControl && _controlMachine,
-      signals: template == null
+      // Im Freien sagt die App auch ohne Intervall jeden Kilometer an.
+      signals: template == null && !_sport.usesGps
           ? const SilentSignals()
-          : DeviceSignals(SignalSettings.load(widget.db)),
+          : createSignals(SignalSettings.load(widget.db)),
     );
+    if (!mounted) return;
     final workout = await Navigator.of(context).push<Workout?>(
       MaterialPageRoute(
         fullscreenDialog: true,
@@ -130,6 +144,15 @@ class _StartPageState extends State<StartPage> {
                 ),
             ],
           ),
+          if (_sport.usesGps)
+            Padding(
+              padding: const EdgeInsets.only(top: 12),
+              child: Text(
+                'Die Strecke wird mit dem GPS dieses Geräts aufgezeichnet, '
+                'auch bei ausgeschaltetem Display.',
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
           const SizedBox(height: 24),
           DropdownButtonFormField<IntervalTemplate?>(
             initialValue: _template,
@@ -163,8 +186,7 @@ class _StartPageState extends State<StartPage> {
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 16),
               child: Text(
-                'Noch keine Geräte gemerkt. Füge sie im Bereich „Geräte" hinzu. '
-                'Ohne Geräte zeichnet das Training nur die Zeit auf.',
+                'Noch keine Geräte gemerkt. Füge sie im Bereich „Geräte" hinzu.',
               ),
             ),
           for (final d in _devices)

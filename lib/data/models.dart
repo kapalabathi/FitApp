@@ -38,6 +38,14 @@ enum Sport {
 
   const Sport(this.id, this.label, this.icon, {this.indoorMachine = false});
 
+  /// Wird im Freien mit dem GPS des Phones aufgezeichnet.
+  bool get usesGps =>
+      this == Sport.running || this == Sport.walking || this == Sport.hiking;
+
+  /// Lässt sich auf der Startseite frei starten; die übrigen Sportarten
+  /// laufen über Trainingsprogramme.
+  bool get freeRecording => indoorMachine || usesGps;
+
   final String id;
   final String label;
   final IconData icon;
@@ -86,6 +94,7 @@ class Workout {
     this.maxPower,
     this.avgCadence,
     this.energyKcal,
+    this.ascentM,
   });
 
   final int id;
@@ -107,6 +116,9 @@ class Workout {
   final int? avgCadence;
   final int? energyKcal;
 
+  /// Summe der Anstiege, nur bei Aufzeichnungen mit GPS.
+  final int? ascentM;
+
   double? get avgSpeedKmh =>
       durationS > 0 && distanceM > 0 ? distanceM / durationS * 3.6 : null;
 }
@@ -122,6 +134,9 @@ class Sample {
     this.distanceM,
     this.incline,
     this.resistance,
+    this.latitude,
+    this.longitude,
+    this.altitudeM,
   });
 
   final int t;
@@ -134,6 +149,23 @@ class Sample {
   final double? distanceM;
   final double? incline;
   final double? resistance;
+
+  // Nur bei Aufzeichnungen mit GPS und nur, solange ein Standort vorliegt.
+  final double? latitude;
+  final double? longitude;
+  final double? altitudeM;
+}
+
+/// Eine Rundenmarke: Stand von Zeit und Strecke am Ende der Runde.
+class Lap {
+  const Lap({required this.t, required this.distanceM, required this.auto});
+
+  /// Aktive Sekunden seit Trainingsbeginn.
+  final int t;
+  final double distanceM;
+
+  /// Von der App nach jedem vollen Kilometer gesetzt, nicht von Hand.
+  final bool auto;
 }
 
 /// Ein gemerktes Bluetooth-Gerät.

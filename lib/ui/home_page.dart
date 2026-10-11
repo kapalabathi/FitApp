@@ -4,9 +4,10 @@ import '../data/database.dart';
 import 'devices_page.dart';
 import 'history_page.dart';
 import 'intervals_page.dart';
+import 'programs_page.dart';
 import 'start_page.dart';
 
-/// Rahmen der App mit den vier Hauptbereichen. Auf breiten Bildschirmen
+/// Rahmen der App mit den fünf Hauptbereichen. Auf breiten Bildschirmen
 /// (Tablet, Querformat) steht die Navigation seitlich.
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.db, this.recoveredWorkouts = 0});
@@ -24,13 +25,14 @@ class _HomePageState extends State<HomePage> {
   static const _wideLayoutFrom = 600.0;
   static const _destinations = [
     (icon: Icons.play_circle_outline, label: 'Training'),
+    (icon: Icons.self_improvement, label: 'Programme'),
     (icon: Icons.timer_outlined, label: 'Intervalle'),
     (icon: Icons.history, label: 'Verlauf'),
     (icon: Icons.bluetooth, label: 'Geräte'),
   ];
 
   static const _start = 0;
-  static const _history = 2;
+  static const _history = 3;
 
   int _index = _start;
 
@@ -71,6 +73,7 @@ class _HomePageState extends State<HomePage> {
           db: widget.db,
           onWorkoutSaved: _workoutSaved,
         ),
+        ProgramsPage(db: widget.db, onWorkoutSaved: _workoutSaved),
         IntervalsPage(db: widget.db),
         HistoryPage(key: ValueKey(_historyVersion), db: widget.db),
         DevicesPage(db: widget.db),

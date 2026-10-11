@@ -2,6 +2,15 @@
     <!-- Bluetooth-Geräte suchen und verbinden; der Standort wird daraus nicht abgeleitet. -->
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" android:usesPermissionFlags="neverForLocation" />
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
+    <!-- Strecke im Freien aufzeichnen, auch bei ausgeschaltetem Display -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <!-- Kartenkacheln für die Streckenansicht -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <!-- Vibration beim Abschnittswechsel des Intervall-Timers -->
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-feature android:name="android.hardware.bluetooth_le" android:required="true" />

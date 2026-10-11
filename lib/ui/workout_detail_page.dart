@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 
 import '../data/database.dart';
 import '../data/models.dart';
 import 'format.dart';
 import 'line_chart.dart';
+import 'route_map.dart';
 
 /// Kennzahlen und Verlaufskurven eines gespeicherten Trainings.
 class WorkoutDetailPage extends StatelessWidget {
@@ -74,10 +76,18 @@ class WorkoutDetailPage extends StatelessWidget {
       if (w.avgCadence != null)
         ('Ø ${w.sport.cadenceLabel}', '${w.avgCadence} /min'),
       if (w.energyKcal != null) ('Energie', '${w.energyKcal} kcal'),
+      if (w.ascentM != null) ('Anstieg', '${w.ascentM} m'),
     ];
 
     List<double?> series(double? Function(Sample) pick) =>
         _series(samples, w.durationS, pick);
+
+    final route = [
+      for (final s in samples)
+        if (s.latitude != null && s.longitude != null)
+          LatLng(s.latitude!, s.longitude!),
+    ];
+    final laps = db.laps(workoutId);
 
     return Scaffold(
       appBar: AppBar(
@@ -122,6 +132,14 @@ class WorkoutDetailPage extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 24),
+          if (route.length >= 2) ...[
+            RouteMap(points: route),
+            const SizedBox(height: 24),
+          ],
+          if (laps.isNotEmpty) ...[
+            _LapTable(laps: laps, workout: w),
+            const SizedBox(height: 24),
+          ],
           for (final chart in [
             LineChart(
               title: 'Puls',
@@ -148,10 +166,86 @@ class WorkoutDetailPage extends StatelessWidget {
               color: scheme.outline,
               values: series((s) => s.incline),
             ),
+            LineChart(
+              title: 'Höhe m',
+              color: scheme.outline,
+              values: series((s) => s.altitudeM),
+            ),
           ])
             Padding(padding: const EdgeInsets.only(bottom: 24), child: chart),
         ],
       ),
+    );
+  }
+}
+
+/// Die Runden eines Trainings mit Zeit, Strecke und Tempo je Runde. Der Rest
+/// nach der letzten Marke zählt als eigene Runde.
+class _LapTable extends StatelessWidget {
+  const _LapTable({required this.laps, required this.workout});
+
+  final List<Lap> laps;
+  final Workout workout;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final marks = [
+      ...laps,
+      if (workout.durationS > laps.last.t)
+        Lap(t: workout.durationS, distanceM: workout.distanceM, auto: false),
+    ];
+    final skiErg = workout.sport == Sport.skiErg;
+    var lastT = 0;
+    var lastDistance = 0.0;
+    final rows = <TableRow>[
+      TableRow(
+        children: [
+          for (final h in [
+            'Runde',
+            'Zeit',
+            'Strecke',
+            skiErg ? 'Tempo /500 m' : 'Tempo /km',
+          ])
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(h, style: theme.textTheme.labelMedium),
+            ),
+        ],
+      ),
+    ];
+    for (var i = 0; i < marks.length; i++) {
+      final seconds = marks[i].t - lastT;
+      final meters = marks[i].distanceM - lastDistance;
+      lastT = marks[i].t;
+      lastDistance = marks[i].distanceM;
+      final speedKmh = seconds > 0 ? meters / seconds * 3.6 : null;
+      rows.add(TableRow(
+        children: [
+          for (final cell in [
+            '${i + 1}',
+            formatDuration(seconds),
+            '${formatKm(meters)} km',
+            formatPace(speedKmh, perMeters: skiErg ? 500 : 1000) ?? '–',
+          ])
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Text(cell),
+            ),
+        ],
+      ));
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Runden', style: theme.textTheme.titleSmall),
+        const SizedBox(height: 4),
+        Table(
+          columnWidths: const {0: IntrinsicColumnWidth()},
+          defaultColumnWidth: const FlexColumnWidth(),
+          children: rows,
+        ),
+      ],
     );
   }
 }

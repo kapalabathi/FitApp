@@ -25,8 +25,8 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | In Arbeit | Nutzer |
 | I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | In Arbeit | Nutzer |
 | I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | In Arbeit | Nutzer |
-| I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Geklärt | Nutzer |
-| I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Geklärt | Nutzer |
+| I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Umgesetzt | Nutzer |
+| I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Umgesetzt | Nutzer |
 | I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Umgesetzt | Nutzer |
 | I-009 | Trainingshistorie mit Auswertung (Wochenumfang, Pulszonen, Bestzeiten) | Auswertung | L | Geklärt | Nutzer |
 | I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | Neu | Vorschlag |
@@ -39,7 +39,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Geklärt | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
 | I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | In Arbeit | Nutzer |
-| I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | Geklärt | Nutzer |
+| I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | In Arbeit | Nutzer |
 
 ## Details
 
