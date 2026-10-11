@@ -60,7 +60,7 @@ class WorkoutSession extends ChangeNotifier {
       _handle(interval!.start());
     }
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _tick());
-    WakelockPlus.enable();
+    _keepScreenOn(true);
   }
 
   static const _leadInS = 10;
@@ -183,18 +183,30 @@ class WorkoutSession extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Beendet das Training und trennt die Geräte. Gibt das gespeicherte
-  /// Training zurück oder `null`, wenn nichts aufgezeichnet wurde.
-  Future<Workout?> finish() async {
+  /// Beendet das Training. Gibt das gespeicherte Training zurück oder
+  /// `null`, wenn nichts aufgezeichnet wurde.
+  ///
+  /// Das Speichern ist beim Zurückkehren abgeschlossen. Das Trennen der
+  /// Geräte läuft danach im Hintergrund weiter: Es kann bei einem Gerät, das
+  /// gerade nicht erreichbar ist, lange dauern und darf das Beenden nicht
+  /// aufhalten.
+  Workout? finish() {
     _timer.cancel();
     _control = ControlState.off;
     final workout = recorder.finish();
     signals.dispose();
-    await WakelockPlus.disable();
+    _keepScreenOn(false);
     for (final c in connections) {
       c.removeListener(_onLinkChanged);
-      await c.stop();
+      unawaited(c.stop());
     }
     return workout;
+  }
+
+  /// Ein Fehler beim Wachhalten des Bildschirms darf das Training nicht
+  /// stören.
+  static void _keepScreenOn(bool on) {
+    (on ? WakelockPlus.enable() : WakelockPlus.disable())
+        .catchError((Object _) {});
   }
 }

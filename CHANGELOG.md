@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.3.1] – 2026-10-11
+
+### Behoben
+- Training ließ sich nicht beenden, die App blieb in der Rückfrage hängen (gemeldet vom Nutzer). Das Beenden wartete auf das Trennen aller Geräte, bei einem nicht erreichbaren Gerät bis zu einer Minute je Gerät. Jetzt wird sofort gespeichert und die Seite geschlossen; das Trennen läuft im Hintergrund mit höchstens fünf Sekunden je Gerät.
+- Die Zurück-Taste öffnet während des Beendens keine zweite Rückfrage mehr.
+- Ein Gerät, dessen Verbindungsaufbau beim Beenden noch lief, bleibt nicht mehr verbunden zurück.
+
+### Hinzugefügt
+- Zwei automatische Tests für Pausieren, Beenden und „Weiter trainieren" (insgesamt 63).
+
 ## [0.3.0] – 2026-10-11 (M2: Intervall-Timer)
 
 ### Hinzugefügt

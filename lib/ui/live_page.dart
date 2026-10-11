@@ -22,6 +22,7 @@ class _LivePageState extends State<LivePage> {
   WorkoutSession get _session => widget.session;
 
   Future<void> _stop() async {
+    if (_finishing) return;
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (context) => AlertDialog(
@@ -38,10 +39,9 @@ class _LivePageState extends State<LivePage> {
         ],
       ),
     );
-    if (confirmed != true || _finishing) return;
-    setState(() => _finishing = true);
-    final workout = await _session.finish();
-    if (mounted) Navigator.of(context).pop(workout);
+    if (confirmed != true || _finishing || !mounted) return;
+    _finishing = true;
+    Navigator.of(context).pop(_session.finish());
   }
 
   List<({String label, String value})> _tiles() {

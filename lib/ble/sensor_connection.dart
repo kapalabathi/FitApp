@@ -29,6 +29,7 @@ class SensorConnection extends ChangeNotifier {
 
   static const _connectTimeout = Duration(seconds: 15);
   static const _retryDelay = Duration(seconds: 3);
+  static const _disconnectTimeout = Duration(seconds: 5);
 
   final SavedDevice saved;
   final void Function(SavedDevice device, Map<Metric, double> values) onData;
@@ -61,17 +62,19 @@ class SensorConnection extends ChangeNotifier {
     _run();
   }
 
+  /// Beendet die Verbindung. Wirft nie und wartet höchstens
+  /// [_disconnectTimeout] auf das Gerät.
   Future<void> stop() async {
     _stopped = true;
     _signalLost();
-    await _linkSub?.cancel();
-    await _dropSubscriptions();
+    _state = LinkState.stopped;
     try {
-      await _device.disconnect();
+      await _linkSub?.cancel();
+      await _dropSubscriptions();
+      await _device.disconnect(timeout: _disconnectTimeout);
     } catch (_) {
-      // War schon getrennt.
+      // War schon getrennt oder ist nicht erreichbar.
     }
-    _setState(LinkState.stopped);
   }
 
   void _signalLost() {
@@ -105,6 +108,13 @@ class SensorConnection extends ChangeNotifier {
       await Future<void>.delayed(_retryDelay);
       if (_stopped) break;
       await _refreshScan();
+    }
+    // Ein Verbindungsaufbau, der beim Stoppen noch lief, kann erst danach
+    // fertig geworden sein; das Gerät soll nicht verbunden zurückbleiben.
+    try {
+      await _device.disconnect(timeout: _disconnectTimeout);
+    } catch (_) {
+      // War nicht verbunden.
     }
   }
 

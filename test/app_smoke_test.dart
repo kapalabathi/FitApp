@@ -134,6 +134,56 @@ void main() {
     await tester.pumpAndSettle();
   });
 
+  group('Training ohne Geräte', () {
+    Future<void> startWorkout(WidgetTester tester) async {
+      await tester.pumpWidget(FitApp(db: db));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Sonstiges'));
+      await tester.pump();
+      await tester.tap(find.text('Start'));
+      await tester.pumpAndSettle();
+      await tester.pump(const Duration(seconds: 3));
+    }
+
+    testWidgets('pausieren und danach beenden speichert und zeigt das Training',
+        (tester) async {
+      await startWorkout(tester);
+
+      await tester.tap(find.text('Pause'));
+      await tester.pump(const Duration(seconds: 10));
+      expect(find.text('Sonstiges – pausiert'), findsOneWidget);
+
+      await tester.tap(find.widgetWithText(FilledButton, 'Beenden'));
+      await tester.pumpAndSettle();
+      expect(find.text('Training beenden?'), findsOneWidget);
+      await tester.tap(find.widgetWithText(FilledButton, 'Beenden').last);
+      await tester.pumpAndSettle();
+
+      // Die Pause zählt nicht mit; die Detailansicht des Trainings ist offen.
+      expect(find.text('Training beenden?'), findsNothing);
+      expect(find.text('Dauer'), findsOneWidget);
+      expect(db.workouts().single.durationS, 3);
+    });
+
+    testWidgets('„Weiter trainieren" schließt die Rückfrage und zählt weiter',
+        (tester) async {
+      await startWorkout(tester);
+
+      await tester.tap(find.widgetWithText(FilledButton, 'Beenden'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Weiter trainieren'));
+      await tester.pumpAndSettle();
+      expect(find.text('Training beenden?'), findsNothing);
+
+      await tester.pump(const Duration(seconds: 2));
+      await tester.tap(find.widgetWithText(FilledButton, 'Beenden'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(FilledButton, 'Beenden').last);
+      await tester.pumpAndSettle();
+      expect(db.workouts().single.durationS, greaterThanOrEqualTo(5));
+    });
+  });
+
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {
     recordWorkout();
     await tester.pumpWidget(FitApp(db: db));
