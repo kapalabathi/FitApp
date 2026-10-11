@@ -17,6 +17,8 @@ Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSP
 - 2026-10-10: Strava-API und Amazfit-Anbindung recherchiert; Ergebnisse in I-005 und I-016. Fragen F-02, F-05, F-06, F-09 beantwortet, F-10 bis F-13 neu.
 
 ### Hinzugefügt
+- 2026-10-11: M0 Technik-Prototyp (A-001, A-002, Vorarbeit zu A-003, A-004, A-008, A-009): Flutter-Projekt für Android ab Version 14; Gerätesuche mit Erkennung der Geräteart; Live-Puls über das Herzfrequenzprofil; Live-Werte von FTMS-Laufband und -Bike; Gerätebericht mit Diensten, Mess- und Steuerfähigkeiten, Einstellbereichen und Rohdaten. 14 automatische Tests für die Auswertung der Bluetooth-Pakete.
+- 2026-10-11: Entwicklungsumgebung eingerichtet: Flutter 3.47.7 (C:\srclutter), Microsoft OpenJDK 17, Android SDK 36 (C:\Android\Sdk).
 - 2026-10-11: Lastenheft, Entwurf 0.1 (`docs/LASTENHEFT.md`): Anforderungen A-001 bis A-072, nichtfunktionale Anforderungen, Abgrenzung, Meilensteine M0 bis M8, Risiken, offene Punkte.
 - 2026-10-11: 57 von 80 Übungsgrafiken erzeugt (Yoga und Crossfit vollständig, Calisthenics 17 von 20, Dehnen offen). Rohbilder liegen in `grafiken/` und sind nicht Teil des Repositorys.
 - 2026-10-10: Skript `tools/grafiken_erzeugen.py`: erzeugt die 80 Übungsgrafiken einzeln über die OpenRouter-Bild-API, benennt sie nach der Grafikliste und packt sie als ZIP.

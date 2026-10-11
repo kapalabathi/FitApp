@@ -1,2 +1,15 @@
 # Rohbilder aus dem Bildgenerator; die App bekommt später verkleinerte Kopien
 grafiken/
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# IDE
+*.iml
+.idea/
+.vscode/
