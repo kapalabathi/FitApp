@@ -147,6 +147,23 @@ void main() {
       expect(ftmsSetTarget(TargetKind.none, 1), isNull);
     });
 
+    test('Tasten ändern den Zielwert in festen Schritten innerhalb der Grenzen',
+        () {
+      double press(double current, int steps) =>
+          steppedTarget(current, steps, step: 0.5, min: 1, max: 16);
+      expect(press(8, 1), 8.5);
+      expect(press(8, -1), 7.5);
+      // Ein gemessener Wert neben dem Raster wird erst darauf gerundet.
+      expect(press(8.3, 1), 9.0);
+      expect(press(8.2, -1), 7.5);
+      // An den Grenzen ist Schluss.
+      expect(press(16, 1), 16);
+      expect(press(1, -1), 1);
+      expect(press(0, -1), 1);
+      // Widerstandsstufen in ganzen Schritten
+      expect(steppedTarget(7, 1, step: 1, min: 1, max: 32), 8);
+    });
+
     test('Antworten des Geräts werden verstanden', () {
       final ok = FtmsResponse.parse([0x80, 0x02, 0x01])!;
       expect(ok.success, isTrue);

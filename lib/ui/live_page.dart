@@ -182,6 +182,8 @@ class _LivePageState extends State<LivePage> {
                       },
                     ),
                   ),
+                  if (_session.canControlManually)
+                    _ManualControl(session: _session),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: Row(
@@ -440,6 +442,92 @@ class _GpsChip extends StatelessWidget {
             ? (error == null ? 'GPS: suche Standort …' : 'GPS: Fehler')
             : 'GPS ±${accuracy.round()} m'),
         backgroundColor: accuracy == null ? scheme.errorContainer : null,
+      ),
+    );
+  }
+}
+
+/// Tasten, mit denen sich am Laufband die Geschwindigkeit und am Bike die
+/// Widerstandsstufe von Hand einstellen lässt.
+class _ManualControl extends StatelessWidget {
+  const _ManualControl({required this.session});
+
+  final WorkoutSession session;
+
+  /// Schnellwahl für das Laufband in km/h.
+  static const _speedPresets = [4.0, 6.0, 8.0, 10.0, 12.0, 14.0];
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final kind = session.manualKind!;
+    final limits = session.manualLimits;
+    final target = session.manualTarget;
+    final presets = kind == TargetKind.speed
+        ? _speedPresets.where((p) => p >= limits.min && p <= limits.max)
+        : const <double>[];
+    // Ohne laufenden Intervall-Timer steht die Rückmeldung des Geräts hier.
+    final message = session.interval == null ? session.controlMessage : null;
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(12, 0, 12, 0),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Column(
+          children: [
+            Row(
+              children: [
+                IconButton.filledTonal(
+                  tooltip: 'Weniger',
+                  iconSize: 36,
+                  onPressed: () => session.adjustManual(-1),
+                  icon: const Icon(Icons.remove),
+                ),
+                Expanded(
+                  child: Column(
+                    children: [
+                      Text(
+                        kind == TargetKind.speed ? 'Ziel am Laufband' : 'Ziel am Bike',
+                        style: theme.textTheme.labelMedium,
+                      ),
+                      Text(
+                        target == null ? '–' : kind.format(target),
+                        style: theme.textTheme.headlineSmall,
+                      ),
+                    ],
+                  ),
+                ),
+                IconButton.filledTonal(
+                  tooltip: 'Mehr',
+                  iconSize: 36,
+                  onPressed: () => session.adjustManual(1),
+                  icon: const Icon(Icons.add),
+                ),
+              ],
+            ),
+            if (presets.isNotEmpty)
+              SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    for (final p in presets)
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: ActionChip(
+                          label: Text(kind.format(p)),
+                          onPressed: () => session.setManual(p),
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            if (message != null)
+              Padding(
+                padding: const EdgeInsets.only(top: 4),
+                child: Text(message, style: theme.textTheme.bodySmall),
+              ),
+          ],
+        ),
       ),
     );
   }

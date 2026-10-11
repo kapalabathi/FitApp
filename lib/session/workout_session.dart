@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../ble/device_kind.dart';
+import '../ble/ftms_control.dart';
 import '../ble/sensor_connection.dart';
 import '../data/database.dart';
 import '../data/models.dart';
@@ -209,9 +210,94 @@ class WorkoutSession extends ChangeNotifier {
       return;
     }
     final error = await machine.setTarget(targetKind, target);
+    if (error == null && targetKind == manualKind) manualTarget = target;
     controlMessage = error == null
         ? '${targetKind.format(target)} gesetzt'
         : '${targetKind.format(target)} nicht gesetzt: $error';
+    notifyListeners();
+  }
+
+  // --- Steuerung von Hand ---
+
+  /// Was sich bei dieser Sportart von Hand einstellen lässt: am Laufband
+  /// die Geschwindigkeit, am Bike die Widerstandsstufe.
+  TargetKind? get manualKind => switch (sport) {
+        Sport.treadmill => TargetKind.speed,
+        Sport.indoorBike => TargetKind.resistance,
+        _ => null,
+      };
+
+  MachineControl? get _manualMachine {
+    final kind = manualKind;
+    if (kind == null) return null;
+    for (final c in connections) {
+      final control = c.control;
+      if (control != null && control.supports(kind)) return control;
+    }
+    return null;
+  }
+
+  /// Ob gerade ein Gerät verbunden ist, das den Zielwert annimmt.
+  bool get canControlManually => _manualMachine != null;
+
+  /// Der zuletzt gesetzte Zielwert, von Hand oder durch den Timer.
+  double? manualTarget;
+
+  // Grenzen, falls das Gerät keine nennt.
+  static const _defaultSpeedRange = (min: 1.0, max: 16.0);
+  static const _defaultResistanceRange = (min: 1.0, max: 32.0);
+  static const _speedStep = 0.5;
+
+  /// Kleinster und größter einstellbarer Wert.
+  ({double min, double max}) get manualLimits {
+    final kind = manualKind;
+    final range = kind == null ? null : _manualMachine?.range(kind);
+    if (range != null && range.max > range.min) {
+      return (min: range.min, max: range.max);
+    }
+    return kind == TargetKind.speed
+        ? _defaultSpeedRange
+        : _defaultResistanceRange;
+  }
+
+  /// Um so viel ändert ein Tastendruck den Zielwert.
+  double get manualStep {
+    final kind = manualKind;
+    if (kind == TargetKind.speed) return _speedStep;
+    final step = kind == null ? null : _manualMachine?.range(kind)?.step;
+    return step != null && step >= 1 ? step : 1;
+  }
+
+  /// Der Wert, von dem die Tasten ausgehen: der zuletzt gesetzte, sonst
+  /// der gerade gemessene.
+  double get _manualBase =>
+      manualTarget ??
+      recorder.value(manualKind == TargetKind.speed
+          ? Metric.speed
+          : Metric.resistance) ??
+      manualLimits.min;
+
+  /// Ändert den Zielwert um [steps] Schritte, negativ für weniger.
+  Future<void> adjustManual(int steps) {
+    final limits = manualLimits;
+    return setManual(steppedTarget(_manualBase, steps,
+        step: manualStep, min: limits.min, max: limits.max));
+  }
+
+  /// Setzt den Zielwert am Gerät. Ein Tipp des Nutzers gilt zugleich als
+  /// Bestätigung nach einem Verbindungsabbruch.
+  Future<void> setManual(double value) async {
+    final kind = manualKind;
+    final machine = _manualMachine;
+    if (kind == null || machine == null) return;
+    final limits = manualLimits;
+    final target = value.clamp(limits.min, limits.max).toDouble();
+    manualTarget = target;
+    notifyListeners();
+    final error = await machine.setTarget(kind, target);
+    controlMessage = error == null
+        ? '${kind.format(target)} gesetzt'
+        : '${kind.format(target)} nicht gesetzt: $error';
     notifyListeners();
   }
 

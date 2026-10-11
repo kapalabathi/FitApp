@@ -47,3 +47,18 @@ class FtmsResponse {
           ? FtmsResponse(bytes[1], bytes[2])
           : null;
 }
+
+/// Der Zielwert nach [steps] Tastendrücken (negativ für „weniger"),
+/// ausgehend von [current]. Das Ergebnis liegt auf dem Raster von [step] und
+/// zwischen [min] und [max].
+double steppedTarget(
+  double current,
+  int steps, {
+  required double step,
+  required double min,
+  required double max,
+}) {
+  final onGrid = (current / step).round() * step;
+  final target = ((onGrid + steps * step) / step).round() * step;
+  return target.clamp(min, max).toDouble();
+}

@@ -172,7 +172,7 @@ class SensorConnection extends ChangeNotifier {
 
 /// Setzt Zielwerte an einem FTMS-Gerät.
 class MachineControl {
-  MachineControl._(this._point, this.features);
+  MachineControl._(this._point, this.features, this._ranges);
 
   static const _answerTimeout = Duration(seconds: 3);
 
@@ -181,6 +181,13 @@ class MachineControl {
   /// Was das Gerät laut eigener Auskunft annimmt; `null`, wenn es dazu
   /// nichts sagt.
   final FtmsFeatures? features;
+
+  /// Die Einstellbereiche, die das Gerät selbst nennt.
+  final Map<TargetKind, FtmsRange> _ranges;
+
+  /// Kleinster und größter Zielwert sowie Schrittweite laut Gerät, oder
+  /// `null`, wenn es dazu nichts sagt.
+  FtmsRange? range(TargetKind kind) => _ranges[kind];
 
   bool _hasControl = false;
   Completer<FtmsResponse>? _pending;
@@ -210,7 +217,22 @@ class MachineControl {
     } catch (_) {
       // Ohne Auskunft wird jeder Zielwert versucht; das Gerät antwortet dann.
     }
-    final control = MachineControl._(point, features);
+    final ranges = <TargetKind, FtmsRange>{};
+    Future<void> readRange(TargetKind kind, String uuid,
+        FtmsRange Function(List<int>) parse) async {
+      try {
+        final c = find(uuid);
+        if (c != null) ranges[kind] = parse(await c.read());
+      } catch (_) {
+        // Ohne Angabe gelten die Grenzen der App.
+      }
+    }
+
+    await readRange(
+        TargetKind.speed, Uuids.supportedSpeedRange, FtmsRange.parseSpeed);
+    await readRange(TargetKind.resistance, Uuids.supportedResistanceRange,
+        FtmsRange.parseResistance);
+    final control = MachineControl._(point, features, ranges);
     subscriptions.add(point.onValueReceived.listen(control._onAnswer));
     await point.indications.subscribe();
     return control;

@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.8.1] – 2026-10-11
+
+### Hinzugefügt
+- Steuerung von Hand in der Trainingsansicht (Wunsch des Nutzers, A-008, A-009): am Laufband Geschwindigkeit in Schritten von 0,5 km/h mit Schnellwahl-Tasten, am Indoor-Bike die Widerstandsstufe in ganzen Schritten. Die Tasten erscheinen, sobald ein steuerbares Gerät verbunden ist, auch ohne Intervall-Vorlage. **Noch an keinem Gerät erprobt.**
+- Grenzen und Schrittweite kommen vom Gerät, sofern es sie nennt; sonst gelten 1 bis 16 km/h und Stufe 1 bis 32.
+- Ein weiterer automatischer Test (insgesamt 142).
+
 ## [0.8.0] – 2026-10-11
 
 ### Hinzugefügt
