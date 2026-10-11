@@ -430,6 +430,41 @@ void main() {
     });
   }
 
+  testWidgets('der Schieber unter einer Kurve zeigt Zeit und Wert der Stelle, '
+      'in allen Kurven zugleich', (tester) async {
+    tester.view.physicalSize = const Size(500, 2400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    recordWorkout();
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verlauf'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('02:00'));
+    await tester.pumpAndSettle();
+
+    // Ohne Auswahl steht nirgends ein Wert zur Stelle.
+    expect(find.textContaining('bei '), findsNothing);
+
+    // Mitte des ersten Schiebers: Sekunde 61 von 120
+    await tester.tap(find.byType(Slider).first);
+    await tester.pumpAndSettle();
+    expect(find.text('bei 01:01:  125,0 /min'), findsOneWidget); // Puls
+    expect(find.text('bei 01:01:  25,0 km/h'), findsOneWidget);
+    expect(find.text('bei 01:01:  85,0 /min'), findsOneWidget); // Trittfrequenz
+
+    // Ein Tipp in eine andere Kurve verschiebt die Stelle überall. Bei
+    // Sekunde 50 hat der Pulssensor ausgesetzt.
+    final speedChart = find.byWidgetPredicate((w) =>
+        w is GestureDetector && w.onHorizontalDragUpdate != null).at(1);
+    final box = tester.getRect(speedChart);
+    await tester.tapAt(Offset(box.left + box.width * 49 / 119, box.center.dy));
+    await tester.pumpAndSettle();
+    expect(find.text('bei 00:50:  kein Wert'), findsOneWidget);
+    expect(find.text('bei 00:50:  25,0 km/h'), findsOneWidget);
+  });
+
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {
     recordWorkout();
     await tester.pumpWidget(FitApp(db: db));

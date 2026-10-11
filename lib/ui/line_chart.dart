@@ -6,6 +6,11 @@ import 'format.dart';
 ///
 /// [values] enthält einen Wert je Sekunde; `null` steht für eine Lücke und
 /// unterbricht die Linie.
+///
+/// Mit [position] lässt sich die Kurve abfahren: Der Schieber unter der Kurve
+/// oder ein Tipp in die Kurve wählt eine Stelle, und darüber stehen Zeit und
+/// Wert an dieser Stelle. Mehrere Kurven mit derselben [position] bewegen
+/// sich gemeinsam.
 class LineChart extends StatelessWidget {
   const LineChart({
     super.key,
@@ -16,6 +21,7 @@ class LineChart extends StatelessWidget {
     this.format,
     this.lowerIsBetter = false,
     this.average,
+    this.position,
   });
 
   final String title;
@@ -35,6 +41,10 @@ class LineChart extends StatelessWidget {
   /// Der Mittelwert, wenn er sich nicht als Mittel der Einzelwerte ergibt.
   final double? average;
 
+  /// Die gewählte Stelle als Sekunde ab 0, oder `null`, wenn keine gewählt
+  /// ist. Ohne Angabe hat die Kurve keinen Schieber.
+  final ValueNotifier<int?>? position;
+
   @override
   Widget build(BuildContext context) {
     final present = values.whereType<double>().toList();
@@ -43,12 +53,50 @@ class LineChart extends StatelessWidget {
     final max = present.reduce((a, b) => a > b ? a : b);
     final avg = average ?? present.reduce((a, b) => a + b) / present.length;
     final theme = Theme.of(context);
-    String withUnit(double v) =>
-        '${(format ?? formatDecimal)(v)} $unit'.trim();
+    String withUnit(double v) => '${(format ?? formatDecimal)(v)} $unit'.trim();
+    final axisStyle = theme.textTheme.labelSmall?.copyWith(
+      color: theme.colorScheme.onSurfaceVariant,
+    );
+
+    final position = this.position;
+    if (position != null) {
+      return ValueListenableBuilder<int?>(
+        valueListenable: position,
+        builder: (context, at, _) => _layout(
+          theme: theme,
+          axisStyle: axisStyle,
+          withUnit: withUnit,
+          min: min,
+          max: max,
+          avg: avg,
+          at: at?.clamp(0, values.length - 1),
+        ),
+      );
+    }
+    return _layout(
+      theme: theme,
+      axisStyle: axisStyle,
+      withUnit: withUnit,
+      min: min,
+      max: max,
+      avg: avg,
+      at: null,
+    );
+  }
+
+  Widget _layout({
+    required ThemeData theme,
+    required TextStyle? axisStyle,
+    required String Function(double) withUnit,
+    required double min,
+    required double max,
+    required double avg,
+    required int? at,
+  }) {
     final top = lowerIsBetter ? min : max;
     final bottom = lowerIsBetter ? max : min;
-    final axisStyle = theme.textTheme.labelSmall
-        ?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final position = this.position;
+    final valueAt = at == null ? null : values[at];
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -59,34 +107,76 @@ class LineChart extends StatelessWidget {
             Text('Ø ${withUnit(avg)}', style: theme.textTheme.bodySmall),
           ],
         ),
+        if (at != null)
+          // Zeit und Wert an der gewählten Stelle
+          Text(
+            'bei ${formatDuration(at + 1)}:  '
+            '${valueAt == null ? 'kein Wert' : withUnit(valueAt)}',
+            style: theme.textTheme.titleMedium?.copyWith(color: color),
+          ),
         const SizedBox(height: 4),
         // Die Werte der oberen und unteren Linie, mit Einheit.
-        Text('${lowerIsBetter ? 'min' : 'max'} ${withUnit(top)}',
-            style: axisStyle),
+        Text(
+          '${lowerIsBetter ? 'min' : 'max'} ${withUnit(top)}',
+          style: axisStyle,
+        ),
         SizedBox(
           height: 120,
           width: double.infinity,
-          child: CustomPaint(
-            painter: _LinePainter(
-              values: values,
-              min: min,
-              max: max,
-              inverted: lowerIsBetter,
-              line: color,
-              grid: theme.colorScheme.outlineVariant,
-            ),
+          child: LayoutBuilder(
+            builder: (context, box) {
+              final painted = CustomPaint(
+                size: Size(box.maxWidth, 120),
+                painter: _LinePainter(
+                  values: values,
+                  min: min,
+                  max: max,
+                  inverted: lowerIsBetter,
+                  line: color,
+                  grid: theme.colorScheme.outlineVariant,
+                  cursor: at,
+                  cursorColor: theme.colorScheme.onSurface,
+                ),
+              );
+              if (position == null) return painted;
+              // Ein Tipp oder Wischen in der Kurve wählt die Stelle darunter.
+              void select(Offset local) {
+                final share = (local.dx / box.maxWidth).clamp(0.0, 1.0);
+                position.value = (share * (values.length - 1)).round();
+              }
+
+              return GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTapDown: (d) => select(d.localPosition),
+                onHorizontalDragStart: (d) => select(d.localPosition),
+                onHorizontalDragUpdate: (d) => select(d.localPosition),
+                child: painted,
+              );
+            },
           ),
         ),
-        Text('${lowerIsBetter ? 'max' : 'min'} ${withUnit(bottom)}',
-            style: axisStyle),
+        Text(
+          '${lowerIsBetter ? 'max' : 'min'} ${withUnit(bottom)}',
+          style: axisStyle,
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text('0:00', style: theme.textTheme.bodySmall),
-            Text(formatDuration(values.length),
-                style: theme.textTheme.bodySmall),
+            Text(
+              formatDuration(values.length),
+              style: theme.textTheme.bodySmall,
+            ),
           ],
         ),
+        if (position != null && values.length > 1)
+          Slider(
+            min: 0,
+            max: (values.length - 1).toDouble(),
+            value: (at ?? 0).toDouble(),
+            label: at == null ? null : formatDuration(at + 1),
+            onChanged: (v) => position.value = v.round(),
+          ),
       ],
     );
   }
@@ -100,6 +190,8 @@ class _LinePainter extends CustomPainter {
     required this.inverted,
     required this.line,
     required this.grid,
+    this.cursor,
+    this.cursorColor,
   });
 
   final List<double?> values;
@@ -110,6 +202,10 @@ class _LinePainter extends CustomPainter {
   final bool inverted;
   final Color line;
   final Color grid;
+
+  /// Die gewählte Stelle; dort stehen eine senkrechte Linie und ein Punkt.
+  final int? cursor;
+  final Color? cursorColor;
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -128,6 +224,7 @@ class _LinePainter extends CustomPainter {
       final fromBottom = (v - min) / span * size.height;
       return inverted ? fromBottom : size.height - fromBottom;
     }
+
     final dx = values.length > 1 ? size.width / (values.length - 1) : 0.0;
 
     final path = Path();
@@ -154,11 +251,27 @@ class _LinePainter extends CustomPainter {
         ..strokeWidth = 2
         ..strokeJoin = StrokeJoin.round,
     );
+
+    final at = cursor;
+    if (at == null || at < 0 || at >= values.length) return;
+    final x = at * dx;
+    canvas.drawLine(
+      Offset(x, 0),
+      Offset(x, size.height),
+      Paint()
+        ..color = cursorColor ?? line
+        ..strokeWidth = 1,
+    );
+    final value = values[at];
+    if (value != null) {
+      canvas.drawCircle(Offset(x, yOf(value)), 5, Paint()..color = line);
+    }
   }
 
   @override
   bool shouldRepaint(_LinePainter old) =>
       old.values != values ||
+      old.cursor != cursor ||
       old.inverted != inverted ||
       old.line != line ||
       old.grid != grid;

@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.3] – 2026-10-11
+
+### Hinzugefügt
+- Schieber unter jeder Verlaufskurve in der Detailansicht eines Trainings (Wunsch des Nutzers): Er wählt eine Stelle, über der Kurve stehen dann Zeit und Wert, etwa „bei 12:34: 152,0 /min". In der Kurve markieren eine senkrechte Linie und ein Punkt die Stelle.
+- Ein Tipp oder Wischen direkt in der Kurve wählt die Stelle ebenfalls.
+- Alle Kurven eines Trainings teilen sich die Stelle: Wer den Puls bei Minute 12 ansieht, sieht Pace, Leistung und die übrigen Werte am selben Zeitpunkt.
+- Ein weiterer automatischer Test (insgesamt 172).
+
 ## [0.9.2] – 2026-10-11
 
 Anlass: erster Lauf des Nutzers auf dem Laufband mit Steuerung; ausgewertet anhand der exportierten FIT-Datei (24,5 Minuten, 20 Verbindungsabbrüche).

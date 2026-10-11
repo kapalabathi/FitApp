@@ -12,7 +12,11 @@ import 'workout_actions.dart';
 
 /// Kennzahlen und Verlaufskurven eines gespeicherten Trainings.
 class WorkoutDetailPage extends StatefulWidget {
-  const WorkoutDetailPage({super.key, required this.db, required this.workoutId});
+  const WorkoutDetailPage({
+    super.key,
+    required this.db,
+    required this.workoutId,
+  });
 
   final AppDatabase db;
   final int workoutId;
@@ -24,6 +28,16 @@ class WorkoutDetailPage extends StatefulWidget {
 class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
   AppDatabase get db => widget.db;
   int get workoutId => widget.workoutId;
+
+  /// Die in den Kurven gewählte Stelle; alle Kurven teilen sie sich, damit
+  /// sich Puls, Pace und die übrigen Werte am selben Zeitpunkt ablesen lassen.
+  final _position = ValueNotifier<int?>(null);
+
+  @override
+  void dispose() {
+    _position.dispose();
+    super.dispose();
+  }
 
   /// Titel, Sportart und Notiz ändern (Lastenheft A-054).
   Future<void> _edit(Workout w) async {
@@ -42,7 +56,9 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 controller: title,
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                    labelText: 'Titel', hintText: w.sport.label),
+                  labelText: 'Titel',
+                  hintText: w.sport.label,
+                ),
               ),
               const SizedBox(height: 12),
               DropdownButtonFormField<Sport>(
@@ -79,8 +95,12 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
       ),
     );
     if (saved != true || !mounted) return;
-    db.updateWorkout(workoutId,
-        title: title.text, sport: sport, notes: notes.text);
+    db.updateWorkout(
+      workoutId,
+      title: title.text,
+      sport: sport,
+      notes: notes.text,
+    );
     setState(() {});
   }
 
@@ -112,7 +132,10 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
 
   /// Verteilt die Messpunkte auf eine lückenlose Sekundenachse.
   static List<double?> _series(
-      List<Sample> samples, int length, double? Function(Sample) pick) {
+    List<Sample> samples,
+    int length,
+    double? Function(Sample) pick,
+  ) {
     final series = List<double?>.filled(length, null);
     for (final s in samples) {
       if (s.t >= 1 && s.t <= length) series[s.t - 1] = pick(s);
@@ -274,6 +297,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
             LineChart(
               title: 'Puls',
               unit: '/min',
+              position: _position,
               color: scheme.error,
               values: series((s) => s.heartRate?.toDouble()),
             ),
@@ -281,6 +305,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
               LineChart(
                 title: 'Pace',
                 unit: skiErg ? 'min/500 m' : 'min/km',
+                position: _position,
                 color: scheme.primary,
                 lowerIsBetter: true,
                 format: (seconds) => formatDuration(seconds.round()),
@@ -302,30 +327,35 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
               LineChart(
                 title: 'Geschwindigkeit',
                 unit: 'km/h',
+                position: _position,
                 color: scheme.primary,
                 values: series((s) => s.speedKmh),
               ),
             LineChart(
               title: 'Leistung',
               unit: 'W',
+              position: _position,
               color: scheme.tertiary,
               values: series((s) => s.power?.toDouble()),
             ),
             LineChart(
               title: w.sport.cadenceLabel,
               unit: '/min',
+              position: _position,
               color: scheme.secondary,
               values: series((s) => s.cadence),
             ),
             LineChart(
               title: 'Steigung',
               unit: '%',
+              position: _position,
               color: scheme.outline,
               values: series((s) => s.incline),
             ),
             LineChart(
               title: 'Höhe',
               unit: 'm',
+              position: _position,
               color: scheme.outline,
               values: series((s) => s.altitudeM),
             ),
@@ -378,20 +408,22 @@ class _LapTable extends StatelessWidget {
       lastT = marks[i].t;
       lastDistance = marks[i].distanceM;
       final speedKmh = seconds > 0 ? meters / seconds * 3.6 : null;
-      rows.add(TableRow(
-        children: [
-          for (final cell in [
-            '${i + 1}',
-            formatDuration(seconds),
-            '${formatKm(meters)} km',
-            formatPace(speedKmh, perMeters: skiErg ? 500 : 1000) ?? '–',
-          ])
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Text(cell),
-            ),
-        ],
-      ));
+      rows.add(
+        TableRow(
+          children: [
+            for (final cell in [
+              '${i + 1}',
+              formatDuration(seconds),
+              '${formatKm(meters)} km',
+              formatPace(speedKmh, perMeters: skiErg ? 500 : 1000) ?? '–',
+            ])
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                child: Text(cell),
+              ),
+          ],
+        ),
+      );
     }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
