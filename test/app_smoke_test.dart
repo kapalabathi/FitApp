@@ -335,7 +335,11 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.textContaining('02:00'));
     await tester.pumpAndSettle();
-    await tester.tap(find.byTooltip('Training löschen'));
+    await tester.tap(find.byTooltip('Weitere Aktionen'));
+    await tester.pumpAndSettle();
+    expect(find.text('Zu Strava hochladen'), findsOneWidget);
+    expect(find.text('Als FIT exportieren'), findsOneWidget);
+    await tester.tap(find.text('Training löschen'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Löschen'));
     await tester.pumpAndSettle();

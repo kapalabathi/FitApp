@@ -4,6 +4,7 @@ import '../data/database.dart';
 import '../data/models.dart';
 import 'format.dart';
 import 'stats_views.dart';
+import 'strava_page.dart';
 import 'workout_detail_page.dart';
 
 enum _Period {
@@ -120,6 +121,19 @@ class _HistoryPageState extends State<HistoryPage> {
                       return ListTile(
                         leading: Icon(w.sport.icon),
                         title: Text(w.title ?? w.sport.label),
+                        trailing: w.stravaId == null
+                            ? null
+                            : Tooltip(
+                                message: w.imported
+                                    ? 'Von Strava importiert'
+                                    : 'Bei Strava hochgeladen',
+                                child: Icon(
+                                  w.imported
+                                      ? Icons.cloud_download_outlined
+                                      : Icons.cloud_done_outlined,
+                                  size: 20,
+                                ),
+                              ),
                         subtitle: Text(
                             '${formatDateTime(w.startedAt)}\n${facts.join('  ·  ')}'),
                         isThreeLine: true,
@@ -135,6 +149,18 @@ class _HistoryPageState extends State<HistoryPage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Verlauf'),
+          actions: [
+            IconButton(
+              tooltip: 'Strava',
+              icon: const Icon(Icons.cloud_sync_outlined),
+              onPressed: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => StravaPage(db: widget.db)));
+                // Ein Import kann neue Trainings gebracht haben.
+                if (mounted) _load();
+              },
+            ),
+          ],
           bottom: const TabBar(
             isScrollable: true,
             tabAlignment: TabAlignment.start,

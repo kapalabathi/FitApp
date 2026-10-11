@@ -4,6 +4,25 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.6.0] – 2026-10-11 (M6: Export und Strava)
+
+### Hinzugefügt
+- Export eines Trainings als FIT-Datei (A-062), dazu GPX und TCX (A-063), über das Menü der Detailansicht. Die Datei geht an das Teilen-Menü von Android.
+- Strava-Verbindung mit eigener Strava-Anwendung des Nutzers; Einrichtung im Verlauf über das Wolken-Symbol. Zugangsdaten liegen im verschlüsselten Speicher des Geräts, nicht in der Datenbank.
+- Upload eines Trainings zu Strava mit Titel, Notiz, Sportart und Indoor-Kennzeichen (A-064). **Noch nicht gegen das echte Strava erprobt.**
+- Vor jedem Upload prüft die App, ob bei Strava im selben Zeitraum schon eine Aktivität liegt, und fragt dann nach (A-067).
+- Automatischer Upload nach Trainingsende, einschaltbar; bei einer ähnlichen Aktivität unterbleibt er mit Hinweis (A-065).
+- Import neuer Strava-Aktivitäten mit Strecke, Puls, Höhe und Tempo, etwa Läufe von der Uhr (A-066). Eigene Uploads und bereits Bekanntes werden übersprungen; ein gelöschter Import kommt nicht zurück.
+- Im Verlauf zeigt ein Wolken-Symbol, ob ein Training hochgeladen oder importiert ist.
+- 25 weitere automatische Tests (insgesamt 125). Der FIT-Export wird darin von einer unabhängigen Bibliothek gelesen und geprüft; Strava wird durch eine Attrappe ersetzt.
+
+### Geändert
+- „Training löschen" liegt jetzt im Menü der Detailansicht.
+- Bestzeiten rechnen bei lückenhaften Messpunkten (importierte Trainings) mit der tatsächlichen Zeit.
+
+### Offen
+- Import von FIT-, GPX- und TCX-Dateien (Teil von A-063, Soll) ist noch nicht umgesetzt.
+
 ## [0.5.0] – 2026-10-11 (M5: Auswertung)
 
 ### Hinzugefügt

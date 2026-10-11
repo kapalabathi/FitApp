@@ -8,6 +8,7 @@ import 'format.dart';
 import 'line_chart.dart';
 import 'route_map.dart';
 import 'stats_views.dart';
+import 'workout_actions.dart';
 
 /// Kennzahlen und Verlaufskurven eines gespeicherten Trainings.
 class WorkoutDetailPage extends StatefulWidget {
@@ -171,10 +172,29 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
             icon: const Icon(Icons.edit_outlined),
             onPressed: () => _edit(w),
           ),
-          IconButton(
-            tooltip: 'Training löschen',
-            icon: const Icon(Icons.delete_outline),
-            onPressed: () => _delete(context),
+          PopupMenuButton<VoidCallback>(
+            tooltip: 'Weitere Aktionen',
+            onSelected: (action) => action(),
+            itemBuilder: (_) => [
+              if (w.stravaId == null)
+                PopupMenuItem(
+                  value: () async {
+                    if (await uploadToStrava(context, db, w) && mounted) {
+                      setState(() {});
+                    }
+                  },
+                  child: const Text('Zu Strava hochladen'),
+                ),
+              for (final format in ExportFormat.values)
+                PopupMenuItem(
+                  value: () => exportWorkout(context, db, w, format),
+                  child: Text('Als ${format.label} exportieren'),
+                ),
+              PopupMenuItem(
+                value: () => _delete(context),
+                child: const Text('Training löschen'),
+              ),
+            ],
           ),
         ],
       ),
@@ -187,6 +207,14 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 : '${w.sport.label}  ·  ${formatDateTime(w.startedAt)}',
             style: theme.textTheme.titleMedium,
           ),
+          if (w.stravaId != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                w.imported ? 'Von Strava importiert' : 'Bei Strava hochgeladen',
+                style: theme.textTheme.bodySmall,
+              ),
+            ),
           if (w.notes != null)
             Padding(
               padding: const EdgeInsets.only(top: 8),

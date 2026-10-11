@@ -9,6 +9,7 @@ import '../interval/signals.dart';
 import '../session/workout_session.dart';
 import 'format.dart';
 import 'live_page.dart';
+import 'workout_actions.dart';
 import 'workout_detail_page.dart';
 
 /// Auswahl von Sportart und Geräten vor dem Trainingsstart.
@@ -99,6 +100,7 @@ class _StartPageState extends State<StartPage> {
       return;
     }
     widget.onWorkoutSaved();
+    autoUploadIfEnabled(context, widget.db, workout);
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => WorkoutDetailPage(db: widget.db, workoutId: workout.id),
     ));

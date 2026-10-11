@@ -29,14 +29,14 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Umgesetzt | Nutzer |
 | I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Umgesetzt | Nutzer |
 | I-009 | Trainingshistorie mit Auswertung (Wochenumfang, Pulszonen, Bestzeiten) | Auswertung | L | Umgesetzt | Nutzer |
-| I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | Neu | Vorschlag |
+| I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | In Arbeit | Vorschlag |
 | I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | In Arbeit | Nutzer |
 | I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Umgesetzt | Nutzer |
 | I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Neu | Nutzer |
 | I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
 | I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Geklärt | Nutzer |
-| I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Geklärt | Nutzer |
-| I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Geklärt | Nutzer |
+| I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | In Arbeit | Nutzer |
+| I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | In Arbeit | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
 | I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | In Arbeit | Nutzer |
 | I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | In Arbeit | Nutzer |

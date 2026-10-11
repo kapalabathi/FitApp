@@ -177,6 +177,12 @@ class AppDatabase {
         ) WITHOUT ROWID''');
       _db.execute('PRAGMA user_version = 5');
     }
+    if (version < 6) {
+      _db.execute('ALTER TABLE workouts ADD COLUMN strava_id INTEGER');
+      _db.execute(
+          'ALTER TABLE workouts ADD COLUMN imported INTEGER NOT NULL DEFAULT 0');
+      _db.execute('PRAGMA user_version = 6');
+    }
   }
 
   /// Zum Ausprobieren und als Muster für eigene Vorlagen.
@@ -407,6 +413,8 @@ class AppDatabase {
         energyKcal: r['energy_kcal'] as int?,
         ascentM: r['ascent_m'] as int?,
         notes: r['notes'] as String?,
+        stravaId: r['strava_id'] as int?,
+        imported: r['imported'] == 1,
       );
 
   // --- Intervall-Vorlagen ---
@@ -543,6 +551,52 @@ class AppDatabase {
         [_now(), id]);
   }
 
+  // --- Strava ---
+
+  /// Merkt sich, unter welcher Nummer ein Training bei Strava liegt.
+  void setStravaId(int workoutId, int stravaId) {
+    _db.execute(
+        'UPDATE workouts SET strava_id = ?, updated_at = ? WHERE id = ?',
+        [stravaId, _now(), workoutId]);
+  }
+
+  /// Die Strava-Nummern aller Trainings, die hochgeladen oder importiert
+  /// wurden, auch der inzwischen gelöschten: Ein gelöschter Import soll
+  /// nicht wiederkommen.
+  Set<int> stravaIds() => _db
+      .select('SELECT strava_id FROM workouts WHERE strava_id IS NOT NULL')
+      .map((r) => r['strava_id'] as int)
+      .toSet();
+
+  /// Legt ein von Strava übernommenes Training mit seinen Messpunkten an und
+  /// gibt seine Nummer zurück.
+  int importWorkout({
+    required Sport sport,
+    required DateTime startedAt,
+    required String title,
+    required int stravaId,
+    required List<Sample> samples,
+    int? ascentM,
+  }) {
+    _db.execute('BEGIN');
+    try {
+      final id = startWorkout(sport, startedAt);
+      for (final s in samples) {
+        addSample(id, s);
+      }
+      finishWorkout(id, ascentM: ascentM);
+      _db.execute(
+          'UPDATE workouts SET title = ?, strava_id = ?, imported = 1 '
+          'WHERE id = ?',
+          [title.trim().isEmpty ? null : title.trim(), stravaId, id]);
+      _db.execute('COMMIT');
+      return id;
+    } catch (_) {
+      _db.execute('ROLLBACK');
+      rethrow;
+    }
+  }
+
   // --- Auswertung ---
 
   /// Ändert Titel, Sportart und Notiz eines Trainings. Leere Texte werden
@@ -583,11 +637,21 @@ class AppDatabase {
     final distance = <double>[];
     final power = <int>[];
     var lastDistance = 0.0;
+    var lastT = 0;
     for (final s in recorded) {
-      lastDistance = s.distanceM ?? lastDistance;
-      distance.add(lastDistance);
-      // Sekunden ohne Leistungswert zählen als 0 W, etwa beim Ausrollen.
-      power.add(s.power ?? 0);
+      final gap = s.t - lastT;
+      if (gap <= 0) continue;
+      final reached = s.distanceM ?? lastDistance;
+      // Importierte Trainings haben nicht für jede Sekunde einen Messpunkt.
+      // Die Strecke wird über die Lücke gleichmäßig verteilt; sonst sähe der
+      // Sprung an ihrem Ende wie ein Sprint aus.
+      for (var k = 1; k <= gap; k++) {
+        distance.add(lastDistance + (reached - lastDistance) * k / gap);
+        // Sekunden ohne Leistungswert zählen als 0 W, etwa beim Ausrollen.
+        power.add(k == gap ? s.power ?? 0 : 0);
+      }
+      lastDistance = reached;
+      lastT = s.t;
     }
     final hasPower = recorded.any((s) => s.power != null);
     _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [workoutId]);

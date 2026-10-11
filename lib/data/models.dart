@@ -103,6 +103,8 @@ class Workout {
     this.energyKcal,
     this.ascentM,
     this.notes,
+    this.stravaId,
+    this.imported = false,
   });
 
   final int id;
@@ -127,6 +129,12 @@ class Workout {
   /// Summe der Anstiege, nur bei Aufzeichnungen mit GPS.
   final int? ascentM;
   final String? notes;
+
+  /// Nummer der zugehörigen Aktivität bei Strava, nach Upload oder Import.
+  final int? stravaId;
+
+  /// Von Strava übernommen statt in der App aufgezeichnet.
+  final bool imported;
 
   double? get avgSpeedKmh =>
       durationS > 0 && distanceM > 0 ? distanceM / durationS * 3.6 : null;

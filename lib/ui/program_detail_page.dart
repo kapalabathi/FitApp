@@ -11,6 +11,7 @@ import 'exercise_image.dart';
 import 'program_editor_page.dart';
 import 'program_player_page.dart';
 import 'programs_page.dart';
+import 'workout_actions.dart';
 import 'workout_detail_page.dart';
 
 /// Ein Programm mit seinen Übungen; von hier aus starten, bearbeiten,
@@ -83,6 +84,7 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
     );
     if (!mounted || workout == null) return;
     widget.onWorkoutSaved();
+    autoUploadIfEnabled(context, widget.db, workout);
     await Navigator.of(context).push(MaterialPageRoute(
       builder: (_) => WorkoutDetailPage(db: widget.db, workoutId: workout.id),
     ));
