@@ -143,31 +143,37 @@ class WorkoutDetailPage extends StatelessWidget {
           for (final chart in [
             LineChart(
               title: 'Puls',
+              unit: '/min',
               color: scheme.error,
               values: series((s) => s.heartRate?.toDouble()),
             ),
             LineChart(
-              title: 'Geschwindigkeit km/h',
+              title: 'Geschwindigkeit',
+              unit: 'km/h',
               color: scheme.primary,
               values: series((s) => s.speedKmh),
             ),
             LineChart(
-              title: 'Leistung W',
+              title: 'Leistung',
+              unit: 'W',
               color: scheme.tertiary,
               values: series((s) => s.power?.toDouble()),
             ),
             LineChart(
-              title: '${w.sport.cadenceLabel} /min',
+              title: w.sport.cadenceLabel,
+              unit: '/min',
               color: scheme.secondary,
               values: series((s) => s.cadence),
             ),
             LineChart(
-              title: 'Steigung %',
+              title: 'Steigung',
+              unit: '%',
               color: scheme.outline,
               values: series((s) => s.incline),
             ),
             LineChart(
-              title: 'Höhe m',
+              title: 'Höhe',
+              unit: 'm',
               color: scheme.outline,
               values: series((s) => s.altitudeM),
             ),

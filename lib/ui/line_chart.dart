@@ -10,11 +10,15 @@ class LineChart extends StatelessWidget {
   const LineChart({
     super.key,
     required this.title,
+    required this.unit,
     required this.values,
     required this.color,
   });
 
   final String title;
+
+  /// Einheit der Werte, z. B. „km/h"; steht an Achse und Durchschnitt.
+  final String unit;
   final List<double?> values;
   final Color color;
 
@@ -26,6 +30,9 @@ class LineChart extends StatelessWidget {
     final max = present.reduce((a, b) => a > b ? a : b);
     final avg = present.reduce((a, b) => a + b) / present.length;
     final theme = Theme.of(context);
+    String withUnit(double v) => '${formatDecimal(v)} $unit'.trim();
+    final axisStyle = theme.textTheme.labelSmall
+        ?.copyWith(color: theme.colorScheme.onSurfaceVariant);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -33,13 +40,12 @@ class LineChart extends StatelessWidget {
         Row(
           children: [
             Expanded(child: Text(title, style: theme.textTheme.titleSmall)),
-            Text(
-              'Ø ${formatDecimal(avg)}  ·  max ${formatDecimal(max)}',
-              style: theme.textTheme.bodySmall,
-            ),
+            Text('Ø ${withUnit(avg)}', style: theme.textTheme.bodySmall),
           ],
         ),
         const SizedBox(height: 4),
+        // Größter und kleinster Wert stehen an der oberen und unteren Linie.
+        Text(withUnit(max), style: axisStyle),
         SizedBox(
           height: 120,
           width: double.infinity,
@@ -53,6 +59,7 @@ class LineChart extends StatelessWidget {
             ),
           ),
         ),
+        Text(withUnit(min), style: axisStyle),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

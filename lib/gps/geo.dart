@@ -8,6 +8,7 @@ class GpsFix {
     required this.accuracyM,
     this.altitudeM,
     this.speedMps,
+    this.speedAccuracyMps,
   });
 
   final double latitude;
@@ -19,6 +20,9 @@ class GpsFix {
 
   /// Vom GPS gemessene Geschwindigkeit, falls es eine liefert.
   final double? speedMps;
+
+  /// Geschätzter Fehler von [speedMps], falls das GPS ihn angibt.
+  final double? speedAccuracyMps;
 }
 
 /// Entfernung zweier Punkte auf der Erdoberfläche in Metern (Haversine).

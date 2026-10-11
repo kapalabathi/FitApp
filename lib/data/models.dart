@@ -42,6 +42,10 @@ enum Sport {
   bool get usesGps =>
       this == Sport.running || this == Sport.walking || this == Sport.hiking;
 
+  /// Schneller bewegt man sich in dieser Sportart nicht; höhere Werte vom
+  /// GPS sind Messfehler.
+  double get maxPlausibleSpeedMps => this == Sport.running ? 10 : 5;
+
   /// Lässt sich auf der Startseite frei starten; die übrigen Sportarten
   /// laufen über Trainingsprogramme.
   bool get freeRecording => indoorMachine || usesGps;

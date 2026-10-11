@@ -89,7 +89,11 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Ø Leistung'), findsOneWidget);
       expect(find.text('21 kcal'), findsOneWidget);
-      await tester.scrollUntilVisible(find.text('Trittfrequenz /min'), 200);
+      // Kurven mit Achsenwerten samt Einheit
+      await tester.scrollUntilVisible(find.text('Geschwindigkeit'), 200);
+      expect(find.text('25,0 km/h'), findsWidgets);
+      await tester.scrollUntilVisible(find.text('Trittfrequenz'), 200);
+      expect(find.text('85,0 /min'), findsWidgets);
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
 

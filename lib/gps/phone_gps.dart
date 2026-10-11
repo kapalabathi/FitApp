@@ -51,6 +51,7 @@ abstract final class PhoneGps {
         accuracyM: p.accuracy,
         altitudeM: p.hasAltitude ? p.altitude : null,
         speedMps: p.hasSpeed ? p.speed : null,
+        speedAccuracyMps: p.hasSpeedAccuracy ? p.speedAccuracy : null,
       ),
     );
   }

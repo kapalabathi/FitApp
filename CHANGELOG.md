@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.4.1] – 2026-10-11
+
+### Behoben
+- Geschwindigkeitssprünge bei schwachem GPS-Signal (gemeldet vom Nutzer). Die Geschwindigkeit ist jetzt der Median der letzten sieben Messungen; Werte, die für die Sportart unmöglich sind oder die das GPS selbst als unsicher meldet, werden nicht gewertet.
+- Positionssprünge zählen nicht mehr als Strecke: Ein Standort, der nur mit dem 1,5-Fachen der für die Sportart plausiblen Geschwindigkeit erreichbar wäre, wird verworfen (Grenze beim Laufen 36 km/h, beim Spazieren und Wandern 18 km/h).
+- Bei ungenauem Standort zählt eine Bewegung erst ab der halben gemeldeten Ungenauigkeit als Strecke; Standorte ungenauer als 25 m (bisher 30 m) werden verworfen.
+- Verlaufskurven zeigen den größten und kleinsten Wert jetzt mit Einheit an der Achse (gemeldet vom Nutzer); auch der Durchschnitt trägt die Einheit.
+
+### Hinzugefügt
+- Vier automatische Tests für die GPS-Filter (insgesamt 84).
+
 ## [0.4.0] – 2026-10-11 (M3: Trainingsprogramme, M4: Outdoor)
 
 ### Hinzugefügt – Trainingsprogramme (M3)

@@ -26,11 +26,25 @@ class WorkoutRecorder {
   static const _maxEnergyStepKcal = 50.0;
 
   /// Ungenauere Standorte werden verworfen.
-  static const maxGpsAccuracyM = 30.0;
+  static const maxGpsAccuracyM = 25.0;
 
   /// Erst ab dieser Entfernung zum letzten gewerteten Standort zählt eine
-  /// Bewegung als Strecke; darunter ist es meist Rauschen im Stand.
+  /// Bewegung als Strecke; darunter ist es meist Rauschen im Stand. Bei
+  /// ungenauem Standort wächst die Schwelle mit der Ungenauigkeit.
   static const _minGpsStepM = 3.0;
+  static const _gpsStepPerAccuracy = 0.5;
+
+  /// Ein Standort, der nur mit mehr als diesem Vielfachen der für die
+  /// Sportart plausiblen Geschwindigkeit erreichbar wäre, ist ein Sprung
+  /// des GPS und wird verworfen.
+  static const _jumpFactor = 1.5;
+
+  /// Geschwindigkeiten mit größerem geschätzten Fehler werden nicht gewertet.
+  static const _maxSpeedErrorMps = 1.5;
+
+  /// Die angezeigte Geschwindigkeit ist der Median so vieler Messungen;
+  /// einzelne Ausreißer verschwinden darin.
+  static const _speedWindow = 7;
 
   /// Höhenänderungen unter dieser Schwelle sind Messrauschen und zählen
   /// nicht als Anstieg.
@@ -62,6 +76,7 @@ class WorkoutRecorder {
   GpsFix? _lastFix;
   DateTime? _lastFixAt;
   GpsFix? _distanceAnchor;
+  final List<double> _gpsSpeeds = [];
   bool _gpsCountsDistance = false;
   double? _ascentAnchorM;
   double _ascentM = 0;
@@ -106,20 +121,39 @@ class WorkoutRecorder {
     // Standort neu an.
     _distanceAnchor = null;
     _ascentAnchorM = null;
+    _gpsSpeeds.clear();
   }
 
-  /// Nimmt einen Standort entgegen. Zu ungenaue werden verworfen.
+  /// Nimmt einen Standort entgegen. Zu ungenaue und unmöglich weit
+  /// entfernte werden verworfen.
   void onPosition(GpsFix fix) {
     if (fix.accuracyM > maxGpsAccuracyM) return;
     final now = _clock();
+    final previous = _lastFix;
+    final previousAt = _lastFixAt;
+    if (previous != null && previousAt != null) {
+      final seconds =
+          (now.difference(previousAt).inMilliseconds / 1000).clamp(1.0, 1e9);
+      final jump = distanceMeters(previous.latitude, previous.longitude,
+          fix.latitude, fix.longitude);
+      if (jump / seconds > sport.maxPlausibleSpeedMps * _jumpFactor) return;
+    }
     if (!_sources.any((s) => s.id == _gpsSourceId)) {
       _sources.add(_Source(_gpsSourceId, false));
     }
     final speed = fix.speedMps;
-    if (speed != null && speed >= 0) {
+    final speedError = fix.speedAccuracyMps;
+    if (speed != null &&
+        speed >= 0 &&
+        speed <= sport.maxPlausibleSpeedMps &&
+        (speedError == null || speedError <= _maxSpeedErrorMps)) {
+      _gpsSpeeds.add(speed);
+      if (_gpsSpeeds.length > _speedWindow) _gpsSpeeds.removeAt(0);
+      final sorted = [..._gpsSpeeds]..sort();
       _sources
           .firstWhere((s) => s.id == _gpsSourceId)
-          .values[Metric.speed] = _Reading(speed * 3.6, now);
+          .values[Metric.speed] =
+          _Reading(sorted[sorted.length ~/ 2] * 3.6, now);
     }
     _lastFix = fix;
     _lastFixAt = now;
@@ -132,7 +166,8 @@ class WorkoutRecorder {
     } else {
       final step = distanceMeters(
           anchor.latitude, anchor.longitude, fix.latitude, fix.longitude);
-      if (step >= _minGpsStepM) {
+      final threshold = fix.accuracyM * _gpsStepPerAccuracy;
+      if (step >= (threshold > _minGpsStepM ? threshold : _minGpsStepM)) {
         _distanceM += step;
         _distanceAnchor = fix;
       }

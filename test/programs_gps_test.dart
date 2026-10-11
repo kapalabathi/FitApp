@@ -210,6 +210,70 @@ void main() {
       expect(recorder.gpsAccuracyM, 5);
     });
 
+    test('ein Sprung des GPS zählt weder als Strecke noch als Position', () {
+      for (var i = 0; i <= 5; i++) {
+        recorder.onPosition(at(i));
+        second();
+      }
+      // 500 m in einer Sekunde sind beim Laufen unmöglich.
+      recorder.onPosition(at(50));
+      second();
+      expect(db.samples(recorder.workoutId).last.latitude,
+          closeTo(50.0005, 1e-9));
+      for (var i = 6; i <= 10; i++) {
+        recorder.onPosition(at(i));
+        second();
+      }
+      expect(recorder.distanceM, closeTo(111.2, 0.2));
+    });
+
+    test('beim Wandern gilt eine niedrigere Grenze als beim Laufen', () {
+      final hike =
+          WorkoutRecorder(db: db, sport: Sport.hiking, clock: () => now);
+      // 11,1 m je Sekunde: zu schnell zum Wandern, jeder Schritt ein Sprung
+      for (var i = 0; i <= 5; i++) {
+        hike.onPosition(at(i));
+        now = now.add(const Duration(seconds: 1));
+      }
+      expect(hike.distanceM, 0);
+    });
+
+    test('einzelne Ausreißer verändern die angezeigte Geschwindigkeit nicht',
+        () {
+      GpsFix moving(int i, double speed, {double? error}) => GpsFix(
+            latitude: 50 + i * 0.00003, // 3,3 m je Sekunde
+            longitude: 8,
+            accuracyM: 5,
+            speedMps: speed,
+            speedAccuracyMps: error,
+          );
+      final speeds = [3.0, 3.1, 2.9, 9.5, 3.0, 3.2, 0.0, 3.1];
+      for (var i = 0; i < speeds.length; i++) {
+        recorder.onPosition(moving(i, speeds[i]));
+        second();
+        expect(recorder.value(Metric.speed), inInclusiveRange(10.4, 11.6),
+            reason: 'nach Messung $i');
+      }
+      // Unmögliche und als unsicher gemeldete Werte werden gar nicht gewertet.
+      recorder.onPosition(moving(8, 40));
+      recorder.onPosition(moving(9, 8, error: 4));
+      expect(recorder.value(Metric.speed), inInclusiveRange(10.4, 11.6));
+    });
+
+    test('bei ungenauem Standort zählt erst eine größere Bewegung', () {
+      // ±20 m Genauigkeit: Schritte von 3,3 m liegen im Rauschen …
+      for (var i = 0; i < 3; i++) {
+        recorder.onPosition(GpsFix(
+            latitude: 50 + i * 0.00003, longitude: 8, accuracyM: 20));
+        second();
+      }
+      expect(recorder.distanceM, 0);
+      // … erst 11 m vom Ausgangspunkt entfernt wird die Strecke gewertet.
+      recorder.onPosition(
+          const GpsFix(latitude: 50.0001, longitude: 8, accuracyM: 20));
+      expect(recorder.distanceM, closeTo(11.1, 0.1));
+    });
+
     test('ungenaue Standorte werden verworfen', () {
       recorder.onPosition(at(0));
       recorder.onPosition(at(50, accuracy: 80));
@@ -232,6 +296,7 @@ void main() {
       recorder.onPosition(at(0));
       recorder.onPosition(at(1));
       recorder.pause();
+      now = now.add(const Duration(minutes: 5));
       recorder.onPosition(at(40));
       recorder.resume();
       recorder.onPosition(at(41));
