@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.3.0] – 2026-10-11 (M2: Intervall-Timer)
+
+### Hinzugefügt
+- Intervall-Vorlagen mit frei editierbaren Abschnitten (Bezeichnung, Dauer, Zielwert für Geschwindigkeit, Widerstand oder Leistung) und wiederholbaren Gruppen (A-030).
+- Vorlagen speichern, bearbeiten, duplizieren, löschen; zwei Beispielvorlagen werden mitgeliefert (A-031).
+- Signale beim Abschnittswechsel: Töne in den letzten drei Sekunden und beim Wechsel, Vibration, einzeln abschaltbar (A-032).
+- Sprachansage des nächsten Abschnitts fünf Sekunden vor dem Wechsel (A-033).
+- Anzeige im Training: laufender Abschnitt, Restzeit, Runde, Vorschau, Gesamtrest; Abschnitt überspringen.
+- Der Timer läuft auch ohne Gerät und ohne Zielwerte (A-035).
+- Gerätesteuerung über FTMS, beim Trainingsstart ausdrücklich einzuschalten (A-008, A-009, A-034). **Noch an keinem Gerät erprobt.**
+- Sicherheit bei der Steuerung (A-010): zehn Sekunden Vorlauf vor dem ersten Zielwert, Ankündigung jedes Wechsels, Stoppen der Steuerung mit einem Tipp, nach Verbindungsabbruch erst nach Bestätigung wieder Befehle. Die App startet und stoppt das Gerät nie selbst.
+- 19 weitere automatische Tests (insgesamt 61).
+
+### Geändert
+- Die Datenbank wächst um Vorlagen und Einstellungen; vorhandene Trainings bleiben erhalten.
+
 ## [0.2.0] – 2026-10-11 (M1: Indoor-Aufzeichnung)
 
 ### Hinzugefügt

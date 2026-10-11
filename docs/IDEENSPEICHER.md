@@ -20,25 +20,25 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 
 | Nr. | Titel | Bereich | Aufwand | Status | Quelle |
 |-------|-------|---------|---------|--------|--------|
-| I-001 | Brustgurt (BikePilot) per Bluetooth koppeln, Puls live anzeigen | Geräte | S | Neu | Nutzer |
-| I-002 | Concept2 SkiErg (PM5) koppeln | Geräte | M | Geklärt | Nutzer |
-| I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
-| I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | Geklärt | Nutzer |
-| I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | Geklärt | Nutzer |
+| I-001 | Brustgurt (BikePilot) per Bluetooth koppeln, Puls live anzeigen | Geräte | S | Umgesetzt | Nutzer |
+| I-002 | Concept2 SkiErg (PM5) koppeln | Geräte | M | In Arbeit | Nutzer |
+| I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | In Arbeit | Nutzer |
+| I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | In Arbeit | Nutzer |
+| I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | In Arbeit | Nutzer |
 | I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Geklärt | Nutzer |
 | I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Geklärt | Nutzer |
-| I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Neu | Nutzer |
+| I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Umgesetzt | Nutzer |
 | I-009 | Trainingshistorie mit Auswertung (Wochenumfang, Pulszonen, Bestzeiten) | Auswertung | L | Geklärt | Nutzer |
 | I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | Neu | Vorschlag |
-| I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | Geklärt | Nutzer |
-| I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Geklärt | Nutzer |
+| I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | In Arbeit | Nutzer |
+| I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Umgesetzt | Nutzer |
 | I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Neu | Nutzer |
 | I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
 | I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Geklärt | Nutzer |
 | I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Geklärt | Nutzer |
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Geklärt | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
-| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | Geklärt | Nutzer |
+| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | In Arbeit | Nutzer |
 | I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | Geklärt | Nutzer |
 
 ## Details

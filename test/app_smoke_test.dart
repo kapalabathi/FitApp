@@ -55,6 +55,12 @@ void main() {
           isTrue);
       expect(find.textContaining('gerettet'), findsOneWidget);
 
+      // Intervalle: die mitgelieferten Beispielvorlagen
+      await tester.tap(find.text('Intervalle'));
+      await tester.pumpAndSettle();
+      expect(find.text('Tabata 8 × 20/10'), findsOneWidget);
+      expect(find.textContaining('16 Abschnitte'), findsOneWidget);
+
       // Verlauf: das Training mit seinen Eckdaten
       await tester.tap(find.text('Verlauf'));
       await tester.pumpAndSettle();
@@ -83,6 +89,50 @@ void main() {
       await tester.pumpAndSettle();
     });
   }
+
+  testWidgets('eine Vorlage lässt sich anlegen und erscheint in der Liste',
+      (tester) async {
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Intervalle'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Neue Vorlage'));
+    await tester.pumpAndSettle();
+
+    // Ohne Namen und Abschnitte wird nicht gespeichert.
+    await tester.tap(find.text('Speichern'));
+    await tester.pump();
+    expect(find.text('Bitte einen Namen eingeben.'), findsOneWidget);
+
+    await tester.enterText(find.widgetWithText(TextField, 'Name'), 'Pyramide');
+    await tester.tap(find.text('Gruppe hinzufügen'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Abschnitt'));
+    await tester.pumpAndSettle();
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Bezeichnung'), 'Hart');
+    await tester.enterText(find.widgetWithText(TextField, 'Minuten'), '1');
+    await tester.enterText(find.widgetWithText(TextField, 'Sekunden'), '30');
+    await tester.tap(find.text('Übernehmen'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Gesamtdauer 01:30'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Mehr Wiederholungen'));
+    await tester.pump();
+    expect(find.textContaining('Gesamtdauer 03:00'), findsOneWidget);
+
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+    expect(find.text('Pyramide'), findsOneWidget);
+    final saved =
+        db.intervalTemplates().firstWhere((t) => t.name == 'Pyramide');
+    expect(saved.blocks.single.repeat, 2);
+    expect(saved.blocks.single.steps.single.durationS, 90);
+
+    // Die Fehlermeldung vom ersten Speicherversuch ablaufen lassen.
+    await tester.pump(const Duration(seconds: 5));
+    await tester.pumpAndSettle();
+  });
 
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {
     recordWorkout();

@@ -4,7 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:universal_ble/universal_ble.dart';
 
 import '../data/models.dart';
+import '../interval/interval_models.dart';
 import 'decoders.dart';
+import 'ftms.dart';
+import 'ftms_control.dart';
 import 'uuids.dart';
 
 enum LinkState {
@@ -43,6 +46,14 @@ class SensorConnection extends ChangeNotifier {
   /// Die letzte Fehlermeldung, solange keine Verbindung besteht.
   String? lastError;
 
+  /// Die Steuerung des Geräts, solange es verbunden ist und sich steuern
+  /// lässt; sonst `null`.
+  MachineControl? control;
+
+  /// Zählt die erfolgreichen Verbindungen. Ab der zweiten war die Verbindung
+  /// zwischendurch verloren.
+  int connectCount = 0;
+
   void start() {
     _linkSub = _device.connectionStream.listen((connected) {
       if (!connected) _signalLost();
@@ -78,13 +89,16 @@ class SensorConnection extends ChangeNotifier {
         final lost = _lost = Completer<void>();
         final services = await _device.discoverServices();
         await _subscribe(services);
+        control = await MachineControl.attach(services, _subs);
         if (_stopped) break;
         lastError = null;
+        connectCount++;
         _setState(LinkState.connected);
         await lost.future;
       } catch (e) {
         lastError = '$e';
       }
+      control = null;
       await _dropSubscriptions();
       if (_stopped) break;
       _setState(LinkState.reconnecting);
@@ -144,4 +158,97 @@ class SensorConnection extends ChangeNotifier {
           _scan = null;
         }
       }();
+}
+
+/// Setzt Zielwerte an einem FTMS-Gerät.
+class MachineControl {
+  MachineControl._(this._point, this.features);
+
+  static const _answerTimeout = Duration(seconds: 3);
+
+  final BleCharacteristic _point;
+
+  /// Was das Gerät laut eigener Auskunft annimmt; `null`, wenn es dazu
+  /// nichts sagt.
+  final FtmsFeatures? features;
+
+  bool _hasControl = false;
+  Completer<FtmsResponse>? _pending;
+
+  /// Sucht die Steuerung in [services] und bereitet sie vor. Gibt `null`
+  /// zurück, wenn das Gerät keine hat.
+  static Future<MachineControl?> attach(
+    List<BleService> services,
+    List<StreamSubscription<dynamic>> subscriptions,
+  ) async {
+    BleCharacteristic? find(String uuid) {
+      for (final s in services) {
+        if (!Uuids.same(s.uuid, Uuids.ftmsService)) continue;
+        for (final c in s.characteristics) {
+          if (Uuids.same(c.uuid, uuid)) return c;
+        }
+      }
+      return null;
+    }
+
+    final point = find(Uuids.ftmsControlPoint);
+    if (point == null) return null;
+    FtmsFeatures? features;
+    try {
+      final feature = find(Uuids.ftmsFeature);
+      if (feature != null) features = FtmsFeatures.parse(await feature.read());
+    } catch (_) {
+      // Ohne Auskunft wird jeder Zielwert versucht; das Gerät antwortet dann.
+    }
+    final control = MachineControl._(point, features);
+    subscriptions.add(point.onValueReceived.listen(control._onAnswer));
+    await point.indications.subscribe();
+    return control;
+  }
+
+  bool supports(TargetKind kind) {
+    final f = features;
+    if (f == null) return kind != TargetKind.none;
+    return switch (kind) {
+      TargetKind.none => false,
+      TargetKind.speed => f.canSetSpeed,
+      TargetKind.resistance => f.canSetResistance,
+      TargetKind.power => f.canSetPower,
+    };
+  }
+
+  void _onAnswer(List<int> bytes) {
+    final response = FtmsResponse.parse(bytes);
+    final pending = _pending;
+    if (response != null && pending != null && !pending.isCompleted) {
+      pending.complete(response);
+    }
+  }
+
+  Future<FtmsResponse> _send(List<int> command) async {
+    final pending = _pending = Completer<FtmsResponse>();
+    await _point.write(command);
+    return pending.future.timeout(_answerTimeout);
+  }
+
+  /// Setzt einen Zielwert. Gibt `null` zurück, wenn das Gerät ihn angenommen
+  /// hat, sonst den Grund der Ablehnung.
+  Future<String?> setTarget(TargetKind kind, double value) async {
+    final command = ftmsSetTarget(kind, value);
+    if (command == null) return null;
+    if (!supports(kind)) return '${kind.label} lässt sich an diesem Gerät nicht steuern';
+    try {
+      if (!_hasControl) {
+        final granted = await _send(ftmsRequestControl);
+        if (!granted.success) return 'Steuerung abgelehnt: ${granted.message}';
+        _hasControl = true;
+      }
+      final answer = await _send(command);
+      return answer.success ? null : answer.message;
+    } on TimeoutException {
+      return 'Gerät antwortet nicht';
+    } catch (e) {
+      return '$e';
+    }
+  }
 }

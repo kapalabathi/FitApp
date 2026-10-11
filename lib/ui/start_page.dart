@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import '../ble/device_kind.dart';
 import '../data/database.dart';
 import '../data/models.dart';
+import '../interval/interval_models.dart';
+import '../interval/signals.dart';
 import '../session/workout_session.dart';
+import 'format.dart';
 import 'live_page.dart';
 import 'workout_detail_page.dart';
 
@@ -25,10 +28,16 @@ class _StartPageState extends State<StartPage> {
   Sport _sport = Sport.treadmill;
   List<SavedDevice> _devices = [];
   Set<String> _selected = {};
+  List<IntervalTemplate> _templates = [];
+  IntervalTemplate? _template;
+  bool _controlMachine = false;
 
   @override
   void initState() {
     super.initState();
+    // Die Seite wird bei jedem Wechsel hierher neu aufgebaut; die Vorlagen
+    // bleiben danach unverändert, damit die Auswahl gültig bleibt.
+    _templates = widget.db.intervalTemplates();
     _load();
   }
 
@@ -51,11 +60,17 @@ class _StartPageState extends State<StartPage> {
 
   Future<void> _start() async {
     widget.db.setDevicesForSport(_sport, _selected);
+    final template = _template;
     final session = WorkoutSession(
       db: widget.db,
       sport: _sport,
       devices:
           _devices.where((d) => _selected.contains(d.deviceId)).toList(),
+      template: template,
+      controlMachine: _canControl && _controlMachine,
+      signals: template == null
+          ? const SilentSignals()
+          : DeviceSignals(SignalSettings.load(widget.db)),
     );
     final workout = await Navigator.of(context).push<Workout?>(
       MaterialPageRoute(
@@ -74,6 +89,14 @@ class _StartPageState extends State<StartPage> {
       builder: (_) => WorkoutDetailPage(db: widget.db, workoutId: workout.id),
     ));
   }
+
+  /// Steuern lässt sich nur, wenn die Vorlage Zielwerte hat und ein
+  /// Fitnessgerät mitläuft.
+  bool get _canControl =>
+      (_template?.targetKind ?? TargetKind.none) != TargetKind.none &&
+      _devices.any((d) =>
+          d.kind == DeviceKind.fitnessMachine &&
+          _selected.contains(d.deviceId));
 
   @override
   Widget build(BuildContext context) {
@@ -107,6 +130,33 @@ class _StartPageState extends State<StartPage> {
                 ),
             ],
           ),
+          const SizedBox(height: 24),
+          DropdownButtonFormField<IntervalTemplate?>(
+            initialValue: _template,
+            isExpanded: true,
+            decoration: const InputDecoration(labelText: 'Intervall'),
+            items: [
+              const DropdownMenuItem(value: null, child: Text('Ohne Intervall')),
+              for (final t in _templates)
+                DropdownMenuItem(
+                  value: t,
+                  child: Text('${t.name} (${formatDuration(t.totalSeconds)})'),
+                ),
+            ],
+            onChanged: (t) => setState(() => _template = t),
+          ),
+          if (_canControl)
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Timer steuert das Gerät'),
+              subtitle: Text(
+                'Setzt ${_template!.targetKind.label} je Abschnitt selbst. '
+                'Noch nicht an deinen Geräten erprobt: beim ersten Mal '
+                'vorsichtig testen.',
+              ),
+              value: _controlMachine,
+              onChanged: (v) => setState(() => _controlMachine = v),
+            ),
           const SizedBox(height: 24),
           Text('Geräte', style: theme.textTheme.titleMedium),
           if (_devices.isEmpty)

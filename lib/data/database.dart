@@ -5,9 +5,11 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqlite3/sqlite3.dart';
 
 import '../ble/device_kind.dart';
+import '../interval/interval_models.dart';
 import 'models.dart';
 
-/// Lokale Datenbank der App: Trainings, Messwerte und gemerkte Geräte.
+/// Lokale Datenbank der App: Trainings, Messwerte, gemerkte Geräte,
+/// Intervall-Vorlagen und Einstellungen.
 class AppDatabase {
   AppDatabase(this._db) {
     _db.execute('PRAGMA foreign_keys = ON');
@@ -78,7 +80,55 @@ class AppDatabase {
         ) WITHOUT ROWID''');
       _db.execute('PRAGMA user_version = 1');
     }
+    if (version < 2) {
+      _db.execute('''
+        CREATE TABLE interval_templates (
+          id INTEGER PRIMARY KEY,
+          uuid TEXT NOT NULL UNIQUE,
+          name TEXT NOT NULL,
+          target_kind TEXT NOT NULL,
+          blocks TEXT NOT NULL,
+          updated_at INTEGER NOT NULL,
+          deleted INTEGER NOT NULL DEFAULT 0
+        )''');
+      _db.execute('''
+        CREATE TABLE settings (
+          key TEXT PRIMARY KEY,
+          value TEXT NOT NULL
+        ) WITHOUT ROWID''');
+      _exampleTemplates.forEach(saveIntervalTemplate);
+      _db.execute('PRAGMA user_version = 2');
+    }
   }
+
+  /// Zum Ausprobieren und als Muster für eigene Vorlagen.
+  static const _exampleTemplates = [
+    IntervalTemplate(
+      name: 'Lauf-Intervalle 5 × 2 min',
+      targetKind: TargetKind.speed,
+      blocks: [
+        IntervalBlock(steps: [
+          IntervalStep(label: 'Einlaufen', durationS: 300, target: 7),
+        ]),
+        IntervalBlock(repeat: 5, steps: [
+          IntervalStep(label: 'Schnell', durationS: 120, target: 11),
+          IntervalStep(label: 'Locker', durationS: 60, target: 7),
+        ]),
+        IntervalBlock(steps: [
+          IntervalStep(label: 'Auslaufen', durationS: 300, target: 6),
+        ]),
+      ],
+    ),
+    IntervalTemplate(
+      name: 'Tabata 8 × 20/10',
+      blocks: [
+        IntervalBlock(repeat: 8, steps: [
+          IntervalStep(label: 'Belastung', durationS: 20),
+          IntervalStep(label: 'Pause', durationS: 10),
+        ]),
+      ],
+    ),
+  ];
 
   static int _now() => DateTime.now().millisecondsSinceEpoch;
 
@@ -249,6 +299,61 @@ class AppDatabase {
         avgCadence: r['avg_cadence'] as int?,
         energyKcal: r['energy_kcal'] as int?,
       );
+
+  // --- Intervall-Vorlagen ---
+
+  List<IntervalTemplate> intervalTemplates() => _db
+      .select('SELECT * FROM interval_templates WHERE deleted = 0 '
+          'ORDER BY name COLLATE NOCASE')
+      .map((r) => IntervalTemplate(
+            id: r['id'] as int,
+            name: r['name'] as String,
+            targetKind: TargetKind.fromId(r['target_kind'] as String),
+            blocks: IntervalTemplate.blocksFromJson(r['blocks'] as String),
+          ))
+      .toList();
+
+  /// Speichert eine neue oder geänderte Vorlage und gibt ihre Nummer zurück.
+  int saveIntervalTemplate(IntervalTemplate t) {
+    final id = t.id;
+    if (id == null) {
+      _db.execute(
+        'INSERT INTO interval_templates '
+        '(uuid, name, target_kind, blocks, updated_at) VALUES (?, ?, ?, ?, ?)',
+        [_newUuid(), t.name, t.targetKind.id, t.blocksJson(), _now()],
+      );
+      return _db.lastInsertRowId;
+    }
+    _db.execute(
+      'UPDATE interval_templates SET name = ?, target_kind = ?, blocks = ?, '
+      'updated_at = ? WHERE id = ?',
+      [t.name, t.targetKind.id, t.blocksJson(), _now(), id],
+    );
+    return id;
+  }
+
+  /// Markiert eine Vorlage als gelöscht; die Zeile bleibt für die spätere
+  /// Synchronisation erhalten.
+  void deleteIntervalTemplate(int id) {
+    _db.execute(
+        'UPDATE interval_templates SET deleted = 1, updated_at = ? WHERE id = ?',
+        [_now(), id]);
+  }
+
+  // --- Einstellungen ---
+
+  bool flag(String key, {required bool fallback}) {
+    final rows = _db.select('SELECT value FROM settings WHERE key = ?', [key]);
+    return rows.isEmpty ? fallback : rows.first['value'] == '1';
+  }
+
+  void setFlag(String key, bool value) {
+    _db.execute(
+      'INSERT INTO settings (key, value) VALUES (?, ?) '
+      'ON CONFLICT(key) DO UPDATE SET value = excluded.value',
+      [key, value ? '1' : '0'],
+    );
+  }
 
   // --- Geräte ---
 

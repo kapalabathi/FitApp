@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../ble/sensor_connection.dart';
 import '../data/models.dart';
+import '../interval/interval_models.dart';
 import '../session/workout_session.dart';
 import 'format.dart';
 
@@ -141,6 +142,8 @@ class _LivePageState extends State<LivePage> {
                         ],
                       ),
                     ),
+                  if (_session.interval != null)
+                    _IntervalPanel(session: _session),
                   Expanded(
                     child: LayoutBuilder(
                       builder: (context, box) {
@@ -259,6 +262,136 @@ class _LiveTile extends StatelessWidget {
                 ),
               ),
             ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Der laufende Abschnitt des Intervall-Timers mit Restzeit, Vorschau und,
+/// falls gewünscht, dem Stand der Gerätesteuerung.
+class _IntervalPanel extends StatelessWidget {
+  const _IntervalPanel({required this.session});
+
+  final WorkoutSession session;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final run = session.interval!;
+    final kind = session.targetKind;
+    final step = run.current;
+
+    String describe(PlannedStep s) {
+      final label = s.label.isEmpty ? 'Abschnitt' : s.label;
+      final target = s.target;
+      return target == null ? label : '$label · ${kind.format(target)}';
+    }
+
+    final Widget body;
+    if (step == null) {
+      body = Text('Intervall beendet', style: theme.textTheme.titleLarge);
+    } else {
+      final next = run.next;
+      final ending = run.remainingInStep <= 5;
+      body = Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      [
+                        'Abschnitt ${run.position} von ${run.steps.length}',
+                        if (step.round != null)
+                          'Runde ${step.round} von ${step.rounds}',
+                      ].join('  ·  '),
+                      style: theme.textTheme.labelMedium,
+                    ),
+                    Text(describe(step), style: theme.textTheme.headlineSmall),
+                  ],
+                ),
+              ),
+              Text(
+                formatDuration(run.remainingInStep),
+                style: theme.textTheme.displaySmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: ending ? scheme.error : null,
+                ),
+              ),
+              IconButton(
+                tooltip: 'Nächster Abschnitt',
+                iconSize: 32,
+                icon: const Icon(Icons.skip_next),
+                onPressed: session.skipStep,
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+          LinearProgressIndicator(
+            value: 1 - run.remainingInStep / step.durationS,
+          ),
+          const SizedBox(height: 8),
+          Text(
+            [
+              next == null ? 'Danach: Ende' : 'Danach: ${describe(next)}',
+              'Rest ${formatDuration(run.remainingTotal)}',
+            ].join('  ·  '),
+            style: ending
+                ? theme.textTheme.bodyLarge
+                    ?.copyWith(fontWeight: FontWeight.w600)
+                : theme.textTheme.bodyMedium,
+          ),
+        ],
+      );
+    }
+
+    return Card(
+      margin: const EdgeInsets.fromLTRB(12, 8, 12, 0),
+      child: Padding(
+        padding: const EdgeInsets.all(12),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            body,
+            if (session.control != ControlState.off ||
+                session.controlMessage != null) ...[
+              const Divider(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      [
+                        switch (session.control) {
+                          ControlState.active => 'Steuerung aktiv',
+                          ControlState.suspended => 'Steuerung angehalten',
+                          ControlState.off => 'Steuerung aus',
+                        },
+                        if (session.controlMessage != null)
+                          session.controlMessage!,
+                      ].join(': '),
+                    ),
+                  ),
+                  switch (session.control) {
+                    ControlState.active => FilledButton.tonal(
+                        onPressed: session.stopControl,
+                        child: const Text('Steuerung stoppen'),
+                      ),
+                    ControlState.suspended => FilledButton(
+                        onPressed: session.resumeControl,
+                        child: const Text('Fortsetzen'),
+                      ),
+                    ControlState.off => const SizedBox.shrink(),
+                  },
+                ],
+              ),
+            ],
           ],
         ),
       ),

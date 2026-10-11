@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import '../data/database.dart';
 import 'devices_page.dart';
 import 'history_page.dart';
+import 'intervals_page.dart';
 import 'start_page.dart';
 
-/// Rahmen der App mit den drei Hauptbereichen. Auf breiten Bildschirmen
+/// Rahmen der App mit den vier Hauptbereichen. Auf breiten Bildschirmen
 /// (Tablet, Querformat) steht die Navigation seitlich.
 class HomePage extends StatefulWidget {
   const HomePage({super.key, required this.db, this.recoveredWorkouts = 0});
@@ -23,18 +24,22 @@ class _HomePageState extends State<HomePage> {
   static const _wideLayoutFrom = 600.0;
   static const _destinations = [
     (icon: Icons.play_circle_outline, label: 'Training'),
+    (icon: Icons.timer_outlined, label: 'Intervalle'),
     (icon: Icons.history, label: 'Verlauf'),
     (icon: Icons.bluetooth, label: 'Geräte'),
   ];
 
-  int _index = 0;
+  static const _start = 0;
+  static const _history = 2;
+
+  int _index = _start;
 
   /// Erhöht sich nach jedem Training, damit der Verlauf neu lädt.
   int _historyVersion = 0;
 
-  /// Erhöht sich beim Verlassen der Geräteliste, damit die Startseite neu
-  /// hinzugefügte Geräte anbietet.
-  int _devicesVersion = 0;
+  /// Erhöht sich bei jedem Wechsel zur Startseite, damit sie neu angelegte
+  /// Geräte und Vorlagen anbietet.
+  int _startVersion = 0;
 
   @override
   void initState() {
@@ -53,7 +58,7 @@ class _HomePageState extends State<HomePage> {
 
   void _workoutSaved() => setState(() {
         _historyVersion++;
-        _index = 1;
+        _index = _history;
       });
 
   @override
@@ -62,16 +67,17 @@ class _HomePageState extends State<HomePage> {
       index: _index,
       children: [
         StartPage(
-          key: ValueKey(_devicesVersion),
+          key: ValueKey(_startVersion),
           db: widget.db,
           onWorkoutSaved: _workoutSaved,
         ),
+        IntervalsPage(db: widget.db),
         HistoryPage(key: ValueKey(_historyVersion), db: widget.db),
         DevicesPage(db: widget.db),
       ],
     );
     void select(int i) => setState(() {
-          if (_index == 2 && i != 2) _devicesVersion++;
+          if (i == _start && _index != _start) _startVersion++;
           _index = i;
         });
 
