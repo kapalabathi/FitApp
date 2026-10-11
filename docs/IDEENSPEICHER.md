@@ -32,9 +32,9 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | In Arbeit | Vorschlag |
 | I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | In Arbeit | Nutzer |
 | I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Umgesetzt | Nutzer |
-| I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Neu | Nutzer |
+| I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Umgesetzt | Nutzer |
 | I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
-| I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Geklärt | Nutzer |
+| I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | In Arbeit | Nutzer |
 | I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | In Arbeit | Nutzer |
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | In Arbeit | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |

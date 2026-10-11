@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 Map<Metric, double> decode(String characteristic, List<int> bytes) => decoders
     .firstWhere((d) => Uuids.same(d.characteristic, characteristic))
-    .decode(bytes);
+    .create()(bytes);
 
 void main() {
   test('Pulssensor: 0 gilt als „noch kein Puls"', () {

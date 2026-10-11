@@ -16,6 +16,9 @@ class HeartProfile {
   static const _birthYearKey = 'profile.birthYear';
   static const _manualMaxKey = 'profile.maxHr';
 
+  /// Unter diesem Schlüssel steht, wann das Profil zuletzt geändert wurde.
+  static const updatedAtKey = 'profile.updatedAt';
+
   final int? birthYear;
 
   /// Selbst eingetragener Maximalpuls; hat Vorrang vor der Faustformel.
@@ -32,7 +35,9 @@ class HeartProfile {
   void save(AppDatabase db) {
     db
       ..setSetting(_birthYearKey, birthYear?.toString())
-      ..setSetting(_manualMaxKey, manualMaxHr?.toString());
+      ..setSetting(_manualMaxKey, manualMaxHr?.toString())
+      ..setSetting(
+          updatedAtKey, '${DateTime.now().millisecondsSinceEpoch}');
   }
 }
 

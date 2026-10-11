@@ -2,26 +2,57 @@ import '../data/models.dart';
 import 'byte_reader.dart';
 import 'ftms.dart';
 import 'heart_rate.dart';
+import 'sensor_profiles.dart';
 import 'uuids.dart';
+
+typedef Decode = Map<Metric, double> Function(List<int> bytes);
 
 /// Übersetzt die Pakete eines Bluetooth-Merkmals in Messwerte.
 class CharacteristicDecoder {
-  const CharacteristicDecoder(this.service, this.characteristic, this.decode);
+  const CharacteristicDecoder(
+      this.service, this.characteristic, Decode Function() create)
+      : _create = create,
+        _decode = null;
+
+  /// Für Merkmale, deren Pakete für sich allein auswertbar sind.
+  const CharacteristicDecoder.stateless(
+      this.service, this.characteristic, Decode decode)
+      : _decode = decode,
+        _create = null;
 
   final String service;
   final String characteristic;
-  final Map<Metric, double> Function(List<int> bytes) decode;
+  final Decode Function()? _create;
+  final Decode? _decode;
+
+  /// Eine Auswertung für eine Verbindung. Manche Sensoren senden Zähler,
+  /// aus denen erst der Vergleich mit dem vorigen Paket einen Messwert
+  /// macht; jede Verbindung braucht dafür ihr eigenes Gedächtnis.
+  Decode create() => _decode ?? _create!();
 }
 
 /// Alle Merkmale, die die App auswertet.
 const List<CharacteristicDecoder> decoders = [
-  CharacteristicDecoder(
+  CharacteristicDecoder.stateless(
       Uuids.heartRateService, Uuids.heartRateMeasurement, _heartRate),
-  CharacteristicDecoder(Uuids.ftmsService, Uuids.treadmillData, _treadmill),
-  CharacteristicDecoder(Uuids.ftmsService, Uuids.indoorBikeData, _indoorBike),
-  CharacteristicDecoder(Uuids.pm5RowingService, Uuids.pm5GeneralStatus, pm5General),
-  CharacteristicDecoder(
+  CharacteristicDecoder.stateless(
+      Uuids.ftmsService, Uuids.treadmillData, _treadmill),
+  CharacteristicDecoder.stateless(
+      Uuids.ftmsService, Uuids.indoorBikeData, _indoorBike),
+  CharacteristicDecoder.stateless(
+      Uuids.ftmsService, Uuids.rowerData, rowerData),
+  CharacteristicDecoder.stateless(
+      Uuids.ftmsService, Uuids.crossTrainerData, crossTrainerData),
+  CharacteristicDecoder.stateless(
+      Uuids.pm5RowingService, Uuids.pm5GeneralStatus, pm5General),
+  CharacteristicDecoder.stateless(
       Uuids.pm5RowingService, Uuids.pm5AdditionalStatus, pm5Additional),
+  CharacteristicDecoder.stateless(Uuids.runningSpeedCadenceService,
+      Uuids.rscMeasurement, runningSpeedCadence),
+  CharacteristicDecoder(Uuids.cyclingPowerService,
+      Uuids.cyclingPowerMeasurement, cyclingPowerDecoder),
+  CharacteristicDecoder(Uuids.cyclingSpeedCadenceService,
+      Uuids.cscMeasurement, cyclingSpeedCadenceDecoder),
 ];
 
 Map<Metric, double> _heartRate(List<int> bytes) {

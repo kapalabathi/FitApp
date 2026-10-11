@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/database.dart';
+import '../sync/drive_sync.dart';
 import 'devices_page.dart';
 import 'history_page.dart';
 import 'intervals_page.dart';
@@ -46,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    _syncInBackground();
     if (widget.recoveredWorkouts > 0) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         final n = widget.recoveredWorkouts;
@@ -58,10 +60,21 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _workoutSaved() => setState(() {
-        _historyVersion++;
-        _index = _history;
-      });
+  void _workoutSaved() {
+    setState(() {
+      _historyVersion++;
+      _index = _history;
+    });
+    _syncInBackground();
+  }
+
+  /// Gleicht mit Google Drive ab, falls eingerichtet. Kommt dabei etwas
+  /// Neues an, lädt der Verlauf neu.
+  Future<void> _syncInBackground() async {
+    if (await DriveSync.runInBackground(widget.db) && mounted) {
+      setState(() => _historyVersion++);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

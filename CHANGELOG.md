@@ -4,6 +4,25 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.0] – 2026-10-11 (M7: Synchronisation, M8: weitere Geräteprofile)
+
+### Hinzugefügt – Synchronisation (M7)
+- Abgleich der Daten zwischen Geräten (A-061): Trainings mit Messpunkten und Runden, Intervall-Vorlagen, Übungen, Programme, Geburtsjahr und Maximalpuls. Bei Unterschieden gilt die jüngere Änderung; Gelöschtes wird überall gelöscht.
+- Sicherungsdatei: alle Daten in einer Datei erstellen und auf einem anderen Gerät einspielen; dabei wird zusammengeführt, nicht überschrieben. Funktioniert ohne Einrichtung.
+- Google Drive als Ablageort mit automatischem Abgleich beim App-Start und nach jedem Training. Braucht eine einmalige Einrichtung in der Google-Cloud-Konsole, siehe `docs/GOOGLE-DRIVE-EINRICHTUNG.md`. **Noch nicht gegen ein echtes Google-Konto erprobt.**
+- Zugang über das Synchronisations-Symbol im Verlauf.
+
+### Hinzugefügt – weitere Geräteprofile (M8, A-006)
+- Leistungsmesser am Rad (mit Trittfrequenz aus den Kurbeldaten), Tritt- und Geschwindigkeitssensoren, Laufsensoren am Schuh, Rudergeräte und Crosstrainer über FTMS. Nach dem jeweiligen Bluetooth-Standard umgesetzt, **an keinem solchen Gerät erprobt**.
+
+### Geändert
+- Mitgelieferte Übungen, Programme und Vorlagen tragen jetzt auf allen Geräten dieselbe Kennung, solange sie unverändert sind; so verdoppeln sie sich beim Abgleich nicht.
+- 24 weitere automatische Tests (insgesamt 166), darunter der Abgleich zwischen zwei simulierten Geräten.
+
+### Offen aus M8
+- Windows-Version (A-071): braucht die Visual Studio Build Tools; noch nicht begonnen.
+- Mini-App auf der Uhr (A-072): nicht umgesetzt, siehe Ideenspeicher I-018.
+
 ## [0.8.1] – 2026-10-11
 
 ### Hinzugefügt

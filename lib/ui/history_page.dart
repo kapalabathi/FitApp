@@ -5,6 +5,7 @@ import '../data/models.dart';
 import 'format.dart';
 import 'stats_views.dart';
 import 'strava_page.dart';
+import 'sync_page.dart';
 import 'workout_actions.dart';
 import 'workout_detail_page.dart';
 
@@ -254,6 +255,19 @@ class _HistoryPageState extends State<HistoryPage> {
                   if (await importFiles(context, widget.db) && mounted) {
                     _load();
                   }
+                },
+              ),
+              IconButton(
+                tooltip: 'Synchronisation',
+                icon: const Icon(Icons.sync),
+                onPressed: () async {
+                  await Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => SyncPage(db: widget.db),
+                    ),
+                  );
+                  // Ein Abgleich kann neue Trainings gebracht haben.
+                  if (mounted) _load();
                 },
               ),
               IconButton(

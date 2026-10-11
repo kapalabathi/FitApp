@@ -189,6 +189,61 @@ class AppDatabase {
       builtinProgramsBatch2.forEach(saveProgram);
       _db.execute('PRAGMA user_version = 7');
     }
+    if (version < 8) {
+      _prepareBuiltinsForSync();
+      _db.execute('PRAGMA user_version = 8');
+    }
+  }
+
+  /// Zeitstempel unveränderter mitgelieferter Inhalte. Jede Änderung des
+  /// Nutzers ist jünger und setzt sich bei der Synchronisation durch.
+  static const _pristine = 0;
+
+  /// Macht mitgelieferte Inhalte auf allen Geräten gleich erkennbar: Solange
+  /// der Nutzer sie nicht verändert hat, bekommen sie eine feste Kennung und
+  /// den Zeitstempel [_pristine]. Ohne das hätte jedes Gerät eigene Kopien
+  /// der mitgelieferten Programme, und sie würden sich bei der
+  /// Synchronisation verdoppeln.
+  void _prepareBuiltinsForSync() {
+    for (final e in builtinExercises) {
+      _db.execute(
+        'UPDATE exercises SET updated_at = ? WHERE uuid = ? AND deleted = 0 '
+        'AND name = ? AND description = ? AND category = ? AND timed = ? '
+        'AND areas = ? AND image_path IS NULL',
+        [
+          _pristine,
+          e.uuid,
+          e.name,
+          e.description,
+          e.category.id,
+          e.timed ? 1 : 0,
+          BodyArea.store(e.areas),
+        ],
+      );
+    }
+    for (final p in [...builtinPrograms, ...builtinProgramsBatch2]) {
+      _adoptBuiltin('programs', 'builtin-program:${p.name}',
+          'name = ? AND category = ? AND rounds = ? AND items = ?',
+          [p.name, p.category.id, p.rounds, p.itemsJson()]);
+    }
+    for (final t in _exampleTemplates) {
+      _adoptBuiltin('interval_templates', 'builtin-interval:${t.name}',
+          'name = ? AND target_kind = ? AND blocks = ?',
+          [t.name, t.targetKind.id, t.blocksJson()]);
+    }
+  }
+
+  void _adoptBuiltin(
+      String table, String uuid, String unchanged, List<Object?> values) {
+    final taken =
+        _db.select('SELECT 1 FROM $table WHERE uuid = ?', [uuid]).isNotEmpty;
+    if (taken) return;
+    final rows = _db.select(
+        'SELECT id FROM $table WHERE deleted = 0 AND $unchanged LIMIT 1',
+        values);
+    if (rows.isEmpty) return;
+    _db.execute('UPDATE $table SET uuid = ?, updated_at = ? WHERE id = ?',
+        [uuid, _pristine, rows.first['id']]);
   }
 
   /// Legt eine mitgelieferte Übung an, falls es sie noch nicht gibt. Schreibt
@@ -199,7 +254,15 @@ class AppDatabase {
       'INSERT OR IGNORE INTO exercises '
       '(uuid, category, name, description, builtin_key, timed, updated_at) '
       'VALUES (?, ?, ?, ?, ?, ?, ?)',
-      [e.uuid, e.category.id, e.name, e.description, e.key, e.timed ? 1 : 0, _now()],
+      [
+        e.uuid,
+        e.category.id,
+        e.name,
+        e.description,
+        e.key,
+        e.timed ? 1 : 0,
+        _pristine,
+      ],
     );
   }
 
@@ -571,6 +634,202 @@ class AppDatabase {
   void deleteProgram(int id) {
     _db.execute('UPDATE programs SET deleted = 1, updated_at = ? WHERE id = ?',
         [_now(), id]);
+  }
+
+  // --- Synchronisation ---
+
+  /// Die Tabellen kleiner Inhalte, die als Ganzes abgeglichen werden, mit
+  /// den Spalten, die dabei mitgehen. Das eigene Bild einer Übung bleibt
+  /// außen vor: Es ist eine Datei auf diesem Gerät.
+  static const syncTables = {
+    'interval_templates': ['name', 'target_kind', 'blocks'],
+    'exercises': [
+      'category',
+      'name',
+      'description',
+      'builtin_key',
+      'timed',
+      'areas',
+    ],
+    'programs': ['name', 'category', 'rounds', 'items'],
+  };
+
+  /// Alle Zeilen einer Tabelle für den Abgleich, auch die gelöschten.
+  List<Map<String, Object?>> syncRows(String table) {
+    final columns = ['uuid', 'updated_at', 'deleted', ...syncTables[table]!];
+    return _db
+        .select('SELECT ${columns.join(', ')} FROM $table')
+        .map((r) => {for (final c in columns) c: r[c]})
+        .toList();
+  }
+
+  /// Übernimmt eine Zeile von einem anderen Gerät, wenn sie hier fehlt oder
+  /// dort jünger ist. Gibt zurück, ob sich etwas geändert hat.
+  bool applySyncRow(String table, Map<String, Object?> row) {
+    final columns = ['updated_at', 'deleted', ...syncTables[table]!];
+    final uuid = row['uuid'] as String;
+    final local =
+        _db.select('SELECT updated_at FROM $table WHERE uuid = ?', [uuid]);
+    final values = [for (final c in columns) row[c]];
+    if (local.isEmpty) {
+      _db.execute(
+        'INSERT INTO $table (${columns.join(', ')}, uuid) '
+        'VALUES (${List.filled(columns.length + 1, '?').join(', ')})',
+        [...values, uuid],
+      );
+      return true;
+    }
+    if ((row['updated_at'] as int) <= (local.first['updated_at'] as int)) {
+      return false;
+    }
+    _db.execute(
+      'UPDATE $table SET ${columns.map((c) => '$c = ?').join(', ')} '
+      'WHERE uuid = ?',
+      [...values, uuid],
+    );
+    return true;
+  }
+
+  static const _workoutSyncColumns = [
+    'sport',
+    'title',
+    'started_at',
+    'duration_s',
+    'distance_m',
+    'avg_hr',
+    'max_hr',
+    'avg_power',
+    'max_power',
+    'avg_cadence',
+    'energy_kcal',
+    'ascent_m',
+    'notes',
+    'status',
+    'strava_id',
+    'imported',
+  ];
+  static const _sampleSyncColumns = [
+    't',
+    'hr',
+    'speed',
+    'cadence',
+    'power',
+    'distance',
+    'incline',
+    'resistance',
+    'lat',
+    'lon',
+    'altitude',
+  ];
+
+  /// Kennung, Stand und Löschmarke aller abgeschlossenen Trainings.
+  List<Map<String, Object?>> workoutSyncIndex() => _db
+      .select(
+        'SELECT uuid, updated_at, deleted FROM workouts WHERE status != ?',
+        [WorkoutStatus.recording.id],
+      )
+      .map((r) => {
+            'uuid': r['uuid'],
+            'updated_at': r['updated_at'],
+            'deleted': r['deleted'],
+          })
+      .toList();
+
+  /// Ein Training mit Messpunkten und Runden, wie es zu einem anderen Gerät
+  /// geht.
+  Map<String, Object?> workoutSyncData(String uuid) {
+    final row =
+        _db.select('SELECT * FROM workouts WHERE uuid = ?', [uuid]).first;
+    final id = row['id'] as int;
+    return {
+      'uuid': uuid,
+      'updated_at': row['updated_at'],
+      for (final c in _workoutSyncColumns) c: row[c],
+      'samples': [
+        for (final s in _db.select(
+            'SELECT * FROM samples WHERE workout_id = ? ORDER BY t', [id]))
+          [for (final c in _sampleSyncColumns) s[c]],
+      ],
+      'laps': [
+        for (final l in _db
+            .select('SELECT * FROM laps WHERE workout_id = ? ORDER BY t', [id]))
+          [l['t'], l['distance'], l['auto']],
+      ],
+    };
+  }
+
+  /// Übernimmt ein Training von einem anderen Gerät samt Messpunkten und
+  /// Runden. Der Zeitstempel bleibt der des anderen Geräts, damit das
+  /// Training nicht als hier geändert gilt und zurückgeschickt wird.
+  void applySyncedWorkout(Map<String, Object?> data) {
+    final uuid = data['uuid'] as String;
+    _db.execute('BEGIN');
+    try {
+      var rows = _db.select('SELECT id FROM workouts WHERE uuid = ?', [uuid]);
+      if (rows.isEmpty) {
+        _db.execute(
+          'INSERT INTO workouts (uuid, sport, started_at, status, updated_at) '
+          'VALUES (?, ?, 0, ?, 0)',
+          [uuid, Sport.other.id, WorkoutStatus.finished.id],
+        );
+        rows = _db.select('SELECT id FROM workouts WHERE uuid = ?', [uuid]);
+      }
+      final id = rows.first['id'] as int;
+      _db.execute('DELETE FROM samples WHERE workout_id = ?', [id]);
+      _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
+      _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
+      _db.execute(
+        'UPDATE workouts SET '
+        '${_workoutSyncColumns.map((c) => '$c = ?').join(', ')}, '
+        'updated_at = ?, deleted = 0 WHERE id = ?',
+        [
+          for (final c in _workoutSyncColumns) data[c],
+          data['updated_at'],
+          id,
+        ],
+      );
+      final placeholders = List.filled(_sampleSyncColumns.length + 1, '?');
+      for (final s in data['samples'] as List) {
+        _db.execute(
+          'INSERT INTO samples (workout_id, ${_sampleSyncColumns.join(', ')}) '
+          'VALUES (${placeholders.join(', ')})',
+          [id, ...s as List],
+        );
+      }
+      for (final l in data['laps'] as List) {
+        _db.execute(
+          'INSERT INTO laps (workout_id, t, distance, auto) VALUES (?, ?, ?, ?)',
+          [id, ...l as List],
+        );
+      }
+      computeBestEfforts(id);
+      _db.execute('COMMIT');
+    } catch (_) {
+      _db.execute('ROLLBACK');
+      rethrow;
+    }
+  }
+
+  /// Übernimmt die Löschung eines Trainings von einem anderen Gerät. Kennt
+  /// dieses Gerät das Training gar nicht, merkt es sich trotzdem die
+  /// Löschmarke: Sonst würde ein drittes Gerät, das das Training noch hat,
+  /// es wieder in Umlauf bringen.
+  void applySyncedDeletion(String uuid, int updatedAt) {
+    final rows = _db.select('SELECT id FROM workouts WHERE uuid = ?', [uuid]);
+    if (rows.isEmpty) {
+      _db.execute(
+        'INSERT INTO workouts (uuid, sport, started_at, status, updated_at, '
+        'deleted) VALUES (?, ?, 0, ?, ?, 1)',
+        [uuid, Sport.other.id, WorkoutStatus.finished.id, updatedAt],
+      );
+      return;
+    }
+    final id = rows.first['id'] as int;
+    _db.execute('DELETE FROM samples WHERE workout_id = ?', [id]);
+    _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
+    _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
+    _db.execute('UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
+        [updatedAt, id]);
   }
 
   // --- Strava ---

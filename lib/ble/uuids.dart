@@ -22,6 +22,11 @@ abstract final class Uuids {
   // Herzfrequenz
   static const heartRateMeasurement = '2a37';
 
+  // Sensoren an Rad und Schuh
+  static const cyclingPowerMeasurement = '2a63';
+  static const cscMeasurement = '2a5b';
+  static const rscMeasurement = '2a53';
+
   // Fitnessgeräte (FTMS)
   static const ftmsFeature = '2acc';
   static const treadmillData = '2acd';
@@ -65,6 +70,9 @@ abstract final class Uuids {
       pm5GeneralStatus: 'Concept2 Status',
       pm5AdditionalStatus: 'Concept2 Zusatzstatus',
       heartRateMeasurement: 'Herzfrequenz-Messwert',
+      cyclingPowerMeasurement: 'Leistungsmessung',
+      cscMeasurement: 'Tritt- und Geschwindigkeitsmessung',
+      rscMeasurement: 'Laufmessung',
       ftmsFeature: 'FTMS-Fähigkeiten',
       treadmillData: 'Laufband-Daten',
       crossTrainerData: 'Crosstrainer-Daten',

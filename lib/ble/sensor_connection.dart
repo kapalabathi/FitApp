@@ -126,9 +126,10 @@ class SensorConnection extends ChangeNotifier {
               !Uuids.same(c.uuid, decoder.characteristic)) {
             continue;
           }
+          final decode = decoder.create();
           _subs.add(c.onValueReceived.listen((bytes) {
             try {
-              final values = decoder.decode(bytes);
+              final values = decode(bytes);
               if (values.isNotEmpty) onData(saved, values);
             } on FormatException {
               // Ein unverständliches Paket darf das Training nicht stören.
