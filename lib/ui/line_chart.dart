@@ -13,6 +13,9 @@ class LineChart extends StatelessWidget {
     required this.unit,
     required this.values,
     required this.color,
+    this.format,
+    this.lowerIsBetter = false,
+    this.average,
   });
 
   final String title;
@@ -22,15 +25,28 @@ class LineChart extends StatelessWidget {
   final List<double?> values;
   final Color color;
 
+  /// Wie ein Wert geschrieben wird; ohne Angabe mit einer Nachkommastelle.
+  final String Function(double value)? format;
+
+  /// Bei Zeiten wie der Pace ist der kleinere Wert der bessere. Dann steht
+  /// er oben, damit „schneller" in der Kurve nach oben zeigt.
+  final bool lowerIsBetter;
+
+  /// Der Mittelwert, wenn er sich nicht als Mittel der Einzelwerte ergibt.
+  final double? average;
+
   @override
   Widget build(BuildContext context) {
     final present = values.whereType<double>().toList();
     if (present.isEmpty) return const SizedBox.shrink();
     final min = present.reduce((a, b) => a < b ? a : b);
     final max = present.reduce((a, b) => a > b ? a : b);
-    final avg = present.reduce((a, b) => a + b) / present.length;
+    final avg = average ?? present.reduce((a, b) => a + b) / present.length;
     final theme = Theme.of(context);
-    String withUnit(double v) => '${formatDecimal(v)} $unit'.trim();
+    String withUnit(double v) =>
+        '${(format ?? formatDecimal)(v)} $unit'.trim();
+    final top = lowerIsBetter ? min : max;
+    final bottom = lowerIsBetter ? max : min;
     final axisStyle = theme.textTheme.labelSmall
         ?.copyWith(color: theme.colorScheme.onSurfaceVariant);
 
@@ -44,8 +60,9 @@ class LineChart extends StatelessWidget {
           ],
         ),
         const SizedBox(height: 4),
-        // Größter und kleinster Wert stehen an der oberen und unteren Linie.
-        Text(withUnit(max), style: axisStyle),
+        // Die Werte der oberen und unteren Linie, mit Einheit.
+        Text('${lowerIsBetter ? 'min' : 'max'} ${withUnit(top)}',
+            style: axisStyle),
         SizedBox(
           height: 120,
           width: double.infinity,
@@ -54,12 +71,14 @@ class LineChart extends StatelessWidget {
               values: values,
               min: min,
               max: max,
+              inverted: lowerIsBetter,
               line: color,
               grid: theme.colorScheme.outlineVariant,
             ),
           ),
         ),
-        Text(withUnit(min), style: axisStyle),
+        Text('${lowerIsBetter ? 'max' : 'min'} ${withUnit(bottom)}',
+            style: axisStyle),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -78,6 +97,7 @@ class _LinePainter extends CustomPainter {
     required this.values,
     required this.min,
     required this.max,
+    required this.inverted,
     required this.line,
     required this.grid,
   });
@@ -85,6 +105,9 @@ class _LinePainter extends CustomPainter {
   final List<double?> values;
   final double min;
   final double max;
+
+  /// Der kleinste Wert liegt oben statt unten.
+  final bool inverted;
   final Color line;
   final Color grid;
 
@@ -100,9 +123,11 @@ class _LinePainter extends CustomPainter {
 
     // Bei konstanten Werten liegt die Linie in der Mitte statt am Rand.
     final span = max - min;
-    double yOf(double v) => span == 0
-        ? size.height / 2
-        : size.height - (v - min) / span * size.height;
+    double yOf(double v) {
+      if (span == 0) return size.height / 2;
+      final fromBottom = (v - min) / span * size.height;
+      return inverted ? fromBottom : size.height - fromBottom;
+    }
     final dx = values.length > 1 ? size.width / (values.length - 1) : 0.0;
 
     final path = Path();
@@ -133,5 +158,8 @@ class _LinePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_LinePainter old) =>
-      old.values != values || old.line != line || old.grid != grid;
+      old.values != values ||
+      old.inverted != inverted ||
+      old.line != line ||
+      old.grid != grid;
 }

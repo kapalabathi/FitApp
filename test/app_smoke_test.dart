@@ -91,9 +91,10 @@ void main() {
       expect(find.text('21 kcal'), findsOneWidget);
       // Kurven mit Achsenwerten samt Einheit
       await tester.scrollUntilVisible(find.text('Geschwindigkeit'), 200);
-      expect(find.text('25,0 km/h'), findsWidgets);
+      expect(find.text('max 25,0 km/h'), findsOneWidget);
+      expect(find.text('min 25,0 km/h'), findsOneWidget);
       await tester.scrollUntilVisible(find.text('Trittfrequenz'), 200);
-      expect(find.text('85,0 /min'), findsWidgets);
+      expect(find.text('max 85,0 /min'), findsOneWidget);
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
 
@@ -101,6 +102,7 @@ void main() {
       await tester.tap(find.text('Umfang'));
       await tester.pumpAndSettle();
       expect(find.text('Wochen'), findsOneWidget);
+      expect(find.textContaining('Zeit je Woche in h'), findsOneWidget);
       await tester.tap(find.text('Pulszonen'));
       await tester.pumpAndSettle();
       expect(find.text('Geburtsjahr eingeben'), findsOneWidget);

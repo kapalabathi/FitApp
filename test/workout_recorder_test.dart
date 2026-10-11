@@ -75,11 +75,58 @@ void main() {
 
   test('mit Distanzzähler zählt nur dessen Zuwachs seit Trainingsbeginn', () {
     // Das Band lief schon 500 m, bevor das Training begann.
-    recorder.onData('band', {Metric.distanceTotal: 500, Metric.speed: 36.0});
+    recorder.onData('band', {Metric.distanceTotal: 500});
     run(1);
     recorder.onData('band', {Metric.distanceTotal: 503});
     run(1);
     expect(recorder.distanceM, 3);
+  });
+
+  test('zwischen groben Zählerschritten läuft die Strecke gleichmäßig weiter',
+      () {
+    // Wie das Domyos-Laufband: 9 km/h, der Zähler springt alle 4 s um 10 m.
+    final seen = <double>[];
+    for (var t = 0; t <= 12; t++) {
+      recorder.onData('band', {
+        Metric.speed: 9.0,
+        Metric.distanceTotal: (t ~/ 4) * 10.0,
+      });
+      run(1);
+      seen.add(recorder.distanceM);
+    }
+    // Jede Sekunde 2,5 m statt alle vier Sekunden 10 m
+    expect(seen.take(5), [2.5, 5.0, 7.5, 10.0, 12.5]);
+    for (var i = 1; i < seen.length; i++) {
+      expect(seen[i] - seen[i - 1], inInclusiveRange(0, 2.5 + 1e-9));
+    }
+    // Am Ende höchstens einen Zählerschritt über dem Zähler (30 m)
+    expect(recorder.distanceM, inInclusiveRange(30, 40));
+  });
+
+  test('nach einem Verbindungsabbruch holt der Zähler die Strecke nach', () {
+    for (var t = 0; t < 4; t++) {
+      recorder.onData('band', {Metric.speed: 9.0, Metric.distanceTotal: 0});
+      run(1);
+    }
+    recorder.onData('band', {Metric.speed: 9.0, Metric.distanceTotal: 10});
+    run(1);
+    // 12 s ohne Daten; die Geschwindigkeit gilt nach 5 s als veraltet.
+    run(12);
+    final during = recorder.distanceM;
+    expect(during, lessThanOrEqualTo(20)); // nie mehr als ein Schritt voraus
+    recorder.onData('band', {Metric.speed: 9.0, Metric.distanceTotal: 40});
+    run(1);
+    expect(recorder.distanceM, inInclusiveRange(40, 50));
+  });
+
+  test('ein fein zählendes Gerät bestimmt die Strecke allein', () {
+    // Zähler in Metern, Geschwindigkeit absichtlich zu hoch gemeldet
+    for (var t = 1; t <= 10; t++) {
+      recorder.onData('band', {Metric.speed: 36.0, Metric.distanceTotal: t * 2.0});
+      run(1);
+    }
+    // Höchstens einen Zählerschritt (2 m) über dem Zählerstand von 18 m
+    expect(recorder.distanceM, inInclusiveRange(18, 20));
   });
 
   test('ein zurückgesetzter Distanzzähler erzeugt keine Strecke', () {

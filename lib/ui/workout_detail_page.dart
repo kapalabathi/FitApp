@@ -107,6 +107,9 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
     if (context.mounted) Navigator.of(context).pop();
   }
 
+  /// Langsamere Abschnitte erscheinen in der Pace-Kurve als Lücke.
+  static const _slowestPaceKmh = 2.0;
+
   /// Verteilt die Messpunkte auf eine lückenlose Sekundenachse.
   static List<double?> _series(
       List<Sample> samples, int length, double? Function(Sample) pick) {
@@ -137,7 +140,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
       if (w.avgSpeedKmh case final v?) ...[
         ('Ø Geschwindigkeit', '${formatDecimal(v)} km/h'),
         if (formatPace(v, perMeters: skiErg ? 500 : 1000) case final pace?)
-          (skiErg ? 'Ø Tempo /500 m' : 'Ø Tempo /km', pace),
+          (skiErg ? 'Ø min/500 m' : 'Ø min/km', pace),
       ],
       if (w.avgHeartRate != null) ('Ø Puls', '${w.avgHeartRate}'),
       if (w.maxHeartRate != null) ('Max. Puls', '${w.maxHeartRate}'),
@@ -151,6 +154,11 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
 
     List<double?> series(double? Function(Sample) pick) =>
         _series(samples, w.durationS, pick);
+
+    // Bei diesen Sportarten zählt die Pace mehr als die Geschwindigkeit.
+    final showsPace = w.sport == Sport.treadmill || w.sport.usesGps || skiErg;
+    final paceMeters = skiErg ? 500 : 1000;
+    final avgSpeed = w.avgSpeedKmh;
 
     final route = [
       for (final s in samples)
@@ -269,12 +277,34 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
               color: scheme.error,
               values: series((s) => s.heartRate?.toDouble()),
             ),
-            LineChart(
-              title: 'Geschwindigkeit',
-              unit: 'km/h',
-              color: scheme.primary,
-              values: series((s) => s.speedKmh),
-            ),
+            if (showsPace)
+              LineChart(
+                title: 'Pace',
+                unit: skiErg ? 'min/500 m' : 'min/km',
+                color: scheme.primary,
+                lowerIsBetter: true,
+                format: (seconds) => formatDuration(seconds.round()),
+                // Der Durchschnitt ergibt sich aus Strecke und Zeit, nicht
+                // aus dem Mittel der Sekundenwerte.
+                average: avgSpeed == null || avgSpeed < _slowestPaceKmh
+                    ? null
+                    : paceMeters / (avgSpeed / 3.6),
+                values: series((s) {
+                  final v = s.speedKmh;
+                  // Im Stand wäre die Pace unendlich und würde die Kurve
+                  // unlesbar strecken.
+                  return v == null || v < _slowestPaceKmh
+                      ? null
+                      : paceMeters / (v / 3.6);
+                }),
+              )
+            else
+              LineChart(
+                title: 'Geschwindigkeit',
+                unit: 'km/h',
+                color: scheme.primary,
+                values: series((s) => s.speedKmh),
+              ),
             LineChart(
               title: 'Leistung',
               unit: 'W',
@@ -333,7 +363,7 @@ class _LapTable extends StatelessWidget {
             'Runde',
             'Zeit',
             'Strecke',
-            skiErg ? 'Tempo /500 m' : 'Tempo /km',
+            skiErg ? 'min/500 m' : 'min/km',
           ])
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 4),

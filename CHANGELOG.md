@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.2] – 2026-10-11
+
+Anlass: erster Lauf des Nutzers auf dem Laufband mit Steuerung; ausgewertet anhand der exportierten FIT-Datei (24,5 Minuten, 20 Verbindungsabbrüche).
+
+### Behoben
+- Verbindungsabbrüche zum Laufband: Die Datei zeigt Abbrüche in sehr gleichmäßigem Abstand von rund 73 Sekunden. Vermutete Ursache: Das Band trennt, wenn es etwa eine Minute nichts von der App empfängt. Die App sendet einem steuerbaren Fitnessgerät jetzt alle 20 Sekunden ein Lebenszeichen. **Ob das die Abbrüche beendet, muss der nächste Lauf zeigen.**
+- Nach einem Abbruch verbindet die App einmal sofort neu, statt erst 3 Sekunden zu warten und 4 Sekunden zu suchen. Eine Lücke dauert damit voraussichtlich 1 bis 2 statt 9 Sekunden und bleibt in den Daten unsichtbar.
+- Sprünge in Strecke und Pace: Das Laufband zählt die Strecke nur in 10-m-Schritten. Zwischen zwei Zählerschritten schreibt die App die Strecke jetzt aus der Geschwindigkeit fort und richtet sich bei jedem Schritt wieder am Zähler aus.
+
+### Geändert
+- Kachel „Tempo /km" heißt „min/km" (Wunsch des Nutzers); beim SkiErg „min/500 m". Wo es eine Pace gibt (Laufband, Laufen, Spazieren/Wandern, SkiErg), entfällt die Kachel mit km/h.
+- Detailansicht: Bei diesen Sportarten zeigt die Kurve die Pace statt der Geschwindigkeit; die schnellere Pace liegt oben.
+- Verlaufskurven beschriften den oberen und unteren Wert mit „max" und „min" samt Einheit.
+- Umfang: Über dem Diagramm stehen Größe, Einheit und größter Wert, über jedem Balken sein Wert.
+- Drei weitere automatische Tests (insgesamt 171).
+
 ## [0.9.1] – 2026-10-11
 
 ### Behoben

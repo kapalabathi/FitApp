@@ -73,6 +73,14 @@ class WorkoutRecorder {
   bool _machineCountsDistance = false;
   bool _machineCountsEnergy = false;
 
+  // Manche Geräte zählen die Strecke nur grob, das Domyos-Laufband etwa in
+  // Schritten von 10 m. Zwischen zwei Zählerschritten schreibt die App die
+  // Strecke deshalb aus der Geschwindigkeit fort; der Zähler bleibt das
+  // Maß, an dem sie sich bei jedem Schritt wieder ausrichtet.
+  double _counterDistanceM = 0;
+  double _sinceCounterStepM = 0;
+  double? _counterResolutionM;
+
   GpsFix? _lastFix;
   DateTime? _lastFixAt;
   GpsFix? _distanceAnchor;
@@ -207,7 +215,14 @@ class WorkoutRecorder {
       if (metric == Metric.distanceTotal) {
         final step = _counterStep(source, metric, value, _maxDistanceStepM);
         _machineCountsDistance = true;
-        if (!_paused) _distanceM += step;
+        if (!_paused && step > 0) {
+          _counterDistanceM += step;
+          final rest = _sinceCounterStepM - step;
+          _sinceCounterStepM = rest > 0 ? rest : 0;
+          final finest = _counterResolutionM;
+          if (finest == null || step < finest) _counterResolutionM = step;
+          _alignDistanceToCounter();
+        }
       } else if (metric == Metric.energyTotal) {
         final step = _counterStep(source, metric, value, _maxEnergyStepKcal);
         _machineCountsEnergy = true;
@@ -215,6 +230,18 @@ class WorkoutRecorder {
       }
       source.values[metric] = _Reading(value, now);
     });
+  }
+
+  /// Die Strecke ist der Zählerstand plus das seit dem letzten
+  /// Zählerschritt Zurückgelegte, höchstens aber einen Zählerschritt mehr.
+  /// Sie läuft nie rückwärts.
+  void _alignDistanceToCounter() {
+    final finest = _counterResolutionM;
+    final ahead = finest != null && _sinceCounterStepM > finest
+        ? finest
+        : _sinceCounterStepM;
+    final estimate = _counterDistanceM + ahead;
+    if (estimate > _distanceM) _distanceM = estimate;
   }
 
   /// Zuwachs eines Gerätezählers seit dem letzten Paket; 0 beim ersten Paket,
@@ -271,8 +298,13 @@ class WorkoutRecorder {
     if (_paused || _finished) return null;
     _elapsedS++;
     final speed = value(Metric.speed);
-    if (!_machineCountsDistance && !_gpsCountsDistance && speed != null) {
-      _distanceM += speed / 3.6;
+    if (!_gpsCountsDistance && speed != null) {
+      if (_machineCountsDistance) {
+        _sinceCounterStepM += speed / 3.6;
+        _alignDistanceToCounter();
+      } else {
+        _distanceM += speed / 3.6;
+      }
     }
     final position = gpsAccuracyM == null ? null : _lastFix;
     db.addSample(

@@ -55,17 +55,20 @@ class _LivePageState extends State<LivePage> {
     }
 
     final ({String label, String? value}) pace = sport == Sport.skiErg
-        ? (label: 'Tempo /500 m', value: formatPace(speed, perMeters: 500))
+        ? (label: 'min/500 m', value: formatPace(speed, perMeters: 500) ?? '–')
         : sport == Sport.treadmill || sport.usesGps
-            ? (label: 'Tempo /km', value: formatPace(speed) ?? '–')
+            ? (label: 'min/km', value: formatPace(speed) ?? '–')
             : (label: '', value: null);
 
     final candidates = <({String label, String? value})>[
       (label: 'Zeit', value: formatDuration(r.elapsedS)),
       (label: 'Puls', value: number(Metric.heartRate) ?? '–'),
       (label: 'Distanz km', value: formatKm(r.distanceM)),
-      (label: 'Geschwindigkeit km/h', value: number(Metric.speed, decimals: 1)),
-      pace,
+      // Wo die Pace zählt, steht sie statt der Geschwindigkeit.
+      if (pace.value == null)
+        (label: 'Geschwindigkeit km/h', value: number(Metric.speed, decimals: 1))
+      else
+        pace,
       (label: 'Leistung W', value: number(Metric.power)),
       (label: '${sport.cadenceLabel} /min', value: number(Metric.cadence)),
       (label: 'Steigung %', value: number(Metric.incline, decimals: 1)),

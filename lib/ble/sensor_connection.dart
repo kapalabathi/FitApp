@@ -29,6 +29,11 @@ class SensorConnection extends ChangeNotifier {
 
   static const _connectTimeout = Duration(seconds: 15);
   static const _retryDelay = Duration(seconds: 3);
+
+  /// In diesem Abstand bekommt ein steuerbares Fitnessgerät ein
+  /// Lebenszeichen. Das Domyos-Laufband trennt die Verbindung, wenn es
+  /// rund eine Minute lang nichts von der App empfängt.
+  static const _keepAliveInterval = Duration(seconds: 20);
   static const _disconnectTimeout = Duration(seconds: 5);
 
   final SavedDevice saved;
@@ -39,6 +44,7 @@ class SensorConnection extends ChangeNotifier {
   final List<StreamSubscription<dynamic>> _subs = [];
   StreamSubscription<bool>? _linkSub;
   Completer<void>? _lost;
+  Timer? _keepAlive;
   bool _stopped = false;
 
   LinkState _state = LinkState.connecting;
@@ -84,31 +90,48 @@ class SensorConnection extends ChangeNotifier {
 
   Future<void> _run() async {
     var first = true;
+    // Nach einem Abbruch wird einmal sofort neu verbunden; meist ist das
+    // Gerät noch da, und die Lücke bleibt so kurz, dass sie nicht auffällt.
+    // Erst wenn das scheitert, folgen Wartezeit und Suche.
+    var retryAtOnce = false;
     while (!_stopped) {
       _setState(first ? LinkState.connecting : LinkState.reconnecting);
       first = false;
+      var wasConnected = false;
       try {
         await _device.connect(timeout: _connectTimeout);
         final lost = _lost = Completer<void>();
         final services = await _device.discoverServices();
         await _subscribe(services);
-        control = await MachineControl.attach(services, _subs);
+        final machine = control = await MachineControl.attach(services, _subs);
         if (_stopped) break;
         lastError = null;
         connectCount++;
+        wasConnected = true;
+        if (machine != null) {
+          _keepAlive =
+              Timer.periodic(_keepAliveInterval, (_) => machine.keepAlive());
+        }
         _setState(LinkState.connected);
         await lost.future;
       } catch (e) {
         lastError = '$e';
       }
+      _keepAlive?.cancel();
       control = null;
       await _dropSubscriptions();
       if (_stopped) break;
       _setState(LinkState.reconnecting);
+      if (wasConnected && !retryAtOnce) {
+        retryAtOnce = true;
+        continue;
+      }
+      retryAtOnce = false;
       await Future<void>.delayed(_retryDelay);
       if (_stopped) break;
       await _refreshScan();
     }
+    _keepAlive?.cancel();
     // Ein Verbindungsaufbau, der beim Stoppen noch lief, kann erst danach
     // fertig geworden sein; das Gerät soll nicht verbunden zurückbleiben.
     try {
@@ -258,10 +281,30 @@ class MachineControl {
     }
   }
 
-  Future<FtmsResponse> _send(List<int> command) async {
-    final pending = _pending = Completer<FtmsResponse>();
-    await _point.write(command);
-    return pending.future.timeout(_answerTimeout);
+  Future<void> _busy = Future.value();
+
+  /// Sendet einen Befehl und wartet auf die Antwort. Befehle laufen streng
+  /// nacheinander: Das Gerät beantwortet immer nur den zuletzt gesendeten.
+  Future<FtmsResponse> _send(List<int> command) {
+    final answer = _busy.then((_) async {
+      final pending = _pending = Completer<FtmsResponse>();
+      await _point.write(command);
+      return pending.future.timeout(_answerTimeout);
+    });
+    _busy = answer.then((_) {}, onError: (_) {});
+    return answer;
+  }
+
+  /// Meldet sich beim Gerät, damit es die Verbindung nicht wegen Stille
+  /// trennt. Dafür dient die Bitte um Steuererlaubnis: Sie ändert nichts am
+  /// laufenden Training und darf beliebig oft gestellt werden.
+  Future<void> keepAlive() async {
+    try {
+      final answer = await _send(ftmsRequestControl);
+      if (answer.success) _hasControl = true;
+    } catch (_) {
+      // Ein verpasstes Lebenszeichen ist kein Fehler; das nächste folgt.
+    }
   }
 
   /// Setzt einen Zielwert. Gibt `null` zurück, wenn das Gerät ihn angenommen

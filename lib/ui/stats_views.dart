@@ -25,6 +25,19 @@ enum _VolumeMetric {
         distance => b.meters,
         count => b.count.toDouble(),
       };
+
+  String get unit => switch (this) {
+        time => 'h',
+        distance => 'km',
+        count => 'Trainings',
+      };
+
+  /// Der Wert in der Einheit der Achse, ohne die Einheit selbst.
+  String format(double value) => switch (this) {
+        time => formatDecimal(value / 3600),
+        distance => formatDecimal(value / 1000),
+        count => value.round().toString(),
+      };
 }
 
 /// Trainingsumfang der letzten zwölf Wochen oder Monate (Lastenheft A-051).
@@ -91,8 +104,14 @@ class _VolumeViewState extends State<VolumeView> {
           ],
         ),
         const SizedBox(height: 16),
+        Text(
+          '${_metric.label} je ${week ? 'Woche' : 'Monat'} in ${_metric.unit}'
+          '  ·  max ${_metric.format(largest)} ${_metric.unit}',
+          style: theme.textTheme.labelMedium,
+        ),
+        const SizedBox(height: 8),
         SizedBox(
-          height: 180,
+          height: 200,
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -103,6 +122,19 @@ class _VolumeViewState extends State<VolumeView> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
+                        // Der Wert jedes Balkens steht darüber.
+                        SizedBox(
+                          height: 16,
+                          child: FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Text(
+                              _metric.of(buckets[i]) == 0
+                                  ? ''
+                                  : _metric.format(_metric.of(buckets[i])),
+                              style: theme.textTheme.labelSmall,
+                            ),
+                          ),
+                        ),
                         Expanded(
                           child: Align(
                             alignment: Alignment.bottomCenter,
