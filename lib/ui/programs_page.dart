@@ -198,43 +198,9 @@ class _ProgramsPageState extends State<ProgramsPage> {
                         Expanded(
                           child: exercises.isEmpty
                               ? const Center(child: Text('Keine Übungen.'))
-                              : GridView.builder(
-                                  padding: const EdgeInsets.fromLTRB(
-                                    12,
-                                    0,
-                                    12,
-                                    88,
-                                  ),
-                                  gridDelegate:
-                                      const SliverGridDelegateWithMaxCrossAxisExtent(
-                                        maxCrossAxisExtent: 180,
-                                        mainAxisSpacing: 12,
-                                        crossAxisSpacing: 12,
-                                        childAspectRatio: 0.8,
-                                      ),
-                                  itemCount: exercises.length,
-                                  itemBuilder: (context, i) {
-                                    final e = exercises[i];
-                                    return InkWell(
-                                      borderRadius: BorderRadius.circular(12),
-                                      onTap: () => _openExercise(e),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          ExerciseImage(exercise: e),
-                                          const SizedBox(height: 4),
-                                          Expanded(
-                                            child: Text(
-                                              e.name,
-                                              maxLines: 2,
-                                              overflow: TextOverflow.ellipsis,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    );
-                                  },
+                              : _ExerciseGrid(
+                                  exercises: exercises,
+                                  onOpen: _openExercise,
                                 ),
                         ),
                       ],
@@ -259,3 +225,66 @@ String programSummary(Program p) => [
   if (p.rounds > 1) '${p.rounds} Runden',
   '${p.hasRepetitions ? 'mind. ' : ''}${formatDuration(p.timedSeconds)}',
 ].join('  ·  ');
+
+/// Die Übungen als Raster aus Bild und Name.
+class _ExerciseGrid extends StatelessWidget {
+  const _ExerciseGrid({required this.exercises, required this.onOpen});
+
+  final List<Exercise> exercises;
+  final void Function(Exercise) onOpen;
+
+  static const _maxTileWidth = 180.0;
+  static const _spacing = 12.0;
+  static const _gapBelowImage = 6.0;
+  static const _nameLines = 2;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = Theme.of(context).textTheme.bodyMedium!;
+    // Höhe von zwei Textzeilen in der Schriftgröße, die der Nutzer im System
+    // eingestellt hat; ein festes Seitenverhältnis würde den Namen bei
+    // großer Schrift abschneiden.
+    final nameHeight = MediaQuery.textScalerOf(context).scale(style.fontSize!) *
+        (style.height ?? 1.43) *
+        _nameLines;
+
+    return LayoutBuilder(
+      builder: (context, box) {
+        final width = box.maxWidth - 2 * _spacing;
+        final columns = (width / _maxTileWidth).ceil().clamp(2, 12);
+        final tileWidth = (width - (columns - 1) * _spacing) / columns;
+        return GridView.builder(
+          padding: const EdgeInsets.fromLTRB(_spacing, 0, _spacing, 88),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: columns,
+            mainAxisSpacing: _spacing,
+            crossAxisSpacing: _spacing,
+            // Das Bild ist quadratisch; darunter haben zwei Zeilen Platz.
+            mainAxisExtent: tileWidth + _gapBelowImage + nameHeight + 2,
+          ),
+          itemCount: exercises.length,
+          itemBuilder: (context, i) {
+            final e = exercises[i];
+            return InkWell(
+              borderRadius: BorderRadius.circular(12),
+              onTap: () => onOpen(e),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ExerciseImage(exercise: e),
+                  const SizedBox(height: _gapBelowImage),
+                  Text(
+                    e.name,
+                    style: style,
+                    maxLines: _nameLines,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}

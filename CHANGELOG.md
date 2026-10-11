@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.1] – 2026-10-11
+
+### Behoben
+- Im Raster der Übungen wurden Namen, die zwei Zeilen brauchen, unten abgeschnitten (gemeldet vom Nutzer). Jede Kachel reserviert jetzt Platz für zwei Zeilen in der eingestellten Schriftgröße, auch bei vergrößerter Systemschrift.
+
+### Hinzugefügt
+- 44 weitere Übungsgrafiken eingebunden; damit sind 124 von 160 vorhanden.
+- Zwei automatische Tests für das Raster bei normaler und großer Schrift (insgesamt 168).
+
 ## [0.9.0] – 2026-10-11 (M7: Synchronisation, M8: weitere Geräteprofile)
 
 ### Hinzugefügt – Synchronisation (M7)

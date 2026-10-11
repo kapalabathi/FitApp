@@ -396,6 +396,38 @@ void main() {
     expect(db.workouts(), hasLength(2));
   });
 
+  for (final scale in const [1.0, 1.6]) {
+    testWidgets(
+        'lange Übungsnamen haben im Raster Platz für zwei Zeilen '
+        '(Schriftgröße ×$scale)', (tester) async {
+      tester.view.physicalSize = const Size(400, 800);
+      tester.view.devicePixelRatio = 1;
+      tester.platformDispatcher.textScaleFactorTestValue = scale;
+      addTearDown(tester.view.reset);
+      addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
+
+      await tester.pumpWidget(FitApp(db: db));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Programme').first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Übungen'));
+      await tester.pumpAndSettle();
+      // Ein Name, der bei dieser Breite umbricht, ist vollständig zu sehen:
+      // Der Text ist höher als eine Zeile und läuft nicht über die Kachel.
+      final name = find.text('Oberschenkel-Vorderseite in Seitlage');
+      await tester.scrollUntilVisible(
+        name,
+        400,
+        maxScrolls: 80,
+        scrollable: find.descendant(
+            of: find.byType(GridView), matching: find.byType(Scrollable)),
+      );
+      const oneLine = 14 * 1.43;
+      expect(tester.getSize(name).height, greaterThan(oneLine * scale * 1.5));
+      expect(tester.takeException(), isNull);
+    });
+  }
+
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {
     recordWorkout();
     await tester.pumpWidget(FitApp(db: db));
