@@ -26,34 +26,60 @@ enum ExportFormat {
   final String extension;
 }
 
-/// Schreibt ein Training als Datei und öffnet das Teilen-Menü von Android,
-/// über das sie sich speichern oder an eine andere App geben lässt.
-Future<void> exportWorkout(
-    BuildContext context, AppDatabase db, Workout w, ExportFormat format) async {
+/// Der Inhalt der Exportdatei eines Trainings, oder `null`, wenn es sich in
+/// diesem Format nicht darstellen lässt (GPX ohne Strecke).
+List<int>? exportBytes(AppDatabase db, Workout w, ExportFormat format) {
+  final samples = db.samples(w.id);
+  return switch (format) {
+    ExportFormat.fit => buildFit(w, samples, db.laps(w.id)),
+    ExportFormat.gpx => switch (buildGpx(w, samples)) {
+        final gpx? => utf8.encode(gpx),
+        null => null,
+      },
+    ExportFormat.tcx => utf8.encode(buildTcx(w, samples)),
+  };
+}
+
+/// Der Dateiname eines exportierten Trainings. Die Nummer am Ende hält die
+/// Namen auseinander, wenn zwei Trainings in derselben Minute begonnen haben.
+String exportFileName(Workout w, ExportFormat format) {
+  final stamp = DateFormat('yyyy-MM-dd_HHmm').format(w.startedAt);
+  return 'fitapp_${stamp}_${w.sport.id}_${w.id}.${format.extension}';
+}
+
+/// Schreibt Trainings als Dateien und öffnet das Teilen-Menü von Android,
+/// über das sie sich speichern oder an eine andere App geben lassen.
+Future<void> exportWorkouts(BuildContext context, AppDatabase db,
+    List<Workout> workouts, ExportFormat format) async {
   final messenger = ScaffoldMessenger.of(context);
   try {
-    final samples = db.samples(w.id);
-    final List<int>? bytes = switch (format) {
-      ExportFormat.fit => buildFit(w, samples, db.laps(w.id)),
-      ExportFormat.gpx => switch (buildGpx(w, samples)) {
-          final gpx? => utf8.encode(gpx),
-          null => null,
-        },
-      ExportFormat.tcx => utf8.encode(buildTcx(w, samples)),
-    };
-    if (bytes == null) {
-      messenger.showSnackBar(const SnackBar(
-          content: Text('Dieses Training hat keine Strecke für eine '
-              'GPX-Datei.')));
+    final directory = (await getTemporaryDirectory()).path;
+    final files = <XFile>[];
+    for (final w in workouts) {
+      final bytes = exportBytes(db, w, format);
+      if (bytes == null) continue;
+      final file = File(p.join(directory, exportFileName(w, format)));
+      await file.writeAsBytes(bytes);
+      files.add(XFile(file.path));
+    }
+    final skipped = workouts.length - files.length;
+    if (files.isEmpty) {
+      messenger.showSnackBar(SnackBar(
+          content: Text(workouts.length == 1
+              ? 'Dieses Training hat keine Strecke für eine GPX-Datei.'
+              : 'Keines der Trainings hat eine Strecke für eine GPX-Datei.')));
       return;
     }
-    final stamp = DateFormat('yyyy-MM-dd_HHmm').format(w.startedAt);
-    final file = File(p.join((await getTemporaryDirectory()).path,
-        'fitapp_${stamp}_${w.sport.id}.${format.extension}'));
-    await file.writeAsBytes(bytes);
+    if (skipped > 0) {
+      messenger.showSnackBar(SnackBar(
+          content: Text('$skipped ohne Strecke ausgelassen; '
+              '${files.length} werden exportiert.')));
+    }
     await SharePlus.instance.share(ShareParams(
-      files: [XFile(file.path)],
-      subject: w.title ?? w.sport.label,
+      files: files,
+      subject: workouts.length == 1
+          ? workouts.single.title ?? workouts.single.sport.label
+          : '${files.length} Trainings aus FitApp',
     ));
   } catch (e) {
     messenger.showSnackBar(

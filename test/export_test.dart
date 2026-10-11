@@ -1,7 +1,9 @@
 import 'package:fit_tool/fit_tool.dart' as fit;
+import 'package:fitapp/data/database.dart';
 import 'package:fitapp/data/models.dart';
 import 'package:fitapp/export/fit_writer.dart';
 import 'package:fitapp/export/xml_writers.dart';
+import 'package:fitapp/ui/workout_actions.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 final _start = DateTime.utc(2026, 10, 11, 8);
@@ -142,6 +144,45 @@ void main() {
 
     test('ohne Standorte gibt es keine GPX-Datei', () {
       expect(buildGpx(_workout, const [Sample(t: 1, heartRate: 120)]), isNull);
+    });
+  });
+
+  group('Exportdateien', () {
+    late AppDatabase db;
+    setUp(() => db = AppDatabase.inMemory());
+    tearDown(() => db.close());
+
+    Workout record({required bool withRoute}) {
+      final id = db.startWorkout(Sport.running, DateTime(2026, 10, 11, 8, 5));
+      db.addSample(
+          id,
+          Sample(
+              t: 1,
+              heartRate: 120,
+              distanceM: 3,
+              latitude: withRoute ? 50 : null,
+              longitude: withRoute ? 8 : null));
+      db.finishWorkout(id);
+      return db.workout(id)!;
+    }
+
+    test('der Dateiname nennt Datum, Sportart und Nummer', () {
+      final w = record(withRoute: true);
+      expect(exportFileName(w, ExportFormat.fit),
+          'fitapp_2026-10-11_0805_running_${w.id}.fit');
+      // Zwei Trainings derselben Minute bekommen verschiedene Namen.
+      final other = record(withRoute: true);
+      expect(exportFileName(other, ExportFormat.fit),
+          isNot(exportFileName(w, ExportFormat.fit)));
+    });
+
+    test('GPX gibt es nur mit Strecke, FIT und TCX immer', () {
+      final indoor = record(withRoute: false);
+      expect(exportBytes(db, indoor, ExportFormat.gpx), isNull);
+      expect(exportBytes(db, indoor, ExportFormat.fit), isNotEmpty);
+      expect(exportBytes(db, indoor, ExportFormat.tcx), isNotEmpty);
+      expect(exportBytes(db, record(withRoute: true), ExportFormat.gpx),
+          isNotEmpty);
     });
   });
 

@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.6.1] – 2026-10-11
+
+### Hinzugefügt
+- Mehrfachauswahl im Verlauf (Wunsch des Nutzers): Langes Drücken auf ein Training beginnt die Auswahl, weiteres Tippen wählt hinzu oder ab. Die Kopfzeile bietet dann „Alle auswählen", Export als FIT, GPX oder TCX und Löschen. Beim GPX-Export werden Trainings ohne Strecke ausgelassen und gezählt.
+- Alle 80 Übungsgrafiken sind eingebunden (I-020 abgeschlossen); der Platzhalter erscheint nur noch bei eigenen Übungen ohne Bild.
+- Vier weitere automatische Tests (insgesamt 129).
+
+### Geändert
+- Exportdateien tragen zusätzlich die Nummer des Trainings im Namen, damit sich mehrere Dateien derselben Minute nicht überschreiben.
+- `tools/uebungen_erzeugen.py` nimmt den Ordner der Rohbilder als Angabe entgegen.
+
 ## [0.6.0] – 2026-10-11 (M6: Export und Strava)
 
 ### Hinzugefügt

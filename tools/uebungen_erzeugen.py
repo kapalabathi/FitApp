@@ -6,6 +6,9 @@
 
 Nach neuen oder geänderten Bildern einfach erneut ausführen:
     python tools/uebungen_erzeugen.py
+
+Liegen die Rohbilder in einem anderen Ordner, diesen angeben:
+    python tools/uebungen_erzeugen.py grafiken/medium
 """
 
 import sys
@@ -122,6 +125,7 @@ def dart_string(text):
 
 
 def main():
+    roh = Path(sys.argv[1]).resolve() if len(sys.argv) > 1 else ROH
     zeilen = [z for z in LISTE.read_text(encoding="utf-8").splitlines() if z.startswith("| G-")]
     eintraege = []
     for zeile in zeilen:
@@ -136,7 +140,7 @@ def main():
     ZIEL_BILDER.mkdir(parents=True, exist_ok=True)
     vorhanden = 0
     for datei, *_ in eintraege:
-        quellen = sorted(p for p in ROH.glob(datei + ".*") if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp"))
+        quellen = sorted(p for p in roh.glob(datei + ".*") if p.suffix.lower() in (".png", ".jpg", ".jpeg", ".webp"))
         if not quellen:
             continue
         bild = Image.open(quellen[0]).convert("RGBA")

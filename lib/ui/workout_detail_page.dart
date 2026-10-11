@@ -187,7 +187,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 ),
               for (final format in ExportFormat.values)
                 PopupMenuItem(
-                  value: () => exportWorkout(context, db, w, format),
+                  value: () => exportWorkouts(context, db, [w], format),
                   child: Text('Als ${format.label} exportieren'),
                 ),
               PopupMenuItem(

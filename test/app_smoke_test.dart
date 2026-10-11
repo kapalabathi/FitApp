@@ -326,6 +326,76 @@ void main() {
     expect(find.text('Feierabend'), findsOneWidget);
   });
 
+  testWidgets('im Verlauf lassen sich mehrere Trainings auswählen und löschen',
+      (tester) async {
+    final keep = recordWorkout();
+    final first = recordWorkout();
+    final second = recordWorkout();
+    db.updateWorkout(keep, title: 'Bleibt', sport: Sport.indoorBike, notes: '');
+    db.updateWorkout(first, title: 'Eins', sport: Sport.indoorBike, notes: '');
+    db.updateWorkout(second, title: 'Zwei', sport: Sport.indoorBike, notes: '');
+
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verlauf'));
+    await tester.pumpAndSettle();
+
+    // Langes Drücken beginnt die Auswahl, danach wählt einfaches Tippen.
+    await tester.longPress(find.text('Eins'));
+    await tester.pumpAndSettle();
+    expect(find.text('1 ausgewählt'), findsOneWidget);
+    await tester.tap(find.text('Zwei'));
+    await tester.pumpAndSettle();
+    expect(find.text('2 ausgewählt'), findsOneWidget);
+    expect(find.text('Dauer'), findsNothing); // keine Detailansicht geöffnet
+
+    // Erneutes Tippen nimmt ein Training wieder aus der Auswahl.
+    await tester.tap(find.text('Zwei'));
+    await tester.pumpAndSettle();
+    expect(find.text('1 ausgewählt'), findsOneWidget);
+    await tester.tap(find.text('Zwei'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Exportieren'));
+    await tester.pumpAndSettle();
+    expect(find.text('Als FIT exportieren'), findsOneWidget);
+    expect(find.text('Als GPX exportieren'), findsOneWidget);
+    await tester.tapAt(const Offset(5, 5)); // Menü schließen
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byTooltip('Ausgewählte löschen'));
+    await tester.pumpAndSettle();
+    expect(find.text('2 Trainings löschen?'), findsOneWidget);
+    await tester.tap(find.text('Löschen'));
+    await tester.pumpAndSettle();
+
+    expect(db.workouts().map((w) => w.id), [keep]);
+    expect(find.text('Bleibt'), findsOneWidget);
+    expect(find.text('Eins'), findsNothing);
+    // Die Auswahl ist beendet, die normale Kopfzeile zurück.
+    expect(find.byTooltip('Strava'), findsOneWidget);
+  });
+
+  testWidgets('„Alle auswählen" und das Aufheben der Auswahl', (tester) async {
+    recordWorkout();
+    recordWorkout();
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verlauf'));
+    await tester.pumpAndSettle();
+
+    await tester.longPress(find.textContaining('02:00').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Alle auswählen'));
+    await tester.pumpAndSettle();
+    expect(find.text('2 ausgewählt'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Auswahl aufheben'));
+    await tester.pumpAndSettle();
+    expect(find.text('2 ausgewählt'), findsNothing);
+    expect(db.workouts(), hasLength(2));
+  });
+
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {
     recordWorkout();
     await tester.pumpWidget(FitApp(db: db));

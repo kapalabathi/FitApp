@@ -39,7 +39,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | In Arbeit | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
 | I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | In Arbeit | Nutzer |
-| I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | In Arbeit | Nutzer |
+| I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | Umgesetzt | Nutzer |
 
 ## Details
 
