@@ -9,6 +9,7 @@ import '../interval/interval_models.dart';
 import '../programs/builtin_exercises.dart';
 import '../programs/builtin_programs.dart';
 import '../programs/program_models.dart';
+import '../stats/stats.dart';
 import 'models.dart';
 
 /// Lokale Datenbank der App: Trainings, Messwerte, gemerkte Geräte,
@@ -163,6 +164,19 @@ class AppDatabase {
       _db.execute("DELETE FROM sport_devices WHERE sport = 'walking'");
       _db.execute('PRAGMA user_version = 4');
     }
+    if (version < 5) {
+      _db.execute('ALTER TABLE workouts ADD COLUMN notes TEXT');
+      // Bestwerte je Training, einmal berechnet. Die Zeile mit der Art
+      // 'done' markiert, dass ein Training ausgewertet ist.
+      _db.execute('''
+        CREATE TABLE best_efforts (
+          workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+          kind TEXT NOT NULL,
+          value REAL NOT NULL,
+          PRIMARY KEY (workout_id, kind)
+        ) WITHOUT ROWID''');
+      _db.execute('PRAGMA user_version = 5');
+    }
   }
 
   /// Zum Ausprobieren und als Muster für eigene Vorlagen.
@@ -303,6 +317,7 @@ class AppDatabase {
         workoutId,
       ],
     );
+    computeBestEfforts(workoutId);
     return true;
   }
 
@@ -370,6 +385,7 @@ class AppDatabase {
   void deleteWorkout(int id) {
     _db.execute('DELETE FROM samples WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
+    _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
     _db.execute('UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
         [_now(), id]);
   }
@@ -390,6 +406,7 @@ class AppDatabase {
         avgCadence: r['avg_cadence'] as int?,
         energyKcal: r['energy_kcal'] as int?,
         ascentM: r['ascent_m'] as int?,
+        notes: r['notes'] as String?,
       );
 
   // --- Intervall-Vorlagen ---
@@ -526,7 +543,138 @@ class AppDatabase {
         [_now(), id]);
   }
 
+  // --- Auswertung ---
+
+  /// Ändert Titel, Sportart und Notiz eines Trainings. Leere Texte werden
+  /// als „nicht gesetzt" gespeichert.
+  void updateWorkout(int id,
+      {required String title, required Sport sport, required String notes}) {
+    String? orNull(String s) => s.trim().isEmpty ? null : s.trim();
+    _db.execute(
+      'UPDATE workouts SET title = ?, sport = ?, notes = ?, updated_at = ? '
+      'WHERE id = ?',
+      [orNull(title), sport.id, orNull(notes), _now(), id],
+    );
+  }
+
+  /// Sekunden mit Pulsmessung in jeder der fünf Zonen, aufsteigend.
+  /// [thresholds] sind die vier Grenzen zwischen den Zonen. Mit [workoutId]
+  /// nur dieses Training, mit [since] nur Trainings ab diesem Zeitpunkt.
+  List<int> zoneSeconds(List<int> thresholds, {int? workoutId, DateTime? since}) {
+    final row = _db.select(
+      'SELECT '
+      'SUM(s.hr < ?1) AS z1, '
+      'SUM(s.hr >= ?1 AND s.hr < ?2) AS z2, '
+      'SUM(s.hr >= ?2 AND s.hr < ?3) AS z3, '
+      'SUM(s.hr >= ?3 AND s.hr < ?4) AS z4, '
+      'SUM(s.hr >= ?4) AS z5 '
+      'FROM samples s JOIN workouts w ON w.id = s.workout_id '
+      'WHERE s.hr IS NOT NULL AND w.deleted = 0 '
+      'AND (?5 IS NULL OR w.id = ?5) '
+      'AND (?6 IS NULL OR w.started_at >= ?6)',
+      [...thresholds, workoutId, since?.millisecondsSinceEpoch],
+    ).first;
+    return [for (final z in row.values) (z as int?) ?? 0];
+  }
+
+  /// Berechnet die Bestwerte eines Trainings und merkt sie.
+  void computeBestEfforts(int workoutId) {
+    final recorded = samples(workoutId);
+    final distance = <double>[];
+    final power = <int>[];
+    var lastDistance = 0.0;
+    for (final s in recorded) {
+      lastDistance = s.distanceM ?? lastDistance;
+      distance.add(lastDistance);
+      // Sekunden ohne Leistungswert zählen als 0 W, etwa beim Ausrollen.
+      power.add(s.power ?? 0);
+    }
+    final hasPower = recorded.any((s) => s.power != null);
+    _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [workoutId]);
+    void store(String kind, num? value) {
+      if (value == null) return;
+      _db.execute(
+          'INSERT INTO best_efforts (workout_id, kind, value) VALUES (?, ?, ?)',
+          [workoutId, kind, value.toDouble()]);
+    }
+
+    for (final kind in EffortKind.values) {
+      final meters = kind.meters;
+      final window = kind.windowS;
+      if (meters != null) {
+        store(kind.id, fastestSeconds(distance, meters));
+      } else if (window != null && hasPower) {
+        store(kind.id, bestAverage(power, window));
+      }
+    }
+    store(_effortsDone, 1);
+  }
+
+  static const _effortsDone = 'done';
+
+  /// Holt die Bestwerte für Trainings nach, die noch nicht ausgewertet sind,
+  /// etwa aus der Zeit vor dieser Funktion.
+  void ensureBestEfforts() {
+    final pending = _db.select(
+      'SELECT id FROM workouts w WHERE deleted = 0 AND status != ? '
+      'AND NOT EXISTS (SELECT 1 FROM best_efforts e '
+      'WHERE e.workout_id = w.id AND e.kind = ?)',
+      [WorkoutStatus.recording.id, _effortsDone],
+    );
+    for (final row in pending) {
+      computeBestEfforts(row['id'] as int);
+    }
+  }
+
+  /// Der beste Wert jeder Art in einer Sportart, mit dem Training dazu.
+  Map<EffortKind, ({double value, int workoutId, DateTime date})> bestEfforts(
+      Sport sport) {
+    ensureBestEfforts();
+    final rows = _db.select(
+      'SELECT e.kind, e.value, w.id, w.started_at FROM best_efforts e '
+      'JOIN workouts w ON w.id = e.workout_id '
+      'WHERE w.deleted = 0 AND w.sport = ? AND e.kind != ? '
+      'ORDER BY w.started_at',
+      [sport.id, _effortsDone],
+    );
+    final best = <EffortKind, ({double value, int workoutId, DateTime date})>{};
+    for (final r in rows) {
+      final kind = EffortKind.fromId(r['kind'] as String);
+      if (kind == null) continue;
+      final value = (r['value'] as num).toDouble();
+      final current = best[kind];
+      final better = current == null ||
+          (kind.isTime ? value < current.value : value > current.value);
+      if (better) {
+        best[kind] = (
+          value: value,
+          workoutId: r['id'] as int,
+          date: DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int),
+        );
+      }
+    }
+    return best;
+  }
+
   // --- Einstellungen ---
+
+  String? setting(String key) {
+    final rows = _db.select('SELECT value FROM settings WHERE key = ?', [key]);
+    return rows.isEmpty ? null : rows.first['value'] as String;
+  }
+
+  /// Speichert eine Einstellung; `null` entfernt sie.
+  void setSetting(String key, String? value) {
+    if (value == null) {
+      _db.execute('DELETE FROM settings WHERE key = ?', [key]);
+      return;
+    }
+    _db.execute(
+      'INSERT INTO settings (key, value) VALUES (?, ?) '
+      'ON CONFLICT(key) DO UPDATE SET value = excluded.value',
+      [key, value],
+    );
+  }
 
   bool flag(String key, {required bool fallback}) {
     final rows = _db.select('SELECT value FROM settings WHERE key = ?', [key]);

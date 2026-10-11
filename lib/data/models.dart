@@ -102,6 +102,7 @@ class Workout {
     this.avgCadence,
     this.energyKcal,
     this.ascentM,
+    this.notes,
   });
 
   final int id;
@@ -125,6 +126,7 @@ class Workout {
 
   /// Summe der Anstiege, nur bei Aufzeichnungen mit GPS.
   final int? ascentM;
+  final String? notes;
 
   double? get avgSpeedKmh =>
       durationS > 0 && distanceM > 0 ? distanceM / durationS * 3.6 : null;

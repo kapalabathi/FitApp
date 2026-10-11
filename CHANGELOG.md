@@ -4,6 +4,19 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.5.0] – 2026-10-11 (M5: Auswertung)
+
+### Hinzugefügt
+- Der Verlauf hat vier Reiter: Trainings, Umfang, Pulszonen, Bestwerte.
+- Umfang (A-051): Balken der letzten zwölf Wochen oder Monate nach Zeit, Distanz oder Anzahl; ein Tipp auf einen Balken zeigt die Summen je Sportart.
+- Pulszonen (A-052): Zeit je Zone für 7, 30, 365 Tage oder gesamt, außerdem in der Detailansicht jedes Trainings. Der Maximalpuls ergibt sich aus dem Geburtsjahr nach der Faustformel 220 minus Lebensalter und lässt sich durch einen eigenen Wert ersetzen.
+- Bestwerte (A-053) je Sportart: schnellste 1, 5 und 10 km beim Laufen und auf dem Laufband; schnellste 500 m, 1 km, 5 km und beste Leistung über 1, 5 und 20 Minuten am SkiErg; beste Leistung über 1, 5 und 20 Minuten am Bike; dazu längstes Training, weiteste Strecke, größter Anstieg und höchste Durchschnittsleistung. Ein Tipp öffnet das zugehörige Training.
+- Trainings nachträglich bearbeiten (A-054): Titel, Sportart und Notiz.
+- 15 weitere automatische Tests (insgesamt 100).
+
+### Geändert
+- Bestwerte werden beim Beenden eines Trainings berechnet und gemerkt; für ältere Trainings holt die App das beim ersten Öffnen der Bestwerte nach.
+
 ## [0.4.2] – 2026-10-11
 
 ### Geändert

@@ -3,16 +3,85 @@ import 'package:latlong2/latlong.dart';
 
 import '../data/database.dart';
 import '../data/models.dart';
+import '../stats/stats.dart';
 import 'format.dart';
 import 'line_chart.dart';
 import 'route_map.dart';
+import 'stats_views.dart';
 
 /// Kennzahlen und Verlaufskurven eines gespeicherten Trainings.
-class WorkoutDetailPage extends StatelessWidget {
+class WorkoutDetailPage extends StatefulWidget {
   const WorkoutDetailPage({super.key, required this.db, required this.workoutId});
 
   final AppDatabase db;
   final int workoutId;
+
+  @override
+  State<WorkoutDetailPage> createState() => _WorkoutDetailPageState();
+}
+
+class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
+  AppDatabase get db => widget.db;
+  int get workoutId => widget.workoutId;
+
+  /// Titel, Sportart und Notiz ändern (Lastenheft A-054).
+  Future<void> _edit(Workout w) async {
+    final title = TextEditingController(text: w.title ?? '');
+    final notes = TextEditingController(text: w.notes ?? '');
+    var sport = w.sport;
+    final saved = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Training bearbeiten'),
+        content: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TextField(
+                controller: title,
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                    labelText: 'Titel', hintText: w.sport.label),
+              ),
+              const SizedBox(height: 12),
+              DropdownButtonFormField<Sport>(
+                initialValue: sport,
+                isExpanded: true,
+                decoration: const InputDecoration(labelText: 'Sportart'),
+                items: [
+                  for (final s in Sport.values)
+                    DropdownMenuItem(value: s, child: Text(s.label)),
+                ],
+                onChanged: (s) => sport = s ?? sport,
+              ),
+              const SizedBox(height: 12),
+              TextField(
+                controller: notes,
+                textCapitalization: TextCapitalization.sentences,
+                minLines: 2,
+                maxLines: 6,
+                decoration: const InputDecoration(labelText: 'Notiz'),
+              ),
+            ],
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Abbrechen'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Speichern'),
+          ),
+        ],
+      ),
+    );
+    if (saved != true || !mounted) return;
+    db.updateWorkout(workoutId,
+        title: title.text, sport: sport, notes: notes.text);
+    setState(() {});
+  }
 
   Future<void> _delete(BuildContext context) async {
     final confirmed = await showDialog<bool>(
@@ -88,11 +157,20 @@ class WorkoutDetailPage extends StatelessWidget {
           LatLng(s.latitude!, s.longitude!),
     ];
     final laps = db.laps(workoutId);
+    final maxHr = HeartProfile.load(db).maxHr(DateTime.now());
+    final zones = maxHr == null || w.avgHeartRate == null
+        ? null
+        : db.zoneSeconds(HeartZone.thresholds(maxHr), workoutId: workoutId);
 
     return Scaffold(
       appBar: AppBar(
         title: Text(w.title ?? w.sport.label),
         actions: [
+          IconButton(
+            tooltip: 'Training bearbeiten',
+            icon: const Icon(Icons.edit_outlined),
+            onPressed: () => _edit(w),
+          ),
           IconButton(
             tooltip: 'Training löschen',
             icon: const Icon(Icons.delete_outline),
@@ -103,7 +181,17 @@ class WorkoutDetailPage extends StatelessWidget {
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          Text(formatDateTime(w.startedAt), style: theme.textTheme.titleMedium),
+          Text(
+            w.title == null
+                ? formatDateTime(w.startedAt)
+                : '${w.sport.label}  ·  ${formatDateTime(w.startedAt)}',
+            style: theme.textTheme.titleMedium,
+          ),
+          if (w.notes != null)
+            Padding(
+              padding: const EdgeInsets.only(top: 8),
+              child: Text(w.notes!, style: theme.textTheme.bodyLarge),
+            ),
           if (w.status == WorkoutStatus.recovered)
             Padding(
               padding: const EdgeInsets.only(top: 8),
@@ -134,6 +222,12 @@ class WorkoutDetailPage extends StatelessWidget {
           const SizedBox(height: 24),
           if (route.length >= 2) ...[
             RouteMap(points: route),
+            const SizedBox(height: 24),
+          ],
+          if (zones != null) ...[
+            Text('Pulszonen', style: theme.textTheme.titleSmall),
+            const SizedBox(height: 4),
+            ZoneBars(seconds: zones, maxHr: maxHr!),
             const SizedBox(height: 24),
           ],
           if (laps.isNotEmpty) ...[

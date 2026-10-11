@@ -97,6 +97,18 @@ void main() {
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
 
+      // Auswertungen im Verlauf
+      await tester.tap(find.text('Umfang'));
+      await tester.pumpAndSettle();
+      expect(find.text('Wochen'), findsOneWidget);
+      await tester.tap(find.text('Pulszonen'));
+      await tester.pumpAndSettle();
+      expect(find.text('Geburtsjahr eingeben'), findsOneWidget);
+      await tester.tap(find.text('Bestwerte'));
+      await tester.pumpAndSettle();
+      expect(find.text('Längstes Training'), findsOneWidget);
+      expect(find.text('Leistung 1 min'), findsOneWidget);
+
       // Geräte
       await tester.tap(find.text('Geräte'));
       await tester.pumpAndSettle();
@@ -259,6 +271,59 @@ void main() {
     expect(workout.sport, Sport.yoga);
     expect(workout.durationS, 12);
     expect(find.text('Dauer'), findsOneWidget);
+  });
+
+  testWidgets('Maximalpuls eingeben zeigt die Pulszonen', (tester) async {
+    recordWorkout();
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verlauf'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Pulszonen'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Geburtsjahr eingeben'));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Speichern'));
+    await tester.pump();
+    expect(find.text('Bitte Geburtsjahr oder Maximalpuls eingeben.'),
+        findsOneWidget);
+
+    await tester.enterText(
+        find.widgetWithText(TextField, 'Eigener Maximalpuls (optional)'), '180');
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+    expect(find.text('Maximalpuls 180'), findsOneWidget);
+    expect(find.text('Zone 5'), findsOneWidget);
+    await tester.tap(find.text('Gesamt'));
+    await tester.pumpAndSettle();
+    // Puls 110 bis 140 bei Maximalpuls 180: Zonen 2 und 3
+    expect(find.textContaining('0 %'), findsWidgets);
+  });
+
+  testWidgets('ein Training lässt sich umbenennen und mit Notiz versehen',
+      (tester) async {
+    final id = recordWorkout();
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verlauf'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.textContaining('02:00'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byTooltip('Training bearbeiten'));
+    await tester.pumpAndSettle();
+    await tester.enterText(find.widgetWithText(TextField, 'Titel'), 'Feierabend');
+    await tester.enterText(find.widgetWithText(TextField, 'Notiz'), 'Gute Beine');
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Feierabend'), findsOneWidget);
+    expect(find.text('Gute Beine'), findsOneWidget);
+    expect(db.workout(id)!.title, 'Feierabend');
+
+    await tester.tap(find.byType(BackButton));
+    await tester.pumpAndSettle();
+    expect(find.text('Feierabend'), findsOneWidget);
   });
 
   testWidgets('Löschen in der Detailansicht leert den Verlauf', (tester) async {

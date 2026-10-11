@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/database.dart';
 import '../data/models.dart';
 import 'format.dart';
+import 'stats_views.dart';
 import 'workout_detail_page.dart';
 
 enum _Period {
@@ -17,7 +18,8 @@ enum _Period {
   final int? days;
 }
 
-/// Liste aller Trainings, filterbar nach Sportart und Zeitraum.
+/// Der Verlauf: Liste aller Trainings, filterbar nach Sportart und
+/// Zeitraum, dazu die Auswertungen Umfang, Pulszonen und Bestwerte.
 class HistoryPage extends StatefulWidget {
   const HistoryPage({super.key, required this.db});
 
@@ -60,9 +62,7 @@ class _HistoryPageState extends State<HistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('Verlauf')),
-      body: Column(
+    final list = Column(
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -129,6 +129,31 @@ class _HistoryPageState extends State<HistoryPage> {
                   ),
           ),
         ],
+    );
+    return DefaultTabController(
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Verlauf'),
+          bottom: const TabBar(
+            isScrollable: true,
+            tabAlignment: TabAlignment.start,
+            tabs: [
+              Tab(text: 'Trainings'),
+              Tab(text: 'Umfang'),
+              Tab(text: 'Pulszonen'),
+              Tab(text: 'Bestwerte'),
+            ],
+          ),
+        ),
+        body: TabBarView(
+          children: [
+            list,
+            VolumeView(db: widget.db),
+            ZonesView(db: widget.db),
+            RecordsView(db: widget.db),
+          ],
+        ),
       ),
     );
   }
