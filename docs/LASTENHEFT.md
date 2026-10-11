@@ -2,7 +2,7 @@
 
 | | |
 |---|---|
-| Version | 0.1 (Entwurf) |
+| Version | 1.0 (freigegeben am 2026-10-11) |
 | Stand | 2026-10-11 |
 | Auftraggeber | Kapalabathi |
 | Arbeitstitel | FitApp |
@@ -44,7 +44,7 @@ Leitgedanken:
 | Thema | Festlegung |
 |-------|------------|
 | Nutzerkreis | Vorerst ein Nutzer (Eigengebrauch). Eine spätere Veröffentlichung im Play Store darf nicht verbaut werden. |
-| Plattformen | Android-Smartphone und Android-Tablet (Pflicht), Windows-Laptop (optional). |
+| Plattformen | Android-Smartphone und Android-Tablet ab Android 14 (Pflicht), Windows-Laptop (optional). |
 | Technik | Flutter (Dart), eine Codebasis für alle Plattformen. Lokale SQLite-Datenbank. |
 | Datenhaltung | Lokal auf dem Gerät; Synchronisation über das Google Drive des Nutzers. Kein eigener Server. |
 | Externe Dienste | Strava (Upload und Import), Google Drive (Synchronisation). |
@@ -127,6 +127,7 @@ Spalte „Idee" verweist auf den Ideenspeicher.
 | A-064 | Training mit einem Tipp zum eigenen Strava-Konto hochladen, mit Titel, Sportart und Indoor-Kennzeichen. | Muss | I-016 |
 | A-065 | Automatischer Strava-Upload nach Trainingsende, abschaltbar. | Soll | I-016 |
 | A-066 | Aktivitäten aus Strava importieren, mit Strecke und Puls (Aufzeichnungen der Uhr). Selbst hochgeladene Trainings werden nicht doppelt importiert. | Muss | I-017 |
+| A-067 | Vor einem Strava-Upload prüft die App, ob dort im selben Zeitraum bereits eine ähnliche Aktivität liegt. Wenn ja, weist sie darauf hin und fragt, ob trotzdem hochgeladen werden soll. | Muss | I-016 |
 
 ### 4.7 Plattformen
 
@@ -173,7 +174,7 @@ Jeder Meilenstein endet mit einer lauffähigen, nutzbaren App. Aufwand nach der 
 | M3 | **Trainingsprogramme:** Bibliothek mit den vorhandenen Grafiken, Programme bauen und abspielen. | A-040 – A-046 | L |
 | M4 | **Outdoor:** GPS-Aufzeichnung, Runden, Karte. | A-022, A-023, A-025 | L |
 | M5 | **Auswertung:** Umfang, Pulszonen, Bestzeiten. | A-051 – A-054 | L |
-| M6 | **Export und Strava:** FIT-Export, Upload, Import. | A-062 – A-066 | L |
+| M6 | **Export und Strava:** FIT-Export, Upload, Import. | A-062 – A-067 | L |
 | M7 | **Synchronisation** über Google Drive. | A-061 | L |
 | M8 | **Optional:** Windows, weitere Geräteprofile, Uhr-Mini-App. | A-006, A-071, A-072 | ? |
 
@@ -187,7 +188,7 @@ Begründung der Reihenfolge: M0 klärt die technischen Risiken, bevor viel gebau
 | R-02 | Die Uhr lässt sich über „Heart Rate Push" nicht wie ein Standard-Pulssensor koppeln. | Test in M0; Brustgurt bleibt Hauptquelle. |
 | R-03 | Laufband oder Bike nehmen nur einen Teil der Steuerbefehle an. | Auslesen in M0; der Timer nutzt, was das Gerät anbietet, sonst Ansage. |
 | R-04 | Android beendet die GPS-Aufzeichnung im Hintergrund (Stromsparfunktionen einzelner Hersteller). | Vordergrunddienst mit Benachrichtigung; Test auf dem eigenen Phone in M4. |
-| R-05 | Doppelte Aktivitäten bei Strava, wenn Uhr und App dasselbe Training aufzeichnen. | Regel in Abschnitt 9 festlegen. |
+| R-05 | Doppelte Aktivitäten bei Strava, wenn Uhr und App dasselbe Training aufzeichnen. | Hinweis und Nachfrage vor dem Upload (A-067). |
 | R-06 | Strava ändert Bedingungen oder Grenzen seiner Schnittstelle. | FIT-Export (A-062) bleibt als unabhängiger Weg. |
 | R-07 | Synchronisationskonflikte führen zu Datenverlust. | Einfache Regel (A-061), gelöschte Einträge werden zunächst nur markiert. |
 
@@ -197,11 +198,11 @@ Begründung der Reihenfolge: M0 klärt die technischen Risiken, bevor viel gebau
 |-----|-------|
 | O-01 | 23 der 80 Übungsgrafiken fehlen noch: G-058 bis G-060 und G-061 bis G-080 (alle Dehnübungen). |
 | O-02 | Die vorhandenen Grafiken sind noch nicht auf anatomische Richtigkeit geprüft. |
-| O-03 | Welche Android-Version haben Phone und Tablet? Daraus ergibt sich die Mindestversion. |
-| O-04 | Strava-Duplikate: Soll die App ein Training nicht hochladen, wenn die Uhr im selben Zeitraum eine Aktivität geliefert hat, oder nachfragen? |
+| O-03 | Erledigt 2026-10-11: Mindestversion Android 14; das Smartphone hat Android 17. |
+| O-04 | Erledigt 2026-10-11: Die App weist hin und fragt nach (A-067). |
 | O-05 | Crossfit- und Calisthenics-Übungen setzen Geräte voraus (Kettlebell, Langhantel, Box, Klimmzugstange, Barren u. a.). Sind sie vorhanden? |
 | O-06 | Endgültiger Name der App. |
-| O-07 | Reihenfolge der Meilensteine bestätigen oder ändern. |
+| O-07 | Erledigt 2026-10-11: Reihenfolge bestätigt. |
 
 ## 10. Abnahme
 

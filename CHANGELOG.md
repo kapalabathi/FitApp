@@ -7,6 +7,7 @@ Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSP
 ## [Unveröffentlicht]
 
 ### Geändert
+- 2026-10-11: Lastenheft als Version 1.0 freigegeben. Mindestversion Android 14, neue Anforderung A-067 (Hinweis auf ähnliche Strava-Aktivität vor dem Upload), Reihenfolge der Meilensteine bestätigt.
 - 2026-10-10: Grafik-Skript nutzt standardmäßig `openai/gpt-5.4-image-2` (Wahl des Nutzers); neue Option `--qualitaet`, Auflösungsangabe entfernt.
 - 2026-10-10: Grafik-Skript nutzt standardmäßig das Modell `sourceful/riverflow-v2.5-fast` (Wahl des Nutzers), Auflösung 1K.
 - 2026-10-10: Steuerbarkeit von Laufband und Bike bestätigt (I-011, I-019). Pulszonen per Faustformel (I-009). Übungen mit Text und Comic-Grafik (I-007). Fragen F-14, F-16 beantwortet, F-17 neu.
