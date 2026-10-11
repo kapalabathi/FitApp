@@ -21,6 +21,37 @@ enum ExerciseCategory {
       values.firstWhere((c) => c.id == id, orElse: () => yoga);
 }
 
+/// Die Körperbereiche, die eine Übung trainiert oder dehnt. [id] steht in
+/// der Datenbank.
+enum BodyArea {
+  neck('nacken', 'Nacken'),
+  shoulders('schultern', 'Schultern'),
+  arms('arme', 'Arme'),
+  chest('brust', 'Brust'),
+  back('ruecken', 'Rücken'),
+  core('rumpf', 'Bauch und Rumpf'),
+  hips('huefte', 'Hüfte'),
+  glutes('gesaess', 'Gesäß'),
+  legs('beine', 'Beine'),
+  calves('waden', 'Waden und Füße'),
+  fullBody('ganzkoerper', 'Ganzkörper');
+
+  const BodyArea(this.id, this.label);
+
+  final String id;
+  final String label;
+
+  /// Liest die in der Datenbank mit Komma getrennt abgelegten Bereiche.
+  static List<BodyArea> parse(String? stored) => [
+        for (final id in (stored ?? '').split(','))
+          for (final area in values)
+            if (area.id == id) area,
+      ];
+
+  static String store(Iterable<BodyArea> areas) =>
+      areas.map((a) => a.id).join(',');
+}
+
 /// Eine mitgelieferte Übung, wie sie beim ersten Start in die Datenbank kommt.
 class BuiltinExercise {
   const BuiltinExercise({
@@ -28,7 +59,9 @@ class BuiltinExercise {
     required this.category,
     required this.name,
     required this.description,
+    required this.areas,
     required this.timed,
+    required this.batch,
   });
 
   /// Dateiname der Grafik ohne Endung; zugleich Grundlage der Kennung.
@@ -37,8 +70,15 @@ class BuiltinExercise {
   final String name;
   final String description;
 
+  final List<BodyArea> areas;
+
   /// Wird üblicherweise auf Zeit ausgeführt statt mit Wiederholungen.
   final bool timed;
+
+  /// Mit welcher Lieferung die Übung kam: 1 für die ersten 80, 2 für die
+  /// Erweiterung ohne Geräte. Bestehende Installationen bekommen spätere
+  /// Lieferungen nachträglich.
+  final int batch;
 
   String get uuid => 'builtin-$key';
 }
@@ -54,6 +94,7 @@ class Exercise {
     this.builtinKey,
     this.imagePath,
     this.timed = true,
+    this.areas = const [],
   });
 
   /// `null`, solange die Übung noch nicht gespeichert ist.
@@ -72,6 +113,9 @@ class Exercise {
   final String? imagePath;
   final bool timed;
 
+  /// Die Körperbereiche, die die Übung trainiert oder dehnt.
+  final List<BodyArea> areas;
+
   String? get imageAsset =>
       builtinKey == null ? null : 'assets/exercises/$builtinKey.webp';
 
@@ -82,6 +126,7 @@ class Exercise {
     String? imagePath,
     bool clearImage = false,
     bool? timed,
+    List<BodyArea>? areas,
   }) =>
       Exercise(
         id: id,
@@ -92,6 +137,7 @@ class Exercise {
         builtinKey: builtinKey,
         imagePath: clearImage ? null : imagePath ?? this.imagePath,
         timed: timed ?? this.timed,
+        areas: areas ?? this.areas,
       );
 }
 

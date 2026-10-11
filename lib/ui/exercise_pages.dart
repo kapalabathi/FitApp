@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../data/database.dart';
 import '../programs/program_models.dart';
+import 'area_chips.dart';
 import 'exercise_image.dart';
 
 /// Eine Übung mit Grafik und Anleitung; von hier aus bearbeiten und löschen.
@@ -87,6 +88,8 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
           const SizedBox(height: 16),
           Text(_exercise.category.label, style: theme.textTheme.labelLarge),
           const SizedBox(height: 8),
+          AreaChips(areas: _exercise.areas),
+          if (_exercise.areas.isNotEmpty) const SizedBox(height: 12),
           Text(
             _exercise.description.isEmpty
                 ? 'Keine Beschreibung.'
@@ -217,6 +220,29 @@ class _ExerciseEditorPageState extends State<ExerciseEditorPage> {
             value: _draft.timed,
             onChanged: (v) => setState(() => _draft = _draft.copyWith(timed: v)),
           ),
+          const SizedBox(height: 8),
+          Text('Trainierte Bereiche',
+              style: Theme.of(context).textTheme.labelLarge),
+          const SizedBox(height: 4),
+          Wrap(
+            spacing: 8,
+            children: [
+              for (final area in BodyArea.values)
+                FilterChip(
+                  label: Text(area.label),
+                  selected: _draft.areas.contains(area),
+                  onSelected: (on) => setState(() {
+                    // In der festen Reihenfolge der Bereiche ablegen,
+                    // nicht in der des Antippens.
+                    _draft = _draft.copyWith(areas: [
+                      for (final a in BodyArea.values)
+                        if (a == area ? on : _draft.areas.contains(a)) a,
+                    ]);
+                  }),
+                ),
+            ],
+          ),
+          const SizedBox(height: 8),
           TextField(
             controller: _description,
             textCapitalization: TextCapitalization.sentences,
@@ -289,7 +315,10 @@ class _ExercisePickerPageState extends State<ExercisePickerPage> {
                   ListTile(
                     leading: ExerciseImage(exercise: e, size: 48),
                     title: Text(e.name),
-                    subtitle: Text(e.category.label),
+                    subtitle: Text([
+                      e.category.label,
+                      ...e.areas.map((a) => a.label),
+                    ].join('  ·  ')),
                     onTap: () => Navigator.of(context).pop(e),
                   ),
               ],

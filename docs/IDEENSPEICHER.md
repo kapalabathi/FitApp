@@ -40,6 +40,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
 | I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | In Arbeit | Nutzer |
 | I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | Umgesetzt | Nutzer |
+| I-021 | Weitere 80 Übungen ohne Geräte, Körperbereiche je Übung, Programme in Varianten | Programme | L | In Arbeit | Nutzer |
 
 ## Details
 
@@ -123,3 +124,6 @@ FTMS sieht drei Steuerarten vor: Widerstandsstufe setzen, Zielleistung in Watt h
 
 ### I-020 – Comic-Grafiken zu den Übungen
 Je Übung eine kleine, einheitlich gestaltete Comic-Grafik. Umfang: 80 Grafiken, 20 je Kategorie. Der Nutzer lässt sie extern erstellen; Vorgaben und Einzelbeschreibungen stehen in der [Grafikliste](GRAFIKLISTE.md) (G-001 bis G-080). In der App bleibt das Einbinden. Eigene Übungen des Nutzers brauchen eine Möglichkeit, ein eigenes Bild zu hinterlegen.
+
+### I-021 – Erweiterung der Übungsbibliothek
+Weitere 20 Übungen je Kategorie ohne Geräte, Anzeige der trainierten Körperbereiche und Programme in Varianten (kurz/lang, leicht/fordernd). In der App umgesetzt mit Version 0.8.0; offen sind die 80 Grafiken G-081 bis G-160.

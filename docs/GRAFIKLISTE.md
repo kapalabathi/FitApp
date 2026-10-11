@@ -1,6 +1,6 @@
 # Grafikliste Übungen (zu I-020)
 
-80 Grafiken, 20 je Kategorie. Jede Grafik hat eine feste Nummer (`G-001` bis `G-080`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
+160 Grafiken, 40 je Kategorie. Jede Grafik hat eine feste Nummer (`G-001` bis `G-160`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
 
 ## Allgemeine Vorgaben für alle Grafiken
 
@@ -127,12 +127,115 @@ Bei allen Dehnübungen: entspannter Gesichtsausdruck, keine Bewegungspfeile.
 | G-079 | `dehnen_19_fusssohle` | Fußsohle im Fersensitz | Seite | 1 | Kniend, Zehen aufgestellt, Gesäß sitzt auf den Fersen, Oberkörper aufrecht, Hände auf den Oberschenkeln. Die aufgestellten Zehen müssen erkennbar sein. |
 | G-080 | `dehnen_20_weltbeste_dehnung` | Ausfallschritt mit Aufdrehen | Schräg | 1 | Tiefer Ausfallschritt, hinteres Bein gestreckt, die Hand auf der Seite des hinteren Beins stützt am Boden neben dem vorderen Fuß, der andere Arm senkrecht nach oben gestreckt, Oberkörper und Blick zur oberen Hand aufgedreht. |
 
+## Yoga (Erweiterung, ohne Geräte)
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-081 | `yoga_21_halbe_vorbeuge` | Halbe Vorbeuge | Seite | 1 | Beine gestreckt, Oberkörper aus der Hüfte bis zur Waagerechten nach vorn geneigt, Rücken völlig gerade, Fingerspitzen an den Schienbeinen, Blick schräg nach vorn unten. |
+| G-082 | `yoga_22_brett` | Brett | Seite | 1 | Hoher Liegestütz: Arme gestreckt, Hände unter den Schultern, Körper von Kopf bis Ferse eine gerade Linie, Zehen aufgestellt, Blick zum Boden. |
+| G-083 | `yoga_23_tiefes_brett` | Tiefes Brett (Chaturanga) | Seite | 1 | Wie ein Liegestütz in der unteren Position gehalten: Körper gerade und waagerecht knapp über dem Boden, Ellbogen 90 Grad gebeugt und eng am Körper nach hinten, nur Hände und Zehen berühren den Boden. |
+| G-084 | `yoga_24_seitliche_winkelhaltung` | Seitliche Winkelhaltung | Front | 1 | Breiter Stand, das vom Betrachter aus rechte Knie 90 Grad gebeugt, der Unterarm derselben Seite liegt auf dem Oberschenkel, der andere Arm ist schräg über den Kopf gestreckt, sodass vom hinteren Fuß bis zu den Fingerspitzen eine gerade Linie entsteht. |
+| G-085 | `yoga_25_umgekehrter_krieger` | Umgekehrter Krieger | Front | 1 | Breiter Stand wie Krieger II mit gebeugtem vorderem Knie; der Oberkörper neigt sich zum gestreckten hinteren Bein, die hintere Hand liegt am hinteren Oberschenkel, der vordere Arm zeigt im Bogen nach oben hinten. |
+| G-086 | `yoga_26_pyramide` | Pyramide | Seite | 1 | Kurze Schrittstellung, beide Beine gestreckt, Oberkörper mit geradem Rücken über das vordere Bein nach unten gebeugt, Hände neben dem vorderen Fuß am Boden, Stirn Richtung Schienbein. |
+| G-087 | `yoga_27_gegraetschte_vorbeuge` | Gegrätschte Vorbeuge | Front | 1 | Sehr breiter Stand mit gestreckten Beinen, Oberkörper aus der Hüfte nach unten gebeugt, Hände zwischen den Füßen flach am Boden, Scheitel zeigt zum Boden. |
+| G-088 | `yoga_28_halbmond` | Halbmond | Front | 1 | Stand auf einem gestreckten Bein, das andere Bein waagerecht zur Seite gestreckt, Oberkörper waagerecht zur anderen Seite, die untere Hand stützt mit den Fingerspitzen am Boden, der obere Arm zeigt senkrecht nach oben; der Körper bildet ein großes T, zum Betrachter aufgedreht. |
+| G-089 | `yoga_29_adler` | Adler | Front | 1 | Stand auf einem leicht gebeugten Bein, das andere Bein darüber geschlagen und der Fuß hinter der Wade eingehakt; die Arme sind vor der Brust umeinander gewickelt, Unterarme senkrecht, Handflächen aneinander. |
+| G-090 | `yoga_30_taenzer` | Tänzer | Seite | 1 | Stand auf einem gestreckten Bein, das andere Bein nach hinten oben gehoben, die Hand derselben Seite hält dessen Fuß von innen, der Oberkörper neigt sich leicht nach vorn, der freie Arm ist schräg nach vorn oben gestreckt. |
+| G-091 | `yoga_31_heuschrecke` | Heuschrecke | Seite | 1 | Bauchlage, Arme lang nach hinten neben dem Körper, Brust, Arme und gestreckte Beine gleichzeitig vom Boden abgehoben, Blick zum Boden. Arme zeigen nach hinten, nicht nach vorn. |
+| G-092 | `yoga_32_bogen` | Bogen | Seite | 1 | Bauchlage, Knie gebeugt, beide Hände greifen von außen die Fußgelenke, Brust und Oberschenkel sind vom Boden abgehoben, der Körper bildet einen gespannten Bogen, nur der Bauch liegt auf. |
+| G-093 | `yoga_33_kamel` | Kamel | Seite | 1 | Kniestand mit senkrechten Oberschenkeln, Oberkörper weit nach hinten gebeugt, beide Hände greifen die Fersen, die Hüfte ist nach vorn geschoben, die Brust zeigt zur Decke. |
+| G-094 | `yoga_34_sphinx` | Sphinx | Seite | 1 | Bauchlage, Unterarme parallel am Boden, Ellbogen genau unter den Schultern, Brust angehoben, Becken und Beine liegen entspannt am Boden, Blick geradeaus. |
+| G-095 | `yoga_35_delfin` | Delfin | Seite | 1 | Wie der herabschauende Hund, aber auf den Unterarmen: Unterarme und Füße am Boden, Gesäß der höchste Punkt, Beine gestreckt, Kopf zwischen den Oberarmen knapp über dem Boden. |
+| G-096 | `yoga_36_umgekehrter_tisch` | Umgekehrter Tisch | Seite | 1 | Bauch zeigt nach oben: Hände unter den Schultern und Füße unter den Knien am Boden, Arme gestreckt, Knie 90 Grad, Oberkörper und Oberschenkel bilden eine waagerechte Tischplatte. |
+| G-097 | `yoga_37_kopf_zu_knie` | Kopf-zu-Knie-Haltung | Seite | 1 | Sitz, ein Bein gestreckt nach vorn, das andere angewinkelt mit der Fußsohle an der Innenseite des gestreckten Oberschenkels, Oberkörper über das gestreckte Bein gebeugt, beide Hände greifen dessen Fuß. |
+| G-098 | `yoga_38_glueckliches_baby` | Glückliches Baby | Seite, leicht von oben | 1 | Rückenlage, beide Knie weit geöffnet zu den Achseln gezogen, Unterschenkel senkrecht, Fußsohlen zeigen zur Decke, jede Hand greift die Außenkante des Fußes derselben Seite, der ganze Rücken liegt am Boden. |
+| G-099 | `yoga_39_liegender_schmetterling` | Liegender Schmetterling | Von oben | 1 | Rückenlage, Fußsohlen aneinander, Knie fallen locker nach außen, Arme entspannt schräg neben dem Körper mit den Handflächen nach oben, Augen geschlossen. |
+| G-100 | `yoga_40_halber_spagat` | Halber Spagat | Seite | 1 | Hinteres Knie am Boden unter der Hüfte, vorderes Bein gestreckt nach vorn mit aufgesetzter Ferse und angezogenen Zehen, Oberkörper mit geradem Rücken über das vordere Bein geneigt, Hände neben dem Bein am Boden. |
+
+## Crossfit (Erweiterung, ohne Geräte)
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-101 | `crossfit_21_strecksprung` | Strecksprung aus der Hocke | Seite | 2 | Links: tiefe Kniebeuge, Arme nach hinten geschwungen. Rechts: Körper ganz gestreckt in der Luft, Füße deutlich über dem Boden, Arme nach oben. |
+| G-102 | `crossfit_22_ausfallschritt_sprung` | Ausfallschritt-Sprünge | Seite | 2 | Links: tiefer Ausfallschritt, ein Bein vorn. Rechts: dieselbe Figur in der Luft beim Beinwechsel, beide Füße über dem Boden, Beine gerade in Scherenstellung. |
+| G-103 | `crossfit_23_kniehebelauf` | Kniehebelauf | Seite | 1 | Laufen auf der Stelle: ein Knie auf Hüfthöhe gehoben, das Standbein auf dem Fußballen, Arme gegengleich angewinkelt wie beim Sprint, Oberkörper aufrecht. |
+| G-104 | `crossfit_24_anfersen` | Anfersen | Seite | 1 | Laufen auf der Stelle: eine Ferse berührt fast das Gesäß, das Knie zeigt nach unten, das Standbein auf dem Fußballen, Arme angewinkelt, Oberkörper leicht nach vorn geneigt. |
+| G-105 | `crossfit_25_skater` | Skater-Sprünge | Front | 2 | Links: Landung auf dem linken Bein, leicht gebeugt, das rechte Bein hinter dem Standbein gekreuzt in der Luft, Oberkörper leicht vorgebeugt. Rechts: spiegelbildlich auf dem rechten Bein. Dazwischen ein seitlicher Bogenpfeil. |
+| G-106 | `crossfit_26_hocksprung` | Hocksprung | Seite | 2 | Links: Stand in leichter Hocke, Arme hinten. Rechts: in der Luft, beide Knie bis vor die Brust gezogen, Hände berühren die Knie. |
+| G-107 | `crossfit_27_standweitsprung` | Standweitsprung | Seite | 2 | Links: Absprunghaltung, Knie gebeugt, Oberkörper vorgeneigt, Arme weit nach hinten. Rechts: Landung ein gutes Stück weiter rechts in tiefer Hocke, Arme nach vorn. Dazwischen ein flacher Bogenpfeil. |
+| G-108 | `crossfit_28_sprawl` | Sprawl | Seite | 2 | Links: aufrechter Stand in leichter Boxhaltung. Rechts: hohe Liegestützposition mit gestreckten Armen, Hüfte tief Richtung Boden durchgedrückt, Beine weit nach hinten gestreckt. |
+| G-109 | `crossfit_29_plank_jacks` | Plank Jacks | Schräg von oben | 2 | Hohe Liegestützposition mit gestreckten Armen. Links: Füße geschlossen. Rechts: Füße weit gegrätscht. Der Oberkörper bleibt in beiden Posen unverändert. |
+| G-110 | `crossfit_30_schultertippen` | Schultertippen im Stütz | Front | 1 | Hohe Liegestützposition von vorn gesehen, Füße etwas breiter als hüftbreit, eine Hand vom Boden gelöst und an die gegenüberliegende Schulter getippt, Hüfte waagerecht ohne Verdrehung. |
+| G-111 | `crossfit_31_klappmesser` | Klappmesser | Seite | 2 | Links: gestreckte Rückenlage, Arme lang über dem Kopf am Boden. Rechts: Balance auf dem Gesäß, gestreckte Beine und Oberkörper zu einem V angehoben, die Hände berühren die Schienbeine. |
+| G-112 | `crossfit_32_flutter_kicks` | Flutter Kicks | Seite | 1 | Rückenlage, Hände unter dem Gesäß, Kopf und Schultern leicht angehoben, beide Beine gestreckt knapp über dem Boden, ein Bein etwas höher als das andere. |
+| G-113 | `crossfit_33_fahrrad_crunch` | Fahrrad-Crunch | Schräg | 1 | Rückenlage, Hände locker am Hinterkopf, Schultern angehoben, ein Knie zur Brust gezogen, das andere Bein gestreckt knapp über dem Boden, der Oberkörper ist verdreht, sodass der gegenüberliegende Ellbogen zum angezogenen Knie zeigt. |
+| G-114 | `crossfit_34_raupe` | Raupe (Inchworm) | Seite | 2 | Links: stehende Vorbeuge mit gestreckten Beinen, Hände direkt vor den Füßen am Boden. Rechts: hohe Liegestützposition, Hände weit nach vorn gewandert. Dazwischen ein Pfeil nach rechts. |
+| G-115 | `crossfit_35_spiderman_stuetz` | Spiderman im Stütz | Schräg von oben | 1 | Hohe Liegestützposition, ein Bein gebeugt und seitlich außen am Körper nach vorn gezogen, das Knie berührt fast den Ellbogen derselben Seite, das andere Bein gestreckt, Hüfte tief. |
+| G-116 | `crossfit_36_sumo_kniebeuge` | Sumo-Kniebeuge | Front | 2 | Sehr breiter Stand, Fußspitzen deutlich nach außen. Links: aufrecht. Rechts: tiefe Kniebeuge, Oberschenkel waagerecht, Knie über den Fußspitzen nach außen, Oberkörper aufrecht, Hände vor der Brust gefaltet. |
+| G-117 | `crossfit_37_seitlicher_ausfallschritt` | Seitlicher Ausfallschritt | Front | 2 | Links: aufrechter Stand, Füße geschlossen. Rechts: großer Schritt zur Seite, dieses Knie tief gebeugt und das Gesäß nach hinten geschoben, das andere Bein gestreckt, beide Fußsohlen am Boden, Hände vor der Brust. |
+| G-118 | `crossfit_38_krebsgang` | Krebsgang | Seite | 1 | Bauch zeigt nach oben: Hände hinter dem Körper und Füße am Boden, Knie gebeugt, Gesäß schwebt knapp über dem Boden, eine Hand und der gegenüberliegende Fuß sind zum Schritt angehoben. |
+| G-119 | `crossfit_39_froschsprung` | Froschsprünge | Seite | 2 | Links: tiefe Hocke, Hände zwischen den Füßen am Boden. Rechts: flacher, weiter Sprung nach vorn, Körper gestreckt in der Luft, Arme nach vorn. Dazwischen ein Bogenpfeil. |
+| G-120 | `crossfit_40_schattenboxen` | Schattenboxen | Schräg | 1 | Boxhaltung in leichter Schrittstellung, Knie leicht gebeugt, eine Faust schützend am Kinn, der andere Arm gerade nach vorn geschlagen, Oberkörper leicht eingedreht. |
+
+## Calisthenics (Erweiterung, ohne Geräte)
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-121 | `cali_21_breiter_liegestuetz` | Breiter Liegestütz | Schräg von vorn | 1 | Untere Liegestützposition, Hände deutlich breiter als die Schultern, Ellbogen zeigen zur Seite, Brust knapp über dem Boden, Körper gerade. |
+| G-122 | `cali_22_bogenschuetzen_liegestuetz` | Bogenschützen-Liegestütz | Front | 1 | Sehr breite Handstellung, der Körper ist zu einer Hand hin verschoben und abgesenkt: dieser Arm gebeugt mit dem Ellbogen am Körper, der andere Arm zur Seite ganz gestreckt, Körper gerade. |
+| G-123 | `cali_23_hindu_liegestuetz` | Hindu-Liegestütz | Seite | 2 | Links: Gesäß hoch wie im herabschauenden Hund. Rechts: Arme gestreckt, Brust nach vorn oben, Hüfte tief wie im heraufschauenden Hund. Dazwischen ein Pfeil, der unten im Bogen durchtaucht. |
+| G-124 | `cali_24_pseudo_planche` | Pseudo-Planche-Liegestütz | Seite | 1 | Liegestützposition, die Hände stehen auf Höhe der Taille statt unter den Schultern, Finger zeigen leicht nach außen, die Schultern sind weit vor den Händen, Ellbogen leicht gebeugt, Körper gerade. |
+| G-125 | `cali_25_trizeps_strecker` | Trizeps-Strecker am Boden | Seite | 2 | Links: Unterarmstütz, Unterarme flach am Boden, Körper gerade. Rechts: Arme durchgestreckt in der hohen Liegestützposition, die Hände stehen noch an derselben Stelle vor den Schultern. |
+| G-126 | `cali_26_planke_hoch_tief` | Planke hoch und tief | Seite | 2 | Links: Unterarmstütz. Rechts: hohe Liegestützposition mit gestreckten Armen. In beiden Posen Körper gerade, Füße hüftbreit. |
+| G-127 | `cali_27_umgekehrte_planke` | Umgekehrte Planke | Seite | 1 | Bauch zeigt nach oben: Hände unter den Schultern am Boden, Arme gestreckt, Beine gestreckt, nur Hände und Fersen berühren den Boden, der Körper bildet eine gerade schräge Linie. |
+| G-128 | `cali_28_vierfuessler_diagonal` | Vierfüßler diagonal | Seite | 1 | Vierfüßlerstand, ein Arm waagerecht nach vorn gestreckt, das gegenüberliegende Bein waagerecht nach hinten gestreckt, Rücken flach, Blick zum Boden. |
+| G-129 | `cali_29_kaefer` | Käfer (Dead Bug) | Seite | 1 | Rückenlage, unterer Rücken am Boden, ein Arm lang über den Kopf knapp über dem Boden, das gegenüberliegende Bein gestreckt knapp über dem Boden, der andere Arm zeigt senkrecht nach oben, das andere Knie ist 90 Grad über der Hüfte gebeugt. |
+| G-130 | `cali_30_beinheben_liegend` | Beinheben im Liegen | Seite | 2 | Rückenlage, Arme neben dem Körper. Links: gestreckte Beine knapp über dem Boden. Rechts: gestreckte Beine senkrecht nach oben. |
+| G-131 | `cali_31_reverse_crunch` | Reverse Crunch | Seite | 2 | Rückenlage, Arme neben dem Körper. Links: Knie 90 Grad über der Hüfte. Rechts: Becken vom Boden gerollt, Knie Richtung Brust, das Gesäß ist deutlich abgehoben. |
+| G-132 | `cali_32_einbeinige_bruecke` | Einbeinige Gesäßbrücke | Seite | 1 | Rückenlage, ein Fuß aufgestellt, Becken hoch gehoben, das andere Bein gestreckt in Verlängerung des Oberschenkels in der Luft, Schultern am Boden, Arme neben dem Körper. |
+| G-133 | `cali_33_wadenheben` | Wadenheben | Seite | 2 | Aufrechter Stand, Hände an der Hüfte. Links: Fersen am Boden. Rechts: hoch auf den Zehenspitzen, Fersen deutlich angehoben. |
+| G-134 | `cali_34_ausfallschritt_rueckwaerts` | Ausfallschritt rückwärts | Seite | 2 | Links: aufrechter Stand. Rechts: ein Bein weit nach hinten gesetzt, beide Knie etwa 90 Grad, hinteres Knie knapp über dem Boden, Oberkörper aufrecht, Hände an der Hüfte. |
+| G-135 | `cali_35_kosaken_kniebeuge` | Kosaken-Kniebeuge | Front | 1 | Sehr breiter Stand, ein Bein ganz tief gebeugt mit der Ferse am Boden, das andere Bein seitlich gestreckt, dessen Ferse aufgesetzt und die Zehen zeigen nach oben, Oberkörper aufrecht, Arme zur Balance nach vorn. |
+| G-136 | `cali_36_schwimmer` | Schwimmer | Seite | 1 | Bauchlage, Arme und Beine gestreckt und leicht vom Boden abgehoben, ein Arm und das gegenüberliegende Bein deutlich höher als die anderen, Blick zum Boden. |
+| G-137 | `cali_37_y_heben` | Y-Heben in Bauchlage | Von oben | 1 | Bauchlage, Stirn knapp über dem Boden, beide Arme schräg nach vorn außen gestreckt und vom Boden abgehoben, sodass Arme und Körper ein Y bilden, Daumen zeigen nach oben, Beine liegen am Boden. |
+| G-138 | `cali_38_baerenstand` | Bärenstand halten | Seite | 1 | Vierfüßlerstand, Hände unter den Schultern, Knie unter der Hüfte und nur wenige Zentimeter über dem Boden schwebend, Zehen aufgestellt, Rücken flach und waagerecht. |
+| G-139 | `cali_39_seitstuetz_hueftheben` | Seitstütz mit Hüftheben | Front | 2 | Seitstütz auf einem Unterarm, Füße gestapelt, freie Hand an der Hüfte. Links: Hüfte knapp über dem Boden abgesenkt. Rechts: Hüfte hoch gehoben, über die gerade Linie hinaus. |
+| G-140 | `cali_40_hohlkoerper_wippe` | Hohlkörper-Wippe | Seite | 1 | Wie der Hollow Body Hold: Rückenlage, nur der untere Rücken am Boden, Schultern und gestreckte Beine angehoben, Arme lang über dem Kopf, Körper als flache Schale; unter dem Körper ein gebogener Doppelpfeil für das Vor- und Zurückwippen. |
+
+## Dehnen (Erweiterung, ohne Geräte)
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-141 | `dehnen_21_nacken_vorn` | Nacken nach vorn | Seite, nur Oberkörper | 1 | Aufrechter Oberkörper, Kinn zur Brust gesenkt, beide Hände liegen verschränkt am Hinterkopf, Ellbogen zeigen nach vorn unten. |
+| G-142 | `dehnen_22_nacken_drehen` | Nacken drehen | Front, nur Oberkörper | 1 | Aufrechter Oberkörper von vorn, Schultern gerade nach vorn, der Kopf ist weit zu einer Seite gedreht, Blick über die Schulter, Kinn waagerecht. |
+| G-143 | `dehnen_23_brustoeffner` | Brustöffner | Seite | 1 | Aufrechter Stand, Hände hinter dem Rücken verschränkt, Arme gestreckt und vom Gesäß weg nach hinten oben gehoben, Brust herausgestreckt, Schulterblätter zusammen. |
+| G-144 | `dehnen_24_kuhgesicht_arme` | Kuhgesicht-Arme | Front, von hinten gesehen | 1 | Oberkörper von hinten gesehen: ein Arm von oben über die Schulter gebeugt, der andere von unten hinter den Rücken, die Finger beider Hände haken zwischen den Schulterblättern ineinander. |
+| G-145 | `dehnen_25_handruecken` | Handrücken und Unterarm | Schräg, nur Oberkörper | 1 | Ein Arm gestreckt nach vorn, der Handrücken zeigt nach vorn und die Finger nach unten; die andere Hand drückt den Handrücken sanft zum Körper. |
+| G-146 | `dehnen_26_oberer_ruecken` | Oberer Rücken | Seite | 1 | Aufrechter Stand, Knie leicht gebeugt, beide Arme auf Schulterhöhe nach vorn gestreckt, Hände verschränkt mit den Handflächen nach vorn, oberer Rücken rund, Kinn zur Brust. |
+| G-147 | `dehnen_27_seitliche_kindhaltung` | Seitliche Kindhaltung | Von oben | 1 | Kindhaltung von oben gesehen: Gesäß auf den Fersen, Stirn am Boden, beide Arme lang nach vorn, aber deutlich zu einer Seite gewandert, sodass der Oberkörper einen Bogen bildet. |
+| G-148 | `dehnen_28_bauchdehnung_stand` | Bauch im Stand | Seite | 1 | Aufrechter Stand, Füße hüftbreit, Hände stützen am unteren Rücken mit den Fingern nach unten, Hüfte leicht nach vorn geschoben, Oberkörper sanft nach hinten gebeugt, Blick schräg nach oben. |
+| G-149 | `dehnen_29_drehung_schneidersitz` | Drehung im Schneidersitz | Front | 1 | Schneidersitz, Oberkörper aufrecht und zu einer Seite gedreht, die gegenüberliegende Hand liegt außen am Knie, die andere Hand stützt hinter dem Gesäß am Boden, Blick über die hintere Schulter. |
+| G-150 | `dehnen_30_gesaess_sitzend` | Gesäß im Sitzen | Schräg | 1 | Sitz am Boden, ein Bein gestreckt, das andere gebeugt und der Fuß außen neben das Knie des gestreckten Beins gestellt, beide Arme umfassen das gebeugte Knie und ziehen es zur gegenüberliegenden Schulter, Rücken aufrecht. |
+| G-151 | `dehnen_31_frosch` | Frosch | Front, von hinten gesehen | 1 | Vierfüßlerstand auf den Unterarmen, von hinten gesehen: Knie sehr weit geöffnet am Boden, Unterschenkel zeigen nach außen, Füße nach außen gedreht, Hüfte zwischen den Knien abgesenkt. |
+| G-152 | `dehnen_32_eidechse` | Eidechse | Seite | 1 | Tiefer Ausfallschritt, hinteres Bein gestreckt oder das Knie abgelegt, beide Unterarme liegen innen neben dem vorderen Fuß am Boden, Hüfte tief, Rücken lang. |
+| G-153 | `dehnen_33_oberschenkel_seitlage` | Oberschenkel-Vorderseite in Seitlage | Seite | 1 | Seitlage, Kopf auf dem unteren Arm abgelegt, unteres Bein leicht gebeugt, das obere Bein nach hinten gebeugt, die obere Hand zieht dessen Fuß zum Gesäß, Hüfte nach vorn geschoben. |
+| G-154 | `dehnen_34_beinrueckseite_liegend` | Beinrückseite im Liegen | Seite | 1 | Rückenlage, ein Bein gestreckt am Boden, das andere gestreckt senkrecht nach oben, beide Hände umfassen dessen Oberschenkel oder Wade, Kopf und Schultern am Boden. |
+| G-155 | `dehnen_35_gekreuzte_vorbeuge` | Gekreuzte Vorbeuge | Front | 1 | Stand mit überkreuzten Beinen, beide Füße flach nebeneinander am Boden, Beine gestreckt, Oberkörper nach unten gebeugt, Hände am Boden oder an den Schienbeinen. |
+| G-156 | `dehnen_36_wade_im_hund` | Wade im herabschauenden Hund | Seite | 1 | Herabschauender Hund, ein Knie gebeugt, die Ferse des anderen, gestreckten Beins fest zum Boden gedrückt. |
+| G-157 | `dehnen_37_schienbein` | Schienbein und Fußrücken | Seite | 1 | Fersensitz mit flach aufliegenden Fußrücken, Hände stützen hinter dem Körper am Boden, Oberkörper leicht zurückgelehnt, beide Knie wenige Zentimeter vom Boden abgehoben. |
+| G-158 | `dehnen_38_sprunggelenk` | Sprunggelenk | Seite | 1 | Halber Kniestand: hinteres Knie am Boden, vorderer Fuß flach aufgestellt, das vordere Knie ist weit über die Zehen nach vorn geschoben, die Ferse bleibt am Boden, Hände auf dem vorderen Knie. |
+| G-159 | `dehnen_39_seitbeuge_sitz` | Seitbeuge im Schneidersitz | Front | 1 | Schneidersitz, eine Hand stützt seitlich neben dem Gesäß am Boden, der andere Arm ist im Bogen über den Kopf zur gestützten Seite gestreckt, Oberkörper seitlich geneigt, beide Gesäßhälften am Boden. |
+| G-160 | `dehnen_40_ganzkoerper_strecken` | Ganzkörper strecken | Seite, leicht von oben | 1 | Gestreckte Rückenlage, Arme lang über dem Kopf am Boden, Zehen gestreckt, der ganze Körper in die Länge gezogen. |
+
 ## Zusammenfassung
 
-| Kategorie | Nummern | Anzahl | Davon mit 2 Posen |
-|-----------|---------|--------|-------------------|
-| Yoga | G-001 – G-020 | 20 | 1 |
-| Crossfit | G-021 – G-040 | 20 | 12 |
-| Calisthenics | G-041 – G-060 | 20 | 3 |
-| Dehnen | G-061 – G-080 | 20 | 0 |
-| **Gesamt** | | **80** | **16** |
+| Kategorie | Nummern | Anzahl |
+|-----------|---------|--------|
+| Yoga | G-001 – G-020, G-081 – G-100 | 40 |
+| Crossfit | G-021 – G-040, G-101 – G-120 | 40 |
+| Calisthenics | G-041 – G-060, G-121 – G-140 | 40 |
+| Dehnen | G-061 – G-080, G-141 – G-160 | 40 |
+| **Gesamt** | | **160** |
+
+Die Erweiterung G-081 bis G-160 (Stand 2026-10-11) kommt ohne Geräte aus. Bei
+Crossfit trägt die Figur weiterhin Sportschuhe, sonst ist sie barfuß.

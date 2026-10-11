@@ -98,7 +98,7 @@ Spalte „Idee" verweist auf den Ideenspeicher.
 
 | Nr. | Anforderung | Prio | Idee |
 |-----|-------------|------|------|
-| A-040 | Übungsbibliothek mit 80 mitgelieferten Übungen, je 20 für Yoga, Crossfit, Calisthenics und Dehnen. Jede Übung hat Name, Beschreibung und Grafik. | Muss | I-007, I-020 |
+| A-040 | Übungsbibliothek mit 160 mitgelieferten Übungen, je 40 für Yoga, Crossfit, Calisthenics und Dehnen, davon die Hälfte ohne Geräte (erweitert am 2026-10-11). Jede Übung hat Name, Beschreibung, Grafik und die trainierten Körperbereiche. | Muss | I-007, I-020, I-021 |
 | A-041 | Eigene Übungen anlegen, ändern, löschen; eigenes Bild hinterlegbar. | Muss | I-007 |
 | A-042 | Programme aus Übungen zusammenstellen: Reihenfolge, je Übung Dauer oder Wiederholungen, Pausen, Rundenzahl. | Muss | I-007 |
 | A-043 | Programm geführt abspielen: aktuelle Übung mit Grafik, Countdown oder Wiederholungszahl, Vorschau der nächsten Übung, Signal beim Wechsel. | Muss | I-007 |
@@ -196,7 +196,7 @@ Begründung der Reihenfolge: M0 klärt die technischen Risiken, bevor viel gebau
 
 | Nr. | Punkt |
 |-----|-------|
-| O-01 | Erledigt 2026-10-11: Alle 80 Übungsgrafiken liegen vor und sind eingebunden. |
+| O-01 | Die ersten 80 Übungsgrafiken sind eingebunden. Offen: die 80 Grafiken der Erweiterung, G-081 bis G-160. |
 | O-02 | Die vorhandenen Grafiken sind noch nicht auf anatomische Richtigkeit geprüft. |
 | O-03 | Erledigt 2026-10-11: Mindestversion Android 14; das Smartphone hat Android 17. |
 | O-04 | Erledigt 2026-10-11: Die App weist hin und fragt nach (A-067). |

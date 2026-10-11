@@ -4,6 +4,18 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.8.0] – 2026-10-11
+
+### Hinzugefügt
+- 80 weitere Übungen ohne Geräte, je 20 für Yoga, Crossfit, Calisthenics und Dehnen (Wunsch des Nutzers); die Bibliothek umfasst jetzt 160 Übungen. Ihre Grafiken (G-081 bis G-160) stehen noch aus; bis dahin erscheint der Platzhalter.
+- Körperbereiche je Übung (Nacken, Schultern, Arme, Brust, Rücken, Bauch und Rumpf, Hüfte, Gesäß, Beine, Waden und Füße, Ganzkörper), für alle 160 Übungen eingetragen und bei eigenen Übungen wählbar. Anzeige in der Übung, beim Abspielen und zusammengefasst je Programm; die Bibliothek lässt sich nach Körperbereich filtern.
+- 19 weitere Programme ohne Geräte, viele in zwei Varianten: Sonnengruß mit 3 oder 6 Runden, Tabata mit 4 oder 8 Minuten, Crossfit leicht oder fordernd, Calisthenics für Einsteiger oder Fortgeschrittene, Rumpf kurz oder lang, Dehnen kurz oder lang, dazu Hüftöffner, Rücken, Balance, Abendruhe, Hüfte und Beine, Nacken und Schultern.
+- Zwei weitere automatische Tests (insgesamt 141).
+
+### Geändert
+- Bestehende Installationen bekommen die neuen Übungen und Programme beim ersten Start; eigene und geänderte Übungen bleiben unberührt.
+- Die Texte und Körperbereiche der Übungen liegen jetzt in `tools/uebungen.json`.
+
 ## [0.7.0] – 2026-10-11
 
 ### Hinzugefügt

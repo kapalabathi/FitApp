@@ -1,5 +1,6 @@
-// Erzeugt von tools/uebungen_erzeugen.py aus docs/GRAFIKLISTE.md.
-// Nicht von Hand ändern, sondern das Skript anpassen und neu ausführen.
+// Erzeugt von tools/uebungen_erzeugen.py aus docs/GRAFIKLISTE.md und
+// tools/uebungen.json. Nicht von Hand ändern, sondern die Quellen anpassen
+// und das Skript neu ausführen.
 
 import 'program_models.dart';
 
@@ -10,7 +11,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Berghaltung (Tadasana)',
     description:
         'Aufrecht stehen, Füße geschlossen, das Gewicht gleichmäßig verteilen. Schultern locker, Scheitel nach oben, ruhig atmen.',
+    areas: [BodyArea.core, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_02_herabschauender_hund',
@@ -18,7 +21,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Herabschauender Hund',
     description:
         'Aus dem Vierfüßlerstand das Gesäß nach oben schieben, Arme und Rücken lang machen. Die Fersen sinken Richtung Boden, der Kopf hängt locker zwischen den Armen.',
+    areas: [BodyArea.shoulders, BodyArea.legs, BodyArea.calves, BodyArea.back],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_03_heraufschauender_hund',
@@ -26,7 +31,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Heraufschauender Hund',
     description:
         'Aus der Bauchlage die Arme durchstrecken und die Brust nach vorn oben heben. Hüfte und Oberschenkel schweben, nur Hände und Fußrücken tragen.',
+    areas: [BodyArea.chest, BodyArea.back, BodyArea.arms],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_04_kobra',
@@ -34,7 +41,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Kobra',
     description:
         'In Bauchlage die Hände neben die Brust setzen und den Oberkörper aus der Rückenkraft anheben. Das Becken bleibt am Boden, die Ellbogen nah am Körper.',
+    areas: [BodyArea.back, BodyArea.chest],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_05_kindhaltung',
@@ -42,7 +51,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Kindhaltung',
     description:
         'Auf die Fersen setzen, den Oberkörper nach vorn ablegen, die Stirn zum Boden. Arme lang nach vorn, in den Rücken atmen.',
+    areas: [BodyArea.back, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_06_katze_kuh',
@@ -50,7 +61,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Katze-Kuh',
     description:
         'Im Vierfüßlerstand beim Einatmen ins Hohlkreuz gehen und den Blick heben, beim Ausatmen den Rücken rund machen und das Kinn zur Brust ziehen. Fließend wechseln.',
+    areas: [BodyArea.back, BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_07_krieger_1',
@@ -58,7 +71,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Krieger I',
     description:
         'Großer Ausfallschritt, vorderes Knie über dem Fußgelenk, hinteres Bein gestreckt. Das Becken nach vorn ausrichten und die Arme nach oben strecken. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_08_krieger_2',
@@ -66,7 +81,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Krieger II',
     description:
         'Breiter Stand, das vordere Knie beugen, die Arme waagerecht ausbreiten. Der Oberkörper bleibt aufrecht über dem Becken, der Blick geht über die vordere Hand. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_09_krieger_3',
@@ -74,7 +91,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Krieger III',
     description:
         'Das Gewicht auf ein Bein verlagern, Oberkörper und anderes Bein in die Waagerechte bringen. Arme nach vorn strecken, die Hüfte parallel zum Boden halten. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.glutes, BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_10_dreieck',
@@ -82,7 +101,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Dreieck (Trikonasana)',
     description:
         'Breiter Stand mit gestreckten Beinen, den Oberkörper seitlich über das vordere Bein neigen. Untere Hand ans Schienbein, oberen Arm zur Decke strecken. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips, BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_11_baum',
@@ -90,7 +111,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Baum',
     description:
         'Auf einem Bein stehen, die Fußsohle des anderen an die Innenseite des Oberschenkels setzen, nicht ans Knie. Hände über dem Kopf zusammenführen und einen Punkt fixieren. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_12_stuhl',
@@ -98,7 +121,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Stuhl (Utkatasana)',
     description:
         'Füße geschlossen, die Knie beugen und das Gesäß nach hinten schieben wie auf einen Stuhl. Arme schräg nach oben, Rücken lang.',
+    areas: [BodyArea.legs, BodyArea.glutes, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_13_stehende_vorbeuge',
@@ -106,7 +131,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Stehende Vorbeuge',
     description:
         'Aus der Hüfte nach vorn falten und den Oberkörper hängen lassen. Die Knie dürfen leicht gebeugt sein, der Nacken ist locker.',
+    areas: [BodyArea.legs, BodyArea.back],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_14_sitzende_vorbeuge',
@@ -114,7 +141,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Sitzende Vorbeuge',
     description:
         'Mit gestreckten Beinen sitzen, mit langem Rücken nach vorn beugen und Richtung Füße greifen. Nicht ziehen, mit jeder Ausatmung etwas tiefer sinken.',
+    areas: [BodyArea.legs, BodyArea.back],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_15_bruecke',
@@ -122,7 +151,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Schulterbrücke',
     description:
         'In Rückenlage die Füße hüftbreit aufstellen und das Becken anheben. Die Knie bleiben parallel, Schultern und Kopf liegen am Boden.',
+    areas: [BodyArea.glutes, BodyArea.back, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_16_boot',
@@ -130,7 +161,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Boot (Navasana)',
     description:
         'Auf dem Gesäß balancieren, Beine und Oberkörper zu einem V anheben. Rücken gerade, Arme parallel zum Boden. Leichter mit gebeugten Knien.',
+    areas: [BodyArea.core, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_17_taube',
@@ -138,7 +171,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Taube',
     description:
         'Ein Bein angewinkelt vor dem Körper ablegen, das andere lang nach hinten strecken. Das Becken gerade ausrichten, den Oberkörper aufrichten oder nach vorn ablegen. Seite wechseln.',
+    areas: [BodyArea.hips, BodyArea.glutes],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_18_drehsitz',
@@ -146,7 +181,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Drehsitz',
     description:
         'Im Sitz ein Bein über das andere stellen und den Oberkörper zum aufgestellten Knie drehen. Mit der Einatmung aufrichten, mit der Ausatmung weiter drehen. Seite wechseln.',
+    areas: [BodyArea.back, BodyArea.core, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_19_tiefer_ausfallschritt',
@@ -154,7 +191,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Tiefer Ausfallschritt',
     description:
         'Das hintere Knie ablegen und die Hüfte nach vorn unten sinken lassen. Den Oberkörper aufrichten und die Arme nach oben strecken. Seite wechseln.',
+    areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'yoga_20_totenstellung',
@@ -162,7 +201,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Totenstellung (Savasana)',
     description:
         'Flach auf dem Rücken liegen, Arme und Beine locker ausgebreitet. Augen schließen und den Atem frei fließen lassen.',
+    areas: [BodyArea.fullBody],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_01_air_squat',
@@ -170,7 +211,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Kniebeuge (Air Squat)',
     description:
         'Füße schulterbreit, das Gesäß nach hinten unten führen, bis die Hüfte unter Kniehöhe ist. Fersen am Boden, Knie in Richtung der Zehen, Brust aufrecht.',
+    areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_02_burpee',
@@ -178,7 +221,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Burpee',
     description:
         'In die Hocke gehen, in den Liegestütz springen und die Brust ablegen. Wieder anhocken und mit einem Strecksprung abschließen.',
+    areas: [BodyArea.fullBody],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_03_box_jump',
@@ -186,7 +231,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Box Jump',
     description:
         'Aus leichter Hocke mit Armschwung auf die Box springen und oben ganz aufrichten. Kontrolliert wieder heruntersteigen.',
+    areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_04_kettlebell_swing',
@@ -194,7 +241,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Kettlebell Swing',
     description:
         'Die Hüfte nach hinten schieben, die Kettlebell zwischen den Beinen durchschwingen und mit einer kräftigen Hüftstreckung auf Brusthöhe bringen. Der Rücken bleibt gerade, die Arme führen nur.',
+    areas: [BodyArea.glutes, BodyArea.legs, BodyArea.back],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_05_thruster',
@@ -202,7 +251,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Thruster',
     description:
         'Mit der Hantel auf den Schultern tief in die Kniebeuge gehen. Beim Aufstehen den Schwung nutzen und die Hantel über den Kopf strecken.',
+    areas: [BodyArea.legs, BodyArea.shoulders, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_06_wall_ball',
@@ -210,7 +261,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Wall Ball',
     description:
         'Mit dem Ball vor der Brust in die Kniebeuge gehen, explosiv aufstehen und den Ball an ein hohes Ziel an der Wand werfen. Fangen und direkt in die nächste Kniebeuge.',
+    areas: [BodyArea.legs, BodyArea.shoulders],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_07_seilspringen',
@@ -218,7 +271,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Seilspringen',
     description:
         'Mit kleinen Sprüngen auf den Fußballen springen, das Seil kommt aus den Handgelenken. Die Ellbogen bleiben nah am Körper.',
+    areas: [BodyArea.calves, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_08_kreuzheben',
@@ -226,7 +281,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Kreuzheben',
     description:
         'Die Stange nah am Schienbein greifen, Rücken gerade, Schultern über der Stange. Mit Beinen und Hüfte aufrichten, die Stange bleibt nah am Körper.',
+    areas: [BodyArea.back, BodyArea.glutes, BodyArea.legs],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_09_goblet_squat',
@@ -234,7 +291,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Goblet Squat',
     description:
         'Die Kettlebell dicht vor der Brust halten und tief in die Kniebeuge gehen. Ellbogen zwischen die Knie, Oberkörper aufrecht.',
+    areas: [BodyArea.legs, BodyArea.glutes, BodyArea.core],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_10_push_press',
@@ -242,7 +301,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Push Press',
     description:
         'Hantel auf den Schultern, leicht in die Knie gehen und sie mit dem Schwung der Beine über den Kopf drücken. Oben die Arme ganz strecken.',
+    areas: [BodyArea.shoulders, BodyArea.arms],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_11_toes_to_bar',
@@ -250,7 +311,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Toes-to-Bar',
     description:
         'An der Stange hängend die gestreckten Beine anheben, bis die Zehen die Stange berühren. Kontrolliert ablassen.',
+    areas: [BodyArea.core, BodyArea.hips],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_12_mountain_climbers',
@@ -258,7 +321,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Mountain Climbers',
     description:
         'Im hohen Stütz die Knie abwechselnd schnell zur Brust ziehen. Die Hüfte bleibt tief, die Schultern über den Händen.',
+    areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_13_ausfallschritt',
@@ -266,7 +331,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Ausfallschritt gehend',
     description:
         'Einen großen Schritt nach vorn machen und beide Knie etwa 90 Grad beugen, das hintere knapp über dem Boden. Aufstehen und mit dem anderen Bein weitergehen.',
+    areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_14_situp',
@@ -274,7 +341,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Sit-up',
     description:
         'Aus der Rückenlage mit aufgestellten Füßen den Oberkörper ganz aufrichten. Langsam wieder abrollen.',
+    areas: [BodyArea.core],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_15_kurzhantel_snatch',
@@ -282,7 +351,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Kurzhantel-Snatch',
     description:
         'Die Hantel aus der Hocke in einer Bewegung vom Boden über den Kopf bringen. Die Kraft kommt aus Beinen und Hüfte. Seite wechseln.',
+    areas: [BodyArea.shoulders, BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_16_farmers_carry',
@@ -290,7 +361,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Farmers Carry',
     description:
         'In jeder Hand ein Gewicht, aufrecht und zügig gehen. Schultern zurück, Rumpf fest.',
+    areas: [BodyArea.arms, BodyArea.core, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_17_box_step_up',
@@ -298,7 +371,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Box Step-up',
     description:
         'Einen Fuß ganz auf die Box stellen und über dieses Bein hochdrücken, bis du oben aufrecht stehst. Kontrolliert absteigen, Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_18_russian_twist',
@@ -306,7 +381,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Russian Twist',
     description:
         'Im Sitz leicht zurücklehnen, die Füße anheben und den Oberkörper mit dem Gewicht von Seite zu Seite drehen. Der Rücken bleibt gerade.',
+    areas: [BodyArea.core],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_19_hampelmann',
@@ -314,7 +391,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Hampelmann',
     description:
         'Beim Sprung die Beine grätschen und die Arme über den Kopf führen, beim nächsten wieder schließen. Locker und gleichmäßig.',
+    areas: [BodyArea.fullBody],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_20_bear_crawl',
@@ -322,7 +401,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Bear Crawl',
     description:
         'Auf Händen und Füßen mit flachem Rücken vorwärts krabbeln, die Knie knapp über dem Boden. Hand und Fuß gegengleich setzen.',
+    areas: [BodyArea.shoulders, BodyArea.core, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_01_liegestuetz',
@@ -330,7 +411,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Liegestütz',
     description:
         'Hände etwas breiter als schulterbreit, der Körper von Kopf bis Ferse eine Linie. Die Brust bis knapp über den Boden senken und wieder hochdrücken.',
+    areas: [BodyArea.chest, BodyArea.arms, BodyArea.shoulders],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_02_liegestuetz_knie',
@@ -338,7 +421,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Liegestütz auf Knien',
     description:
         'Wie der Liegestütz, aber mit den Knien am Boden. Die Hüfte nicht abknicken, der Körper bleibt von Kopf bis Knie gerade.',
+    areas: [BodyArea.chest, BodyArea.arms, BodyArea.shoulders],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_03_diamant_liegestuetz',
@@ -346,7 +431,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Diamant-Liegestütz',
     description:
         'Die Hände unter der Brust so aufsetzen, dass Daumen und Zeigefinger eine Raute bilden. Die Ellbogen nah am Körper führen.',
+    areas: [BodyArea.arms, BodyArea.chest],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_04_pike_pushup',
@@ -354,7 +441,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Pike Push-up',
     description:
         'Das Gesäß hoch wie im herabschauenden Hund, die Ellbogen beugen und den Kopf zwischen die Hände senken. Wieder hochdrücken.',
+    areas: [BodyArea.shoulders, BodyArea.arms],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_05_klimmzug',
@@ -362,7 +451,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Klimmzug (Obergriff)',
     description:
         'Im Obergriff etwas breiter als schulterbreit hängen und hochziehen, bis das Kinn über der Stange ist. Kontrolliert ganz ablassen.',
+    areas: [BodyArea.back, BodyArea.arms],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_06_chinup',
@@ -370,7 +461,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Chin-up (Untergriff)',
     description:
         'Im Untergriff schulterbreit hängen und hochziehen, bis das Kinn über der Stange ist. Die Ellbogen vor dem Körper führen.',
+    areas: [BodyArea.arms, BodyArea.back],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_07_australian_pullup',
@@ -378,7 +471,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Australian Pull-up',
     description:
         'Unter einer hüfthohen Stange hängen, der Körper gestreckt, die Fersen am Boden. Die Brust zur Stange ziehen.',
+    areas: [BodyArea.back, BodyArea.arms],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_08_dips',
@@ -386,7 +481,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Dips am Barren',
     description:
         'Im Stütz am Barren die Ellbogen bis etwa 90 Grad beugen und wieder hochdrücken. Die Schultern bleiben unten.',
+    areas: [BodyArea.arms, BodyArea.chest, BodyArea.shoulders],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_09_bank_dips',
@@ -394,7 +491,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Bank-Dips',
     description:
         'Die Hände hinter dem Körper auf die Bankkante stützen, das Gesäß vor der Bank absenken und wieder hochdrücken. Die Ellbogen zeigen nach hinten.',
+    areas: [BodyArea.arms, BodyArea.shoulders],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_10_unterarmstuetz',
@@ -402,7 +501,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Unterarmstütz (Plank)',
     description:
         'Auf Unterarmen und Zehenspitzen stützen, die Ellbogen unter den Schultern. Bauch und Gesäß anspannen, nicht durchhängen.',
+    areas: [BodyArea.core, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_11_seitstuetz',
@@ -410,7 +511,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Seitstütz',
     description:
         'Seitlich auf einem Unterarm stützen, die Füße übereinander, die Hüfte anheben. Der Körper bildet eine Linie. Seite wechseln.',
+    areas: [BodyArea.core, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_12_hollow_body',
@@ -418,7 +521,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Hollow Body Hold',
     description:
         'In Rückenlage den unteren Rücken in den Boden drücken, Schultern und gestreckte Beine leicht anheben. Arme lang über den Kopf.',
+    areas: [BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_13_haengendes_beinheben',
@@ -426,7 +531,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Hängendes Beinheben',
     description:
         'An der Stange hängend die gestreckten Beine bis zur Waagerechten heben. Ohne Schwung arbeiten.',
+    areas: [BodyArea.core, BodyArea.hips],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_14_l_sit',
@@ -434,7 +541,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'L-Sit',
     description:
         'Im Stütz die gestreckten Beine waagerecht nach vorn halten. Die Schultern nach unten drücken. Leichter mit angezogenen Knien.',
+    areas: [BodyArea.core, BodyArea.arms, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_15_pistol_squat',
@@ -442,7 +551,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Einbeinige Kniebeuge (Pistol)',
     description:
         'Auf einem Bein tief in die Hocke gehen, das andere gestreckt nach vorn halten. Die Ferse bleibt am Boden. Zum Üben an etwas festhalten.',
+    areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_16_bulgarian_split_squat',
@@ -450,7 +561,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Bulgarian Split Squat',
     description:
         'Den hinteren Fuß auf eine Bank legen und das vordere Knie beugen, bis der Oberschenkel waagerecht ist. Oberkörper aufrecht. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_17_superman',
@@ -458,7 +571,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Superman',
     description:
         'In Bauchlage Arme, Brust und Beine gleichzeitig vom Boden heben. Kurz halten, der Blick bleibt zum Boden gerichtet.',
+    areas: [BodyArea.back, BodyArea.glutes],
     timed: false,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_18_wandsitz',
@@ -466,7 +581,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Wandsitz',
     description:
         'Mit dem Rücken an der Wand in die Sitzposition rutschen, Knie und Hüfte im rechten Winkel. Halten.',
+    areas: [BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_19_handstand_wand',
@@ -474,7 +591,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Handstand an der Wand',
     description:
         'Mit dem Bauch zur Wand in den Handstand gehen. Arme gestreckt, der Körper lang und fest. Nur ausführen, wenn du den Handstand sicher beherrschst.',
+    areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'cali_20_kraehe',
@@ -482,7 +601,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Krähe',
     description:
         'Die Hände aufsetzen, die Knie auf die Oberarme legen und das Gewicht nach vorn verlagern, bis die Füße abheben. Der Blick geht nach vorn.',
+    areas: [BodyArea.arms, BodyArea.shoulders, BodyArea.core],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_01_nacken',
@@ -490,7 +611,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Nacken seitlich',
     description:
         'Den Kopf zur Schulter neigen, die Hand liegt nur leicht auf. Die Gegenschulter nach unten ziehen. Seite wechseln.',
+    areas: [BodyArea.neck],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_02_schulter',
@@ -498,7 +621,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Schulter',
     description:
         'Einen gestreckten Arm vor der Brust zur Gegenseite führen und mit dem anderen Arm heranziehen. Die Schulter bleibt unten. Seite wechseln.',
+    areas: [BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_03_trizeps',
@@ -506,7 +631,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Trizeps',
     description:
         'Einen Arm über den Kopf beugen, die Hand zwischen die Schulterblätter. Mit der anderen Hand den Ellbogen sanft zur Mitte ziehen. Seite wechseln.',
+    areas: [BodyArea.arms, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_04_brust_wand',
@@ -514,7 +641,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Brust an der Wand',
     description:
         'Den Unterarm senkrecht an Wand oder Türrahmen legen, der Ellbogen auf Schulterhöhe. Den Oberkörper von der Wand wegdrehen. Seite wechseln.',
+    areas: [BodyArea.chest, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_05_seitbeuge',
@@ -522,7 +651,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Seitbeuge im Stand',
     description:
         'Einen Arm lang über den Kopf zur Gegenseite ziehen und die Flanke öffnen. Nicht nach vorn kippen. Seite wechseln.',
+    areas: [BodyArea.core, BodyArea.back],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_06_wade_wand',
@@ -530,7 +661,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Wade an der Wand',
     description:
         'In Schrittstellung an der Wand abstützen, das hintere Bein gestreckt, die Ferse am Boden. Die Hüfte nach vorn schieben. Seite wechseln.',
+    areas: [BodyArea.calves],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_07_oberschenkel_vorn',
@@ -538,7 +671,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Oberschenkel-Vorderseite',
     description:
         'Im Stand eine Ferse zum Gesäß ziehen, die Knie zeigen nach unten. Das Becken leicht nach vorn schieben, ohne ins Hohlkreuz zu gehen. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_08_oberschenkel_hinten',
@@ -546,7 +681,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Oberschenkel-Rückseite',
     description:
         'Ein Bein gestreckt nach vorn auf die Ferse stellen, die Zehen anziehen. Mit geradem Rücken aus der Hüfte nach vorn neigen. Seite wechseln.',
+    areas: [BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_09_hueftbeuger',
@@ -554,7 +691,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Hüftbeuger',
     description:
         'Im knienden Ausfallschritt die Hüfte nach vorn schieben, der Oberkörper bleibt aufrecht. Das Gesäß der hinteren Seite anspannen. Seite wechseln.',
+    areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_10_schmetterling',
@@ -562,7 +701,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Schmetterling',
     description:
         'Im Sitz die Fußsohlen aneinanderlegen und die Knie nach außen sinken lassen. Der Rücken bleibt aufrecht.',
+    areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_11_graetschsitz',
@@ -570,7 +711,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Grätschsitz mit Vorbeuge',
     description:
         'Mit weit geöffneten, gestreckten Beinen sitzen und mit langem Rücken nach vorn wandern.',
+    areas: [BodyArea.legs, BodyArea.hips, BodyArea.back],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_12_figur_4',
@@ -578,7 +721,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Gesäß (liegende Vier)',
     description:
         'In Rückenlage einen Knöchel auf das andere Knie legen und dieses Bein zur Brust ziehen. Seite wechseln.',
+    areas: [BodyArea.glutes, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_13_knie_zur_brust',
@@ -586,7 +731,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Knie zur Brust',
     description:
         'In Rückenlage beide Knie mit den Händen zur Brust ziehen. Der untere Rücken wird rund und entspannt.',
+    areas: [BodyArea.back, BodyArea.glutes],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_14_wirbelsaeule_drehung',
@@ -594,7 +741,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Liegende Drehung',
     description:
         'In Rückenlage ein Knie über den Körper zur Gegenseite legen, die Arme liegen als T. Beide Schultern bleiben am Boden. Seite wechseln.',
+    areas: [BodyArea.back, BodyArea.core, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_15_tiefe_hocke',
@@ -602,7 +751,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Tiefe Hocke',
     description:
         'Tief in die Hocke sinken, die Fersen am Boden. Mit den Ellbogen die Knie sanft nach außen drücken, der Rücken bleibt lang.',
+    areas: [BodyArea.hips, BodyArea.legs, BodyArea.calves],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_16_adduktoren',
@@ -610,7 +761,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Adduktoren (seitlicher Ausfallschritt)',
     description:
         'Im sehr breiten Stand ein Knie beugen und das Gewicht zur Seite verlagern, das andere Bein bleibt gestreckt. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_17_unterarm',
@@ -618,7 +771,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Unterarm und Handgelenk',
     description:
         'Einen Arm nach vorn strecken, die Finger zeigen nach unten, und mit der anderen Hand die Finger sanft zum Körper ziehen. Seite wechseln.',
+    areas: [BodyArea.arms],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_18_nadeloehr',
@@ -626,7 +781,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Nadelöhr (Brustwirbelsäule)',
     description:
         'Im Vierfüßlerstand einen Arm unter dem Körper durchfädeln und Schulter und Schläfe ablegen. Seite wechseln.',
+    areas: [BodyArea.back, BodyArea.shoulders],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_19_fusssohle',
@@ -634,7 +791,9 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Fußsohle im Fersensitz',
     description:
         'Mit aufgestellten Zehen auf die Fersen setzen. Die Dehnung ist intensiv, vorsichtig dosieren.',
+    areas: [BodyArea.calves],
     timed: true,
+    batch: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_20_weltbeste_dehnung',
@@ -642,6 +801,808 @@ const List<BuiltinExercise> builtinExercises = [
     name: 'Ausfallschritt mit Aufdrehen',
     description:
         'Im tiefen Ausfallschritt eine Hand neben den vorderen Fuß setzen und den anderen Arm zur Decke aufdrehen. Der Blick folgt der oberen Hand. Seite wechseln.',
+    areas: [BodyArea.hips, BodyArea.back, BodyArea.legs],
     timed: true,
+    batch: 1,
+  ),
+  BuiltinExercise(
+    key: 'yoga_21_halbe_vorbeuge',
+    category: ExerciseCategory.yoga,
+    name: 'Halbe Vorbeuge',
+    description:
+        'Aus der Vorbeuge den Oberkörper bis zur Waagerechten anheben, der Rücken wird lang und gerade. Die Hände stützen an den Schienbeinen.',
+    areas: [BodyArea.back, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_22_brett',
+    category: ExerciseCategory.yoga,
+    name: 'Brett',
+    description:
+        'Hände unter die Schultern, Arme strecken, der Körper bildet von Kopf bis Ferse eine Linie. Bauch fest, nicht durchhängen.',
+    areas: [BodyArea.core, BodyArea.shoulders, BodyArea.arms],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_23_tiefes_brett',
+    category: ExerciseCategory.yoga,
+    name: 'Tiefes Brett (Chaturanga)',
+    description:
+        'Aus dem Brett den Körper gerade absenken, bis die Oberarme waagerecht sind. Die Ellbogen bleiben eng am Körper. Leichter mit den Knien am Boden.',
+    areas: [BodyArea.arms, BodyArea.chest, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_24_seitliche_winkelhaltung',
+    category: ExerciseCategory.yoga,
+    name: 'Seitliche Winkelhaltung',
+    description:
+        'Im breiten Stand ein Knie beugen, den Unterarm auf den Oberschenkel legen und den anderen Arm lang über den Kopf strecken. Die ganze Körperseite wird lang. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_25_umgekehrter_krieger',
+    category: ExerciseCategory.yoga,
+    name: 'Umgekehrter Krieger',
+    description:
+        'Aus dem Krieger II den vorderen Arm nach oben führen und den Oberkörper nach hinten neigen. Die hintere Hand gleitet am Bein hinab, das vordere Knie bleibt gebeugt. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.core, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_26_pyramide',
+    category: ExerciseCategory.yoga,
+    name: 'Pyramide',
+    description:
+        'In kurzer Schrittstellung mit gestreckten Beinen aus der Hüfte über das vordere Bein beugen. Beide Hüftseiten zeigen nach vorn. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.back],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_27_gegraetschte_vorbeuge',
+    category: ExerciseCategory.yoga,
+    name: 'Gegrätschte Vorbeuge',
+    description:
+        'Im weiten Stand mit geradem Rücken nach vorn beugen und die Hände zwischen den Füßen aufsetzen. Das Gewicht bleibt auf den ganzen Füßen.',
+    areas: [BodyArea.legs, BodyArea.back, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_28_halbmond',
+    category: ExerciseCategory.yoga,
+    name: 'Halbmond',
+    description:
+        'Auf einem Bein stehen, die Hand derselben Seite vor dem Fuß aufsetzen und das andere Bein bis zur Waagerechten heben. Hüfte und Brust zur Seite aufdrehen. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.glutes, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_29_adler',
+    category: ExerciseCategory.yoga,
+    name: 'Adler',
+    description:
+        'Leicht in die Knie gehen, ein Bein über das andere schlagen und die Arme vor der Brust umeinander wickeln. Ellbogen auf Schulterhöhe heben. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.shoulders, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_30_taenzer',
+    category: ExerciseCategory.yoga,
+    name: 'Tänzer',
+    description:
+        'Im Stand einen Fuß von innen greifen und nach hinten oben drücken, während der andere Arm nach vorn zeigt. Der Oberkörper bleibt möglichst aufrecht. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.back, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_31_heuschrecke',
+    category: ExerciseCategory.yoga,
+    name: 'Heuschrecke',
+    description:
+        'In Bauchlage Brust, Arme und Beine gleichzeitig anheben, die Arme zeigen nach hinten. Der Nacken bleibt lang.',
+    areas: [BodyArea.back, BodyArea.glutes],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_32_bogen',
+    category: ExerciseCategory.yoga,
+    name: 'Bogen',
+    description:
+        'In Bauchlage die Fußgelenke greifen und die Füße nach hinten oben drücken, sodass Brust und Oberschenkel abheben. Gleichmäßig weiteratmen.',
+    areas: [BodyArea.back, BodyArea.chest, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_33_kamel',
+    category: ExerciseCategory.yoga,
+    name: 'Kamel',
+    description:
+        'Im Kniestand die Hüfte nach vorn schieben und nach hinten beugen, bis die Hände die Fersen erreichen. Leichter mit den Händen am unteren Rücken.',
+    areas: [BodyArea.chest, BodyArea.hips, BodyArea.back],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_34_sphinx',
+    category: ExerciseCategory.yoga,
+    name: 'Sphinx',
+    description:
+        'In Bauchlage auf die Unterarme stützen, die Ellbogen unter den Schultern. Die Brust nach vorn schieben, die Schultern weg von den Ohren.',
+    areas: [BodyArea.back, BodyArea.chest],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_35_delfin',
+    category: ExerciseCategory.yoga,
+    name: 'Delfin',
+    description:
+        'Auf die Unterarme stützen und das Gesäß nach oben schieben, bis der Körper ein umgekehrtes V bildet. Die Schultern aktiv vom Boden wegdrücken.',
+    areas: [BodyArea.shoulders, BodyArea.core, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_36_umgekehrter_tisch',
+    category: ExerciseCategory.yoga,
+    name: 'Umgekehrter Tisch',
+    description:
+        'Im Sitz die Hände hinter dem Gesäß aufsetzen, die Füße aufstellen und die Hüfte heben, bis Rumpf und Oberschenkel waagerecht sind. Das Gesäß fest anspannen.',
+    areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.glutes],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_37_kopf_zu_knie',
+    category: ExerciseCategory.yoga,
+    name: 'Kopf-zu-Knie-Haltung',
+    description:
+        'Im Sitz ein Bein strecken, die andere Fußsohle an den Oberschenkel legen und mit langem Rücken über das gestreckte Bein beugen. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.back],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_38_glueckliches_baby',
+    category: ExerciseCategory.yoga,
+    name: 'Glückliches Baby',
+    description:
+        'In Rückenlage die Füße von außen greifen und die Knie neben den Oberkörper Richtung Boden ziehen. Der untere Rücken bleibt am Boden.',
+    areas: [BodyArea.hips, BodyArea.back],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_39_liegender_schmetterling',
+    category: ExerciseCategory.yoga,
+    name: 'Liegender Schmetterling',
+    description:
+        'In Rückenlage die Fußsohlen aneinanderlegen und die Knie nach außen sinken lassen. Arme locker ablegen und ruhig atmen.',
+    areas: [BodyArea.hips, BodyArea.chest],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'yoga_40_halber_spagat',
+    category: ExerciseCategory.yoga,
+    name: 'Halber Spagat',
+    description:
+        'Aus dem tiefen Ausfallschritt die Hüfte nach hinten über das Knie schieben und das vordere Bein strecken. Mit geradem Rücken nach vorn neigen. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_21_strecksprung',
+    category: ExerciseCategory.crossfit,
+    name: 'Strecksprung aus der Hocke',
+    description:
+        'Aus der Kniebeuge explosiv nach oben springen und den Körper ganz strecken. Weich landen und direkt in die nächste Kniebeuge gehen.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_22_ausfallschritt_sprung',
+    category: ExerciseCategory.crossfit,
+    name: 'Ausfallschritt-Sprünge',
+    description:
+        'Aus dem Ausfallschritt abspringen, in der Luft die Beine wechseln und im Ausfallschritt der anderen Seite landen. Der Oberkörper bleibt aufrecht.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_23_kniehebelauf',
+    category: ExerciseCategory.crossfit,
+    name: 'Kniehebelauf',
+    description:
+        'Auf der Stelle laufen und die Knie bis auf Hüfthöhe ziehen. Auf den Fußballen bleiben, die Arme arbeiten kräftig mit.',
+    areas: [BodyArea.legs, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_24_anfersen',
+    category: ExerciseCategory.crossfit,
+    name: 'Anfersen',
+    description:
+        'Auf der Stelle laufen und die Fersen abwechselnd zum Gesäß ziehen. Die Knie zeigen dabei nach unten.',
+    areas: [BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_25_skater',
+    category: ExerciseCategory.crossfit,
+    name: 'Skater-Sprünge',
+    description:
+        'Seitlich von einem Bein auf das andere springen, das freie Bein kreuzt hinter dem Standbein. Bei der Landung kurz stabil stehen.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_26_hocksprung',
+    category: ExerciseCategory.crossfit,
+    name: 'Hocksprung',
+    description:
+        'Kräftig abspringen und in der Luft beide Knie zur Brust ziehen. Weich auf den Fußballen landen.',
+    areas: [BodyArea.legs, BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_27_standweitsprung',
+    category: ExerciseCategory.crossfit,
+    name: 'Standweitsprung',
+    description:
+        'Mit Armschwung aus dem Stand so weit wie möglich nach vorn springen und in der Hocke weich landen. Umdrehen und zurückspringen.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_28_sprawl',
+    category: ExerciseCategory.crossfit,
+    name: 'Sprawl',
+    description:
+        'Die Hände aufsetzen, die Beine nach hinten springen und die Hüfte Richtung Boden drücken. Sofort wieder anhocken und aufstehen.',
+    areas: [BodyArea.fullBody],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_29_plank_jacks',
+    category: ExerciseCategory.crossfit,
+    name: 'Plank Jacks',
+    description:
+        'Im hohen Stütz die Füße im Sprung öffnen und schließen wie beim Hampelmann. Die Hüfte bleibt ruhig auf einer Höhe.',
+    areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_30_schultertippen',
+    category: ExerciseCategory.crossfit,
+    name: 'Schultertippen im Stütz',
+    description:
+        'Im hohen Stütz abwechselnd mit einer Hand die gegenüberliegende Schulter berühren. Die Hüfte soll dabei nicht kippen.',
+    areas: [BodyArea.core, BodyArea.shoulders],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_31_klappmesser',
+    category: ExerciseCategory.crossfit,
+    name: 'Klappmesser',
+    description:
+        'Aus der gestreckten Rückenlage Oberkörper und gestreckte Beine gleichzeitig anheben, bis die Hände die Beine erreichen. Kontrolliert ablegen.',
+    areas: [BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_32_flutter_kicks',
+    category: ExerciseCategory.crossfit,
+    name: 'Flutter Kicks',
+    description:
+        'In Rückenlage die gestreckten Beine knapp über dem Boden abwechselnd auf und ab bewegen. Den unteren Rücken in den Boden drücken.',
+    areas: [BodyArea.core, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_33_fahrrad_crunch',
+    category: ExerciseCategory.crossfit,
+    name: 'Fahrrad-Crunch',
+    description:
+        'In Rückenlage abwechselnd ein Knie anziehen und den gegenüberliegenden Ellbogen dorthin drehen, das andere Bein streckt sich. Nicht am Kopf ziehen.',
+    areas: [BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_34_raupe',
+    category: ExerciseCategory.crossfit,
+    name: 'Raupe (Inchworm)',
+    description:
+        'Aus der Vorbeuge mit den Händen nach vorn in den hohen Stütz wandern, dann mit kleinen Schritten die Füße zu den Händen holen. Die Beine bleiben möglichst gestreckt.',
+    areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_35_spiderman_stuetz',
+    category: ExerciseCategory.crossfit,
+    name: 'Spiderman im Stütz',
+    description:
+        'Im hohen Stütz abwechselnd ein Knie seitlich außen zum Ellbogen derselben Seite ziehen. Die Hüfte bleibt tief.',
+    areas: [BodyArea.core, BodyArea.shoulders, BodyArea.hips],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_36_sumo_kniebeuge',
+    category: ExerciseCategory.crossfit,
+    name: 'Sumo-Kniebeuge',
+    description:
+        'Im sehr breiten Stand mit nach außen gedrehten Füßen tief in die Kniebeuge gehen. Die Knie zeigen in Richtung der Zehen, der Oberkörper bleibt aufrecht.',
+    areas: [BodyArea.legs, BodyArea.glutes, BodyArea.hips],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_37_seitlicher_ausfallschritt',
+    category: ExerciseCategory.crossfit,
+    name: 'Seitlicher Ausfallschritt',
+    description:
+        'Einen großen Schritt zur Seite machen, dieses Knie beugen und das Gesäß nach hinten schieben. Kräftig zurück in den Stand drücken, Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_38_krebsgang',
+    category: ExerciseCategory.crossfit,
+    name: 'Krebsgang',
+    description:
+        'Mit dem Bauch nach oben auf Händen und Füßen stützen, das Gesäß anheben und rückwärts oder vorwärts krabbeln. Hand und Fuß gegengleich setzen.',
+    areas: [BodyArea.arms, BodyArea.shoulders, BodyArea.glutes],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_39_froschsprung',
+    category: ExerciseCategory.crossfit,
+    name: 'Froschsprünge',
+    description:
+        'Aus der tiefen Hocke nach vorn springen und wieder in der tiefen Hocke landen, die Hände berühren kurz den Boden.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'crossfit_40_schattenboxen',
+    category: ExerciseCategory.crossfit,
+    name: 'Schattenboxen',
+    description:
+        'In Schrittstellung abwechselnd gerade nach vorn schlagen, die andere Faust schützt das Kinn. Aus Hüfte und Beinen mitdrehen und locker auf den Fußballen bleiben.',
+    areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_21_breiter_liegestuetz',
+    category: ExerciseCategory.calisthenics,
+    name: 'Breiter Liegestütz',
+    description:
+        'Die Hände deutlich breiter als schulterbreit aufsetzen und die Brust zum Boden senken. Das betont die Brustmuskulatur.',
+    areas: [BodyArea.chest, BodyArea.shoulders],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_22_bogenschuetzen_liegestuetz',
+    category: ExerciseCategory.calisthenics,
+    name: 'Bogenschützen-Liegestütz',
+    description:
+        'Bei sehr breiter Handstellung das Gewicht zu einer Seite verlagern und über diesen Arm absenken, der andere bleibt gestreckt. Seite wechseln.',
+    areas: [BodyArea.chest, BodyArea.arms],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_23_hindu_liegestuetz',
+    category: ExerciseCategory.calisthenics,
+    name: 'Hindu-Liegestütz',
+    description:
+        'Aus dem herabschauenden Hund mit der Brust knapp über dem Boden nach vorn durchtauchen und in den heraufschauenden Hund aufrichten. Das Gesäß wieder nach oben schieben.',
+    areas: [BodyArea.shoulders, BodyArea.chest, BodyArea.arms],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_24_pseudo_planche',
+    category: ExerciseCategory.calisthenics,
+    name: 'Pseudo-Planche-Liegestütz',
+    description:
+        'Im Liegestütz die Hände neben die Taille setzen und die Schultern weit nach vorn schieben. Aus dieser Vorlage beugen und strecken.',
+    areas: [BodyArea.shoulders, BodyArea.chest, BodyArea.arms],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_25_trizeps_strecker',
+    category: ExerciseCategory.calisthenics,
+    name: 'Trizeps-Strecker am Boden',
+    description:
+        'Aus dem Unterarmstütz beide Arme gleichzeitig durchstrecken, bis du im hohen Stütz bist, und wieder ablassen. Die Ellbogen bleiben eng.',
+    areas: [BodyArea.arms, BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_26_planke_hoch_tief',
+    category: ExerciseCategory.calisthenics,
+    name: 'Planke hoch und tief',
+    description:
+        'Aus dem Unterarmstütz erst eine, dann die andere Hand aufsetzen und in den hohen Stütz drücken, ebenso wieder zurück. Die Hüfte bleibt ruhig.',
+    areas: [BodyArea.arms, BodyArea.core, BodyArea.shoulders],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_27_umgekehrte_planke',
+    category: ExerciseCategory.calisthenics,
+    name: 'Umgekehrte Planke',
+    description:
+        'Im Sitz die Hände hinter dem Gesäß aufsetzen und die Hüfte heben, bis der Körper von den Fersen bis zu den Schultern gerade ist.',
+    areas: [BodyArea.back, BodyArea.glutes, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_28_vierfuessler_diagonal',
+    category: ExerciseCategory.calisthenics,
+    name: 'Vierfüßler diagonal',
+    description:
+        'Im Vierfüßlerstand einen Arm und das gegenüberliegende Bein waagerecht strecken. Kurz halten, Seite wechseln. Das Becken bleibt gerade.',
+    areas: [BodyArea.back, BodyArea.core, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_29_kaefer',
+    category: ExerciseCategory.calisthenics,
+    name: 'Käfer (Dead Bug)',
+    description:
+        'In Rückenlage Arme und Knie senkrecht nach oben, dann einen Arm und das gegenüberliegende Bein langsam Richtung Boden strecken. Der untere Rücken bleibt am Boden.',
+    areas: [BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_30_beinheben_liegend',
+    category: ExerciseCategory.calisthenics,
+    name: 'Beinheben im Liegen',
+    description:
+        'In Rückenlage die gestreckten Beine bis zur Senkrechten heben und langsam fast bis zum Boden senken. Nicht ins Hohlkreuz fallen.',
+    areas: [BodyArea.core, BodyArea.hips],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_31_reverse_crunch',
+    category: ExerciseCategory.calisthenics,
+    name: 'Reverse Crunch',
+    description:
+        'In Rückenlage die gebeugten Knie zur Brust ziehen und dabei das Becken vom Boden rollen. Langsam abrollen, ohne Schwung.',
+    areas: [BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_32_einbeinige_bruecke',
+    category: ExerciseCategory.calisthenics,
+    name: 'Einbeinige Gesäßbrücke',
+    description:
+        'In Rückenlage einen Fuß aufstellen, das andere Bein strecken und das Becken heben, bis Schulter, Hüfte und Knie eine Linie bilden. Seite wechseln.',
+    areas: [BodyArea.glutes, BodyArea.legs],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_33_wadenheben',
+    category: ExerciseCategory.calisthenics,
+    name: 'Wadenheben',
+    description:
+        'Im Stand so hoch wie möglich auf die Zehenspitzen drücken und langsam absenken. Schwerer auf einem Bein.',
+    areas: [BodyArea.calves],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_34_ausfallschritt_rueckwaerts',
+    category: ExerciseCategory.calisthenics,
+    name: 'Ausfallschritt rückwärts',
+    description:
+        'Aus dem Stand einen großen Schritt nach hinten machen und beide Knie beugen. Über das vordere Bein zurück in den Stand drücken, Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_35_kosaken_kniebeuge',
+    category: ExerciseCategory.calisthenics,
+    name: 'Kosaken-Kniebeuge',
+    description:
+        'Im sehr breiten Stand tief über ein Bein in die Hocke gehen, das andere streckt sich mit den Zehen nach oben. Tief bleiben und zur anderen Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips, BodyArea.glutes],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_36_schwimmer',
+    category: ExerciseCategory.calisthenics,
+    name: 'Schwimmer',
+    description:
+        'In Bauchlage Arme und Beine leicht anheben und gegengleich auf und ab bewegen wie beim Kraulen. Der Nacken bleibt lang.',
+    areas: [BodyArea.back, BodyArea.shoulders, BodyArea.glutes],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_37_y_heben',
+    category: ExerciseCategory.calisthenics,
+    name: 'Y-Heben in Bauchlage',
+    description:
+        'In Bauchlage die Arme schräg nach vorn strecken und mit den Daumen nach oben vom Boden heben. Die Schulterblätter nach hinten unten ziehen.',
+    areas: [BodyArea.shoulders, BodyArea.back],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_38_baerenstand',
+    category: ExerciseCategory.calisthenics,
+    name: 'Bärenstand halten',
+    description:
+        'Im Vierfüßlerstand die Zehen aufstellen und die Knie wenige Zentimeter vom Boden heben. Rücken flach halten.',
+    areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_39_seitstuetz_hueftheben',
+    category: ExerciseCategory.calisthenics,
+    name: 'Seitstütz mit Hüftheben',
+    description:
+        'Im Seitstütz die Hüfte fast bis zum Boden senken und wieder kräftig nach oben heben. Seite wechseln.',
+    areas: [BodyArea.core],
+    timed: false,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'cali_40_hohlkoerper_wippe',
+    category: ExerciseCategory.calisthenics,
+    name: 'Hohlkörper-Wippe',
+    description:
+        'In der Hohlkörper-Haltung auf dem runden Rücken vor und zurück wippen. Die Form bleibt dabei völlig unverändert.',
+    areas: [BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_21_nacken_vorn',
+    category: ExerciseCategory.stretching,
+    name: 'Nacken nach vorn',
+    description:
+        'Das Kinn zur Brust senken und die verschränkten Hände locker am Hinterkopf ablegen. Nur das Gewicht der Arme wirkt, nicht ziehen.',
+    areas: [BodyArea.neck],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_22_nacken_drehen',
+    category: ExerciseCategory.stretching,
+    name: 'Nacken drehen',
+    description:
+        'Den Kopf langsam zur Seite drehen und über die Schulter schauen. Die Schultern bleiben vorn. Seite wechseln.',
+    areas: [BodyArea.neck],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_23_brustoeffner',
+    category: ExerciseCategory.stretching,
+    name: 'Brustöffner',
+    description:
+        'Die Hände hinter dem Rücken verschränken, die Arme strecken und leicht anheben. Die Brust nach vorn schieben.',
+    areas: [BodyArea.chest, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_24_kuhgesicht_arme',
+    category: ExerciseCategory.stretching,
+    name: 'Kuhgesicht-Arme',
+    description:
+        'Einen Arm von oben, den anderen von unten hinter den Rücken führen und die Finger ineinander haken. Kommen die Hände nicht zusammen, so nah wie möglich annähern. Seite wechseln.',
+    areas: [BodyArea.shoulders, BodyArea.arms],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_25_handruecken',
+    category: ExerciseCategory.stretching,
+    name: 'Handrücken und Unterarm',
+    description:
+        'Einen Arm nach vorn strecken, die Hand nach unten abknicken und mit der anderen Hand den Handrücken sanft heranziehen. Seite wechseln.',
+    areas: [BodyArea.arms],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_26_oberer_ruecken',
+    category: ExerciseCategory.stretching,
+    name: 'Oberer Rücken',
+    description:
+        'Die verschränkten Hände weit nach vorn schieben und den oberen Rücken rund machen. Die Schulterblätter gleiten auseinander.',
+    areas: [BodyArea.back, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_27_seitliche_kindhaltung',
+    category: ExerciseCategory.stretching,
+    name: 'Seitliche Kindhaltung',
+    description:
+        'In der Kindhaltung beide Hände weit zu einer Seite wandern lassen, bis die gegenüberliegende Flanke lang wird. Seite wechseln.',
+    areas: [BodyArea.back, BodyArea.shoulders],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_28_bauchdehnung_stand',
+    category: ExerciseCategory.stretching,
+    name: 'Bauch im Stand',
+    description:
+        'Die Hände an den unteren Rücken legen, die Hüfte nach vorn schieben und sanft nach hinten lehnen. Nur so weit, wie es angenehm ist.',
+    areas: [BodyArea.core, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_29_drehung_schneidersitz',
+    category: ExerciseCategory.stretching,
+    name: 'Drehung im Schneidersitz',
+    description:
+        'Im Schneidersitz aufrichten und den Oberkörper zur Seite drehen, eine Hand am Knie, die andere hinter dem Körper. Seite wechseln.',
+    areas: [BodyArea.back, BodyArea.core],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_30_gesaess_sitzend',
+    category: ExerciseCategory.stretching,
+    name: 'Gesäß im Sitzen',
+    description:
+        'Im Sitz einen Fuß außen neben das andere Knie stellen und das gebeugte Knie mit beiden Armen zur gegenüberliegenden Schulter ziehen. Seite wechseln.',
+    areas: [BodyArea.glutes, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_31_frosch',
+    category: ExerciseCategory.stretching,
+    name: 'Frosch',
+    description:
+        'Im Vierfüßlerstand die Knie weit öffnen, auf die Unterarme stützen und die Hüfte nach hinten unten sinken lassen. Langsam dosieren.',
+    areas: [BodyArea.hips, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_32_eidechse',
+    category: ExerciseCategory.stretching,
+    name: 'Eidechse',
+    description:
+        'Im tiefen Ausfallschritt beide Hände innen neben den vorderen Fuß setzen und, wenn möglich, auf die Unterarme sinken. Seite wechseln.',
+    areas: [BodyArea.hips, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_33_oberschenkel_seitlage',
+    category: ExerciseCategory.stretching,
+    name: 'Oberschenkel-Vorderseite in Seitlage',
+    description:
+        'In Seitlage den oberen Fuß greifen und zum Gesäß ziehen, die Hüfte schiebt nach vorn. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_34_beinrueckseite_liegend',
+    category: ExerciseCategory.stretching,
+    name: 'Beinrückseite im Liegen',
+    description:
+        'In Rückenlage ein Bein gestreckt nach oben führen und mit beiden Händen heranziehen. Das andere Bein bleibt am Boden. Seite wechseln.',
+    areas: [BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_35_gekreuzte_vorbeuge',
+    category: ExerciseCategory.stretching,
+    name: 'Gekreuzte Vorbeuge',
+    description:
+        'Die Beine im Stand überkreuzen und mit langem Rücken nach vorn unten beugen. Die Außenseite des hinteren Beins wird gedehnt. Seite wechseln.',
+    areas: [BodyArea.legs, BodyArea.hips],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_36_wade_im_hund',
+    category: ExerciseCategory.stretching,
+    name: 'Wade im herabschauenden Hund',
+    description:
+        'Im herabschauenden Hund abwechselnd ein Knie beugen und die andere Ferse zum Boden drücken. Langsam von Seite zu Seite gehen.',
+    areas: [BodyArea.calves, BodyArea.legs],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_37_schienbein',
+    category: ExerciseCategory.stretching,
+    name: 'Schienbein und Fußrücken',
+    description:
+        'Im Fersensitz die Hände hinter dem Körper aufstützen und die Knie leicht vom Boden heben. Die Dehnung sitzt an Schienbein und Fußrücken.',
+    areas: [BodyArea.calves],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_38_sprunggelenk',
+    category: ExerciseCategory.stretching,
+    name: 'Sprunggelenk',
+    description:
+        'Im halben Kniestand das vordere Knie so weit wie möglich über die Zehen nach vorn schieben, ohne die Ferse zu heben. Seite wechseln.',
+    areas: [BodyArea.calves],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_39_seitbeuge_sitz',
+    category: ExerciseCategory.stretching,
+    name: 'Seitbeuge im Schneidersitz',
+    description:
+        'Im Schneidersitz eine Hand neben dem Körper aufsetzen und den anderen Arm im Bogen über den Kopf zur Seite strecken. Seite wechseln.',
+    areas: [BodyArea.core, BodyArea.back],
+    timed: true,
+    batch: 2,
+  ),
+  BuiltinExercise(
+    key: 'dehnen_40_ganzkoerper_strecken',
+    category: ExerciseCategory.stretching,
+    name: 'Ganzkörper strecken',
+    description:
+        'In Rückenlage die Arme über den Kopf legen und Finger und Zehen so weit wie möglich voneinander wegstrecken. Tief einatmen, beim Ausatmen lösen.',
+    areas: [BodyArea.fullBody],
+    timed: true,
+    batch: 2,
   ),
 ];

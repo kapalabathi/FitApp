@@ -6,6 +6,7 @@ import 'package:fitapp/programs/builtin_programs.dart';
 import 'package:fitapp/programs/program_models.dart';
 import 'package:fitapp/programs/program_run.dart';
 import 'package:fitapp/session/workout_recorder.dart';
+import 'package:fitapp/ui/area_chips.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 const _plank = Exercise(
@@ -37,19 +38,22 @@ String short(ProgramEvent e) => switch (e) {
 
 void main() {
   group('Mitgelieferte Inhalte', () {
-    test('80 Übungen, 20 je Bereich, mit eindeutigen Kennungen', () {
-      expect(builtinExercises, hasLength(80));
+    test('160 Übungen, 40 je Bereich, mit eindeutigen Kennungen', () {
+      expect(builtinExercises, hasLength(160));
       for (final c in ExerciseCategory.values) {
-        expect(builtinExercises.where((e) => e.category == c), hasLength(20));
+        expect(builtinExercises.where((e) => e.category == c), hasLength(40));
       }
-      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(80));
+      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(160));
+      expect(builtinExercises.where((e) => e.batch == 1), hasLength(80));
+      // Jede Übung nennt mindestens einen Körperbereich.
+      expect(builtinExercises.every((e) => e.areas.isNotEmpty), isTrue);
       expect(builtinExercises.every((e) => e.description.length > 20), isTrue);
     });
 
     test('jedes mitgelieferte Programm verweist nur auf vorhandene Übungen',
         () {
       final known = builtinExercises.map((e) => e.uuid).toSet();
-      for (final p in builtinPrograms) {
+      for (final p in [...builtinPrograms, ...builtinProgramsBatch2]) {
         expect(p.items, isNotEmpty, reason: p.name);
         for (final item in p.items) {
           expect(known, contains(item.exerciseUuid), reason: p.name);
@@ -60,12 +64,18 @@ void main() {
     test('eine neue Datenbank enthält Übungen und Programme', () {
       final db = AppDatabase.inMemory();
       addTearDown(db.close);
-      expect(db.exercises(), hasLength(80));
-      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(20));
-      expect(db.programs(), hasLength(builtinPrograms.length));
+      expect(db.exercises(), hasLength(160));
+      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(40));
+      expect(db.programs(),
+          hasLength(builtinPrograms.length + builtinProgramsBatch2.length));
       final first = db.exercises().firstWhere(
           (e) => e.builtinKey == 'yoga_01_berghaltung');
       expect(first.imageAsset, 'assets/exercises/yoga_01_berghaltung.webp');
+      expect(first.areas, [BodyArea.core, BodyArea.legs]);
+      // Auch die Übungen der zweiten Lieferung tragen ihre Bereiche.
+      final plank =
+          db.exercises().firstWhere((e) => e.builtinKey == 'yoga_22_brett');
+      expect(plank.areas, [BodyArea.core, BodyArea.shoulders, BodyArea.arms]);
     });
   });
 
@@ -80,20 +90,22 @@ void main() {
         category: ExerciseCategory.crossfit,
         name: 'Schlittenziehen',
         timed: false,
+        areas: const [BodyArea.legs, BodyArea.back],
       ));
       var stored = db.exercises().firstWhere((e) => e.id == id);
       expect(stored.builtinKey, isNull);
       expect(stored.imageAsset, isNull);
       expect(stored.timed, isFalse);
+      expect(stored.areas, [BodyArea.legs, BodyArea.back]);
 
       db.saveExercise(stored.copyWith(name: 'Schlitten', imagePath: '/x.jpg'));
       stored = db.exercises().firstWhere((e) => e.id == id);
       expect(stored.name, 'Schlitten');
       expect(stored.imagePath, '/x.jpg');
-      expect(db.exercises(), hasLength(81));
+      expect(db.exercises(), hasLength(161));
 
       db.deleteExercise(id);
-      expect(db.exercises(), hasLength(80));
+      expect(db.exercises(), hasLength(160));
     });
 
     test('Programm speichern und wieder laden', () {
@@ -108,6 +120,43 @@ void main() {
 
       db.deleteProgram(id);
       expect(db.programs().any((p) => p.id == id), isFalse);
+    });
+  });
+
+  group('Körperbereiche', () {
+    test('werden als Liste abgelegt und wieder gelesen', () {
+      const areas = [BodyArea.shoulders, BodyArea.core];
+      expect(BodyArea.store(areas), 'schultern,rumpf');
+      expect(BodyArea.parse('schultern,rumpf'), areas);
+      expect(BodyArea.parse(''), isEmpty);
+      expect(BodyArea.parse(null), isEmpty);
+      expect(BodyArea.parse('unbekannt,beine'), [BodyArea.legs]);
+    });
+
+    test('ein Programm nennt seine Bereiche, die häufigsten zuerst', () {
+      const exercises = {
+        'a': Exercise(
+            uuid: 'a',
+            category: ExerciseCategory.calisthenics,
+            name: 'A',
+            areas: [BodyArea.arms, BodyArea.core]),
+        'b': Exercise(
+            uuid: 'b',
+            category: ExerciseCategory.calisthenics,
+            name: 'B',
+            areas: [BodyArea.core, BodyArea.legs]),
+      };
+      const program = Program(
+        name: 'P',
+        category: ExerciseCategory.calisthenics,
+        items: [
+          ProgramItem(exerciseUuid: 'a', timed: true, amount: 10),
+          ProgramItem(exerciseUuid: 'b', timed: true, amount: 10),
+          ProgramItem(exerciseUuid: 'gelöscht', timed: true, amount: 10),
+        ],
+      );
+      expect(programAreas(program, exercises),
+          [BodyArea.core, BodyArea.arms, BodyArea.legs]);
     });
   });
 

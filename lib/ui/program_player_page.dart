@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../data/models.dart';
 import '../programs/program_run.dart';
 import '../session/workout_session.dart';
+import 'area_chips.dart';
 import 'exercise_image.dart';
 import 'format.dart';
 
@@ -205,6 +206,8 @@ class _PhaseView extends StatelessWidget {
           ),
         ),
         Center(child: counter),
+        if (!phase.isRest)
+          AreaChips(areas: phase.exercise.areas, centered: true),
         if (!phase.isRest && phase.exercise.description.isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),

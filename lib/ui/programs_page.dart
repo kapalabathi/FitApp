@@ -10,7 +10,11 @@ import 'program_editor_page.dart';
 
 /// Trainingsprogramme und Übungsbibliothek.
 class ProgramsPage extends StatefulWidget {
-  const ProgramsPage({super.key, required this.db, required this.onWorkoutSaved});
+  const ProgramsPage({
+    super.key,
+    required this.db,
+    required this.onWorkoutSaved,
+  });
 
   final AppDatabase db;
   final VoidCallback onWorkoutSaved;
@@ -21,6 +25,9 @@ class ProgramsPage extends StatefulWidget {
 
 class _ProgramsPageState extends State<ProgramsPage> {
   ExerciseCategory? _category;
+
+  /// Nur Übungen für diesen Körperbereich; ohne Angabe alle.
+  BodyArea? _area;
   List<Program> _programs = [];
   List<Exercise> _exercises = [];
 
@@ -31,18 +38,20 @@ class _ProgramsPageState extends State<ProgramsPage> {
   }
 
   void _load() => setState(() {
-        _programs = widget.db.programs();
-        _exercises = widget.db.exercises();
-      });
+    _programs = widget.db.programs();
+    _exercises = widget.db.exercises();
+  });
 
   Future<void> _openProgram(Program p) async {
-    await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => ProgramDetailPage(
-        db: widget.db,
-        programId: p.id!,
-        onWorkoutSaved: widget.onWorkoutSaved,
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ProgramDetailPage(
+          db: widget.db,
+          programId: p.id!,
+          onWorkoutSaved: widget.onWorkoutSaved,
+        ),
       ),
-    ));
+    );
     if (mounted) _load();
   }
 
@@ -65,9 +74,11 @@ class _ProgramsPageState extends State<ProgramsPage> {
   }
 
   Future<void> _openExercise(Exercise e) async {
-    await Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => ExerciseDetailPage(db: widget.db, exercise: e),
-    ));
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => ExerciseDetailPage(db: widget.db, exercise: e),
+      ),
+    );
     if (mounted) _load();
   }
 
@@ -92,7 +103,12 @@ class _ProgramsPageState extends State<ProgramsPage> {
   Widget build(BuildContext context) {
     bool shown(ExerciseCategory c) => _category == null || _category == c;
     final programs = _programs.where((p) => shown(p.category)).toList();
-    final exercises = _exercises.where((e) => shown(e.category)).toList();
+    final exercises = _exercises
+        .where(
+          (e) =>
+              shown(e.category) && (_area == null || e.areas.contains(_area)),
+        )
+        .toList();
 
     return DefaultTabController(
       length: 2,
@@ -101,7 +117,10 @@ class _ProgramsPageState extends State<ProgramsPage> {
           appBar: AppBar(
             title: const Text('Programme'),
             bottom: const TabBar(
-              tabs: [Tab(text: 'Programme'), Tab(text: 'Übungen')],
+              tabs: [
+                Tab(text: 'Programme'),
+                Tab(text: 'Übungen'),
+              ],
             ),
           ),
           floatingActionButton: FloatingActionButton.extended(
@@ -116,7 +135,10 @@ class _ProgramsPageState extends State<ProgramsPage> {
             children: [
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 child: Row(
                   children: [
                     for (final c in [null, ...ExerciseCategory.values])
@@ -148,40 +170,75 @@ class _ProgramsPageState extends State<ProgramsPage> {
                                 ),
                             ],
                           ),
-                    exercises.isEmpty
-                        ? const Center(child: Text('Keine Übungen.'))
-                        : GridView.builder(
-                            padding: const EdgeInsets.fromLTRB(12, 0, 12, 88),
-                            gridDelegate:
-                                const SliverGridDelegateWithMaxCrossAxisExtent(
-                              maxCrossAxisExtent: 180,
-                              mainAxisSpacing: 12,
-                              crossAxisSpacing: 12,
-                              childAspectRatio: 0.8,
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: DropdownButtonFormField<BodyArea?>(
+                            initialValue: _area,
+                            isExpanded: true,
+                            decoration: const InputDecoration(
+                              labelText: 'Körperbereich',
                             ),
-                            itemCount: exercises.length,
-                            itemBuilder: (context, i) {
-                              final e = exercises[i];
-                              return InkWell(
-                                borderRadius: BorderRadius.circular(12),
-                                onTap: () => _openExercise(e),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    ExerciseImage(exercise: e),
-                                    const SizedBox(height: 4),
-                                    Expanded(
-                                      child: Text(
-                                        e.name,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
+                            items: [
+                              const DropdownMenuItem(
+                                value: null,
+                                child: Text('Alle'),
+                              ),
+                              for (final a in BodyArea.values)
+                                DropdownMenuItem(
+                                  value: a,
+                                  child: Text(a.label),
                                 ),
-                              );
-                            },
+                            ],
+                            onChanged: (a) => setState(() => _area = a),
                           ),
+                        ),
+                        const SizedBox(height: 8),
+                        Expanded(
+                          child: exercises.isEmpty
+                              ? const Center(child: Text('Keine Übungen.'))
+                              : GridView.builder(
+                                  padding: const EdgeInsets.fromLTRB(
+                                    12,
+                                    0,
+                                    12,
+                                    88,
+                                  ),
+                                  gridDelegate:
+                                      const SliverGridDelegateWithMaxCrossAxisExtent(
+                                        maxCrossAxisExtent: 180,
+                                        mainAxisSpacing: 12,
+                                        crossAxisSpacing: 12,
+                                        childAspectRatio: 0.8,
+                                      ),
+                                  itemCount: exercises.length,
+                                  itemBuilder: (context, i) {
+                                    final e = exercises[i];
+                                    return InkWell(
+                                      borderRadius: BorderRadius.circular(12),
+                                      onTap: () => _openExercise(e),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          ExerciseImage(exercise: e),
+                                          const SizedBox(height: 4),
+                                          Expanded(
+                                            child: Text(
+                                              e.name,
+                                              maxLines: 2,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -197,8 +254,8 @@ class _ProgramsPageState extends State<ProgramsPage> {
 
 /// Eckdaten eines Programms in einer Zeile.
 String programSummary(Program p) => [
-      p.category.label,
-      '${p.items.length} Übungen',
-      if (p.rounds > 1) '${p.rounds} Runden',
-      '${p.hasRepetitions ? 'mind. ' : ''}${formatDuration(p.timedSeconds)}',
-    ].join('  ·  ');
+  p.category.label,
+  '${p.items.length} Übungen',
+  if (p.rounds > 1) '${p.rounds} Runden',
+  '${p.hasRepetitions ? 'mind. ' : ''}${formatDuration(p.timedSeconds)}',
+].join('  ·  ');

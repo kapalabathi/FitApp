@@ -140,16 +140,7 @@ class AppDatabase {
           updated_at INTEGER NOT NULL,
           deleted INTEGER NOT NULL DEFAULT 0
         )''');
-      for (final e in builtinExercises) {
-        saveExercise(Exercise(
-          uuid: e.uuid,
-          category: e.category,
-          name: e.name,
-          description: e.description,
-          builtinKey: e.key,
-          timed: e.timed,
-        ));
-      }
+      builtinExercises.where((e) => e.batch == 1).forEach(_insertBuiltin);
       builtinPrograms.forEach(saveProgram);
       _db.execute('PRAGMA user_version = 3');
     }
@@ -183,6 +174,33 @@ class AppDatabase {
           'ALTER TABLE workouts ADD COLUMN imported INTEGER NOT NULL DEFAULT 0');
       _db.execute('PRAGMA user_version = 6');
     }
+    if (version < 7) {
+      // Körperbereiche je Übung; dazu die Erweiterung um 80 Übungen ohne
+      // Geräte und weitere Programme.
+      _db.execute("ALTER TABLE exercises ADD COLUMN areas TEXT NOT NULL DEFAULT ''");
+      for (final e in builtinExercises) {
+        // Schon vorhandene Übungen bleiben, wie sie sind, auch gelöschte.
+        _insertBuiltin(e);
+        // Eigene Angaben des Nutzers gibt es hier noch nicht; die Bereiche
+        // werden für alle mitgelieferten Übungen gesetzt.
+        _db.execute('UPDATE exercises SET areas = ? WHERE uuid = ?',
+            [BodyArea.store(e.areas), e.uuid]);
+      }
+      builtinProgramsBatch2.forEach(saveProgram);
+      _db.execute('PRAGMA user_version = 7');
+    }
+  }
+
+  /// Legt eine mitgelieferte Übung an, falls es sie noch nicht gibt. Schreibt
+  /// nur die Spalten, die es seit der ersten Fassung der Tabelle gibt, damit
+  /// der Aufruf in jeder Stufe des Datenbank-Aufbaus funktioniert.
+  void _insertBuiltin(BuiltinExercise e) {
+    _db.execute(
+      'INSERT OR IGNORE INTO exercises '
+      '(uuid, category, name, description, builtin_key, timed, updated_at) '
+      'VALUES (?, ?, ?, ?, ?, ?, ?)',
+      [e.uuid, e.category.id, e.name, e.description, e.key, e.timed ? 1 : 0, _now()],
+    );
   }
 
   /// Zum Ausprobieren und als Muster für eigene Vorlagen.
@@ -476,6 +494,7 @@ class AppDatabase {
             builtinKey: r['builtin_key'] as String?,
             imagePath: r['image_path'] as String?,
             timed: r['timed'] == 1,
+            areas: BodyArea.parse(r['areas'] as String?),
           ))
       .toList();
 
@@ -488,20 +507,23 @@ class AppDatabase {
       e.builtinKey,
       e.imagePath,
       e.timed ? 1 : 0,
+      BodyArea.store(e.areas),
       _now(),
     ];
     final id = e.id;
     if (id == null) {
       _db.execute(
         'INSERT INTO exercises (category, name, description, builtin_key, '
-        'image_path, timed, updated_at, uuid) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        'image_path, timed, areas, updated_at, uuid) '
+        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
         [...values, e.uuid],
       );
       return _db.lastInsertRowId;
     }
     _db.execute(
       'UPDATE exercises SET category = ?, name = ?, description = ?, '
-      'builtin_key = ?, image_path = ?, timed = ?, updated_at = ? WHERE id = ?',
+      'builtin_key = ?, image_path = ?, timed = ?, areas = ?, updated_at = ? '
+      'WHERE id = ?',
       [...values, id],
     );
     return id;

@@ -7,6 +7,7 @@ import '../interval/signals.dart';
 import '../programs/program_models.dart';
 import '../programs/program_run.dart';
 import '../session/workout_session.dart';
+import 'area_chips.dart';
 import 'exercise_image.dart';
 import 'program_editor_page.dart';
 import 'program_player_page.dart';
@@ -184,6 +185,10 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: Text(programSummary(program)),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+            child: AreaChips(areas: programAreas(program, _exercises)),
           ),
           for (final item in program.items)
             if (_exercises[item.exerciseUuid] case final exercise?)
