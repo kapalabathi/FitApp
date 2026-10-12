@@ -50,6 +50,21 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-028 | Zurück-Taste hebt eine Mehrfachauswahl im Verlauf auf, statt die App zu verlassen | Bedienung | S | Neu | Vorschlag |
 | I-029 | Radfahren im Freien als eigene Sportart mit GPS | Aufzeichnung | S | Neu | Vorschlag |
 | I-030 | Übungsgrafiken auf anatomische Richtigkeit durchsehen und fehlerhafte neu erzeugen | Programme | M | Verworfen | Vorschlag |
+| I-031 | Health Connect: Trainings in Androids gemeinsamen Gesundheitsspeicher schreiben und von dort lesen | Daten | M | Neu | Vorschlag |
+| I-032 | Pulsgesteuertes Training: Laufband oder Bike regelt selbst, um einen Zielpuls zu halten | Timer / Geräte | L | Neu | Vorschlag |
+| I-033 | Zielvorgabe und virtueller Mitläufer: Zielzeit, Zielpace oder eigene Bestzeit, mit Ansage des Vorsprungs oder Rückstands | Aufzeichnung | M | Neu | Vorschlag |
+| I-034 | Live-Kurve in der Trainingsansicht (Puls, Pace), besonders für das Tablet | Aufzeichnung | M | Neu | Vorschlag |
+| I-035 | Kacheln der Trainingsansicht selbst wählen und anordnen | Bedienung | M | Neu | Vorschlag |
+| I-036 | Automatische Pause, wenn das Band steht oder draußen keine Bewegung ist | Aufzeichnung | S | Neu | Vorschlag |
+| I-037 | Ansagen einstellbar: Puls, Pace und Zeit in wählbarem Abstand | Aufzeichnung | S | Neu | Vorschlag |
+| I-038 | Schnellstart: letztes Training wiederholen, Favoriten auf der Startseite | Bedienung | S | Neu | Vorschlag |
+| I-039 | Kraft-Protokoll: Sätze, Wiederholungen und Gewicht je Übung erfassen, Verlauf je Übung | Programme | M | Neu | Vorschlag |
+| I-040 | Ziele mit Fortschritt: z. B. Kilometer im Monat oder Einheiten je Woche | Auswertung | M | Neu | Vorschlag |
+| I-041 | Trainingsbelastung aus dem Puls: Belastung je Einheit und Verlauf über Wochen | Auswertung | M | Neu | Vorschlag |
+| I-042 | Zwei Trainings vergleichen: Kurven übereinander | Auswertung | M | Neu | Vorschlag |
+| I-043 | Wochenplan: geplante Einheiten im Kalender mit Erinnerung | Programme | L | Neu | Vorschlag |
+| I-044 | Energieverbrauch aus Puls, Gewicht und Alter schätzen, wenn das Gerät keinen liefert | Auswertung | S | Neu | Vorschlag |
+| I-045 | Automatische Sicherung: regelmäßig eine Sicherungsdatei in einem gewählten Ordner ablegen | Daten | S | Neu | Vorschlag |
 
 ## Details
 
@@ -139,3 +154,12 @@ Weitere 20 Übungen je Kategorie ohne Geräte, Anzeige der trainierten Körperbe
 
 ### I-030 – Grafiken durchsehen
 Verworfen am 2026-10-12: Der Nutzer hat die Grafiken selbst gesichtet und für in Ordnung befunden.
+
+### I-031 – Health Connect
+Android führt einen gemeinsamen Speicher für Gesundheits- und Trainingsdaten, auf den Apps mit Erlaubnis des Nutzers zugreifen. Schreibt FitApp seine Trainings dorthin, können andere Apps sie lesen; liest FitApp von dort, kommen Trainings anderer Apps ohne Dateiexport herein. Zu klären, bevor gebaut wird: Lesen die Strava-App und die Zepp-App aus Health Connect, und schreibt Zepp dorthin? Davon hängt der Nutzen ab.
+
+### I-032 – Pulsgesteuertes Training
+Setzt die Steuerung von Laufband und Bike (I-011, I-019) und einen Pulssensor voraus. Die Regelung muss träge und begrenzt sein: kleine Schritte, Ober- und Untergrenze, sofortiger Halt der Regelung bei fehlendem Pulssignal.
+
+### I-043 – Wochenplan
+Im Lastenheft, Abschnitt 6, bisher ausdrücklich ausgeschlossen (Trainingspläne über Wochen). Aufnahme nur nach Entscheidung des Auftraggebers.
