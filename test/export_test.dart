@@ -80,7 +80,8 @@ void main() {
       expect(third.positionLat, isNull);
       expect(third.heartRate, isNull);
       expect(third.altitude, isNull);
-      expect(third.cadence, 82);
+      // 82 Schritte beider Beine; FIT zählt beim Laufen die eines Beins.
+      expect(third.cadence, 41);
       expect(third.power, 205);
     });
 

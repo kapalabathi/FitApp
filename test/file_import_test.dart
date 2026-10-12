@@ -122,6 +122,45 @@ void main() {
       expect(a.samples.first.latitude, isNull);
     });
 
+    test('FIT einer Uhr: Schrittfrequenz beider Beine, keine Leistung von 0 W',
+        () {
+      // Wie eine Amazfit sie schreibt: 80 Schritte je Bein, überall 0 W
+      final run = Workout(
+        id: 2,
+        uuid: 'v',
+        sport: Sport.running,
+        startedAt: DateTime.utc(2026, 10, 1, 3),
+        status: WorkoutStatus.finished,
+        durationS: 2,
+        distanceM: 6,
+      );
+      final a = parseActivityFile(
+          'uhr.fit',
+          buildFit(run, const [
+            Sample(t: 1, cadence: 160, power: 0, distanceM: 3),
+            Sample(t: 2, cadence: 162, power: 0, distanceM: 6),
+          ], const []));
+      expect(a.sport, Sport.running);
+      // Die Datei enthält 80 und 81; gelesen werden wieder 160 und 162.
+      expect(a.samples.map((s) => s.cadence), [160, 162]);
+      expect(a.samples.every((s) => s.power == null), isTrue);
+    });
+
+    test('auf dem Rad bleibt die Trittfrequenz, wie sie ist', () {
+      final ride = Workout(
+        id: 3,
+        uuid: 'w',
+        sport: Sport.indoorBike,
+        startedAt: DateTime.utc(2026, 10, 1, 3),
+        status: WorkoutStatus.finished,
+        durationS: 1,
+      );
+      final a = parseActivityFile('rad.fit',
+          buildFit(ride, const [Sample(t: 1, cadence: 90, power: 150)], const []));
+      expect(a.samples.single.cadence, 90);
+      expect(a.samples.single.power, 150);
+    });
+
     test('TCX', () {
       final a =
           parseActivityFile('training.tcx', text(buildTcx(workout, samples)));

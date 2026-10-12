@@ -83,6 +83,13 @@ ParsedActivity _build(List<_Point> points,
   }
   final start = points.first.time;
   final hasDistance = points.any((p) => p.distanceM != null);
+  // Uhren ohne Leistungsmessung schreiben durchgehend 0 W in die Datei.
+  // Das ist keine Messung und soll nicht als Leistung von 0 W erscheinen.
+  if (!points.any((p) => (p.power ?? 0) > 0)) {
+    for (final p in points) {
+      p.power = null;
+    }
+  }
   final hasSpeed = points.any((p) => p.speedKmh != null);
 
   if (!hasDistance) {
@@ -204,6 +211,16 @@ ParsedActivity _parseFit(Uint8List bytes) {
             ..heartRate = m.heartRate
             ..cadence = m.cadence?.toDouble()
             ..power = m.power);
+    }
+  }
+  // FIT zählt beim Laufen und Gehen die Schritte eines Beins; die App zeigt
+  // wie üblich die Schritte beider Beine je Minute.
+  if (sport == fit.Sport.running ||
+      sport == fit.Sport.walking ||
+      sport == fit.Sport.hiking) {
+    for (final p in points) {
+      final oneLeg = p.cadence;
+      if (oneLeg != null) p.cadence = oneLeg * 2;
     }
   }
   final indoor = subSport == fit.SubSport.treadmill ||

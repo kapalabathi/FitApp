@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.5] – 2026-10-12
+
+Anlass: Der Nutzer hat eine aus der Zepp-App exportierte FIT-Datei eines Laufs bereitgestellt. Der Datei-Import liest sie vollständig: Sportart, 1609 Messpunkte, Strecke, Puls, Standort, Geschwindigkeit, Schrittfrequenz.
+
+### Behoben
+- Schrittfrequenz aus FIT-Dateien: FIT zählt beim Laufen und Gehen die Schritte eines Beins. Die App zeigt jetzt die Schritte beider Beine (160 statt 80 je Minute) und schreibt beim Export wieder den FIT-Wert.
+- Uhren ohne Leistungsmessung schreiben durchgehend 0 W in die Datei. Das erschien nach dem Import als Leistung von 0 W samt Bestwerten von 0 W; solche Dateien werden jetzt ohne Leistung übernommen.
+
+### Hinzugefügt
+- Zwei automatische Tests dazu (insgesamt 174).
+
 ## [0.9.4] – 2026-10-12
 
 ### Hinzugefügt

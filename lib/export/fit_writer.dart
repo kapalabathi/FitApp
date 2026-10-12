@@ -12,6 +12,9 @@ Uint8List buildFit(Workout workout, List<Sample> samples, List<Lap> laps) {
   final start = _fitTime(workout.startedAt);
   final end = start + workout.durationS;
   final (sport, subSport) = _sport(workout.sport);
+  // FIT zählt beim Laufen und Gehen die Schritte eines Beins, die App die
+  // beider Beine.
+  final cadenceDivisor = sport == _sportRunning || sport == _sportHiking ? 2 : 1;
 
   out
     ..define(0, _fileId, const [
@@ -49,7 +52,7 @@ Uint8List buildFit(Workout workout, List<Sample> samples, List<Lap> laps) {
       _semicircles(s.longitude),
       altitude == null ? null : ((altitude + 500) * 5).round(),
       s.heartRate,
-      s.cadence?.round(),
+      s.cadence == null ? null : (s.cadence! / cadenceDivisor).round(),
       distance == null ? null : (distance * 100).round(),
       speed == null ? null : (speed / 3.6 * 1000).round(),
       s.power,
@@ -176,12 +179,15 @@ const _eventStart = 0;
 const _eventStop = 1;
 const _eventStopAll = 4;
 
+const _sportRunning = 1;
+const _sportHiking = 17;
+
 /// Sportart und Unterart laut FIT-Profil.
 (int, int) _sport(Sport sport) => switch (sport) {
-      Sport.running => (1, 0),
-      Sport.treadmill => (1, 1),
+      Sport.running => (_sportRunning, 0),
+      Sport.treadmill => (_sportRunning, 1),
       Sport.indoorBike => (2, 6),
-      Sport.hiking => (17, 0),
+      Sport.hiking => (_sportHiking, 0),
       Sport.skiErg => (4, 0), // Fitnessgerät
       Sport.yoga => (10, 43),
       Sport.stretching => (10, 19),
