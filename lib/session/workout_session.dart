@@ -14,6 +14,7 @@ import '../interval/interval_models.dart';
 import '../interval/interval_run.dart';
 import '../interval/signals.dart';
 import '../programs/program_run.dart';
+import 'background_keeper.dart';
 import 'workout_recorder.dart';
 
 /// Ob und wie der Intervall-Timer das Fitnessgerät steuert.
@@ -77,6 +78,12 @@ class WorkoutSession extends ChangeNotifier {
         notifyListeners();
       },
     );
+    // Mit Bluetooth-Geräten soll das Training auch bei gesperrtem Display
+    // weiterlaufen. Im Freien hält schon der Dienst des GPS die App wach.
+    if (devices.isNotEmpty && positions == null) {
+      _keepsAlive = true;
+      BackgroundKeeper.start(sport.label);
+    }
     _lastTickAt = clock.now();
     _timer = Timer.periodic(const Duration(seconds: 1), (_) => _onTimer());
     _keepScreenOn(true);
@@ -95,6 +102,7 @@ class WorkoutSession extends ChangeNotifier {
   final Signals signals;
   late final Timer _timer;
   late DateTime _lastTickAt;
+  bool _keepsAlive = false;
   StreamSubscription<GpsFix>? _positions;
 
   /// Der Ablauf des Trainingsprogramms, wenn eines gespielt wird.
@@ -371,6 +379,7 @@ class WorkoutSession extends ChangeNotifier {
     final workout = recorder.finish();
     signals.dispose();
     _keepScreenOn(false);
+    if (_keepsAlive) BackgroundKeeper.stop();
     for (final c in connections) {
       c.removeListener(_onLinkChanged);
       unawaited(c.stop());

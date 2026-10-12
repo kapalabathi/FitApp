@@ -12,7 +12,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | XL | mehr als 3 Wochen, muss zerlegt werden |
 | ? | erst nach technischer Klärung schätzbar |
 
-**Status:** `Neu` → `Geklärt` → `Geplant` → `In Arbeit` → `Umgesetzt` / `Verworfen`
+**Status:** `Neu` → `Geklärt` → `Geplant` → `In Arbeit` → `Umgesetzt` / `Verworfen`. `Umgesetzt, ungetestet` heißt: gebaut und durch automatische Tests gedeckt, aber noch nicht am echten Gerät oder Dienst gelaufen.
 
 **Quelle:** `Nutzer` = ausdrücklich gewünscht, `Vorschlag` = von Claude ergänzt, noch nicht bestätigt
 
@@ -21,26 +21,35 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | Nr. | Titel | Bereich | Aufwand | Status | Quelle |
 |-------|-------|---------|---------|--------|--------|
 | I-001 | Brustgurt (BikePilot) per Bluetooth koppeln, Puls live anzeigen | Geräte | S | Umgesetzt | Nutzer |
-| I-002 | Concept2 SkiErg (PM5) koppeln | Geräte | M | In Arbeit | Nutzer |
-| I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | In Arbeit | Nutzer |
-| I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | In Arbeit | Nutzer |
-| I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | In Arbeit | Nutzer |
+| I-002 | Concept2 SkiErg (PM5) koppeln | Geräte | M | Umgesetzt, ungetestet | Nutzer |
+| I-003 | Domyos Challenge Bike koppeln (FTMS) | Geräte | M | Umgesetzt, ungetestet | Nutzer |
+| I-004 | Domyos Compact Run 100 (Laufband) koppeln (FTMS) | Geräte | M | Umgesetzt | Nutzer |
+| I-005 | Amazfit-Uhr einbinden (Live-Puls per Mini-App, GPS über Strava) | Geräte | S | Umgesetzt | Nutzer |
 | I-006 | Aufzeichnung draußen per Phone-GPS: Laufen, Spazieren, Wandern | Aufzeichnung | L | Umgesetzt | Nutzer |
 | I-007 | Trainingsprogramme: Yoga, Crossfit, Calisthenics, Dehnen, mit kleiner Vorauswahl | Programme | L | Umgesetzt | Nutzer |
 | I-008 | Intervall-Timer mit editierbaren Zeiten und Geschwindigkeiten | Timer | M | Umgesetzt | Nutzer |
 | I-009 | Trainingshistorie mit Auswertung (Wochenumfang, Pulszonen, Bestzeiten) | Auswertung | L | Umgesetzt | Nutzer |
-| I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | In Arbeit | Vorschlag |
-| I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | In Arbeit | Nutzer |
+| I-010 | Export / Import von Dateien (FIT, GPX, TCX) | Daten | M | Umgesetzt | Vorschlag |
+| I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | Umgesetzt | Nutzer |
 | I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Umgesetzt | Nutzer |
 | I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Umgesetzt | Nutzer |
 | I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
-| I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | In Arbeit | Nutzer |
-| I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | In Arbeit | Nutzer |
-| I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | In Arbeit | Nutzer |
+| I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Umgesetzt, ungetestet | Nutzer |
+| I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Umgesetzt, ungetestet | Nutzer |
+| I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Umgesetzt, ungetestet | Nutzer |
 | I-018 | Eigene Mini-App auf der Amazfit-Uhr für Live-Daten | Geräte | XL | Neu | Vorschlag |
-| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | In Arbeit | Nutzer |
+| I-019 | Widerstand des Indoor-Bikes aus der App steuern (auch im Intervall-Timer) | Timer / Geräte | M | Umgesetzt, ungetestet | Nutzer |
 | I-020 | Comic-Grafiken zu den 80 Übungen einbinden (Erstellung extern) | Programme | S | Umgesetzt | Nutzer |
 | I-021 | Weitere 80 Übungen ohne Geräte, Körperbereiche je Übung, Programme in Varianten | Programme | L | In Arbeit | Nutzer |
+| I-022 | Hintergrund-Dienst für Indoor-Training (Aufzeichnung bei gesperrtem Display) | Aufzeichnung | M | Umgesetzt, ungetestet | Vorschlag |
+| I-023 | Fertige Version: verkleinert, eigens signiert, eigenes App-Symbol, endgültiger Name | Plattform | M | Neu | Vorschlag |
+| I-024 | Eigene Übungsbilder synchronisieren | Daten | M | Neu | Vorschlag |
+| I-025 | Radumfang für Geschwindigkeitssensoren einstellbar | Geräte | S | Neu | Vorschlag |
+| I-026 | Mehrere Trainings auf einmal zu Strava hochladen | Strava | S | Neu | Vorschlag |
+| I-027 | Kurven: Sekunde vor/zurück und Hineinzoomen in einen Abschnitt | Auswertung | M | Neu | Vorschlag |
+| I-028 | Zurück-Taste hebt eine Mehrfachauswahl im Verlauf auf, statt die App zu verlassen | Bedienung | S | Neu | Vorschlag |
+| I-029 | Radfahren im Freien als eigene Sportart mit GPS | Aufzeichnung | S | Neu | Vorschlag |
+| I-030 | Übungsgrafiken auf anatomische Richtigkeit durchsehen und fehlerhafte neu erzeugen | Programme | M | Neu | Vorschlag |
 
 ## Details
 

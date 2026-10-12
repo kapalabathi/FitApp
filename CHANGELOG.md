@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.4] – 2026-10-12
+
+### Hinzugefügt
+- Hintergrund-Dienst für Trainings mit Bluetooth-Geräten (I-022): Die Aufzeichnung läuft bei gesperrtem Display und in einer anderen App weiter; Android zeigt währenddessen die Benachrichtigung „FitApp zeichnet auf". **Noch nicht am Gerät erprobt.**
+
+### Geändert
+- Ideenspeicher auf den aktuellen Stand gebracht: neuer Status „Umgesetzt, ungetestet", neue Ideen I-022 bis I-030.
+
 ## [0.9.3] – 2026-10-11
 
 ### Hinzugefügt
