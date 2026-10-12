@@ -120,6 +120,8 @@ Future<SyncResult> synchronize(AppDatabase db, SyncStore store) async {
     HeartProfile(
       birthYear: remoteProfile['birth_year'] as int?,
       manualMaxHr: remoteProfile['max_hr'] as int?,
+      weightKg: (remoteProfile['weight_kg'] as num?)?.toDouble(),
+      sex: Sex.fromId(remoteProfile['sex'] as String?),
     ).save(db);
     // Der Zeitstempel bleibt der des anderen Geräts.
     db.setSetting(HeartProfile.updatedAtKey, '$remoteProfileAt');
@@ -181,6 +183,8 @@ Future<SyncResult> synchronize(AppDatabase db, SyncStore store) async {
               int.tryParse(db.setting(HeartProfile.updatedAtKey) ?? '') ?? 0,
           'birth_year': profile.birthYear,
           'max_hr': profile.manualMaxHr,
+          'weight_kg': profile.weightKg,
+          'sex': profile.sex?.id,
         },
         'workouts': db.workoutSyncIndex(),
       }),

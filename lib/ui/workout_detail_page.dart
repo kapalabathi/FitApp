@@ -171,7 +171,12 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
       if (w.maxPower != null) ('Max. Leistung', '${w.maxPower} W'),
       if (w.avgCadence != null)
         ('Ø ${w.sport.cadenceLabel}', '${w.avgCadence} /min'),
-      if (w.energyKcal != null) ('Energie', '${w.energyKcal} kcal'),
+      if (w.energyKcal != null)
+        // Das Zeichen ≈ kennzeichnet einen aus dem Puls geschätzten Wert.
+        (
+          w.energyEstimated ? 'Energie (geschätzt)' : 'Energie',
+          '${w.energyEstimated ? '≈ ' : ''}${w.energyKcal} kcal',
+        ),
       if (w.ascentM != null) ('Anstieg', '${w.ascentM} m'),
     ];
 
@@ -189,6 +194,10 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
           LatLng(s.latitude!, s.longitude!),
     ];
     final laps = db.laps(workoutId);
+    final sets = db.setLogs(workoutId);
+    final exerciseNames = sets.isEmpty
+        ? const <String, String>{}
+        : {for (final e in db.exercises()) e.uuid: e.name};
     final maxHr = HeartProfile.load(db).maxHr(DateTime.now());
     final zones = maxHr == null || w.avgHeartRate == null
         ? null
@@ -297,6 +306,24 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
             Text('Pulszonen', style: theme.textTheme.titleSmall),
             const SizedBox(height: 4),
             ZoneBars(seconds: zones, maxHr: maxHr!),
+            const SizedBox(height: 24),
+          ],
+          if (sets.isNotEmpty) ...[
+            Text('Sätze', style: theme.textTheme.titleSmall),
+            const SizedBox(height: 4),
+            for (final s in sets)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(exerciseNames[s.exerciseUuid] ??
+                          'Gelöschte Übung'),
+                    ),
+                    Text(formatSet(s)),
+                  ],
+                ),
+              ),
             const SizedBox(height: 24),
           ],
           if (laps.isNotEmpty) ...[

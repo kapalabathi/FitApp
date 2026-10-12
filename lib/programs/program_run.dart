@@ -41,6 +41,15 @@ class PhaseEnding extends ProgramEvent {
   final int secondsLeft;
 }
 
+/// Eine Übung ist abgeschlossen, nach [elapsedS] Sekunden. Pausen melden
+/// das nicht.
+class PhaseCompleted extends ProgramEvent {
+  const PhaseCompleted(this.phase, this.elapsedS);
+
+  final ProgramPhase phase;
+  final int elapsedS;
+}
+
 class ProgramFinished extends ProgramEvent {
   const ProgramFinished();
 }
@@ -142,8 +151,13 @@ class ProgramRun {
   /// Schließt die laufende Phase sofort ab.
   List<ProgramEvent> advance() {
     if (!_started || finished) return const [];
+    final done = phases[_index];
+    final elapsed = _elapsedInPhase;
     _index++;
     _elapsedInPhase = 0;
-    return finished ? const [ProgramFinished()] : [PhaseStarted(phases[_index])];
+    return [
+      if (!done.isRest) PhaseCompleted(done, elapsed),
+      finished ? const ProgramFinished() : PhaseStarted(phases[_index]),
+    ];
   }
 }

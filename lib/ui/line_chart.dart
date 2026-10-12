@@ -182,6 +182,68 @@ class LineChart extends StatelessWidget {
   }
 }
 
+/// Eine kleine Kurve für die Trainingsansicht: der Verlauf der letzten
+/// Minuten mit dem aktuellen Wert und den Grenzen des Ausschnitts.
+class Sparkline extends StatelessWidget {
+  const Sparkline({
+    super.key,
+    required this.title,
+    required this.unit,
+    required this.values,
+    required this.color,
+    this.format,
+    this.lowerIsBetter = false,
+  });
+
+  final String title;
+  final String unit;
+  final List<double?> values;
+  final Color color;
+  final String Function(double value)? format;
+  final bool lowerIsBetter;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final present = values.whereType<double>();
+    final write = format ?? formatDecimal;
+    if (present.isEmpty) return const SizedBox.shrink();
+    final min = present.reduce((a, b) => a < b ? a : b);
+    final max = present.reduce((a, b) => a > b ? a : b);
+    final small = theme.textTheme.labelSmall
+        ?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          children: [
+            Expanded(child: Text('$title in $unit', style: small)),
+            Text(
+              '${write(lowerIsBetter ? max : min)} – '
+              '${write(lowerIsBetter ? min : max)}',
+              style: small,
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 44,
+          width: double.infinity,
+          child: CustomPaint(
+            painter: _LinePainter(
+              values: values,
+              min: min,
+              max: max,
+              inverted: lowerIsBetter,
+              line: color,
+              grid: theme.colorScheme.outlineVariant,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _LinePainter extends CustomPainter {
   _LinePainter({
     required this.values,

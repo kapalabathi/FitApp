@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import '../ble/sensor_connection.dart';
 import '../data/models.dart';
 import '../interval/interval_models.dart';
+import '../session/tile_layout.dart';
 import '../session/workout_session.dart';
 import 'format.dart';
+import 'line_chart.dart';
+import 'tile_settings_page.dart';
 
 /// Anzeige während des Trainings: große Live-Werte, Pause und Stopp.
 class LivePage extends StatefulWidget {
@@ -18,6 +21,8 @@ class LivePage extends StatefulWidget {
 
 class _LivePageState extends State<LivePage> {
   bool _finishing = false;
+  late TileLayout _layout =
+      TileLayout.load(_session.recorder.db, _session.sport);
 
   WorkoutSession get _session => widget.session;
 
@@ -44,6 +49,8 @@ class _LivePageState extends State<LivePage> {
     Navigator.of(context).pop(_session.finish());
   }
 
+  /// Die Werte aller Kacheln, die es in diesem Training gibt, in der vom
+  /// Nutzer gewählten Auswahl und Reihenfolge.
   List<({String label, String value})> _tiles() {
     final r = _session.recorder;
     final sport = _session.sport;
@@ -54,37 +61,61 @@ class _LivePageState extends State<LivePage> {
       return decimals == 0 ? v.round().toString() : formatDecimal(v);
     }
 
+    // Wo die Pace zählt, steht sie statt der Geschwindigkeit.
     final ({String label, String? value}) pace = sport == Sport.skiErg
         ? (label: 'min/500 m', value: formatPace(speed, perMeters: 500) ?? '–')
         : sport == Sport.treadmill || sport.usesGps
             ? (label: 'min/km', value: formatPace(speed) ?? '–')
-            : (label: '', value: null);
+            : (
+                label: 'Geschwindigkeit km/h',
+                value: number(Metric.speed, decimals: 1),
+              );
 
-    final candidates = <({String label, String? value})>[
-      (label: 'Zeit', value: formatDuration(r.elapsedS)),
-      (label: 'Puls', value: number(Metric.heartRate) ?? '–'),
-      (label: 'Distanz km', value: formatKm(r.distanceM)),
-      // Wo die Pace zählt, steht sie statt der Geschwindigkeit.
-      if (pace.value == null)
-        (label: 'Geschwindigkeit km/h', value: number(Metric.speed, decimals: 1))
-      else
-        pace,
-      (label: 'Leistung W', value: number(Metric.power)),
-      (label: '${sport.cadenceLabel} /min', value: number(Metric.cadence)),
-      (label: 'Steigung %', value: number(Metric.incline, decimals: 1)),
-      (label: 'Widerstand', value: number(Metric.resistance)),
-      (label: 'Energie kcal', value: r.energyKcal?.toString()),
-      (label: 'Anstieg m', value: r.ascentM?.toString()),
-      if (r.laps.isNotEmpty)
-        (
-          label: 'Runde ${r.laps.length + 1}',
-          value: formatDuration(r.elapsedS - r.laps.last.t),
-        ),
-    ];
+    final all = <LiveTileKind, ({String label, String? value})>{
+      LiveTileKind.time: (label: 'Zeit', value: formatDuration(r.elapsedS)),
+      LiveTileKind.heartRate:
+          (label: 'Puls', value: number(Metric.heartRate) ?? '–'),
+      LiveTileKind.distance:
+          (label: 'Distanz km', value: formatKm(r.distanceM)),
+      LiveTileKind.pace: pace,
+      LiveTileKind.power: (label: 'Leistung W', value: number(Metric.power)),
+      LiveTileKind.cadence: (
+        label: '${sport.cadenceLabel} /min',
+        value: number(Metric.cadence),
+      ),
+      LiveTileKind.incline:
+          (label: 'Steigung %', value: number(Metric.incline, decimals: 1)),
+      LiveTileKind.resistance:
+          (label: 'Widerstand', value: number(Metric.resistance)),
+      LiveTileKind.energy: (
+        // Das Zeichen ≈ kennzeichnet einen aus dem Puls geschätzten Wert.
+        label: r.energyEstimated ? 'Energie ≈ kcal' : 'Energie kcal',
+        value: r.energyKcal?.toString(),
+      ),
+      LiveTileKind.ascent: (label: 'Anstieg m', value: r.ascentM?.toString()),
+      LiveTileKind.lap: (
+        label: 'Runde ${r.laps.length + 1}',
+        value: r.laps.isEmpty
+            ? null
+            : formatDuration(r.elapsedS - r.laps.last.t),
+      ),
+    };
     return [
-      for (final c in candidates)
-        if (c.value != null) (label: c.label, value: c.value!),
+      for (final kind in _layout.visible)
+        if (all[kind]!.value case final value?)
+          (label: all[kind]!.label, value: value),
     ];
+  }
+
+  Future<void> _editTiles() async {
+    await Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) =>
+          TileSettingsPage(db: _session.recorder.db, sport: _session.sport),
+    ));
+    if (mounted) {
+      setState(() => _layout =
+          TileLayout.load(_session.recorder.db, _session.sport));
+    }
   }
 
   Future<void> _chooseHeartRateSource(List<SensorConnection> sources) async {
@@ -125,10 +156,17 @@ class _LivePageState extends State<LivePage> {
           return Scaffold(
             appBar: AppBar(
               automaticallyImplyLeading: false,
-              title: Text(r.paused
-                  ? '${_session.sport.label} – pausiert'
-                  : _session.sport.label),
+              title: Text(!r.paused
+                  ? _session.sport.label
+                  : _session.autoPaused
+                      ? '${_session.sport.label} – Pause (automatisch)'
+                      : '${_session.sport.label} – pausiert'),
               actions: [
+                IconButton(
+                  tooltip: 'Anzeige anpassen',
+                  icon: const Icon(Icons.tune),
+                  onPressed: _editTiles,
+                ),
                 IconButton(
                   tooltip: 'Runde',
                   icon: const Icon(Icons.flag_outlined),
@@ -163,6 +201,7 @@ class _LivePageState extends State<LivePage> {
                     ),
                   if (_session.interval != null)
                     _IntervalPanel(session: _session),
+                  if (_layout.showChart) _LiveChart(session: _session),
                   Expanded(
                     child: LayoutBuilder(
                       builder: (context, box) {
@@ -531,6 +570,79 @@ class _ManualControl extends StatelessWidget {
               ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// Puls und Pace der letzten Minuten als mitlaufende Kurven.
+class _LiveChart extends StatelessWidget {
+  const _LiveChart({required this.session});
+
+  final WorkoutSession session;
+
+  /// So viele Sekunden zeigt der Ausschnitt.
+  static const _windowS = 600;
+
+  /// Vorher lässt sich noch keine Kurve erkennen.
+  static const _minPoints = 10;
+
+  /// Langsamere Abschnitte erscheinen in der Pace-Kurve als Lücke.
+  static const _slowestPaceKmh = 2.0;
+
+  static List<double?> _recent(List<double?> all) =>
+      all.length <= _windowS ? all : all.sublist(all.length - _windowS);
+
+  @override
+  Widget build(BuildContext context) {
+    final scheme = Theme.of(context).colorScheme;
+    final r = session.recorder;
+    final sport = session.sport;
+    final heartRate = _recent(r.heartRateHistory);
+    final speed = _recent(r.speedHistory);
+    if (heartRate.length < _minPoints) return const SizedBox.shrink();
+
+    final showsPace =
+        sport == Sport.treadmill || sport.usesGps || sport == Sport.skiErg;
+    final paceMeters = sport == Sport.skiErg ? 500 : 1000;
+    final hasPulse = heartRate.any((v) => v != null);
+    final hasSpeed = speed.any((v) => v != null);
+    if (!hasPulse && !hasSpeed) return const SizedBox.shrink();
+
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: Column(
+        children: [
+          if (hasPulse)
+            Sparkline(
+              title: 'Puls',
+              unit: '1/min',
+              color: scheme.error,
+              values: heartRate,
+              format: (v) => v.round().toString(),
+            ),
+          if (hasSpeed && showsPace)
+            Sparkline(
+              title: 'Pace',
+              unit: sport == Sport.skiErg ? 'min/500 m' : 'min/km',
+              color: scheme.primary,
+              lowerIsBetter: true,
+              format: (seconds) => formatDuration(seconds.round()),
+              values: [
+                for (final v in speed)
+                  v == null || v < _slowestPaceKmh
+                      ? null
+                      : paceMeters / (v / 3.6),
+              ],
+            )
+          else if (hasSpeed)
+            Sparkline(
+              title: 'Geschwindigkeit',
+              unit: 'km/h',
+              color: scheme.primary,
+              values: speed,
+            ),
+        ],
       ),
     );
   }

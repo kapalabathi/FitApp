@@ -193,6 +193,23 @@ class AppDatabase {
       _prepareBuiltinsForSync();
       _db.execute('PRAGMA user_version = 8');
     }
+    if (version < 9) {
+      _db.execute(
+          'ALTER TABLE workouts ADD COLUMN energy_estimated INTEGER NOT NULL DEFAULT 0');
+      _db.execute('''
+        CREATE TABLE set_logs (
+          id INTEGER PRIMARY KEY,
+          workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+          exercise_uuid TEXT NOT NULL,
+          t INTEGER NOT NULL,
+          reps INTEGER,
+          weight_kg REAL,
+          seconds INTEGER
+        )''');
+      _db.execute(
+          'CREATE INDEX set_logs_by_exercise ON set_logs (exercise_uuid)');
+      _db.execute('PRAGMA user_version = 9');
+    }
   }
 
   /// Zeitstempel unveränderter mitgelieferter Inhalte. Jede Änderung des
@@ -385,10 +402,17 @@ class AppDatabase {
       return false;
     }
     int? round(Object? v) => (v as num?)?.round();
+    // Liefert das Gerät keinen Energieverbrauch, wird er aus dem Puls
+    // geschätzt, sofern Gewicht und Geburtsjahr hinterlegt sind.
+    final estimated = energyKcal == null
+        ? HeartProfile.load(this)
+            .estimateEnergyKcal(samples(workoutId), DateTime.now())
+        : null;
     _db.execute(
       'UPDATE workouts SET duration_s = ?, distance_m = ?, avg_hr = ?, '
       'max_hr = ?, avg_power = ?, max_power = ?, avg_cadence = ?, '
-      'energy_kcal = ?, ascent_m = ?, status = ?, updated_at = ? WHERE id = ?',
+      'energy_kcal = ?, energy_estimated = ?, ascent_m = ?, status = ?, '
+      'updated_at = ? WHERE id = ?',
       [
         row['duration'],
         (row['distance'] as num?)?.toDouble() ?? 0,
@@ -397,7 +421,8 @@ class AppDatabase {
         round(row['avg_power']),
         round(row['max_power']),
         round(row['avg_cadence']),
-        energyKcal,
+        energyKcal ?? estimated,
+        estimated == null ? 0 : 1,
         ascentM,
         status.id,
         _now(),
@@ -473,6 +498,7 @@ class AppDatabase {
     _db.execute('DELETE FROM samples WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
+    _db.execute('DELETE FROM set_logs WHERE workout_id = ?', [id]);
     _db.execute('UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
         [_now(), id]);
   }
@@ -496,6 +522,7 @@ class AppDatabase {
         notes: r['notes'] as String?,
         stravaId: r['strava_id'] as int?,
         imported: r['imported'] == 1,
+        energyEstimated: r['energy_estimated'] == 1,
       );
 
   // --- Intervall-Vorlagen ---
@@ -636,6 +663,58 @@ class AppDatabase {
         [_now(), id]);
   }
 
+  // --- Sätze (Kraft-Protokoll) ---
+
+  void addSetLog(int workoutId, SetLog log) {
+    _db.execute(
+      'INSERT INTO set_logs (workout_id, exercise_uuid, t, reps, weight_kg, '
+      'seconds) VALUES (?, ?, ?, ?, ?, ?)',
+      [workoutId, log.exerciseUuid, log.t, log.reps, log.weightKg, log.seconds],
+    );
+  }
+
+  /// Die Sätze eines Trainings in der Reihenfolge, in der sie absolviert
+  /// wurden.
+  List<SetLog> setLogs(int workoutId) => _db
+      .select('SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id',
+          [workoutId])
+      .map(_setLog)
+      .toList();
+
+  /// Alle Sätze einer Übung aus nicht gelöschten Trainings, neueste zuerst.
+  List<SetLog> exerciseHistory(String exerciseUuid) => _db
+      .select(
+        'SELECT s.*, w.started_at FROM set_logs s '
+        'JOIN workouts w ON w.id = s.workout_id '
+        'WHERE s.exercise_uuid = ? AND w.deleted = 0 '
+        'ORDER BY w.started_at DESC, s.id',
+        [exerciseUuid],
+      )
+      .map(_setLog)
+      .toList();
+
+  /// Das zuletzt bei dieser Übung erfasste Gewicht, als Vorschlag für den
+  /// nächsten Satz.
+  double? lastWeight(String exerciseUuid) {
+    final rows = _db.select(
+      'SELECT weight_kg FROM set_logs WHERE exercise_uuid = ? '
+      'AND weight_kg IS NOT NULL ORDER BY id DESC LIMIT 1',
+      [exerciseUuid],
+    );
+    return rows.isEmpty ? null : (rows.first['weight_kg'] as num).toDouble();
+  }
+
+  SetLog _setLog(Row r) => SetLog(
+        exerciseUuid: r['exercise_uuid'] as String,
+        t: r['t'] as int,
+        reps: r['reps'] as int?,
+        weightKg: (r['weight_kg'] as num?)?.toDouble(),
+        seconds: r['seconds'] as int?,
+        performedAt: r.keys.contains('started_at')
+            ? DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int)
+            : null,
+      );
+
   // --- Synchronisation ---
 
   /// Die Tabellen kleiner Inhalte, die als Ganzes abgeglichen werden, mit
@@ -707,6 +786,7 @@ class AppDatabase {
     'status',
     'strava_id',
     'imported',
+    'energy_estimated',
   ];
   static const _sampleSyncColumns = [
     't',
@@ -755,6 +835,11 @@ class AppDatabase {
             .select('SELECT * FROM laps WHERE workout_id = ? ORDER BY t', [id]))
           [l['t'], l['distance'], l['auto']],
       ],
+      'sets': [
+        for (final s in _db.select(
+            'SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id', [id]))
+          [s['exercise_uuid'], s['t'], s['reps'], s['weight_kg'], s['seconds']],
+      ],
     };
   }
 
@@ -778,6 +863,7 @@ class AppDatabase {
       _db.execute('DELETE FROM samples WHERE workout_id = ?', [id]);
       _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
       _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
+      _db.execute('DELETE FROM set_logs WHERE workout_id = ?', [id]);
       _db.execute(
         'UPDATE workouts SET '
         '${_workoutSyncColumns.map((c) => '$c = ?').join(', ')}, '
@@ -800,6 +886,14 @@ class AppDatabase {
         _db.execute(
           'INSERT INTO laps (workout_id, t, distance, auto) VALUES (?, ?, ?, ?)',
           [id, ...l as List],
+        );
+      }
+      // Ältere Fassungen der App schicken noch keine Sätze mit.
+      for (final s in data['sets'] as List? ?? const []) {
+        _db.execute(
+          'INSERT INTO set_logs (workout_id, exercise_uuid, t, reps, '
+          'weight_kg, seconds) VALUES (?, ?, ?, ?, ?, ?)',
+          [id, ...s as List],
         );
       }
       computeBestEfforts(id);

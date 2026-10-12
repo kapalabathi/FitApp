@@ -105,6 +105,7 @@ class Workout {
     this.notes,
     this.stravaId,
     this.imported = false,
+    this.energyEstimated = false,
   });
 
   final int id;
@@ -135,6 +136,10 @@ class Workout {
 
   /// Von Strava übernommen statt in der App aufgezeichnet.
   final bool imported;
+
+  /// [energyKcal] stammt nicht vom Gerät, sondern ist aus dem Puls
+  /// geschätzt.
+  final bool energyEstimated;
 
   double? get avgSpeedKmh =>
       durationS > 0 && distanceM > 0 ? distanceM / durationS * 3.6 : null;
@@ -183,6 +188,35 @@ class Lap {
 
   /// Von der App nach jedem vollen Kilometer gesetzt, nicht von Hand.
   final bool auto;
+}
+
+/// Ein absolvierter Satz einer Übung innerhalb eines Trainings.
+class SetLog {
+  const SetLog({
+    required this.exerciseUuid,
+    required this.t,
+    this.reps,
+    this.weightKg,
+    this.seconds,
+    this.performedAt,
+  });
+
+  final String exerciseUuid;
+
+  /// Aktive Sekunde des Trainings, in der der Satz abgeschlossen wurde.
+  final int t;
+
+  /// Wiederholungen; `null` bei Übungen auf Zeit.
+  final int? reps;
+
+  /// Zusatzgewicht; `null`, wenn keines erfasst wurde.
+  final double? weightKg;
+
+  /// Dauer bei Übungen auf Zeit.
+  final int? seconds;
+
+  /// Beginn des zugehörigen Trainings; nur beim Lesen eines Verlaufs gesetzt.
+  final DateTime? performedAt;
 }
 
 /// Ein gemerktes Bluetooth-Gerät.

@@ -11,11 +11,16 @@ class WorkoutRecorder {
   WorkoutRecorder({
     required this.db,
     required this.sport,
+    this.kcalPerMinute,
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now {
     startedAt = _clock();
     workoutId = db.startWorkout(sport, startedAt);
   }
+
+  /// Schätzt den Energieverbrauch je Minute aus dem Puls. Wird nur genutzt,
+  /// solange kein Gerät den Verbrauch selbst liefert.
+  final double? Function(int heartRate)? kcalPerMinute;
 
   /// Älter darf ein Messwert nicht sein, um noch als aktuell zu gelten.
   static const freshness = Duration(seconds: 5);
@@ -72,6 +77,8 @@ class WorkoutRecorder {
   double _energyKcal = 0;
   bool _machineCountsDistance = false;
   bool _machineCountsEnergy = false;
+  double _estimatedKcal = 0;
+  bool _hasEstimate = false;
 
   // Manche Geräte zählen die Strecke nur grob, das Domyos-Laufband etwa in
   // Schritten von 10 m. Zwischen zwei Zählerschritten schreibt die App die
@@ -96,7 +103,21 @@ class WorkoutRecorder {
   bool get paused => _paused;
   int get elapsedS => _elapsedS;
   double get distanceM => _distanceM;
-  int? get energyKcal => _machineCountsEnergy ? _energyKcal.round() : null;
+  /// Der Energieverbrauch vom Gerät; liefert es keinen, die Schätzung aus
+  /// dem Puls; `null`, wenn es beides nicht gibt.
+  int? get energyKcal => _machineCountsEnergy
+      ? _energyKcal.round()
+      : _hasEstimate
+          ? _estimatedKcal.round()
+          : null;
+
+  /// Ob [energyKcal] geschätzt statt gemessen ist.
+  bool get energyEstimated => !_machineCountsEnergy && _hasEstimate;
+
+  /// Puls und Geschwindigkeit jeder aktiven Sekunde seit Beginn, für die
+  /// Kurve während des Trainings. `null` steht für eine Sekunde ohne Wert.
+  final List<double?> heartRateHistory = [];
+  final List<double?> speedHistory = [];
 
   /// Summe der Anstiege; `null` ohne GPS.
   int? get ascentM => _gpsCountsDistance ? _ascentM.round() : null;
@@ -307,6 +328,15 @@ class WorkoutRecorder {
       }
     }
     final position = gpsAccuracyM == null ? null : _lastFix;
+    final heartRate = value(Metric.heartRate);
+    heartRateHistory.add(heartRate);
+    speedHistory.add(speed);
+    final perMinute =
+        heartRate == null ? null : kcalPerMinute?.call(heartRate.round());
+    if (perMinute != null) {
+      _estimatedKcal += perMinute / 60;
+      _hasEstimate = true;
+    }
     db.addSample(
       workoutId,
       Sample(
@@ -337,8 +367,11 @@ class WorkoutRecorder {
   Workout? finish() {
     if (_finished) return db.workout(workoutId);
     _finished = true;
+    // Eine Schätzung berechnet die Datenbank selbst aus den Messpunkten;
+    // hier geht nur ein vom Gerät gemessener Wert mit.
     final kept = db.finishWorkout(workoutId,
-        energyKcal: energyKcal, ascentM: ascentM);
+        energyKcal: _machineCountsEnergy ? _energyKcal.round() : null,
+        ascentM: ascentM);
     return kept ? db.workout(workoutId) : null;
   }
 }

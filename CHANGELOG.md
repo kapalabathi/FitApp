@@ -4,6 +4,25 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.10.0] – 2026-10-12
+
+Sieben Vorschläge aus dem Ideenspeicher, vom Nutzer ausgewählt. Alles ist durch automatische Tests gedeckt, aber **noch nicht am Gerät erprobt**.
+
+### Hinzugefügt
+- Automatische Pause (I-036): Steht das Band oder bleibst du draußen stehen, hält die Zeit von selbst an und läuft bei Bewegung weiter. Am Gerät nach 3 s Stillstand, draußen nach 10 s. Ein Verbindungsabbruch gilt nicht als Stillstand. Wer von Hand auf „Weiter" tippt, wird erst nach erneuter Bewegung wieder automatisch pausiert. Abschaltbar auf der Startseite.
+- Kraft-Protokoll (I-039): Bei Übungen mit Wiederholungen lassen sich im Programm die tatsächlich geschafften Wiederholungen und ein Gewicht eintragen; das zuletzt verwendete Gewicht ist vorbelegt. Jede Übung eines Programms wird als Satz gespeichert. Die Detailansicht eines Trainings zeigt die Sätze, die Seite einer Übung ihren Verlauf. Sätze wandern bei Sicherung und Synchronisation mit.
+- Live-Kurve in der Trainingsansicht (I-034): Puls und Geschwindigkeit der letzten Minuten als Kurve unter den Kacheln.
+- Kacheln der Trainingsansicht wählbar (I-035): Je Sportart lassen sich Kacheln ausblenden und in der Reihenfolge verschieben, ebenso die Live-Kurve. Erreichbar über „Anzeige" auf der Startseite und über das Regler-Symbol im Training.
+- Schnellstart (I-038): Die Startseite zeigt die zuletzt gestarteten Trainings und Programme samt Geräten und Intervall; ein Tipp startet sie erneut. Der Stern macht einen Eintrag zum Favoriten, langes Drücken entfernt ihn.
+- Energieverbrauch geschätzt (I-044): Liefert kein Gerät einen Wert, schätzt die App ihn aus Puls, Gewicht, Alter und Geschlecht (Formel nach Keytel). Gewicht und Geschlecht stehen im Profil bei den Pulszonen. Geschätzte Werte sind mit „≈" und „geschätzt" gekennzeichnet; ein Wert vom Gerät hat immer Vorrang.
+- Automatische Sicherung (I-045): Unter „Synchronisation" lässt sich ein Ordner wählen, in den die App einmal am Tag eine Sicherungsdatei legt, je Wochentag eine. So liegen die Stände der letzten sieben Tage vor.
+- Liste weiterer möglicher Übungen in [docs/UEBUNGEN-VORSCHLAEGE.md](docs/UEBUNGEN-VORSCHLAEGE.md). Sie ist nur eine Sammlung zur Auswahl; in der App ist davon nichts enthalten.
+- 26 automatische Tests dazu (insgesamt 203).
+
+### Geändert
+- Die Datenbank hat eine neue Fassung (9) mit der Tabelle der Sätze. Bestehende Daten bleiben erhalten.
+- Der Dialog „Maximalpuls" heißt jetzt „Profil".
+
 ## [0.9.7] – 2026-10-12
 
 ### Hinzugefügt

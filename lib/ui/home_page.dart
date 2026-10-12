@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/database.dart';
+import '../sync/auto_backup.dart';
 import '../sync/drive_sync.dart';
 import 'devices_page.dart';
 import 'history_page.dart';
@@ -71,6 +72,8 @@ class _HomePageState extends State<HomePage> {
   /// Gleicht mit Google Drive ab, falls eingerichtet. Kommt dabei etwas
   /// Neues an, lädt der Verlauf neu.
   Future<void> _syncInBackground() async {
+    // Die tägliche Sicherung in den gewählten Ordner, falls eingerichtet.
+    AutoBackup.runIfDue(widget.db);
     if (await DriveSync.runInBackground(widget.db) && mounted) {
       setState(() => _historyVersion++);
     }

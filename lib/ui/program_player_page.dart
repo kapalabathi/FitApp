@@ -21,7 +21,38 @@ class ProgramPlayerPage extends StatefulWidget {
 class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
   bool _finishing = false;
 
+  // Die Eingaben zum laufenden Satz. Sie gelten für eine Übung und werden
+  // beim Wechsel zur nächsten neu vorbelegt.
+  ProgramPhase? _inputFor;
+  int _reps = 0;
+  String _weight = '';
+
   WorkoutSession get _session => widget.session;
+
+  /// Belegt die Eingaben für [phase] vor: die geplanten Wiederholungen und
+  /// das zuletzt bei dieser Übung verwendete Gewicht.
+  void _prepareInput(ProgramPhase phase) {
+    if (identical(_inputFor, phase)) return;
+    _inputFor = phase;
+    _reps = phase.item.amount;
+    final last = _session.recorder.db.lastWeight(phase.exercise.uuid);
+    _weight = last == null
+        ? ''
+        : last == last.roundToDouble()
+            ? last.round().toString()
+            : formatDecimal(last);
+  }
+
+  void _advance(ProgramPhase phase) {
+    if (phase.isRest || phase.item.timed) {
+      _session.advanceProgram();
+      return;
+    }
+    _session.advanceProgram(
+      reps: _reps,
+      weightKg: double.tryParse(_weight.trim().replaceAll(',', '.')),
+    );
+  }
 
   void _finish() {
     if (_finishing) return;
@@ -66,6 +97,9 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
           final run = _session.program!;
           final r = _session.recorder;
           final phase = run.current;
+          final counted =
+              phase != null && !phase.isRest && !phase.item.timed;
+          if (counted) _prepareInput(phase);
           final heartRate = r.value(Metric.heartRate)?.round();
           return Scaffold(
             appBar: AppBar(
@@ -105,6 +139,51 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
                           )
                         : _PhaseView(run: run, phase: phase),
                   ),
+                  if (counted)
+                    Padding(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+                      child: Row(
+                        children: [
+                          IconButton.outlined(
+                            tooltip: 'Eine Wiederholung weniger',
+                            onPressed: _reps <= 0
+                                ? null
+                                : () => setState(() => _reps--),
+                            icon: const Icon(Icons.remove),
+                          ),
+                          SizedBox(
+                            width: 72,
+                            child: Text(
+                              '$_reps ×',
+                              textAlign: TextAlign.center,
+                              style: theme.textTheme.titleLarge,
+                            ),
+                          ),
+                          IconButton.outlined(
+                            tooltip: 'Eine Wiederholung mehr',
+                            onPressed: () => setState(() => _reps++),
+                            icon: const Icon(Icons.add),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: TextFormField(
+                              // Je Übung ein eigenes Feld, damit die
+                              // Vorbelegung der nächsten Übung greift.
+                              key: ValueKey(phase),
+                              initialValue: _weight,
+                              keyboardType:
+                                  const TextInputType.numberWithOptions(
+                                      decimal: true),
+                              decoration: const InputDecoration(
+                                labelText: 'Gewicht kg',
+                                isDense: true,
+                              ),
+                              onChanged: (v) => _weight = v,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(16),
                     child: phase == null
@@ -136,9 +215,8 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
                                 child: FilledButton.icon(
                                   style: FilledButton.styleFrom(
                                       minimumSize: const Size.fromHeight(64)),
-                                  onPressed: r.paused
-                                      ? null
-                                      : _session.advanceProgram,
+                                  onPressed:
+                                      r.paused ? null : () => _advance(phase),
                                   icon: Icon(phase.durationS == null
                                       ? Icons.check
                                       : Icons.skip_next),

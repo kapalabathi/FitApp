@@ -4,6 +4,7 @@ import 'package:fitapp/data/models.dart';
 import 'package:fitapp/interval/signals.dart';
 import 'package:fitapp/programs/program_models.dart';
 import 'package:fitapp/main.dart';
+import 'package:fitapp/ui/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -260,9 +261,17 @@ void main() {
     await tester.pump(const Duration(seconds: 3));
 
     // Übung mit Wiederholungen wartet auf „Fertig"
-    expect(find.text('10 ×'), findsOneWidget);
+    // (große Anzeige und der Zähler zum Nachtragen)
+    expect(find.text('10 ×'), findsNWidgets(2));
     expect(find.text('Letzte Übung'), findsOneWidget);
     await tester.pump(const Duration(seconds: 4));
+    // Nur 8 geschafft, mit 5,5 kg Zusatzgewicht
+    await tester.tap(find.byTooltip('Eine Wiederholung weniger'));
+    await tester.tap(find.byTooltip('Eine Wiederholung weniger'));
+    await tester.pump();
+    expect(find.text('8 ×'), findsOneWidget);
+    await tester.enterText(
+        find.widgetWithText(TextFormField, 'Gewicht kg'), '5,5');
     await tester.tap(find.text('Fertig'));
     await tester.pump();
     expect(find.text('Programm beendet'), findsOneWidget);
@@ -272,6 +281,7 @@ void main() {
     final workout = db.workouts().single;
     expect(workout.sport, Sport.yoga);
     expect(workout.durationS, 12);
+    expect(db.setLogs(workout.id).map(formatSet), ['5 s', '8 × 5,5 kg']);
     expect(find.text('Dauer'), findsOneWidget);
   });
 

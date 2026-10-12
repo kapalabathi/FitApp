@@ -14,6 +14,8 @@ import '../interval/interval_models.dart';
 import '../interval/interval_run.dart';
 import '../interval/signals.dart';
 import '../programs/program_run.dart';
+import '../stats/stats.dart';
+import 'auto_pause.dart';
 import 'background_keeper.dart';
 import 'workout_recorder.dart';
 
@@ -42,8 +44,14 @@ class WorkoutSession extends ChangeNotifier {
     this.program,
     Stream<GpsFix>? positions,
     bool controlMachine = false,
+    bool autoPause = false,
     this.signals = const SilentSignals(),
-  })  : recorder = WorkoutRecorder(db: db, sport: sport),
+  })  : recorder = WorkoutRecorder(
+          db: db,
+          sport: sport,
+          kcalPerMinute: _energyEstimator(db),
+        ),
+        _autoPause = autoPause ? AutoPause.forSport(sport) : null,
         _control = controlMachine ? ControlState.active : ControlState.off {
     for (final device in devices) {
       recorder.addSource(
@@ -90,6 +98,15 @@ class WorkoutSession extends ChangeNotifier {
   }
 
   static const _leadInS = 10;
+
+  /// Die Schätzung des Energieverbrauchs aus dem Puls, oder `null`, wenn
+  /// im Profil Gewicht oder Geburtsjahr fehlen.
+  static double? Function(int)? _energyEstimator(AppDatabase db) {
+    final profile = HeartProfile.load(db);
+    if (!profile.canEstimateEnergy) return null;
+    final now = DateTime.now();
+    return (heartRate) => profile.kcalPerMinute(heartRate, now);
+  }
   static const _autoLapM = 1000.0;
 
   /// Mehr Sekunden holt die Aufzeichnung nach einer Zwangspause des Systems
@@ -102,6 +119,15 @@ class WorkoutSession extends ChangeNotifier {
   final Signals signals;
   late final Timer _timer;
   late DateTime _lastTickAt;
+  final AutoPause? _autoPause;
+
+  /// Ob die laufende Pause von der App selbst kommt, weil keine Bewegung
+  /// mehr gemessen wurde.
+  bool autoPaused = false;
+
+  // Vom Nutzer für den nächsten abgeschlossenen Satz eingetragene Werte.
+  int? _pendingReps;
+  double? _pendingWeightKg;
   bool _keepsAlive = false;
   StreamSubscription<GpsFix>? _positions;
 
@@ -137,9 +163,21 @@ class WorkoutSession extends ChangeNotifier {
     if (due < 1) return;
     _lastTickAt = _lastTickAt.add(Duration(seconds: due));
     for (var i = 0; i < due.clamp(0, _maxCatchUpS); i++) {
+      _checkAutoPause();
       _tick();
     }
     notifyListeners();
+  }
+
+  /// Pausiert, wenn keine Bewegung mehr gemessen wird, und läuft weiter,
+  /// sobald es wieder welche gibt. Eine Pause, die der Nutzer selbst
+  /// gesetzt hat, rührt die Automatik nicht an.
+  void _checkAutoPause() {
+    final auto = _autoPause;
+    if (auto == null || (recorder.paused && !autoPaused)) return;
+    if (!auto.update(recorder.value(Metric.speed))) return;
+    autoPaused = auto.paused;
+    autoPaused ? recorder.pause() : recorder.resume();
   }
 
   void _tick() {
@@ -164,6 +202,8 @@ class WorkoutSession extends ChangeNotifier {
       switch (event) {
         case PhaseEnding():
           signals.warn();
+        case PhaseCompleted(:final phase, :final elapsedS):
+          _logSet(phase, elapsedS);
         case PhaseStarted(:final phase):
           signals.change();
           signals.say(phase.isRest
@@ -193,11 +233,35 @@ class WorkoutSession extends ChangeNotifier {
   }
 
   /// Schließt die laufende Übung oder Pause des Programms ab.
-  void advanceProgram() {
+  ///
+  /// [reps] und [weightKg] sind die tatsächlich geschafften Wiederholungen
+  /// und das Gewicht, falls der Nutzer sie eingetragen hat.
+  void advanceProgram({int? reps, double? weightKg}) {
     final program = this.program;
     if (program == null || recorder.paused) return;
+    _pendingReps = reps;
+    _pendingWeightKg = weightKg;
     _handleProgram(program.advance());
+    _pendingReps = null;
+    _pendingWeightKg = null;
     notifyListeners();
+  }
+
+  /// Hält eine abgeschlossene Übung als Satz fest (Kraft-Protokoll).
+  void _logSet(ProgramPhase phase, int elapsedS) {
+    final timed = phase.item.timed;
+    // Eine sofort übersprungene Übung auf Zeit ist kein Satz.
+    if (timed && elapsedS == 0) return;
+    recorder.db.addSetLog(
+      recorder.workoutId,
+      SetLog(
+        exerciseUuid: phase.exercise.uuid,
+        t: recorder.elapsedS,
+        reps: timed ? null : _pendingReps ?? phase.item.amount,
+        weightKg: _pendingWeightKg,
+        seconds: timed ? elapsedS : null,
+      ),
+    );
   }
 
   /// Das Gerät, das sich gerade steuern lässt.
@@ -354,7 +418,15 @@ class WorkoutSession extends ChangeNotifier {
   }
 
   void togglePause() {
-    recorder.paused ? recorder.resume() : recorder.pause();
+    if (autoPaused) {
+      // Der Nutzer will trotz Stillstand weitermachen.
+      autoPaused = false;
+      _autoPause?.overrideByUser();
+      recorder.resume();
+    } else {
+      recorder.paused ? recorder.resume() : recorder.pause();
+      _autoPause?.reset();
+    }
     // Die Pause selbst wird nicht nachgeholt.
     _lastTickAt = clock.now();
     notifyListeners();

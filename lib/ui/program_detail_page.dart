@@ -6,6 +6,7 @@ import '../data/models.dart';
 import '../interval/signals.dart';
 import '../programs/program_models.dart';
 import '../programs/program_run.dart';
+import '../session/quick_start.dart';
 import '../session/workout_session.dart';
 import 'area_chips.dart';
 import 'exercise_image.dart';
@@ -70,6 +71,8 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
   Future<void> _start(Program program) async {
     final sport = program.category.sport;
     widget.db.setDevicesForSport(sport, _selected);
+    QuickStarts.remember(
+        widget.db, QuickStart(sport: sport, programId: program.id));
     final session = WorkoutSession(
       db: widget.db,
       sport: sport,

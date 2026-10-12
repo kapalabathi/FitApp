@@ -53,18 +53,18 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-031 | Health Connect: Trainings in Androids gemeinsamen Gesundheitsspeicher schreiben und von dort lesen | Daten | M | Neu | Vorschlag |
 | I-032 | Pulsgesteuertes Training: Laufband oder Bike regelt selbst, um einen Zielpuls zu halten | Timer / Geräte | L | Neu | Vorschlag |
 | I-033 | Zielvorgabe und virtueller Mitläufer: Zielzeit, Zielpace oder eigene Bestzeit, mit Ansage des Vorsprungs oder Rückstands | Aufzeichnung | M | Neu | Vorschlag |
-| I-034 | Live-Kurve in der Trainingsansicht (Puls, Pace), besonders für das Tablet | Aufzeichnung | M | Neu | Vorschlag |
-| I-035 | Kacheln der Trainingsansicht selbst wählen und anordnen | Bedienung | M | Neu | Vorschlag |
-| I-036 | Automatische Pause, wenn das Band steht oder draußen keine Bewegung ist | Aufzeichnung | S | Neu | Vorschlag |
+| I-034 | Live-Kurve in der Trainingsansicht (Puls, Pace), besonders für das Tablet | Aufzeichnung | M | Umgesetzt, ungetestet | Vorschlag |
+| I-035 | Kacheln der Trainingsansicht selbst wählen und anordnen | Bedienung | M | Umgesetzt, ungetestet | Vorschlag |
+| I-036 | Automatische Pause, wenn das Band steht oder draußen keine Bewegung ist | Aufzeichnung | S | Umgesetzt, ungetestet | Vorschlag |
 | I-037 | Ansagen einstellbar: Puls, Pace und Zeit in wählbarem Abstand | Aufzeichnung | S | Neu | Vorschlag |
-| I-038 | Schnellstart: letztes Training wiederholen, Favoriten auf der Startseite | Bedienung | S | Neu | Vorschlag |
-| I-039 | Kraft-Protokoll: Sätze, Wiederholungen und Gewicht je Übung erfassen, Verlauf je Übung | Programme | M | Neu | Vorschlag |
+| I-038 | Schnellstart: letztes Training wiederholen, Favoriten auf der Startseite | Bedienung | S | Umgesetzt, ungetestet | Vorschlag |
+| I-039 | Kraft-Protokoll: Sätze, Wiederholungen und Gewicht je Übung erfassen, Verlauf je Übung | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-040 | Ziele mit Fortschritt: z. B. Kilometer im Monat oder Einheiten je Woche | Auswertung | M | Neu | Vorschlag |
 | I-041 | Trainingsbelastung aus dem Puls: Belastung je Einheit und Verlauf über Wochen | Auswertung | M | Neu | Vorschlag |
 | I-042 | Zwei Trainings vergleichen: Kurven übereinander | Auswertung | M | Neu | Vorschlag |
 | I-043 | Wochenplan: geplante Einheiten im Kalender mit Erinnerung | Programme | L | Neu | Vorschlag |
-| I-044 | Energieverbrauch aus Puls, Gewicht und Alter schätzen, wenn das Gerät keinen liefert | Auswertung | S | Neu | Vorschlag |
-| I-045 | Automatische Sicherung: regelmäßig eine Sicherungsdatei in einem gewählten Ordner ablegen | Daten | S | Neu | Vorschlag |
+| I-044 | Energieverbrauch aus Puls, Gewicht und Alter schätzen, wenn das Gerät keinen liefert | Auswertung | S | Umgesetzt, ungetestet | Vorschlag |
+| I-045 | Automatische Sicherung: regelmäßig eine Sicherungsdatei in einem gewählten Ordner ablegen | Daten | S | Umgesetzt, ungetestet | Vorschlag |
 
 ## Details
 

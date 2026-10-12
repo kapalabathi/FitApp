@@ -6,9 +6,11 @@ import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
 
 import '../data/database.dart';
+import '../data/models.dart';
 import '../programs/program_models.dart';
 import 'area_chips.dart';
 import 'exercise_image.dart';
+import 'format.dart';
 
 /// Eine Übung mit Grafik und Anleitung; von hier aus bearbeiten und löschen.
 class ExerciseDetailPage extends StatefulWidget {
@@ -96,8 +98,78 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                 : _exercise.description,
             style: theme.textTheme.bodyLarge,
           ),
+          _SetHistory(db: widget.db, exercise: _exercise),
         ],
       ),
+    );
+  }
+}
+
+/// Was mit dieser Übung bisher trainiert wurde: Bestwerte und die Sätze der
+/// letzten Trainings (Kraft-Protokoll).
+class _SetHistory extends StatelessWidget {
+  const _SetHistory({required this.db, required this.exercise});
+
+  final AppDatabase db;
+  final Exercise exercise;
+
+  /// So viele Trainings zeigt der Verlauf.
+  static const _shownDays = 8;
+
+  @override
+  Widget build(BuildContext context) {
+    final history = db.exerciseHistory(exercise.uuid);
+    if (history.isEmpty) return const SizedBox.shrink();
+    final theme = Theme.of(context);
+
+    // Die Sätze je Training, neuestes zuerst.
+    final byWorkout = <DateTime, List<SetLog>>{};
+    for (final s in history) {
+      byWorkout.putIfAbsent(s.performedAt!, () => []).add(s);
+    }
+    num best(num? Function(SetLog) of) => history
+        .map(of)
+        .whereType<num>()
+        .fold<num>(0, (a, b) => a > b ? a : b);
+    final maxWeight = best((s) => s.weightKg);
+    final maxReps = best((s) => s.reps);
+    final maxSeconds = best((s) => s.seconds);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Divider(height: 40),
+        Text('Verlauf', style: theme.textTheme.titleMedium),
+        const SizedBox(height: 4),
+        Text(
+          [
+            '${history.length} Sätze in ${byWorkout.length} Trainings',
+            if (maxReps > 0) 'meiste Wiederholungen: $maxReps',
+            if (maxWeight > 0)
+              'höchstes Gewicht: ${formatDecimal(maxWeight.toDouble())} kg',
+            if (maxSeconds > 0) 'längste Dauer: $maxSeconds s',
+          ].join('  ·  '),
+          style: theme.textTheme.bodySmall,
+        ),
+        const SizedBox(height: 8),
+        for (final entry in byWorkout.entries.take(_shownDays))
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 4),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: 130,
+                  child: Text(formatDate(entry.key),
+                      style: theme.textTheme.bodySmall),
+                ),
+                Expanded(
+                  child: Text(entry.value.map(formatSet).join(',  ')),
+                ),
+              ],
+            ),
+          ),
+      ],
     );
   }
 }

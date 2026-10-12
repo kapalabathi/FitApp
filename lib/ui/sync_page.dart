@@ -8,6 +8,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 
 import '../data/database.dart';
+import '../sync/auto_backup.dart';
 import '../sync/drive_sync.dart';
 import '../sync/sync_engine.dart';
 import 'format.dart';
@@ -92,9 +93,22 @@ class _SyncPageState extends State<SyncPage> {
     return 'Sicherung eingespielt: ${result.received} Einträge übernommen.';
   }
 
+  Future<String> _chooseBackupFolder() async {
+    if (!await AutoBackup.chooseFolder(widget.db)) return 'Nichts ausgewählt.';
+    await AutoBackup.run(widget.db);
+    return 'Ordner gemerkt und erste Sicherung abgelegt.';
+  }
+
+  Future<String> _backupNow() async {
+    await AutoBackup.run(widget.db);
+    return 'Sicherung abgelegt.';
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final backupFolder = AutoBackup.folderName(widget.db);
+    final backupAt = AutoBackup.lastRun(widget.db);
     final lastRun = int.tryParse(widget.db.setting(DriveSync.lastRunKey) ?? '');
     return Scaffold(
       appBar: AppBar(
@@ -137,6 +151,43 @@ class _SyncPageState extends State<SyncPage> {
                 icon: const Icon(Icons.download),
                 label: const Text('Sicherung einspielen'),
               ),
+            ],
+          ),
+          const Divider(height: 48),
+          Text('Automatische Sicherung', style: theme.textTheme.titleMedium),
+          const SizedBox(height: 4),
+          Text(
+            backupFolder == null
+                ? 'Legt einmal am Tag von selbst eine Sicherungsdatei in '
+                    'einem Ordner deiner Wahl ab, je Wochentag eine. So '
+                    'liegen immer die Stände der letzten sieben Tage vor.'
+                : 'Ordner: $backupFolder\n'
+                    '${backupAt == null ? 'Noch keine Sicherung.' : 'Zuletzt gesichert: ${formatDateTime(backupAt)}'}',
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 12,
+            runSpacing: 8,
+            children: [
+              FilledButton.tonalIcon(
+                onPressed: _busy ? null : () => _run(_chooseBackupFolder),
+                icon: const Icon(Icons.folder_open),
+                label: Text(
+                    backupFolder == null ? 'Ordner wählen' : 'Ordner ändern'),
+              ),
+              if (backupFolder != null) ...[
+                FilledButton.tonalIcon(
+                  onPressed: _busy ? null : () => _run(_backupNow),
+                  icon: const Icon(Icons.save_alt),
+                  label: const Text('Jetzt sichern'),
+                ),
+                TextButton(
+                  onPressed: _busy
+                      ? null
+                      : () => setState(() => AutoBackup.disable(widget.db)),
+                  child: const Text('Ausschalten'),
+                ),
+              ],
             ],
           ),
           const Divider(height: 48),

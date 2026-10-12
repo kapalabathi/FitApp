@@ -1,5 +1,7 @@
 import 'package:intl/intl.dart';
 
+import '../data/models.dart';
+
 /// Anzeigeformate für Zeiten, Strecken und Daten.
 
 String formatDuration(int seconds) {
@@ -30,3 +32,16 @@ final _time = DateFormat('HH:mm', 'de');
 
 String formatDate(DateTime d) => _date.format(d);
 String formatDateTime(DateTime d) => '${_date.format(d)}, ${_time.format(d)}';
+
+/// Ein Satz in Kurzform: „10 × 20 kg", „12 ×" oder „30 s".
+String formatSet(SetLog set) {
+  final seconds = set.seconds;
+  if (seconds != null) return '$seconds s';
+  final weight = set.weightKg;
+  final reps = '${set.reps ?? 0} ×';
+  if (weight == null || weight == 0) return reps;
+  final kg = weight == weight.roundToDouble()
+      ? weight.round().toString()
+      : formatDecimal(weight);
+  return '$reps $kg kg';
+}

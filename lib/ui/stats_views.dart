@@ -292,13 +292,16 @@ Future<bool> editHeartProfile(BuildContext context, AppDatabase db) async {
       TextEditingController(text: profile.birthYear?.toString() ?? '');
   final manual =
       TextEditingController(text: profile.manualMaxHr?.toString() ?? '');
+  final weight = TextEditingController(
+      text: profile.weightKg == null ? '' : formatDecimal(profile.weightKg!));
+  var sex = profile.sex;
   final saved = await showDialog<bool>(
     context: context,
     builder: (context) {
       String? error;
       return StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
-          title: const Text('Maximalpuls'),
+          title: const Text('Profil'),
           content: SingleChildScrollView(
             child: Column(
               mainAxisSize: MainAxisSize.min,
@@ -320,6 +323,29 @@ Future<bool> editHeartProfile(BuildContext context, AppDatabase db) async {
                   decoration: const InputDecoration(
                       labelText: 'Eigener Maximalpuls (optional)'),
                 ),
+                const SizedBox(height: 16),
+                const Text('Mit Gewicht und Geburtsjahr schätzt die App den '
+                    'Energieverbrauch aus dem Puls, wenn das Trainingsgerät '
+                    'keinen liefert.'),
+                TextField(
+                  controller: weight,
+                  keyboardType:
+                      const TextInputType.numberWithOptions(decimal: true),
+                  decoration: const InputDecoration(
+                      labelText: 'Gewicht in kg (optional)'),
+                ),
+                DropdownButtonFormField<Sex?>(
+                  initialValue: sex,
+                  decoration: const InputDecoration(
+                      labelText: 'Geschlecht (optional)'),
+                  items: [
+                    const DropdownMenuItem(
+                        value: null, child: Text('Keine Angabe')),
+                    for (final s in Sex.values)
+                      DropdownMenuItem(value: s, child: Text(s.label)),
+                  ],
+                  onChanged: (s) => sex = s,
+                ),
                 if (error != null)
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
@@ -340,7 +366,12 @@ Future<bool> editHeartProfile(BuildContext context, AppDatabase db) async {
                 final year = int.tryParse(birthYear.text.trim());
                 final max = int.tryParse(manual.text.trim());
                 final thisYear = DateTime.now().year;
-                final problem = birthYear.text.trim().isNotEmpty &&
+                final kg =
+                    double.tryParse(weight.text.trim().replaceAll(',', '.'));
+                final problem = weight.text.trim().isNotEmpty &&
+                        (kg == null || kg < 20 || kg > 300)
+                    ? 'Das Gewicht muss zwischen 20 und 300 kg liegen.'
+                    : birthYear.text.trim().isNotEmpty &&
                         (year == null || year < 1900 || year > thisYear)
                     ? 'Bitte ein gültiges Geburtsjahr eingeben.'
                     : manual.text.trim().isNotEmpty &&
@@ -353,7 +384,12 @@ Future<bool> editHeartProfile(BuildContext context, AppDatabase db) async {
                   setDialogState(() => error = problem);
                   return;
                 }
-                HeartProfile(birthYear: year, manualMaxHr: max).save(db);
+                HeartProfile(
+                  birthYear: year,
+                  manualMaxHr: max,
+                  weightKg: kg,
+                  sex: sex,
+                ).save(db);
                 Navigator.pop(context, true);
               },
               child: const Text('Speichern'),
@@ -446,7 +482,7 @@ class _ZonesViewState extends State<ZonesView> {
           subtitle: Text(profile.manualMaxHr != null
               ? 'Eigener Wert'
               : 'Faustformel 220 − Alter, Geburtsjahr ${profile.birthYear}'),
-          trailing: TextButton(onPressed: _edit, child: const Text('Ändern')),
+          trailing: TextButton(onPressed: _edit, child: const Text('Profil')),
         ),
         Text(
           'Gezählt wird nur Zeit, in der ein Pulssensor Werte geliefert hat.',

@@ -5,16 +5,43 @@ import '../data/models.dart';
 // Pulszonen
 // ---------------------------------------------------------------------------
 
-/// Angaben, aus denen sich der Maximalpuls ergibt.
+enum Sex {
+  female('w', 'Frau'),
+  male('m', 'Mann');
+
+  const Sex(this.id, this.label);
+
+  final String id;
+  final String label;
+
+  static Sex? fromId(String? id) {
+    for (final s in values) {
+      if (s.id == id) return s;
+    }
+    return null;
+  }
+}
+
+/// Angaben zur Person, aus denen sich Maximalpuls und Energieverbrauch
+/// ergeben.
 class HeartProfile {
-  const HeartProfile({this.birthYear, this.manualMaxHr});
+  const HeartProfile({
+    this.birthYear,
+    this.manualMaxHr,
+    this.weightKg,
+    this.sex,
+  });
 
   HeartProfile.load(AppDatabase db)
       : birthYear = int.tryParse(db.setting(_birthYearKey) ?? ''),
-        manualMaxHr = int.tryParse(db.setting(_manualMaxKey) ?? '');
+        manualMaxHr = int.tryParse(db.setting(_manualMaxKey) ?? ''),
+        weightKg = double.tryParse(db.setting(_weightKey) ?? ''),
+        sex = Sex.fromId(db.setting(_sexKey));
 
   static const _birthYearKey = 'profile.birthYear';
   static const _manualMaxKey = 'profile.maxHr';
+  static const _weightKey = 'profile.weightKg';
+  static const _sexKey = 'profile.sex';
 
   /// Unter diesem Schlüssel steht, wann das Profil zuletzt geändert wurde.
   static const updatedAtKey = 'profile.updatedAt';
@@ -23,6 +50,59 @@ class HeartProfile {
 
   /// Selbst eingetragener Maximalpuls; hat Vorrang vor der Faustformel.
   final int? manualMaxHr;
+
+  /// Körpergewicht; nur für die Schätzung des Energieverbrauchs.
+  final double? weightKg;
+  final Sex? sex;
+
+  /// Ob die Angaben für eine Schätzung des Energieverbrauchs reichen.
+  bool get canEstimateEnergy => birthYear != null && weightKg != null;
+
+  /// Geschätzter Energieverbrauch in kcal je Minute bei Puls [heartRate],
+  /// nach Keytel u. a. (2005). Die Formel unterscheidet Frauen und Männer;
+  /// ohne Angabe gilt das Mittel aus beiden. Sie ist für Belastung
+  /// gedacht: In Ruhe liefert sie zu wenig, deshalb nie weniger als 0.
+  double? kcalPerMinute(int heartRate, DateTime now) {
+    final weight = weightKg;
+    final born = birthYear;
+    if (weight == null || born == null) return null;
+    final age = now.year - born;
+    final male =
+        (-55.0969 + 0.6309 * heartRate + 0.1988 * weight + 0.2017 * age) /
+            4.184;
+    final female =
+        (-20.4022 + 0.4472 * heartRate - 0.1263 * weight + 0.074 * age) /
+            4.184;
+    final value = switch (sex) {
+      Sex.male => male,
+      Sex.female => female,
+      null => (male + female) / 2,
+    };
+    return value < 0 ? 0 : value;
+  }
+
+  /// Geschätzter Energieverbrauch eines Trainings aus seinem Pulsverlauf,
+  /// oder `null`, wenn Angaben oder Pulsdaten fehlen.
+  int? estimateEnergyKcal(List<Sample> samples, DateTime when) {
+    if (!canEstimateEnergy) return null;
+    var kcal = 0.0;
+    var counted = false;
+    var lastT = 0;
+    for (final s in samples) {
+      // Importierte Trainings haben nicht für jede Sekunde einen
+      // Messpunkt; ein Punkt steht dann für die Zeit seit dem vorigen,
+      // aber nicht für beliebig lange Lücken.
+      final seconds = (s.t - lastT).clamp(1, _maxEnergyGapS);
+      lastT = s.t;
+      final hr = s.heartRate;
+      if (hr == null) continue;
+      kcal += kcalPerMinute(hr, when)! * seconds / 60;
+      counted = true;
+    }
+    return counted ? kcal.round() : null;
+  }
+
+  static const _maxEnergyGapS = 10;
 
   /// Faustformel: 220 minus Lebensalter.
   int? formulaMaxHr(DateTime now) =>
@@ -36,6 +116,8 @@ class HeartProfile {
     db
       ..setSetting(_birthYearKey, birthYear?.toString())
       ..setSetting(_manualMaxKey, manualMaxHr?.toString())
+      ..setSetting(_weightKey, weightKg?.toString())
+      ..setSetting(_sexKey, sex?.id)
       ..setSetting(
           updatedAtKey, '${DateTime.now().millisecondsSinceEpoch}');
   }

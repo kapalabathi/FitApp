@@ -35,8 +35,14 @@ String short(ProgramEvent e) => switch (e) {
       PhaseStarted(:final phase) =>
         '${phase.isRest ? 'pause vor' : 'start'} ${phase.exercise.name}',
       PhaseEnding(:final secondsLeft) => 'noch $secondsLeft',
+      PhaseCompleted(:final phase, :final elapsedS) =>
+        'fertig ${phase.exercise.name} nach $elapsedS',
       ProgramFinished() => 'ende',
     };
+
+/// Der Ablauf ohne die Meldungen über abgeschlossene Übungen.
+Iterable<String> flow(List<ProgramEvent> events) =>
+    events.where((e) => e is! PhaseCompleted).map(short);
 
 void main() {
   group('Mitgelieferte Inhalte', () {
@@ -174,19 +180,19 @@ void main() {
     test('Übung, Pause, Übung über alle Runden; gelöschte Übungen entfallen',
         () {
       final run = ProgramRun(_program, _exercises);
-      final log = <String>[...run.start().map(short)];
+      final log = <String>[...flow(run.start())];
       void ticks(int n) {
         for (var i = 0; i < n; i++) {
-          log.addAll(run.tick().map(short));
+          log.addAll(flow(run.tick()));
         }
       }
 
       ticks(9); // 5 s Stütz, 4 s Pause
       ticks(20); // Liegestütze warten auf den Nutzer
-      log.addAll(run.advance().map(short));
+      log.addAll(flow(run.advance()));
       ticks(2); // Pause
       ticks(9);
-      log.addAll(run.advance().map(short));
+      log.addAll(flow(run.advance()));
 
       expect(log, [
         'start Stütz',
@@ -206,6 +212,21 @@ void main() {
       ]);
       expect(run.finished, isTrue);
       expect(run.progress, 1);
+    });
+
+    test('meldet jede abgeschlossene Übung mit ihrer Dauer, Pausen nicht', () {
+      final run = ProgramRun(_program, _exercises)..start();
+      final done = <String>[];
+      void note(List<ProgramEvent> events) =>
+          done.addAll(events.whereType<PhaseCompleted>().map(short));
+      for (var i = 0; i < 9; i++) {
+        note(run.tick()); // Stütz 5 s, Pause 4 s
+      }
+      for (var i = 0; i < 7; i++) {
+        note(run.tick()); // Liegestütze, 7 s bis „Fertig"
+      }
+      note(run.advance());
+      expect(done, ['fertig Stütz nach 5', 'fertig Liegestütz nach 7']);
     });
 
     test('kennt Restzeit, Fortschritt und die nächste Übung', () {
