@@ -197,7 +197,7 @@ Begründung der Reihenfolge: M0 klärt die technischen Risiken, bevor viel gebau
 | Nr. | Punkt |
 |-----|-------|
 | O-01 | Erledigt 2026-10-12: Alle 160 Übungsgrafiken liegen vor und sind eingebunden. |
-| O-02 | Die vorhandenen Grafiken sind noch nicht auf anatomische Richtigkeit geprüft. |
+| O-02 | Erledigt 2026-10-12: Der Auftraggeber hat die Grafiken gesichtet und für in Ordnung befunden. |
 | O-03 | Erledigt 2026-10-11: Mindestversion Android 14; das Smartphone hat Android 17. |
 | O-04 | Erledigt 2026-10-11: Die App weist hin und fragt nach (A-067). |
 | O-05 | Crossfit- und Calisthenics-Übungen setzen Geräte voraus (Kettlebell, Langhantel, Box, Klimmzugstange, Barren u. a.). Sind sie vorhanden? |

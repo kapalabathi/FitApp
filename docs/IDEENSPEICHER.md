@@ -49,7 +49,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-027 | Kurven: Sekunde vor/zurück und Hineinzoomen in einen Abschnitt | Auswertung | M | Neu | Vorschlag |
 | I-028 | Zurück-Taste hebt eine Mehrfachauswahl im Verlauf auf, statt die App zu verlassen | Bedienung | S | Neu | Vorschlag |
 | I-029 | Radfahren im Freien als eigene Sportart mit GPS | Aufzeichnung | S | Neu | Vorschlag |
-| I-030 | Übungsgrafiken auf anatomische Richtigkeit durchsehen und fehlerhafte neu erzeugen | Programme | M | Neu | Vorschlag |
+| I-030 | Übungsgrafiken auf anatomische Richtigkeit durchsehen und fehlerhafte neu erzeugen | Programme | M | Verworfen | Vorschlag |
 
 ## Details
 
@@ -136,3 +136,6 @@ Je Übung eine kleine, einheitlich gestaltete Comic-Grafik. Umfang: 80 Grafiken,
 
 ### I-021 – Erweiterung der Übungsbibliothek
 Weitere 20 Übungen je Kategorie ohne Geräte, Anzeige der trainierten Körperbereiche und Programme in Varianten (kurz/lang, leicht/fordernd). In der App umgesetzt mit Version 0.8.0; die 80 Grafiken G-081 bis G-160 sind seit Version 0.9.7 eingebunden.
+
+### I-030 – Grafiken durchsehen
+Verworfen am 2026-10-12: Der Nutzer hat die Grafiken selbst gesichtet und für in Ordnung befunden.
