@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.7] – 2026-10-12
+
+### Hinzugefügt
+- Die letzten 36 Übungsgrafiken (G-125 bis G-160) sind eingebunden. Damit hat jede der 160 mitgelieferten Übungen ihr Bild (I-021 abgeschlossen); die Bilder belegen zusammen 1,6 MB.
+- Ein automatischer Test prüft, dass zu jeder mitgelieferten Übung die Grafik beiliegt (insgesamt 177).
+
 ## [0.9.6] – 2026-10-12
 
 ### Hinzugefügt

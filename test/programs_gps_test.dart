@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fitapp/data/database.dart';
 import 'package:fitapp/data/models.dart';
 import 'package:fitapp/gps/geo.dart';
@@ -48,6 +50,14 @@ void main() {
       // Jede Übung nennt mindestens einen Körperbereich.
       expect(builtinExercises.every((e) => e.areas.isNotEmpty), isTrue);
       expect(builtinExercises.every((e) => e.description.length > 20), isTrue);
+    });
+
+    test('zu jeder mitgelieferten Übung liegt die Grafik bei', () {
+      final missing = [
+        for (final e in builtinExercises)
+          if (!File('assets/exercises/${e.key}.webp').existsSync()) e.key,
+      ];
+      expect(missing, isEmpty);
     });
 
     test('jedes mitgelieferte Programm verweist nur auf vorhandene Übungen',
