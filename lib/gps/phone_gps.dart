@@ -26,6 +26,17 @@ abstract final class PhoneGps {
     };
   }
 
+  /// Der aktuelle Standort, einmalig abgefragt.
+  static Future<({double latitude, double longitude})> current() async {
+    final p = await Geolocator.getCurrentPosition(
+      locationSettings: const LocationSettings(
+        accuracy: LocationAccuracy.high,
+        timeLimit: Duration(seconds: 30),
+      ),
+    );
+    return (latitude: p.latitude, longitude: p.longitude);
+  }
+
   /// Liefert etwa jede Sekunde einen Standort, auch bei ausgeschaltetem
   /// Display und wenn die App im Hintergrund ist (Lastenheft A-022).
   static Stream<GpsFix> positions() {

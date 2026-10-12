@@ -362,6 +362,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Als FIT exportieren'), findsOneWidget);
     expect(find.text('Als GPX exportieren'), findsOneWidget);
+    expect(find.text('Als FIT mit Trainingsort exportieren'), findsOneWidget);
     await tester.tapAt(const Offset(5, 5)); // Menü schließen
     await tester.pumpAndSettle();
 

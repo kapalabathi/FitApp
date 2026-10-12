@@ -13,6 +13,7 @@ import '../data/database.dart';
 import '../data/models.dart';
 import '../export/fit_writer.dart';
 import '../export/xml_writers.dart';
+import '../gps/phone_gps.dart';
 import '../import/file_import.dart';
 import '../strava/strava_api.dart';
 import '../strava/strava_service.dart';
@@ -20,6 +21,11 @@ import 'format.dart';
 
 enum ExportFormat {
   fit('FIT', 'fit'),
+
+  /// Wie [fit], aber Trainings ohne Strecke bekommen den gemerkten
+  /// Trainingsort als Standort. Gedacht für Programme, die nur Dateien mit
+  /// Standort annehmen.
+  fitWithLocation('FIT mit Trainingsort', 'fit'),
   gpx('GPX', 'gpx'),
   tcx('TCX', 'tcx');
 
@@ -35,6 +41,8 @@ List<int>? exportBytes(AppDatabase db, Workout w, ExportFormat format) {
   final samples = db.samples(w.id);
   return switch (format) {
     ExportFormat.fit => buildFit(w, samples, db.laps(w.id)),
+    ExportFormat.fitWithLocation => buildFit(w, samples, db.laps(w.id),
+        fixedLocation: trainingLocation(db)),
     ExportFormat.gpx => switch (buildGpx(w, samples)) {
         final gpx? => utf8.encode(gpx),
         null => null,
@@ -43,11 +51,38 @@ List<int>? exportBytes(AppDatabase db, Workout w, ExportFormat format) {
   };
 }
 
+const _locationLatKey = 'export.locationLat';
+const _locationLonKey = 'export.locationLon';
+
+/// Der gemerkte Ort, an dem die Trainingsgeräte stehen, oder `null`.
+({double latitude, double longitude})? trainingLocation(AppDatabase db) {
+  final lat = double.tryParse(db.setting(_locationLatKey) ?? '');
+  final lon = double.tryParse(db.setting(_locationLonKey) ?? '');
+  return lat == null || lon == null ? null : (latitude: lat, longitude: lon);
+}
+
+/// Merkt sich den aktuellen Standort des Geräts als Trainingsort. Gibt
+/// `null` zurück, wenn das geklappt hat, sonst den Grund.
+Future<String?> rememberTrainingLocation(AppDatabase db) async {
+  final problem = await PhoneGps.prepare();
+  if (problem != null) return problem;
+  try {
+    final here = await PhoneGps.current();
+    db
+      ..setSetting(_locationLatKey, '${here.latitude}')
+      ..setSetting(_locationLonKey, '${here.longitude}');
+    return null;
+  } catch (e) {
+    return 'Der Standort ließ sich nicht bestimmen: $e';
+  }
+}
+
 /// Der Dateiname eines exportierten Trainings. Die Nummer am Ende hält die
 /// Namen auseinander, wenn zwei Trainings in derselben Minute begonnen haben.
 String exportFileName(Workout w, ExportFormat format) {
   final stamp = DateFormat('yyyy-MM-dd_HHmm').format(w.startedAt);
-  return 'fitapp_${stamp}_${w.sport.id}_${w.id}.${format.extension}';
+  final suffix = format == ExportFormat.fitWithLocation ? '_ort' : '';
+  return 'fitapp_${stamp}_${w.sport.id}_${w.id}$suffix.${format.extension}';
 }
 
 /// Schreibt Trainings als Dateien und öffnet das Teilen-Menü von Android,
@@ -56,6 +91,18 @@ Future<void> exportWorkouts(BuildContext context, AppDatabase db,
     List<Workout> workouts, ExportFormat format) async {
   final messenger = ScaffoldMessenger.of(context);
   try {
+    if (format == ExportFormat.fitWithLocation &&
+        trainingLocation(db) == null) {
+      // Beim ersten Mal wird der Ort festgelegt, an dem das Gerät gerade
+      // ist; danach gilt er für alle weiteren Exporte.
+      final problem = await rememberTrainingLocation(db);
+      if (problem != null) {
+        messenger.showSnackBar(SnackBar(content: Text(problem)));
+        return;
+      }
+      messenger.showSnackBar(const SnackBar(
+          content: Text('Aktueller Standort als Trainingsort gemerkt.')));
+    }
     final directory = (await getTemporaryDirectory()).path;
     final files = <XFile>[];
     for (final w in workouts) {

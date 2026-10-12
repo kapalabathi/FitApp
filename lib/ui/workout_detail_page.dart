@@ -222,6 +222,16 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                   child: Text('Als ${format.label} exportieren'),
                 ),
               PopupMenuItem(
+                value: () async {
+                  final messenger = ScaffoldMessenger.of(context);
+                  final problem = await rememberTrainingLocation(db);
+                  messenger.showSnackBar(SnackBar(
+                      content: Text(problem ??
+                          'Aktueller Standort als Trainingsort gemerkt.')));
+                },
+                child: const Text('Trainingsort neu festlegen'),
+              ),
+              PopupMenuItem(
                 value: () => _delete(context),
                 child: const Text('Training löschen'),
               ),

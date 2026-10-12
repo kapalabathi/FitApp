@@ -7,7 +7,18 @@ import '../data/models.dart';
 ///
 /// Die Zeitachse der Datei ist die aktive Zeit: Pausen sind herausgerechnet,
 /// weil die App nur aktive Sekunden aufzeichnet.
-Uint8List buildFit(Workout workout, List<Sample> samples, List<Lap> laps) {
+///
+/// Mit [fixedLocation] bekommt ein Training ohne eigene Strecke in jedem
+/// Messpunkt diesen einen Standort. Manche Programme nehmen nur Dateien mit
+/// Standort an. Hat das Training eine Strecke, bleibt sie unverändert.
+Uint8List buildFit(
+  Workout workout,
+  List<Sample> samples,
+  List<Lap> laps, {
+  ({double latitude, double longitude})? fixedLocation,
+}) {
+  final hasRoute = samples.any((s) => s.latitude != null);
+  final everywhere = hasRoute ? null : fixedLocation;
   final out = _FitWriter();
   final start = _fitTime(workout.startedAt);
   final end = start + workout.durationS;
@@ -48,8 +59,8 @@ Uint8List buildFit(Workout workout, List<Sample> samples, List<Lap> laps) {
     final distance = s.distanceM;
     out.data(2, [
       start + s.t,
-      _semicircles(s.latitude),
-      _semicircles(s.longitude),
+      _semicircles(s.latitude ?? everywhere?.latitude),
+      _semicircles(s.longitude ?? everywhere?.longitude),
       altitude == null ? null : ((altitude + 500) * 5).round(),
       s.heartRate,
       s.cadence == null ? null : (s.cadence! / cadenceDivisor).round(),

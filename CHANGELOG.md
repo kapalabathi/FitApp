@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.9.6] – 2026-10-12
+
+### Hinzugefügt
+- Export „FIT mit Trainingsort" (Wunsch des Nutzers): Ein Training ohne eigene Strecke, etwa vom Laufband, bekommt in jedem Messpunkt den gemerkten Trainingsort als Standort. Beim ersten Export merkt sich die App dafür den aktuellen Standort des Geräts; über „Trainingsort neu festlegen" im Menü der Detailansicht lässt er sich ändern. Gedacht als Versuch, solche Dateien in die Zepp-App einzuspielen; ob Zepp sie annimmt, ist offen.
+- Der gewöhnliche FIT-Export bleibt unverändert ohne Standort.
+- Zwei automatische Tests dazu (insgesamt 176).
+
 ## [0.9.5] – 2026-10-12
 
 Anlass: Der Nutzer hat eine aus der Zepp-App exportierte FIT-Datei eines Laufs bereitgestellt. Der Datei-Import liest sie vollständig: Sportart, 1609 Messpunkte, Strecke, Puls, Standort, Geschwindigkeit, Schrittfrequenz.

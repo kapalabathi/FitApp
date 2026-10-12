@@ -113,6 +113,43 @@ void main() {
       expect(laps.single.totalTimerTime, 4);
     });
 
+    test('mit Trainingsort trägt jeder Messpunkt ohne Strecke diesen Standort',
+        () {
+      const indoor = [
+        Sample(t: 1, heartRate: 120, distanceM: 3),
+        Sample(t: 2, heartRate: 121, distanceM: 6),
+      ];
+      final records = fit.FitFile.fromBytes(buildFit(_workout, indoor, const [],
+              fixedLocation: (latitude: 48.5, longitude: 7.8)))
+          .records
+          .map((r) => r.message)
+          .whereType<fit.RecordMessage>()
+          .toList();
+      expect(records, hasLength(2));
+      for (final r in records) {
+        expect(r.positionLat, closeTo(48.5, 1e-6));
+        expect(r.positionLong, closeTo(7.8, 1e-6));
+      }
+      // Ohne Trainingsort bleibt der Standort leer.
+      final plain = fit.FitFile.fromBytes(buildFit(_workout, indoor, const []))
+          .records
+          .map((r) => r.message)
+          .whereType<fit.RecordMessage>();
+      expect(plain.every((r) => r.positionLat == null), isTrue);
+    });
+
+    test('eine echte Strecke wird vom Trainingsort nicht überschrieben', () {
+      final records = fit.FitFile.fromBytes(buildFit(_workout, _samples, _laps,
+              fixedLocation: (latitude: 1, longitude: 2)))
+          .records
+          .map((r) => r.message)
+          .whereType<fit.RecordMessage>()
+          .toList();
+      expect(records.first.positionLat, closeTo(50.1, 1e-6));
+      // Der Messpunkt ohne Standort bleibt eine Lücke in der Strecke.
+      expect(records[2].positionLat, isNull);
+    });
+
     test('Laufband wird als Laufen auf dem Laufband gekennzeichnet', () {
       final treadmill = Workout(
         id: 2,
@@ -171,6 +208,8 @@ void main() {
       final w = record(withRoute: true);
       expect(exportFileName(w, ExportFormat.fit),
           'fitapp_2026-10-11_0805_running_${w.id}.fit');
+      expect(exportFileName(w, ExportFormat.fitWithLocation),
+          'fitapp_2026-10-11_0805_running_${w.id}_ort.fit');
       // Zwei Trainings derselben Minute bekommen verschiedene Namen.
       final other = record(withRoute: true);
       expect(exportFileName(other, ExportFormat.fit),
