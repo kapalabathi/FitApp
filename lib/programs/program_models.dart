@@ -52,6 +52,36 @@ enum BodyArea {
       areas.map((a) => a.id).join(',');
 }
 
+/// Die Art einer Yoga-Haltung. Die Reihenfolge entspricht der üblichen
+/// Folge in einer Übungseinheit: Stehhaltungen zuerst, Entspannung zuletzt.
+/// [id] steht in der Datenbank.
+enum PoseGroup {
+  standing('stehen', 'Stehhaltung'),
+  forwardBend('vorbeuge', 'Vorbeuge'),
+  twist('drehung', 'Drehung'),
+  backbend('rueckbeuge', 'Rückbeuge'),
+  inversion('umkehr', 'Umkehrhaltung'),
+  armSupport('stuetz', 'Stütz und Armbalance'),
+  seated('sitzen', 'Sitzen und Hüfte'),
+  supine('liegen', 'Liegen und Entspannung');
+
+  const PoseGroup(this.id, this.label);
+
+  final String id;
+  final String label;
+
+  static PoseGroup? fromId(String? id) =>
+      values.where((g) => g.id == id).firstOrNull;
+}
+
+/// Schwierigkeit einer Übung: 0 heißt nicht angegeben.
+String levelLabel(int level) => switch (level) {
+      1 => 'Leicht',
+      2 => 'Mittel',
+      3 => 'Schwer',
+      _ => 'Ohne Angabe',
+    };
+
 /// Eine mitgelieferte Übung, wie sie beim ersten Start in die Datenbank kommt.
 class BuiltinExercise {
   const BuiltinExercise({
@@ -62,6 +92,13 @@ class BuiltinExercise {
     required this.areas,
     required this.timed,
     required this.batch,
+    this.sanskrit = '',
+    this.poseGroup,
+    this.level = 0,
+    this.bothSides = false,
+    this.caution = '',
+    this.easierKey,
+    this.harderKey,
   });
 
   /// Dateiname der Grafik ohne Endung; zugleich Grundlage der Kennung.
@@ -80,7 +117,26 @@ class BuiltinExercise {
   /// Lieferungen nachträglich.
   final int batch;
 
+  /// Der Sanskrit-Name einer Yoga-Haltung, sonst leer.
+  final String sanskrit;
+  final PoseGroup? poseGroup;
+
+  /// 1 leicht, 2 mittel, 3 schwer.
+  final int level;
+
+  /// Wird auf beiden Seiten geübt, erst rechts, dann links.
+  final bool bothSides;
+
+  /// Hinweis zur sicheren Ausführung, sonst leer.
+  final String caution;
+
+  /// Die leichtere und die schwerere Variante, als Dateiname der Grafik.
+  final String? easierKey;
+  final String? harderKey;
+
   String get uuid => 'builtin-$key';
+
+  static String? uuidOf(String? key) => key == null ? null : 'builtin-$key';
 }
 
 /// Eine Übung der Bibliothek, mitgeliefert oder selbst angelegt.
@@ -95,6 +151,13 @@ class Exercise {
     this.imagePath,
     this.timed = true,
     this.areas = const [],
+    this.sanskrit = '',
+    this.poseGroup,
+    this.level = 0,
+    this.bothSides = false,
+    this.caution = '',
+    this.easierUuid,
+    this.harderUuid,
   });
 
   /// `null`, solange die Übung noch nicht gespeichert ist.
@@ -116,6 +179,27 @@ class Exercise {
   /// Die Körperbereiche, die die Übung trainiert oder dehnt.
   final List<BodyArea> areas;
 
+  /// Der Sanskrit-Name einer Yoga-Haltung, sonst leer.
+  final String sanskrit;
+  final PoseGroup? poseGroup;
+
+  /// 1 leicht, 2 mittel, 3 schwer; 0 ohne Angabe.
+  final int level;
+
+  /// Wird auf beiden Seiten geübt; Programme übernehmen das als Vorgabe.
+  final bool bothSides;
+
+  /// Hinweis zur sicheren Ausführung, sonst leer.
+  final String caution;
+
+  /// Die leichtere und die schwerere Variante.
+  final String? easierUuid;
+  final String? harderUuid;
+
+  /// Der Sanskrit-Name, sofern er nicht schon im Namen steht.
+  String? get sanskritExtra =>
+      sanskrit.isEmpty || name.contains(sanskrit) ? null : sanskrit;
+
   String? get imageAsset =>
       builtinKey == null ? null : 'assets/exercises/$builtinKey.webp';
 
@@ -127,6 +211,16 @@ class Exercise {
     bool clearImage = false,
     bool? timed,
     List<BodyArea>? areas,
+    String? sanskrit,
+    PoseGroup? poseGroup,
+    bool clearPoseGroup = false,
+    int? level,
+    bool? bothSides,
+    String? caution,
+    String? easierUuid,
+    bool clearEasier = false,
+    String? harderUuid,
+    bool clearHarder = false,
   }) =>
       Exercise(
         id: id,
@@ -138,6 +232,13 @@ class Exercise {
         imagePath: clearImage ? null : imagePath ?? this.imagePath,
         timed: timed ?? this.timed,
         areas: areas ?? this.areas,
+        sanskrit: sanskrit ?? this.sanskrit,
+        poseGroup: clearPoseGroup ? null : poseGroup ?? this.poseGroup,
+        level: level ?? this.level,
+        bothSides: bothSides ?? this.bothSides,
+        caution: caution ?? this.caution,
+        easierUuid: clearEasier ? null : easierUuid ?? this.easierUuid,
+        harderUuid: clearHarder ? null : harderUuid ?? this.harderUuid,
       );
 }
 
@@ -148,6 +249,7 @@ class ProgramItem {
     required this.timed,
     required this.amount,
     this.restS = 0,
+    this.bothSides = false,
   });
 
   final String exerciseUuid;
@@ -159,13 +261,30 @@ class ProgramItem {
   /// Pause nach der Übung in Sekunden.
   final int restS;
 
-  String get amountLabel => timed ? '$amount s' : '$amount ×';
+  /// Die Übung wird erst rechts, dann links ausgeführt, jeweils mit
+  /// [amount]; dazwischen liegt ein kurzer Seitenwechsel.
+  final bool bothSides;
 
-  ProgramItem copyWith({bool? timed, int? amount, int? restS}) => ProgramItem(
+  /// So lange dauert der Wechsel von der rechten zur linken Seite.
+  static const sideSwitchS = 5;
+
+  String get amountLabel =>
+      '${timed ? '$amount s' : '$amount ×'}${bothSides ? ' je Seite' : ''}';
+
+  /// Dauer einschließlich zweiter Seite und Pause; Wiederholungen zählen 0.
+  int get timedSeconds =>
+      (timed ? amount : 0) * (bothSides ? 2 : 1) +
+      (bothSides ? sideSwitchS : 0) +
+      restS;
+
+  ProgramItem copyWith(
+          {bool? timed, int? amount, int? restS, bool? bothSides}) =>
+      ProgramItem(
         exerciseUuid: exerciseUuid,
         timed: timed ?? this.timed,
         amount: amount ?? this.amount,
         restS: restS ?? this.restS,
+        bothSides: bothSides ?? this.bothSides,
       );
 
   Map<String, Object?> toJson() => {
@@ -173,6 +292,7 @@ class ProgramItem {
         'timed': timed,
         'amount': amount,
         'rest': restS,
+        if (bothSides) 'sides': true,
       };
 
   static ProgramItem fromJson(Map<String, Object?> j) => ProgramItem(
@@ -180,6 +300,7 @@ class ProgramItem {
         timed: j['timed'] as bool? ?? true,
         amount: (j['amount'] as num?)?.toInt() ?? 0,
         restS: (j['rest'] as num?)?.toInt() ?? 0,
+        bothSides: j['sides'] as bool? ?? false,
       );
 }
 
@@ -202,8 +323,7 @@ class Program {
 
   /// Dauer ohne die Übungen mit Wiederholungen, deren Zeit offen ist.
   int get timedSeconds =>
-      rounds *
-      items.fold(0, (sum, i) => sum + (i.timed ? i.amount : 0) + i.restS);
+      rounds * items.fold(0, (sum, i) => sum + i.timedSeconds);
 
   bool get hasRepetitions => items.any((i) => !i.timed);
 

@@ -139,7 +139,9 @@ Die acht Atemübungen der Vorschlagsliste ([UEBUNGEN-VORSCHLAEGE.md](UEBUNGEN-VO
 
 ### Aufbaukurse
 
-Für die Kurse aus Anhang I gilt im [Lastenheft](LASTENHEFT.md) (Abschnitt 6) bisher: „Trainingspläne über Wochen" sind ausgeschlossen. I-049 braucht daher erst eine Entscheidung des Auftraggebers, wie schon I-043 (Wochenplan). Inhaltlich würden wir eigene, kürzere Kurse bauen (z. B. 6 Stufen à 2 Wochen) nach den Ordnungsregeln oben, nicht die Tabellen des Buches abschreiben.
+Am 2026-10-14 entschieden und mit Version 0.11.0 umgesetzt (Lastenheft A-080): ein eigener Yoga-Grundkurs mit 6 Stufen à 2 Wochen und drei Einheiten je Woche, gebaut nach den Ordnungsregeln oben. Die Tabellen des Buches sind nicht abgeschrieben. Das Buch erschien 1966, B. K. S. Iyengar starb 2014; in Deutschland ist es bis Ende 2084 geschützt.
+
+Was dem Kurs noch fehlt, weil es dafür keine Übungen mit Grafik gibt: echte Umkehrhaltungen wie Schulterstand, Pflug und Kopfstand, die im Buch einen festen Platz haben (Vorschläge V-014, V-015, V-027, V-028).
 
 ## 4 Sicherheit
 

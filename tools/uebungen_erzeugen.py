@@ -3,7 +3,9 @@
 Quellen:
 - docs/GRAFIKLISTE.md: Nummer, Dateiname und Name jeder Übung
 - tools/uebungen.json: Anleitung, trainierte Körperbereiche und ob die Übung
-  auf Zeit ausgeführt wird, je Nummer
+  auf Zeit ausgeführt wird, je Nummer; dazu wahlweise Sanskrit-Name, Gruppe
+  der Haltung, Stufe (1 bis 3), ob beide Seiten geübt werden, ein Hinweis
+  und die leichtere und schwerere Variante (Dateiname der Grafik)
 
 Ergebnis:
 - lib/programs/builtin_exercises.dart
@@ -39,6 +41,13 @@ BEREICH = {
     "beine": "legs", "waden": "calves", "ganzkoerper": "fullBody",
 }
 
+# Bezeichner der Haltungsgruppen in der App (enum PoseGroup)
+GRUPPE = {
+    "stehen": "standing", "vorbeuge": "forwardBend", "drehung": "twist",
+    "rueckbeuge": "backbend", "umkehr": "inversion", "stuetz": "armSupport",
+    "sitzen": "seated", "liegen": "supine",
+}
+
 # Bis zu dieser Nummer reicht die erste Lieferung; die App legt spätere
 # Übungen bei bestehenden Installationen nachträglich an.
 ERSTE_LIEFERUNG_BIS = 80
@@ -71,7 +80,19 @@ def main():
             "bereiche": [BEREICH[b] for b in d["bereiche"]],
             "auf_zeit": auf_zeit,
             "lieferung": 1 if int(nr[2:]) <= ERSTE_LIEFERUNG_BIS else 2,
+            "sanskrit": d.get("sanskrit", ""),
+            "gruppe": GRUPPE[d["gruppe"]] if "gruppe" in d else None,
+            "stufe": d.get("stufe", 0),
+            "seiten": d.get("seiten", False),
+            "hinweis": d.get("hinweis", ""),
+            "leichter": d.get("leichter"),
+            "schwerer": d.get("schwerer"),
         })
+    dateien = {e["datei"] for e in eintraege}
+    for e in eintraege:
+        for v in (e["leichter"], e["schwerer"]):
+            if v is not None and v not in dateien:
+                sys.exit(f"Unbekannte Variante {v} bei {e['datei']}.")
 
     ZIEL_BILDER.mkdir(parents=True, exist_ok=True)
     vorhanden = 0
@@ -105,8 +126,22 @@ def main():
             f"    areas: [{bereiche}],",
             f"    timed: {'true' if e['auf_zeit'] else 'false'},",
             f"    batch: {e['lieferung']},",
-            "  ),",
         ]
+        if e["sanskrit"]:
+            teile.append(f"    sanskrit: {dart_string(e['sanskrit'])},")
+        if e["gruppe"]:
+            teile.append(f"    poseGroup: PoseGroup.{e['gruppe']},")
+        if e["stufe"]:
+            teile.append(f"    level: {e['stufe']},")
+        if e["seiten"]:
+            teile.append("    bothSides: true,")
+        if e["hinweis"]:
+            teile.append(f"    caution:\n        {dart_string(e['hinweis'])},")
+        if e["leichter"]:
+            teile.append(f"    easierKey: {dart_string(e['leichter'])},")
+        if e["schwerer"]:
+            teile.append(f"    harderKey: {dart_string(e['schwerer'])},")
+        teile.append("  ),")
     teile += ["];", ""]
     ZIEL_DART.write_text("\n".join(teile), encoding="utf-8", newline="\n")
     print(f"{len(eintraege)} Uebungen geschrieben, {vorhanden} Bilder vorhanden.")

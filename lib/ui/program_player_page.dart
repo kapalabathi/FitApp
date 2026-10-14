@@ -4,6 +4,7 @@ import '../data/models.dart';
 import '../programs/program_run.dart';
 import '../session/workout_session.dart';
 import 'area_chips.dart';
+import 'breath_pages.dart';
 import 'exercise_image.dart';
 import 'format.dart';
 
@@ -262,17 +263,31 @@ class _PhaseView extends StatelessWidget {
       ),
     );
 
+    final side = phase.side;
     return ListView(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       children: [
         Text(
-          phase.isRest ? 'Pause – danach:' : phase.exercise.name,
+          phase.isSideSwitch
+              ? 'Seite wechseln'
+              : phase.isRest
+                  ? 'Pause – danach:'
+                  : phase.exercise.name,
           style: theme.textTheme.headlineSmall,
           textAlign: TextAlign.center,
         ),
         if (phase.isRest)
-          Text(phase.exercise.name,
-              style: theme.textTheme.titleLarge, textAlign: TextAlign.center),
+          Text(
+              phase.isSideSwitch
+                  ? '${phase.exercise.name}, linke Seite'
+                  : phase.exercise.name,
+              style: theme.textTheme.titleLarge,
+              textAlign: TextAlign.center),
+        if (!phase.isRest && side != null)
+          Text(side.label,
+              style: theme.textTheme.titleLarge
+                  ?.copyWith(color: scheme.primary),
+              textAlign: TextAlign.center),
         const SizedBox(height: 8),
         Center(
           child: ConstrainedBox(
@@ -286,6 +301,8 @@ class _PhaseView extends StatelessWidget {
         Center(child: counter),
         if (!phase.isRest)
           AreaChips(areas: phase.exercise.areas, centered: true),
+        if (!phase.isRest && phase.exercise.caution.isNotEmpty)
+          CautionNote(phase.exercise.caution),
         if (!phase.isRest && phase.exercise.description.isNotEmpty)
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 8),
@@ -296,7 +313,12 @@ class _PhaseView extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: Text(
-              next == null ? 'Letzte Übung' : 'Danach: ${next.exercise.name}',
+              next == null
+                  ? 'Letzte Übung'
+                  : identical(next.item, phase.item) &&
+                          next.round == phase.round
+                      ? 'Danach: linke Seite'
+                      : 'Danach: ${next.exercise.name}',
               style: theme.textTheme.bodyMedium
                   ?.copyWith(color: scheme.onSurfaceVariant),
               textAlign: TextAlign.center,

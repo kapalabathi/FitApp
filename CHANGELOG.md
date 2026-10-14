@@ -4,6 +4,27 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.11.0] – 2026-10-14
+
+Yoga-Struktur nach der Auswertung von „Light on Yoga" ([YOGA-STRUKTUR.md](docs/YOGA-STRUKTUR.md)), vom Nutzer ausgewählt: I-046 bis I-049, I-051, I-052. Alles ist durch automatische Tests gedeckt, aber **noch nicht am Gerät erprobt**.
+
+### Hinzugefügt
+- **Yoga-Grundkurs** (I-049): zwölf Wochen in sechs Stufen, drei Einheiten je Woche (Stehhaltungen; Vorbeugen und Hüfte; Rücken und Balance). Die Haltezeiten wachsen von 20 auf 60 Sekunden, ab Stufe 3 beginnt jede Einheit mit Sonnengrüßen. Eine Einheit dauert 8 bis 31 Minuten, dazu die Atemübung. Die App merkt sich den Fortschritt, schlägt die nächste Einheit vor und nach sechs Einheiten die nächste Stufe; die Stufe lässt sich auch wiederholen oder frei wählen. Der Fortschritt wandert bei der Synchronisation mit. Zu finden unter Programme → „Kurse & Atem". Der Kurs ist ein eigener Aufbau nach den Ordnungsregeln des Buches, keine Abschrift.
+- **Geführte Atemübungen** (I-048): zwölf Übungen von der Bauchatmung über den siegreichen Atem (Ujjayi) und die Wechselatmung (Nadi Shodhana) bis zum Feueratem (Kapalabhati). Ein Kreis weitet sich mit dem Einatmen und zieht sich beim Ausatmen zusammen; Ansage und Nasenseite je Schritt, Dauer wählbar. Wird als Yoga-Training gespeichert, mit Puls, wenn ein Sensor verbunden ist.
+- **Beide Seiten** (I-047): Einseitige Übungen laufen erst rechts, dann nach einem angesagten Seitenwechsel von 5 Sekunden links. Im Programm-Editor je Übung abschaltbar; neue Übungen übernehmen die Vorgabe der Übung.
+- **Angaben je Übung** (I-046): Sanskrit-Name (Yoga), Art der Haltung (Stehhaltung, Vorbeuge, Drehung, Rückbeuge, Umkehrhaltung, Stütz und Armbalance, Sitzen und Hüfte, Liegen und Entspannung) und Schwierigkeit für alle 160 Übungen. Die Übungsliste lässt sich nach der Art der Haltung filtern.
+- **Varianten** (I-051): 19 Ketten von leicht nach schwer, z. B. Liegestütz auf Knien → Liegestütz → Bogenschützen-Liegestütz oder Sphinx → Kobra → heraufschauender Hund. Die Übungsseite verlinkt die Varianten; eigene lassen sich im Editor festlegen.
+- **Hinweise** (I-052): 23 Übungen haben einen Hinweis zur sicheren Ausführung, etwa Kamel, Delfin oder Handstand. Er erscheint auf der Übungsseite, beim Abspielen und gesammelt auf der Programmseite. Längeres Atemanhalten ist gesperrt, bis es nach einem Warnhinweis freigeschaltet wird; bis dahin lässt die App es weg.
+- 25 automatische Tests dazu (insgesamt 228).
+
+### Geändert
+- Mitgelieferte Yoga- und Dehnprogramme, die einseitige Übungen über eine zweite Runde abgedeckt haben, laufen jetzt in einer Runde mit beiden Seiten. Nicht einseitige Übungen in diesen Programmen kommen dadurch nur noch einmal vor. Vom Nutzer veränderte Programme bleiben unberührt.
+- Die Datenbank hat eine neue Fassung (10) mit den neuen Angaben je Übung. Sicherungen älterer Versionen lassen sich weiter einspielen.
+- Lastenheft 1.2: Kurse und Atemübungen aufgenommen (A-047 bis A-049, A-080).
+
+### Behoben
+- Im Übungs-Editor ragte das Auswahlfeld für die Art der Haltung bei schmalem Bildschirm über den Rand.
+
 ## [0.10.0] – 2026-10-12
 
 Sieben Vorschläge aus dem Ideenspeicher, vom Nutzer ausgewählt. Alles ist durch automatische Tests gedeckt, aber **noch nicht am Gerät erprobt**.

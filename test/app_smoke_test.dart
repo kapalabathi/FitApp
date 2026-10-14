@@ -4,6 +4,7 @@ import 'package:fitapp/data/models.dart';
 import 'package:fitapp/interval/signals.dart';
 import 'package:fitapp/programs/program_models.dart';
 import 'package:fitapp/main.dart';
+import 'package:fitapp/ui/course_page.dart';
 import 'package:fitapp/ui/format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -283,6 +284,144 @@ void main() {
     expect(workout.durationS, 12);
     expect(db.setLogs(workout.id).map(formatSet), ['5 s', '8 × 5,5 kg']);
     expect(find.text('Dauer'), findsOneWidget);
+  });
+
+  testWidgets('der Yoga-Grundkurs führt durch eine Einheit samt Atemübung',
+      (tester) async {
+    // Schmal wie ein kleines Phone
+    tester.view.physicalSize = const Size(360, 1100);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Programme').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Kurse & Atem'));
+    await tester.pumpAndSettle();
+    expect(find.text('Wechselatmung'), findsOneWidget);
+    await tester.tap(find.text('Yoga-Grundkurs'));
+    await tester.pumpAndSettle();
+    expect(find.text('Stufe 1 von 6: Ankommen und Stehen'), findsOneWidget);
+    expect(find.text('0 von 6 Einheiten (2 Wochen à 3)'), findsOneWidget);
+
+    await tester.tap(find.text('Tag 1 starten'));
+    await tester.pumpAndSettle();
+    expect(find.text('Berghaltung (Tadasana)'), findsOneWidget);
+    // 30 s Berghaltung, 5 s Pause, dann der Baum auf der rechten Seite
+    await tester.pump(const Duration(seconds: 36));
+    expect(find.text('Baum'), findsOneWidget);
+    expect(find.text('Rechte Seite'), findsOneWidget);
+    expect(find.text('Danach: linke Seite'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 20));
+    expect(find.text('Seite wechseln'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 5));
+    expect(find.text('Linke Seite'), findsOneWidget);
+
+    await tester.pump(const Duration(minutes: 15));
+    expect(find.text('Programm beendet'), findsOneWidget);
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+
+    // Danach die Atemübung des Tages
+    expect(find.text('Jetzt noch die Atemübung?'), findsOneWidget);
+    await tester.tap(find.text('Starten'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Einatmen'), findsOneWidget);
+    await tester.pump(const Duration(seconds: 4));
+    expect(find.text('Ausatmen'), findsOneWidget);
+    await tester.pump(const Duration(minutes: 4));
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('1 von 6 Einheiten (2 Wochen à 3)'), findsOneWidget);
+    expect(find.text('Tag 2 – Vorbeugen und Hüfte'), findsOneWidget);
+    expect(
+      db.workouts().map((w) => w.title).toSet(),
+      {
+        'Yoga-Grundkurs · Stufe 1 · Tag 1 – Stehhaltungen',
+        'Atemübung: Bauchatmung',
+      },
+    );
+  });
+
+  testWidgets('eine Übung zeigt Gruppe, Hinweis und Varianten', (tester) async {
+    tester.view.physicalSize = const Size(400, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Programme').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Übungen'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(ChoiceChip, 'Yoga'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.byType(DropdownButtonFormField<PoseGroup?>));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Rückbeuge').last);
+    await tester.pumpAndSettle();
+    expect(find.text('Kamel'), findsOneWidget);
+    expect(find.text('Baum'), findsNothing);
+
+    await tester.tap(find.text('Kobra'));
+    await tester.pumpAndSettle();
+    expect(find.text('Bhujangasana'), findsOneWidget);
+    expect(find.text('Yoga  ·  Rückbeuge  ·  Leicht'), findsOneWidget);
+    expect(find.text('Varianten'), findsOneWidget);
+    await tester.scrollUntilVisible(find.text('Heraufschauender Hund'), 200);
+    await tester.tap(find.text('Heraufschauender Hund'));
+    await tester.pumpAndSettle();
+    expect(find.textContaining('Sphinx oder Kobra'), findsOneWidget);
+
+    // Im Editor bleiben die Angaben erhalten.
+    await tester.tap(find.byTooltip('Bearbeiten'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Schwer'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Speichern'));
+    await tester.pumpAndSettle();
+    final saved = db
+        .exercises()
+        .firstWhere((e) => e.builtinKey == 'yoga_03_heraufschauender_hund');
+    expect(saved.level, 3);
+    expect(saved.sanskrit, 'Urdhva Mukha Svanasana');
+    expect(saved.easierUuid, 'builtin-yoga_04_kobra');
+  });
+
+  testWidgets('Atemanhalten erst nach Rückfrage', (tester) async {
+    tester.view.physicalSize = const Size(400, 900);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Programme').first);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Kurse & Atem'));
+    await tester.pumpAndSettle();
+    await tester.scrollUntilVisible(find.text('Kastenatmung'), 200,
+        scrollable: find.descendant(
+            of: find.byType(CoursesAndBreathList),
+            matching: find.byType(Scrollable)));
+    await tester.tap(find.text('Kastenatmung'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ein 4 s · Aus 4 s'), findsOneWidget);
+
+    await tester.tap(find.text('Atemanhalten freigeschaltet'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Nicht freischalten'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ein 4 s · Aus 4 s'), findsOneWidget);
+
+    await tester.tap(find.text('Atemanhalten freigeschaltet'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verstanden, freischalten'));
+    await tester.pumpAndSettle();
+    expect(find.text('Ein 4 s · Halten 4 s · Aus 4 s · Leer 4 s'),
+        findsOneWidget);
   });
 
   testWidgets('Maximalpuls eingeben zeigt die Pulszonen', (tester) async {

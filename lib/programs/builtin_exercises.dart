@@ -14,6 +14,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.legs],
     timed: true,
     batch: 1,
+    sanskrit: 'Tadasana',
+    poseGroup: PoseGroup.standing,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'yoga_02_herabschauender_hund',
@@ -24,6 +27,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.legs, BodyArea.calves, BodyArea.back],
     timed: true,
     batch: 1,
+    sanskrit: 'Adho Mukha Svanasana',
+    poseGroup: PoseGroup.inversion,
+    level: 1,
+    caution:
+        'Bei hohem Blutdruck oder Schwindel nur kurz halten und langsam aufrichten.',
+    harderKey: 'yoga_35_delfin',
   ),
   BuiltinExercise(
     key: 'yoga_03_heraufschauender_hund',
@@ -34,6 +43,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.back, BodyArea.arms],
     timed: true,
     batch: 1,
+    sanskrit: 'Urdhva Mukha Svanasana',
+    poseGroup: PoseGroup.backbend,
+    level: 2,
+    caution:
+        'Bei Beschwerden im unteren Rücken lieber Sphinx oder Kobra.',
+    easierKey: 'yoga_04_kobra',
   ),
   BuiltinExercise(
     key: 'yoga_04_kobra',
@@ -44,6 +59,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.chest],
     timed: true,
     batch: 1,
+    sanskrit: 'Bhujangasana',
+    poseGroup: PoseGroup.backbend,
+    level: 1,
+    easierKey: 'yoga_34_sphinx',
+    harderKey: 'yoga_03_heraufschauender_hund',
   ),
   BuiltinExercise(
     key: 'yoga_05_kindhaltung',
@@ -54,6 +74,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.hips],
     timed: true,
     batch: 1,
+    sanskrit: 'Balasana',
+    poseGroup: PoseGroup.supine,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'yoga_06_katze_kuh',
@@ -64,6 +87,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.core],
     timed: true,
     batch: 1,
+    sanskrit: 'Marjaryasana / Bitilasana',
+    poseGroup: PoseGroup.backbend,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'yoga_07_krieger_1',
@@ -74,6 +100,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    sanskrit: 'Virabhadrasana I',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_08_krieger_2',
@@ -84,6 +114,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    sanskrit: 'Virabhadrasana II',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_09_krieger_3',
@@ -94,6 +128,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes, BodyArea.core],
     timed: true,
     batch: 1,
+    sanskrit: 'Virabhadrasana III',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
+    caution:
+        'Wer im Gleichgewicht unsicher ist, übt neben einer Wand oder Stuhllehne.',
   ),
   BuiltinExercise(
     key: 'yoga_10_dreieck',
@@ -104,6 +144,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips, BodyArea.core],
     timed: true,
     batch: 1,
+    sanskrit: 'Trikonasana',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
+    harderKey: 'yoga_28_halbmond',
   ),
   BuiltinExercise(
     key: 'yoga_11_baum',
@@ -114,6 +159,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.core],
     timed: true,
     batch: 1,
+    sanskrit: 'Vrksasana',
+    poseGroup: PoseGroup.standing,
+    level: 1,
+    bothSides: true,
+    harderKey: 'yoga_30_taenzer',
   ),
   BuiltinExercise(
     key: 'yoga_12_stuhl',
@@ -124,6 +174,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    sanskrit: 'Utkatasana',
+    poseGroup: PoseGroup.standing,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'yoga_13_stehende_vorbeuge',
@@ -134,6 +187,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.back],
     timed: true,
     batch: 1,
+    sanskrit: 'Uttanasana',
+    poseGroup: PoseGroup.forwardBend,
+    level: 1,
+    caution:
+        'Bei Bandscheibenbeschwerden die Knie beugen; langsam aufrollen.',
   ),
   BuiltinExercise(
     key: 'yoga_14_sitzende_vorbeuge',
@@ -144,6 +202,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.back],
     timed: true,
     batch: 1,
+    sanskrit: 'Paschimottanasana',
+    poseGroup: PoseGroup.forwardBend,
+    level: 1,
+    caution:
+        'Bei Bandscheibenbeschwerden die Knie beugen und den Rücken lang lassen.',
   ),
   BuiltinExercise(
     key: 'yoga_15_bruecke',
@@ -154,6 +217,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.glutes, BodyArea.back, BodyArea.legs],
     timed: true,
     batch: 1,
+    sanskrit: 'Setu Bandha Sarvangasana',
+    poseGroup: PoseGroup.backbend,
+    level: 1,
+    caution:
+        'Den Kopf während der Haltung nicht drehen.',
   ),
   BuiltinExercise(
     key: 'yoga_16_boot',
@@ -164,6 +232,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.hips],
     timed: true,
     batch: 1,
+    sanskrit: 'Navasana',
+    poseGroup: PoseGroup.seated,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'yoga_17_taube',
@@ -174,6 +245,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.glutes],
     timed: true,
     batch: 1,
+    sanskrit: 'Eka Pada Rajakapotasana',
+    poseGroup: PoseGroup.seated,
+    level: 2,
+    bothSides: true,
+    caution:
+        'Bei Knieschmerzen das vordere Bein stärker anwinkeln oder stattdessen die liegende Vier üben.',
   ),
   BuiltinExercise(
     key: 'yoga_18_drehsitz',
@@ -184,6 +261,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.core, BodyArea.hips],
     timed: true,
     batch: 1,
+    sanskrit: 'Ardha Matsyendrasana',
+    poseGroup: PoseGroup.twist,
+    level: 2,
+    bothSides: true,
+    caution:
+        'Langsam und ohne Ruck drehen, aus der Brustwirbelsäule; bei Bandscheibenbeschwerden vorsichtig.',
   ),
   BuiltinExercise(
     key: 'yoga_19_tiefer_ausfallschritt',
@@ -194,6 +277,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
     batch: 1,
+    sanskrit: 'Anjaneyasana',
+    poseGroup: PoseGroup.standing,
+    level: 1,
+    bothSides: true,
+    harderKey: 'yoga_40_halber_spagat',
   ),
   BuiltinExercise(
     key: 'yoga_20_totenstellung',
@@ -204,6 +292,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.fullBody],
     timed: true,
     batch: 1,
+    sanskrit: 'Savasana',
+    poseGroup: PoseGroup.supine,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_01_air_squat',
@@ -214,6 +305,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 1,
+    easierKey: 'cali_18_wandsitz',
+    harderKey: 'crossfit_21_strecksprung',
   ),
   BuiltinExercise(
     key: 'crossfit_02_burpee',
@@ -224,6 +318,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.fullBody],
     timed: false,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_03_box_jump',
@@ -234,6 +329,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 2,
+    caution:
+        'Herunter lieber steigen als springen; das schont Achillessehne und Knie.',
   ),
   BuiltinExercise(
     key: 'crossfit_04_kettlebell_swing',
@@ -244,6 +342,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.glutes, BodyArea.legs, BodyArea.back],
     timed: false,
     batch: 1,
+    level: 2,
+    caution:
+        'Der Schwung kommt aus der Hüfte, nicht aus dem Rücken oder den Armen.',
   ),
   BuiltinExercise(
     key: 'crossfit_05_thruster',
@@ -254,6 +355,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.shoulders, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_06_wall_ball',
@@ -264,6 +366,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.shoulders],
     timed: false,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_07_seilspringen',
@@ -274,6 +377,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves, BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_08_kreuzheben',
@@ -284,6 +388,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.glutes, BodyArea.legs],
     timed: false,
     batch: 1,
+    level: 2,
+    caution:
+        'Rücken gerade, Gewicht nah am Körper; aus den Beinen heben.',
   ),
   BuiltinExercise(
     key: 'crossfit_09_goblet_squat',
@@ -294,6 +401,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes, BodyArea.core],
     timed: false,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_10_push_press',
@@ -304,6 +412,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.arms],
     timed: false,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_11_toes_to_bar',
@@ -314,6 +423,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.hips],
     timed: false,
     batch: 1,
+    level: 3,
   ),
   BuiltinExercise(
     key: 'crossfit_12_mountain_climbers',
@@ -324,6 +434,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_13_ausfallschritt',
@@ -334,6 +445,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_14_situp',
@@ -344,6 +456,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_15_kurzhantel_snatch',
@@ -354,6 +467,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_16_farmers_carry',
@@ -364,6 +478,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.core, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_17_box_step_up',
@@ -374,6 +489,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_18_russian_twist',
@@ -384,6 +500,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_19_hampelmann',
@@ -394,6 +511,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.fullBody],
     timed: true,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_20_bear_crawl',
@@ -404,6 +522,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.core, BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'cali_01_liegestuetz',
@@ -414,6 +533,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.arms, BodyArea.shoulders],
     timed: false,
     batch: 1,
+    level: 2,
+    easierKey: 'cali_02_liegestuetz_knie',
+    harderKey: 'cali_22_bogenschuetzen_liegestuetz',
   ),
   BuiltinExercise(
     key: 'cali_02_liegestuetz_knie',
@@ -424,6 +546,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.arms, BodyArea.shoulders],
     timed: false,
     batch: 1,
+    level: 1,
+    harderKey: 'cali_01_liegestuetz',
   ),
   BuiltinExercise(
     key: 'cali_03_diamant_liegestuetz',
@@ -434,6 +558,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.chest],
     timed: false,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'cali_04_pike_pushup',
@@ -444,6 +569,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.arms],
     timed: false,
     batch: 1,
+    level: 2,
+    harderKey: 'cali_19_handstand_wand',
   ),
   BuiltinExercise(
     key: 'cali_05_klimmzug',
@@ -454,6 +581,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.arms],
     timed: false,
     batch: 1,
+    level: 3,
+    easierKey: 'cali_06_chinup',
   ),
   BuiltinExercise(
     key: 'cali_06_chinup',
@@ -464,6 +593,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.back],
     timed: false,
     batch: 1,
+    level: 3,
+    easierKey: 'cali_07_australian_pullup',
+    harderKey: 'cali_05_klimmzug',
   ),
   BuiltinExercise(
     key: 'cali_07_australian_pullup',
@@ -474,6 +606,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.arms],
     timed: false,
     batch: 1,
+    level: 2,
+    harderKey: 'cali_06_chinup',
   ),
   BuiltinExercise(
     key: 'cali_08_dips',
@@ -484,6 +618,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.chest, BodyArea.shoulders],
     timed: false,
     batch: 1,
+    level: 2,
+    caution:
+        'Nur so tief, wie es die Schultern ohne Schmerz zulassen.',
+    easierKey: 'cali_09_bank_dips',
   ),
   BuiltinExercise(
     key: 'cali_09_bank_dips',
@@ -494,6 +632,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.shoulders],
     timed: false,
     batch: 1,
+    level: 1,
+    harderKey: 'cali_08_dips',
   ),
   BuiltinExercise(
     key: 'cali_10_unterarmstuetz',
@@ -504,6 +644,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    level: 1,
+    harderKey: 'cali_26_planke_hoch_tief',
   ),
   BuiltinExercise(
     key: 'cali_11_seitstuetz',
@@ -514,6 +656,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    sanskrit: 'Vasisthasana',
+    poseGroup: PoseGroup.armSupport,
+    level: 2,
+    bothSides: true,
+    harderKey: 'cali_39_seitstuetz_hueftheben',
   ),
   BuiltinExercise(
     key: 'cali_12_hollow_body',
@@ -524,6 +671,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: true,
     batch: 1,
+    level: 2,
+    harderKey: 'cali_40_hohlkoerper_wippe',
   ),
   BuiltinExercise(
     key: 'cali_13_haengendes_beinheben',
@@ -534,6 +683,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.hips],
     timed: false,
     batch: 1,
+    level: 3,
+    easierKey: 'cali_30_beinheben_liegend',
   ),
   BuiltinExercise(
     key: 'cali_14_l_sit',
@@ -544,6 +695,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.arms, BodyArea.hips],
     timed: true,
     batch: 1,
+    level: 3,
   ),
   BuiltinExercise(
     key: 'cali_15_pistol_squat',
@@ -554,6 +706,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 3,
+    bothSides: true,
+    easierKey: 'cali_35_kosaken_kniebeuge',
   ),
   BuiltinExercise(
     key: 'cali_16_bulgarian_split_squat',
@@ -564,6 +719,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 2,
+    bothSides: true,
+    easierKey: 'cali_34_ausfallschritt_rueckwaerts',
   ),
   BuiltinExercise(
     key: 'cali_17_superman',
@@ -574,6 +732,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.glutes],
     timed: false,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_18_wandsitz',
@@ -584,6 +743,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 1,
+    harderKey: 'crossfit_01_air_squat',
   ),
   BuiltinExercise(
     key: 'cali_19_handstand_wand',
@@ -594,6 +755,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.core],
     timed: true,
     batch: 1,
+    poseGroup: PoseGroup.inversion,
+    level: 3,
+    caution:
+        'Umkehrhaltung: nicht bei hohem Blutdruck, Glaukom oder Beschwerden in Nacken und Schultern. Nur an einer festen Wand mit freiem Raum ringsum.',
+    easierKey: 'cali_04_pike_pushup',
   ),
   BuiltinExercise(
     key: 'cali_20_kraehe',
@@ -604,6 +770,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.shoulders, BodyArea.core],
     timed: true,
     batch: 1,
+    sanskrit: 'Bakasana',
+    poseGroup: PoseGroup.armSupport,
+    level: 3,
+    caution:
+        'Ein Kissen vor den Kopf legen; die Handgelenke vorher aufwärmen.',
   ),
   BuiltinExercise(
     key: 'dehnen_01_nacken',
@@ -614,6 +785,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.neck],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_02_schulter',
@@ -624,6 +797,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_03_trizeps',
@@ -634,6 +809,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_04_brust_wand',
@@ -644,6 +821,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_05_seitbeuge',
@@ -654,6 +833,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.back],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_06_wade_wand',
@@ -664,6 +845,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_07_oberschenkel_vorn',
@@ -674,6 +857,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_08_oberschenkel_hinten',
@@ -684,6 +869,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_09_hueftbeuger',
@@ -694,6 +881,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_10_schmetterling',
@@ -704,6 +893,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
     batch: 1,
+    sanskrit: 'Baddha Konasana',
+    poseGroup: PoseGroup.seated,
+    level: 1,
+    easierKey: 'yoga_39_liegender_schmetterling',
   ),
   BuiltinExercise(
     key: 'dehnen_11_graetschsitz',
@@ -714,6 +907,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips, BodyArea.back],
     timed: true,
     batch: 1,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'dehnen_12_figur_4',
@@ -724,6 +918,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.glutes, BodyArea.hips],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_13_knie_zur_brust',
@@ -734,6 +930,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.glutes],
     timed: true,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_14_wirbelsaeule_drehung',
@@ -744,6 +941,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.core, BodyArea.hips],
     timed: true,
     batch: 1,
+    sanskrit: 'Jathara Parivartanasana',
+    poseGroup: PoseGroup.twist,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_15_tiefe_hocke',
@@ -754,6 +955,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.legs, BodyArea.calves],
     timed: true,
     batch: 1,
+    sanskrit: 'Malasana',
+    poseGroup: PoseGroup.seated,
+    level: 2,
+    caution:
+        'Bei Knieproblemen nur so tief, wie es schmerzfrei geht.',
   ),
   BuiltinExercise(
     key: 'dehnen_16_adduktoren',
@@ -764,6 +970,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_17_unterarm',
@@ -774,6 +982,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_18_nadeloehr',
@@ -784,6 +994,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.shoulders],
     timed: true,
     batch: 1,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_19_fusssohle',
@@ -794,6 +1006,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves],
     timed: true,
     batch: 1,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_20_weltbeste_dehnung',
@@ -804,6 +1017,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.back, BodyArea.legs],
     timed: true,
     batch: 1,
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_21_halbe_vorbeuge',
@@ -814,6 +1029,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.legs],
     timed: true,
     batch: 2,
+    sanskrit: 'Ardha Uttanasana',
+    poseGroup: PoseGroup.forwardBend,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'yoga_22_brett',
@@ -824,6 +1042,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders, BodyArea.arms],
     timed: true,
     batch: 2,
+    sanskrit: 'Kumbhakasana',
+    poseGroup: PoseGroup.armSupport,
+    level: 2,
+    harderKey: 'yoga_23_tiefes_brett',
   ),
   BuiltinExercise(
     key: 'yoga_23_tiefes_brett',
@@ -834,6 +1056,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.chest, BodyArea.core],
     timed: true,
     batch: 2,
+    sanskrit: 'Chaturanga',
+    poseGroup: PoseGroup.armSupport,
+    level: 2,
+    caution:
+        'Die Schultern nicht unter Ellbogenhöhe sinken lassen; sonst mit den Knien am Boden üben.',
+    easierKey: 'yoga_22_brett',
   ),
   BuiltinExercise(
     key: 'yoga_24_seitliche_winkelhaltung',
@@ -844,6 +1072,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips, BodyArea.core],
     timed: true,
     batch: 2,
+    sanskrit: 'Utthita Parsvakonasana',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_25_umgekehrter_krieger',
@@ -854,6 +1086,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.core, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    sanskrit: 'Viparita Virabhadrasana',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_26_pyramide',
@@ -864,6 +1100,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.back],
     timed: true,
     batch: 2,
+    sanskrit: 'Parsvottanasana',
+    poseGroup: PoseGroup.forwardBend,
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_27_gegraetschte_vorbeuge',
@@ -874,6 +1114,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.back, BodyArea.hips],
     timed: true,
     batch: 2,
+    sanskrit: 'Prasarita Padottanasana',
+    poseGroup: PoseGroup.forwardBend,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'yoga_28_halbmond',
@@ -884,6 +1127,13 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes, BodyArea.core],
     timed: true,
     batch: 2,
+    sanskrit: 'Ardha Chandrasana',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
+    caution:
+        'Wer im Gleichgewicht unsicher ist, übt mit dem Rücken nah an einer Wand.',
+    easierKey: 'yoga_10_dreieck',
   ),
   BuiltinExercise(
     key: 'yoga_29_adler',
@@ -894,6 +1144,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.shoulders, BodyArea.core],
     timed: true,
     batch: 2,
+    sanskrit: 'Garudasana',
+    poseGroup: PoseGroup.standing,
+    level: 2,
+    bothSides: true,
+    caution:
+        'Bei Knieproblemen das Bein nur überkreuzen, nicht einhaken.',
   ),
   BuiltinExercise(
     key: 'yoga_30_taenzer',
@@ -904,6 +1160,13 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.back, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    sanskrit: 'Natarajasana',
+    poseGroup: PoseGroup.standing,
+    level: 3,
+    bothSides: true,
+    caution:
+        'Neben einer Wand üben; das Knie des Standbeins nicht durchdrücken.',
+    easierKey: 'yoga_11_baum',
   ),
   BuiltinExercise(
     key: 'yoga_31_heuschrecke',
@@ -914,6 +1177,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.glutes],
     timed: true,
     batch: 2,
+    sanskrit: 'Salabhasana',
+    poseGroup: PoseGroup.backbend,
+    level: 2,
+    harderKey: 'yoga_32_bogen',
   ),
   BuiltinExercise(
     key: 'yoga_32_bogen',
@@ -924,6 +1191,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.chest, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    sanskrit: 'Dhanurasana',
+    poseGroup: PoseGroup.backbend,
+    level: 2,
+    caution:
+        'Nicht bei akuten Rückenbeschwerden und nicht in der Schwangerschaft.',
+    easierKey: 'yoga_31_heuschrecke',
   ),
   BuiltinExercise(
     key: 'yoga_33_kamel',
@@ -934,6 +1207,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.hips, BodyArea.back],
     timed: true,
     batch: 2,
+    sanskrit: 'Ustrasana',
+    poseGroup: PoseGroup.backbend,
+    level: 2,
+    caution:
+        'Nur so weit zurückbeugen, wie es ohne Druck im unteren Rücken geht; den Kopf nicht nach hinten fallen lassen.',
   ),
   BuiltinExercise(
     key: 'yoga_34_sphinx',
@@ -944,6 +1222,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.chest],
     timed: true,
     batch: 2,
+    sanskrit: 'Salamba Bhujangasana',
+    poseGroup: PoseGroup.backbend,
+    level: 1,
+    harderKey: 'yoga_04_kobra',
   ),
   BuiltinExercise(
     key: 'yoga_35_delfin',
@@ -954,6 +1236,12 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.core, BodyArea.legs],
     timed: true,
     batch: 2,
+    sanskrit: 'Ardha Pincha Mayurasana',
+    poseGroup: PoseGroup.inversion,
+    level: 2,
+    caution:
+        'Der Kopf ist unter dem Herzen: bei hohem Blutdruck, Glaukom oder Schwindel nur kurz und vorsichtig.',
+    easierKey: 'yoga_02_herabschauender_hund',
   ),
   BuiltinExercise(
     key: 'yoga_36_umgekehrter_tisch',
@@ -964,6 +1252,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.glutes],
     timed: true,
     batch: 2,
+    sanskrit: 'Purvottanasana',
+    poseGroup: PoseGroup.backbend,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'yoga_37_kopf_zu_knie',
@@ -974,6 +1265,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.back],
     timed: true,
     batch: 2,
+    sanskrit: 'Janu Sirsasana',
+    poseGroup: PoseGroup.forwardBend,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'yoga_38_glueckliches_baby',
@@ -984,6 +1279,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.back],
     timed: true,
     batch: 2,
+    sanskrit: 'Ananda Balasana',
+    poseGroup: PoseGroup.supine,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'yoga_39_liegender_schmetterling',
@@ -994,6 +1292,10 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.chest],
     timed: true,
     batch: 2,
+    sanskrit: 'Supta Baddha Konasana',
+    poseGroup: PoseGroup.supine,
+    level: 1,
+    harderKey: 'dehnen_10_schmetterling',
   ),
   BuiltinExercise(
     key: 'yoga_40_halber_spagat',
@@ -1004,6 +1306,11 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
     batch: 2,
+    sanskrit: 'Ardha Hanumanasana',
+    poseGroup: PoseGroup.seated,
+    level: 2,
+    bothSides: true,
+    easierKey: 'yoga_19_tiefer_ausfallschritt',
   ),
   BuiltinExercise(
     key: 'crossfit_21_strecksprung',
@@ -1014,6 +1321,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 2,
+    easierKey: 'crossfit_01_air_squat',
   ),
   BuiltinExercise(
     key: 'crossfit_22_ausfallschritt_sprung',
@@ -1024,6 +1333,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_23_kniehebelauf',
@@ -1034,6 +1344,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.core],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_24_anfersen',
@@ -1044,6 +1355,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_25_skater',
@@ -1054,6 +1366,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_26_hocksprung',
@@ -1064,6 +1377,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.core],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_27_standweitsprung',
@@ -1074,6 +1388,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_28_sprawl',
@@ -1084,6 +1399,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.fullBody],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_29_plank_jacks',
@@ -1094,6 +1410,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
     timed: true,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_30_schultertippen',
@@ -1104,6 +1421,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_31_klappmesser',
@@ -1114,6 +1432,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_32_flutter_kicks',
@@ -1124,6 +1443,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.hips],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_33_fahrrad_crunch',
@@ -1134,6 +1454,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_34_raupe',
@@ -1144,6 +1465,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_35_spiderman_stuetz',
@@ -1154,6 +1476,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders, BodyArea.hips],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_36_sumo_kniebeuge',
@@ -1164,6 +1487,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes, BodyArea.hips],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'crossfit_37_seitlicher_ausfallschritt',
@@ -1174,6 +1498,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 1,
+    harderKey: 'cali_35_kosaken_kniebeuge',
   ),
   BuiltinExercise(
     key: 'crossfit_38_krebsgang',
@@ -1184,6 +1510,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.shoulders, BodyArea.glutes],
     timed: true,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_39_froschsprung',
@@ -1194,6 +1521,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'crossfit_40_schattenboxen',
@@ -1204,6 +1532,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.core],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_21_breiter_liegestuetz',
@@ -1214,6 +1543,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.shoulders],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'cali_22_bogenschuetzen_liegestuetz',
@@ -1224,6 +1554,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.arms],
     timed: false,
     batch: 2,
+    level: 3,
+    easierKey: 'cali_01_liegestuetz',
   ),
   BuiltinExercise(
     key: 'cali_23_hindu_liegestuetz',
@@ -1234,6 +1566,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.chest, BodyArea.arms],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'cali_24_pseudo_planche',
@@ -1244,6 +1577,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.chest, BodyArea.arms],
     timed: false,
     batch: 2,
+    level: 3,
   ),
   BuiltinExercise(
     key: 'cali_25_trizeps_strecker',
@@ -1254,6 +1588,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.core],
     timed: false,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'cali_26_planke_hoch_tief',
@@ -1264,6 +1599,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms, BodyArea.core, BodyArea.shoulders],
     timed: false,
     batch: 2,
+    level: 2,
+    easierKey: 'cali_10_unterarmstuetz',
   ),
   BuiltinExercise(
     key: 'cali_27_umgekehrte_planke',
@@ -1274,6 +1611,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.glutes, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'cali_28_vierfuessler_diagonal',
@@ -1284,6 +1622,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.core, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_29_kaefer',
@@ -1294,6 +1633,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_30_beinheben_liegend',
@@ -1304,6 +1644,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.hips],
     timed: false,
     batch: 2,
+    level: 1,
+    harderKey: 'cali_13_haengendes_beinheben',
   ),
   BuiltinExercise(
     key: 'cali_31_reverse_crunch',
@@ -1314,6 +1656,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_32_einbeinige_bruecke',
@@ -1324,6 +1667,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.glutes, BodyArea.legs],
     timed: false,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'cali_33_wadenheben',
@@ -1334,6 +1679,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_34_ausfallschritt_rueckwaerts',
@@ -1344,6 +1690,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 1,
+    harderKey: 'cali_16_bulgarian_split_squat',
   ),
   BuiltinExercise(
     key: 'cali_35_kosaken_kniebeuge',
@@ -1354,6 +1702,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips, BodyArea.glutes],
     timed: false,
     batch: 2,
+    level: 2,
+    easierKey: 'crossfit_37_seitlicher_ausfallschritt',
+    harderKey: 'cali_15_pistol_squat',
   ),
   BuiltinExercise(
     key: 'cali_36_schwimmer',
@@ -1364,6 +1715,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.shoulders, BodyArea.glutes],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_37_y_heben',
@@ -1374,6 +1726,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.back],
     timed: false,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_38_baerenstand',
@@ -1384,6 +1737,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.shoulders, BodyArea.legs],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'cali_39_seitstuetz_hueftheben',
@@ -1394,6 +1748,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: false,
     batch: 2,
+    level: 2,
+    bothSides: true,
+    easierKey: 'cali_11_seitstuetz',
   ),
   BuiltinExercise(
     key: 'cali_40_hohlkoerper_wippe',
@@ -1404,6 +1761,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core],
     timed: true,
     batch: 2,
+    level: 2,
+    easierKey: 'cali_12_hollow_body',
   ),
   BuiltinExercise(
     key: 'dehnen_21_nacken_vorn',
@@ -1414,6 +1773,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.neck],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_22_nacken_drehen',
@@ -1424,6 +1784,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.neck],
     timed: true,
     batch: 2,
+    level: 1,
+    caution:
+        'Langsam und ohne Schwung; bei Schwindel abbrechen.',
   ),
   BuiltinExercise(
     key: 'dehnen_23_brustoeffner',
@@ -1434,6 +1797,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.chest, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_24_kuhgesicht_arme',
@@ -1444,6 +1808,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.shoulders, BodyArea.arms],
     timed: true,
     batch: 2,
+    sanskrit: 'Gomukhasana (Arme)',
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_25_handruecken',
@@ -1454,6 +1821,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.arms],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_26_oberer_ruecken',
@@ -1464,6 +1832,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_27_seitliche_kindhaltung',
@@ -1474,6 +1843,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.shoulders],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_28_bauchdehnung_stand',
@@ -1484,6 +1855,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.hips],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_29_drehung_schneidersitz',
@@ -1494,6 +1866,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.back, BodyArea.core],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_30_gesaess_sitzend',
@@ -1504,6 +1878,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.glutes, BodyArea.hips],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_31_frosch',
@@ -1514,6 +1890,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
     batch: 2,
+    sanskrit: 'Mandukasana',
+    poseGroup: PoseGroup.seated,
+    level: 2,
   ),
   BuiltinExercise(
     key: 'dehnen_32_eidechse',
@@ -1524,6 +1903,9 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.hips, BodyArea.legs],
     timed: true,
     batch: 2,
+    sanskrit: 'Utthan Pristhasana',
+    level: 2,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_33_oberschenkel_seitlage',
@@ -1534,6 +1916,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_34_beinrueckseite_liegend',
@@ -1544,6 +1928,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_35_gekreuzte_vorbeuge',
@@ -1554,6 +1940,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.legs, BodyArea.hips],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_36_wade_im_hund',
@@ -1564,6 +1952,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves, BodyArea.legs],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_37_schienbein',
@@ -1574,6 +1963,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_38_sprunggelenk',
@@ -1584,6 +1974,7 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.calves],
     timed: true,
     batch: 2,
+    level: 1,
   ),
   BuiltinExercise(
     key: 'dehnen_39_seitbeuge_sitz',
@@ -1594,6 +1985,8 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.core, BodyArea.back],
     timed: true,
     batch: 2,
+    level: 1,
+    bothSides: true,
   ),
   BuiltinExercise(
     key: 'dehnen_40_ganzkoerper_strecken',
@@ -1604,5 +1997,6 @@ const List<BuiltinExercise> builtinExercises = [
     areas: [BodyArea.fullBody],
     timed: true,
     batch: 2,
+    level: 1,
   ),
 ];

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import '../data/database.dart';
+import '../programs/courses.dart';
 import '../stats/stats.dart';
 
 /// Ein Ablageort für die Synchronisation: benannte Dateien, die sich lesen
@@ -130,6 +131,24 @@ Future<SyncResult> synchronize(AppDatabase db, SyncStore store) async {
     result.sent++;
   }
 
+  // --- Fortschritt in den Kursen
+  final remoteCourses =
+      (remote['courses'] as Map<String, dynamic>?) ?? const {};
+  for (final course in builtinCourses) {
+    final here = CourseProgress.load(db, course);
+    final there = remoteCourses[course.id] as Map<String, dynamic>?;
+    final thereAt = there?['updated_at'] as int? ?? 0;
+    if (there != null && thereAt > here.updatedAt) {
+      CourseProgress(
+        stage: there['stage'] as int? ?? 0,
+        done: there['done'] as int? ?? 0,
+      ).save(db, course, updatedAt: thereAt);
+      result.received++;
+    } else if (here.updatedAt > thereAt) {
+      result.sent++;
+    }
+  }
+
   // --- Trainings
   final localWorkouts = {
     for (final w in db.workoutSyncIndex()) w['uuid'] as String: w,
@@ -185,6 +204,11 @@ Future<SyncResult> synchronize(AppDatabase db, SyncStore store) async {
           'max_hr': profile.manualMaxHr,
           'weight_kg': profile.weightKg,
           'sex': profile.sex?.id,
+        },
+        'courses': {
+          for (final course in builtinCourses)
+            if (CourseProgress.load(db, course).updatedAt > 0)
+              course.id: CourseProgress.load(db, course).toJson(),
         },
         'workouts': db.workoutSyncIndex(),
       }),

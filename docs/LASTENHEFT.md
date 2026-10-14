@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| Version | 1.1 (1.0 freigegeben am 2026-10-11; 1.1: Spazieren und Wandern zusammengelegt) |
-| Stand | 2026-10-11 |
+| Version | 1.2 (1.0 freigegeben am 2026-10-11; 1.1: Spazieren und Wandern zusammengelegt; 1.2: Kurse und Atemübungen) |
+| Stand | 2026-10-14 |
 | Auftraggeber | Kapalabathi |
 | Arbeitstitel | FitApp |
 | Grundlage | [Anforderungssammlung](ANFORDERUNGEN-SAMMLUNG.md), [Ideenspeicher](IDEENSPEICHER.md), [Grafikliste](GRAFIKLISTE.md) |
@@ -105,6 +105,10 @@ Spalte „Idee" verweist auf den Ideenspeicher.
 | A-044 | Eine kleine Auswahl fertiger Programme je Kategorie wird mitgeliefert. | Soll | I-007 |
 | A-045 | Ein absolviertes Programm wird als Training gespeichert, mit Puls, wenn ein Sensor gekoppelt ist. | Muss | I-007 |
 | A-046 | Fehlt zu einer Übung die Grafik, zeigt die App einen einheitlichen Platzhalter. | Muss | I-020 |
+| A-047 | Übungen haben Sanskrit-Name, Art der Haltung, Schwierigkeit, einen Hinweis zur sicheren Ausführung und eine leichtere und schwerere Variante. | Soll | I-046, I-051, I-052 |
+| A-048 | Einseitige Übungen laufen im Programm auf beiden Seiten, mit angesagtem Seitenwechsel. | Soll | I-047 |
+| A-049 | Geführte Atemübungen mit Phasen, Nasenseite und wählbarer Dauer; längeres Atemanhalten erst nach ausdrücklicher Freischaltung. | Soll | I-048, I-052 |
+| A-080 | Aufbauender Yoga-Kurs über zwölf Wochen mit drei Einheiten je Woche; die App merkt sich den Fortschritt und schlägt die nächste Stufe vor (Entscheidung des Auftraggebers vom 2026-10-14). | Soll | I-049 |
 
 ### 4.5 Auswertung
 
@@ -157,7 +161,7 @@ Nicht Bestandteil dieser Version:
 - Mehrere Nutzerkonten, soziale Funktionen, Bestenlisten.
 - Veröffentlichung im Play Store.
 - Übungsvideos.
-- Trainingspläne über Wochen (Periodisierung), Ernährung, Gewichtsverlauf.
+- Trainingspläne über Wochen (Periodisierung) außer dem Yoga-Kurs (A-080), Ernährung, Gewichtsverlauf.
 - Virtuelle Strecken und Videos zum Indoor-Training, wie Kinomap sie bietet.
 - Live-GPS von der Uhr; Strecken der Uhr kommen nachträglich über Strava (A-066).
 - ANT+; alle Geräte werden über Bluetooth angebunden.

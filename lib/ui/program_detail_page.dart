@@ -9,6 +9,7 @@ import '../programs/program_run.dart';
 import '../session/quick_start.dart';
 import '../session/workout_session.dart';
 import 'area_chips.dart';
+import 'breath_pages.dart';
 import 'exercise_image.dart';
 import 'program_editor_page.dart';
 import 'program_player_page.dart';
@@ -138,6 +139,12 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
     if (mounted) Navigator.of(context).pop();
   }
 
+  /// Die Übungen des Programms mit Hinweis, jede einmal.
+  List<Exercise> _cautions(Program program) => [
+        for (final uuid in {for (final i in program.items) i.exerciseUuid})
+          if (_exercises[uuid] case final e? when e.caution.isNotEmpty) e,
+      ];
+
   @override
   Widget build(BuildContext context) {
     final program = _program;
@@ -199,9 +206,8 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
                 leading: ExerciseImage(exercise: exercise, size: 56),
                 title: Text(exercise.name),
                 subtitle: Text([
-                  item.timed
-                      ? '${item.amount} Sekunden'
-                      : '${item.amount} Wiederholungen',
+                  '${item.timed ? '${item.amount} Sekunden' : '${item.amount} Wiederholungen'}'
+                      '${item.bothSides ? ' je Seite' : ''}',
                   if (item.restS > 0) '${item.restS} s Pause',
                 ].join('  ·  ')),
               )
@@ -211,6 +217,18 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
                 title: Text('Gelöschte Übung'),
                 subtitle: Text('Wird beim Abspielen ausgelassen'),
               ),
+          if (_cautions(program) case final cautions
+              when cautions.isNotEmpty) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),
+              child: Text('Hinweise', style: theme.textTheme.titleSmall),
+            ),
+            for (final e in cautions)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: CautionNote('${e.name}: ${e.caution}'),
+              ),
+          ],
           if (_sensors.isNotEmpty) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 24, 16, 0),

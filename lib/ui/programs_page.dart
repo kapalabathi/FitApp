@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/database.dart';
 import '../programs/program_models.dart';
+import 'course_page.dart';
 import 'exercise_image.dart';
 import 'exercise_pages.dart';
 import 'format.dart';
@@ -28,6 +29,9 @@ class _ProgramsPageState extends State<ProgramsPage> {
 
   /// Nur Übungen für diesen Körperbereich; ohne Angabe alle.
   BodyArea? _area;
+
+  /// Nur Haltungen dieser Gruppe; ohne Angabe alle.
+  PoseGroup? _group;
   List<Program> _programs = [];
   List<Exercise> _exercises = [];
 
@@ -86,6 +90,7 @@ class _ProgramsPageState extends State<ProgramsPage> {
     final created = await Navigator.of(context).push<Exercise>(
       MaterialPageRoute(
         builder: (_) => ExerciseEditorPage(
+          db: widget.db,
           exercise: Exercise(
             uuid: widget.db.newExerciseUuid(),
             category: _category ?? ExerciseCategory.yoga,
@@ -106,12 +111,14 @@ class _ProgramsPageState extends State<ProgramsPage> {
     final exercises = _exercises
         .where(
           (e) =>
-              shown(e.category) && (_area == null || e.areas.contains(_area)),
+              shown(e.category) &&
+              (_area == null || e.areas.contains(_area)) &&
+              (_group == null || e.poseGroup == _group),
         )
         .toList();
 
     return DefaultTabController(
-      length: 2,
+      length: 3,
       child: Builder(
         builder: (context) => Scaffold(
           appBar: AppBar(
@@ -120,16 +127,24 @@ class _ProgramsPageState extends State<ProgramsPage> {
               tabs: [
                 Tab(text: 'Programme'),
                 Tab(text: 'Übungen'),
+                Tab(text: 'Kurse & Atem'),
               ],
             ),
           ),
-          floatingActionButton: FloatingActionButton.extended(
-            heroTag: 'add-program',
-            onPressed: () => DefaultTabController.of(context).index == 0
-                ? _newProgram()
-                : _newExercise(),
-            icon: const Icon(Icons.add),
-            label: const Text('Neu'),
+          // Kurse und Atemübungen sind fest vorgegeben; dort gibt es nichts
+          // Neues anzulegen.
+          floatingActionButton: ListenableBuilder(
+            listenable: DefaultTabController.of(context),
+            builder: (context, _) {
+              final tab = DefaultTabController.of(context).index;
+              if (tab == 2) return const SizedBox.shrink();
+              return FloatingActionButton.extended(
+                heroTag: 'add-program',
+                onPressed: () => tab == 0 ? _newProgram() : _newExercise(),
+                icon: const Icon(Icons.add),
+                label: const Text('Neu'),
+              );
+            },
           ),
           body: Column(
             children: [
@@ -174,24 +189,53 @@ class _ProgramsPageState extends State<ProgramsPage> {
                       children: [
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
-                          child: DropdownButtonFormField<BodyArea?>(
-                            initialValue: _area,
-                            isExpanded: true,
-                            decoration: const InputDecoration(
-                              labelText: 'Körperbereich',
-                            ),
-                            items: [
-                              const DropdownMenuItem(
-                                value: null,
-                                child: Text('Alle'),
-                              ),
-                              for (final a in BodyArea.values)
-                                DropdownMenuItem(
-                                  value: a,
-                                  child: Text(a.label),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: DropdownButtonFormField<BodyArea?>(
+                                  initialValue: _area,
+                                  isExpanded: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Körperbereich',
+                                  ),
+                                  items: [
+                                    const DropdownMenuItem(
+                                      value: null,
+                                      child: Text('Alle'),
+                                    ),
+                                    for (final a in BodyArea.values)
+                                      DropdownMenuItem(
+                                        value: a,
+                                        child: Text(a.label),
+                                      ),
+                                  ],
+                                  onChanged: (a) => setState(() => _area = a),
                                 ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
+                                child: DropdownButtonFormField<PoseGroup?>(
+                                  initialValue: _group,
+                                  isExpanded: true,
+                                  decoration: const InputDecoration(
+                                    labelText: 'Haltung',
+                                  ),
+                                  items: [
+                                    const DropdownMenuItem(
+                                      value: null,
+                                      child: Text('Alle'),
+                                    ),
+                                    for (final g in PoseGroup.values)
+                                      DropdownMenuItem(
+                                        value: g,
+                                        child: Text(g.label),
+                                      ),
+                                  ],
+                                  onChanged: (g) =>
+                                      setState(() => _group = g),
+                                ),
+                              ),
                             ],
-                            onChanged: (a) => setState(() => _area = a),
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -204,6 +248,11 @@ class _ProgramsPageState extends State<ProgramsPage> {
                                 ),
                         ),
                       ],
+                    ),
+                    CoursesAndBreathList(
+                      db: widget.db,
+                      onWorkoutSaved: widget.onWorkoutSaved,
+                      onChanged: _load,
                     ),
                   ],
                 ),

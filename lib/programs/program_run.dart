@@ -1,5 +1,15 @@
 import 'program_models.dart';
 
+/// Die Seite einer Übung, die auf beiden Seiten geübt wird.
+enum Side {
+  right('Rechte Seite'),
+  left('Linke Seite');
+
+  const Side(this.label);
+
+  final String label;
+}
+
 /// Ein Schritt beim Abspielen eines Programms: eine Übung oder eine Pause.
 class ProgramPhase {
   const ProgramPhase({
@@ -7,6 +17,7 @@ class ProgramPhase {
     required this.item,
     required this.isRest,
     required this.round,
+    this.side,
   });
 
   /// Bei einer Übung die Übung selbst, bei einer Pause die folgende.
@@ -15,13 +26,22 @@ class ProgramPhase {
   final bool isRest;
   final int round;
 
+  /// Bei Übungen auf beiden Seiten die Seite, sonst `null`. Eine Pause mit
+  /// [Side.left] ist der Seitenwechsel.
+  final Side? side;
+
+  /// Der kurze Wechsel von der rechten zur linken Seite.
+  bool get isSideSwitch => isRest && side == Side.left;
+
   /// Sekunden, nach denen die Phase von selbst endet; `null` bei Übungen
   /// mit Wiederholungen, die der Nutzer selbst abschließt.
-  int? get durationS => isRest
-      ? item.restS
-      : item.timed
-          ? item.amount
-          : null;
+  int? get durationS => isSideSwitch
+      ? ProgramItem.sideSwitchS
+      : isRest
+          ? item.restS
+          : item.timed
+              ? item.amount
+              : null;
 }
 
 sealed class ProgramEvent {
@@ -82,12 +102,34 @@ class ProgramRun {
     for (var round = 1; round <= program.rounds; round++) {
       for (var n = 0; n < items.length; n++) {
         final item = items[n];
-        phases.add(ProgramPhase(
-          exercise: exercises[item.exerciseUuid]!,
-          item: item,
-          isRest: false,
-          round: round,
-        ));
+        final exercise = exercises[item.exerciseUuid]!;
+        if (item.bothSides) {
+          for (final side in Side.values) {
+            if (side == Side.left) {
+              phases.add(ProgramPhase(
+                exercise: exercise,
+                item: item,
+                isRest: true,
+                round: round,
+                side: side,
+              ));
+            }
+            phases.add(ProgramPhase(
+              exercise: exercise,
+              item: item,
+              isRest: false,
+              round: round,
+              side: side,
+            ));
+          }
+        } else {
+          phases.add(ProgramPhase(
+            exercise: exercise,
+            item: item,
+            isRest: false,
+            round: round,
+          ));
+        }
         final last = round == program.rounds && n == items.length - 1;
         if (item.restS > 0 && !last) {
           // Die Pause zeigt schon, was als Nächstes kommt.

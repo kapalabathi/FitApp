@@ -53,6 +53,7 @@ class _ProgramEditorPageState extends State<ProgramEditorPage> {
         timed: exercise.timed,
         amount: exercise.timed ? _defaultSeconds : _defaultRepetitions,
         restS: _defaultRestS,
+        bothSides: exercise.bothSides,
       ),
     ]);
   }
@@ -214,6 +215,7 @@ class _ItemDialog extends StatefulWidget {
 
 class _ItemDialogState extends State<_ItemDialog> {
   late bool _timed = widget.item.timed;
+  late bool _bothSides = widget.item.bothSides;
   late final _amount = TextEditingController(text: '${widget.item.amount}');
   late final _rest = TextEditingController(text: '${widget.item.restS}');
   String? _error;
@@ -233,7 +235,11 @@ class _ItemDialogState extends State<_ItemDialog> {
       return;
     }
     Navigator.of(context)
-        .pop(widget.item.copyWith(timed: _timed, amount: amount, restS: rest));
+        .pop(widget.item.copyWith(
+            timed: _timed,
+            amount: amount,
+            restS: rest,
+            bothSides: _bothSides));
   }
 
   @override
@@ -257,6 +263,13 @@ class _ItemDialogState extends State<_ItemDialog> {
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
                   labelText: _timed ? 'Sekunden' : 'Wiederholungen'),
+            ),
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Beide Seiten'),
+              subtitle: const Text('Erst rechts, dann links'),
+              value: _bothSides,
+              onChanged: (v) => setState(() => _bothSides = v),
             ),
             TextField(
               controller: _rest,

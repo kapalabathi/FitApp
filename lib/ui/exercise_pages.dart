@@ -9,6 +9,7 @@ import '../data/database.dart';
 import '../data/models.dart';
 import '../programs/program_models.dart';
 import 'area_chips.dart';
+import 'breath_pages.dart';
 import 'exercise_image.dart';
 import 'format.dart';
 
@@ -28,7 +29,9 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
 
   Future<void> _edit() async {
     final edited = await Navigator.of(context).push<Exercise>(
-      MaterialPageRoute(builder: (_) => ExerciseEditorPage(exercise: _exercise)),
+      MaterialPageRoute(
+          builder: (_) =>
+              ExerciseEditorPage(db: widget.db, exercise: _exercise)),
     );
     if (edited == null) return;
     widget.db.saveExercise(edited);
@@ -59,9 +62,36 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
     if (mounted) Navigator.of(context).pop();
   }
 
+  Exercise? _byUuid(String? uuid) => uuid == null
+      ? null
+      : widget.db.exercises().where((e) => e.uuid == uuid).firstOrNull;
+
+  Widget _variant(String label, Exercise? other) {
+    if (other == null) return const SizedBox.shrink();
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      leading: ExerciseImage(exercise: other, size: 48),
+      title: Text(other.name),
+      subtitle: Text(label),
+      trailing: const Icon(Icons.chevron_right),
+      onTap: () => Navigator.of(context).push(MaterialPageRoute(
+        builder: (_) => ExerciseDetailPage(db: widget.db, exercise: other),
+      )),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final e = _exercise;
+    final facts = [
+      e.category.label,
+      if (e.poseGroup != null) e.poseGroup!.label,
+      if (e.level > 0) levelLabel(e.level),
+      if (e.bothSides) 'beide Seiten',
+    ];
+    final easier = _byUuid(e.easierUuid);
+    final harder = _byUuid(e.harderUuid);
     return Scaffold(
       appBar: AppBar(
         title: Text(_exercise.name),
@@ -88,7 +118,11 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
             ),
           ),
           const SizedBox(height: 16),
-          Text(_exercise.category.label, style: theme.textTheme.labelLarge),
+          if (e.sanskritExtra case final sanskrit?)
+            Text(sanskrit,
+                style: theme.textTheme.titleMedium
+                    ?.copyWith(fontStyle: FontStyle.italic)),
+          Text(facts.join('  ·  '), style: theme.textTheme.labelLarge),
           const SizedBox(height: 8),
           AreaChips(areas: _exercise.areas),
           if (_exercise.areas.isNotEmpty) const SizedBox(height: 12),
@@ -98,6 +132,13 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
                 : _exercise.description,
             style: theme.textTheme.bodyLarge,
           ),
+          if (e.caution.isNotEmpty) CautionNote(e.caution),
+          if (easier != null || harder != null) ...[
+            const SizedBox(height: 12),
+            Text('Varianten', style: theme.textTheme.titleMedium),
+            _variant('Leichter', easier),
+            _variant('Schwerer', harder),
+          ],
           _SetHistory(db: widget.db, exercise: _exercise),
         ],
       ),
@@ -176,7 +217,11 @@ class _SetHistory extends StatelessWidget {
 
 /// Legt eine Übung an oder ändert sie. Schließt mit der Übung als Ergebnis.
 class ExerciseEditorPage extends StatefulWidget {
-  const ExerciseEditorPage({super.key, required this.exercise});
+  const ExerciseEditorPage(
+      {super.key, required this.db, required this.exercise});
+
+  /// Für die Auswahl der Varianten.
+  final AppDatabase db;
 
   final Exercise exercise;
 
@@ -188,13 +233,54 @@ class _ExerciseEditorPageState extends State<ExerciseEditorPage> {
   late final _name = TextEditingController(text: widget.exercise.name);
   late final _description =
       TextEditingController(text: widget.exercise.description);
+  late final _sanskrit = TextEditingController(text: widget.exercise.sanskrit);
+  late final _caution = TextEditingController(text: widget.exercise.caution);
   late Exercise _draft = widget.exercise;
+  late final Map<String, Exercise> _others = {
+    for (final e in widget.db.exercises()) e.uuid: e,
+  };
 
   @override
   void dispose() {
     _name.dispose();
     _description.dispose();
+    _sanskrit.dispose();
+    _caution.dispose();
     super.dispose();
+  }
+
+  /// Wählt die leichtere oder schwerere Variante.
+  Future<void> _pickVariant({required bool harder}) async {
+    final picked = await Navigator.of(context).push<Exercise>(
+      MaterialPageRoute(
+        builder: (_) =>
+            ExercisePickerPage(db: widget.db, category: _draft.category),
+      ),
+    );
+    if (picked == null || picked.uuid == _draft.uuid) return;
+    setState(() => _draft = harder
+        ? _draft.copyWith(harderUuid: picked.uuid)
+        : _draft.copyWith(easierUuid: picked.uuid));
+  }
+
+  Widget _variantTile({required bool harder}) {
+    final uuid = harder ? _draft.harderUuid : _draft.easierUuid;
+    final other = uuid == null ? null : _others[uuid];
+    return ListTile(
+      contentPadding: EdgeInsets.zero,
+      title: Text(harder ? 'Schwerere Variante' : 'Leichtere Variante'),
+      subtitle: Text(other?.name ?? 'Keine'),
+      onTap: () => _pickVariant(harder: harder),
+      trailing: uuid == null
+          ? const Icon(Icons.chevron_right)
+          : IconButton(
+              tooltip: 'Variante entfernen',
+              icon: const Icon(Icons.close),
+              onPressed: () => setState(() => _draft = harder
+                  ? _draft.copyWith(clearHarder: true)
+                  : _draft.copyWith(clearEasier: true)),
+            ),
+    );
   }
 
   Future<void> _pickImage() async {
@@ -228,8 +314,12 @@ class _ExerciseEditorPageState extends State<ExerciseEditorPage> {
           const SnackBar(content: Text('Bitte einen Namen eingeben.')));
       return;
     }
-    Navigator.of(context).pop(
-        _draft.copyWith(name: name, description: _description.text.trim()));
+    Navigator.of(context).pop(_draft.copyWith(
+      name: name,
+      description: _description.text.trim(),
+      sanskrit: _sanskrit.text.trim(),
+      caution: _caution.text.trim(),
+    ));
   }
 
   @override
@@ -284,6 +374,49 @@ class _ExerciseEditorPageState extends State<ExerciseEditorPage> {
             onChanged: (c) =>
                 setState(() => _draft = _draft.copyWith(category: c)),
           ),
+          TextField(
+            controller: _sanskrit,
+            decoration:
+                const InputDecoration(labelText: 'Sanskrit-Name (optional)'),
+          ),
+          const SizedBox(height: 16),
+          DropdownButtonFormField<PoseGroup?>(
+            initialValue: _draft.poseGroup,
+            isExpanded: true,
+            decoration: const InputDecoration(labelText: 'Art der Haltung'),
+            items: [
+              const DropdownMenuItem(value: null, child: Text('Keine Angabe')),
+              for (final g in PoseGroup.values)
+                DropdownMenuItem(value: g, child: Text(g.label)),
+            ],
+            onChanged: (g) => setState(() => _draft = g == null
+                ? _draft.copyWith(clearPoseGroup: true)
+                : _draft.copyWith(poseGroup: g)),
+          ),
+          const SizedBox(height: 16),
+          Text('Schwierigkeit', style: Theme.of(context).textTheme.labelLarge),
+          const SizedBox(height: 4),
+          SegmentedButton<int>(
+            segments: [
+              for (final level in [0, 1, 2, 3])
+                ButtonSegment(
+                    value: level,
+                    label: Text(level == 0 ? '–' : levelLabel(level))),
+            ],
+            selected: {_draft.level},
+            showSelectedIcon: false,
+            onSelectionChanged: (s) =>
+                setState(() => _draft = _draft.copyWith(level: s.first)),
+          ),
+          SwitchListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text('Beide Seiten'),
+            subtitle: const Text(
+                'Vorgabe in Programmen: erst rechts, dann links'),
+            value: _draft.bothSides,
+            onChanged: (v) =>
+                setState(() => _draft = _draft.copyWith(bothSides: v)),
+          ),
           SwitchListTile(
             contentPadding: EdgeInsets.zero,
             title: const Text('Auf Zeit'),
@@ -322,6 +455,18 @@ class _ExerciseEditorPageState extends State<ExerciseEditorPage> {
             maxLines: 8,
             decoration: const InputDecoration(labelText: 'Beschreibung'),
           ),
+          const SizedBox(height: 16),
+          TextField(
+            controller: _caution,
+            textCapitalization: TextCapitalization.sentences,
+            minLines: 1,
+            maxLines: 4,
+            decoration: const InputDecoration(
+                labelText: 'Hinweis zur sicheren Ausführung (optional)'),
+          ),
+          const SizedBox(height: 8),
+          _variantTile(harder: false),
+          _variantTile(harder: true),
         ],
       ),
     );

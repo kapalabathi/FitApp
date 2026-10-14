@@ -210,6 +210,50 @@ class AppDatabase {
           'CREATE INDEX set_logs_by_exercise ON set_logs (exercise_uuid)');
       _db.execute('PRAGMA user_version = 9');
     }
+    if (version < 10) {
+      // Angaben für Yoga und Programme: Sanskrit-Name, Gruppe, Stufe,
+      // beide Seiten, Hinweis und Varianten (I-046, I-047, I-051, I-052).
+      _db.execute(
+          "ALTER TABLE exercises ADD COLUMN sanskrit TEXT NOT NULL DEFAULT ''");
+      _db.execute('ALTER TABLE exercises ADD COLUMN pose_group TEXT');
+      _db.execute(
+          'ALTER TABLE exercises ADD COLUMN level INTEGER NOT NULL DEFAULT 0');
+      _db.execute('ALTER TABLE exercises '
+          'ADD COLUMN both_sides INTEGER NOT NULL DEFAULT 0');
+      _db.execute(
+          "ALTER TABLE exercises ADD COLUMN caution TEXT NOT NULL DEFAULT ''");
+      _db.execute('ALTER TABLE exercises ADD COLUMN easier_uuid TEXT');
+      _db.execute('ALTER TABLE exercises ADD COLUMN harder_uuid TEXT');
+      // Die neuen Angaben gab es bisher nicht; sie gelten auch für
+      // mitgelieferte Übungen, die der Nutzer verändert hat.
+      for (final e in builtinExercises) {
+        _db.execute(
+          'UPDATE exercises SET sanskrit = ?, pose_group = ?, level = ?, '
+          'both_sides = ?, caution = ?, easier_uuid = ?, harder_uuid = ? '
+          'WHERE uuid = ?',
+          [
+            e.sanskrit,
+            e.poseGroup?.id,
+            e.level,
+            e.bothSides ? 1 : 0,
+            e.caution,
+            BuiltinExercise.uuidOf(e.easierKey),
+            BuiltinExercise.uuidOf(e.harderKey),
+            e.uuid,
+          ],
+        );
+      }
+      // Unveränderte mitgelieferte Programme üben einseitige Haltungen
+      // jetzt auf beiden Seiten statt in einer zweiten Runde.
+      for (final p in [...builtinPrograms, ...builtinProgramsBatch2]) {
+        _db.execute(
+          'UPDATE programs SET rounds = ?, items = ? '
+          'WHERE uuid = ? AND updated_at = ?',
+          [p.rounds, p.itemsJson(), 'builtin-program:${p.name}', _pristine],
+        );
+      }
+      _db.execute('PRAGMA user_version = 10');
+    }
   }
 
   /// Zeitstempel unveränderter mitgelieferter Inhalte. Jede Änderung des
@@ -585,8 +629,33 @@ class AppDatabase {
             imagePath: r['image_path'] as String?,
             timed: r['timed'] == 1,
             areas: BodyArea.parse(r['areas'] as String?),
+            sanskrit: r['sanskrit'] as String,
+            poseGroup: PoseGroup.fromId(r['pose_group'] as String?),
+            level: r['level'] as int,
+            bothSides: r['both_sides'] == 1,
+            caution: r['caution'] as String,
+            easierUuid: r['easier_uuid'] as String?,
+            harderUuid: r['harder_uuid'] as String?,
           ))
       .toList();
+
+  static const _exerciseColumns = [
+    'category',
+    'name',
+    'description',
+    'builtin_key',
+    'image_path',
+    'timed',
+    'areas',
+    'sanskrit',
+    'pose_group',
+    'level',
+    'both_sides',
+    'caution',
+    'easier_uuid',
+    'harder_uuid',
+    'updated_at',
+  ];
 
   /// Speichert eine neue oder geänderte Übung und gibt ihre Nummer zurück.
   int saveExercise(Exercise e) {
@@ -598,22 +667,27 @@ class AppDatabase {
       e.imagePath,
       e.timed ? 1 : 0,
       BodyArea.store(e.areas),
+      e.sanskrit,
+      e.poseGroup?.id,
+      e.level,
+      e.bothSides ? 1 : 0,
+      e.caution,
+      e.easierUuid,
+      e.harderUuid,
       _now(),
     ];
     final id = e.id;
     if (id == null) {
       _db.execute(
-        'INSERT INTO exercises (category, name, description, builtin_key, '
-        'image_path, timed, areas, updated_at, uuid) '
-        'VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+        'INSERT INTO exercises (${_exerciseColumns.join(', ')}, uuid) '
+        'VALUES (${List.filled(_exerciseColumns.length + 1, '?').join(', ')})',
         [...values, e.uuid],
       );
       return _db.lastInsertRowId;
     }
     _db.execute(
-      'UPDATE exercises SET category = ?, name = ?, description = ?, '
-      'builtin_key = ?, image_path = ?, timed = ?, areas = ?, updated_at = ? '
-      'WHERE id = ?',
+      'UPDATE exercises SET '
+      '${_exerciseColumns.map((c) => '$c = ?').join(', ')} WHERE id = ?',
       [...values, id],
     );
     return id;
@@ -729,6 +803,13 @@ class AppDatabase {
       'builtin_key',
       'timed',
       'areas',
+      'sanskrit',
+      'pose_group',
+      'level',
+      'both_sides',
+      'caution',
+      'easier_uuid',
+      'harder_uuid',
     ],
     'programs': ['name', 'category', 'rounds', 'items'],
   };
@@ -745,7 +826,13 @@ class AppDatabase {
   /// Übernimmt eine Zeile von einem anderen Gerät, wenn sie hier fehlt oder
   /// dort jünger ist. Gibt zurück, ob sich etwas geändert hat.
   bool applySyncRow(String table, Map<String, Object?> row) {
-    final columns = ['updated_at', 'deleted', ...syncTables[table]!];
+    // Eine Sicherung aus einer älteren Fassung der App kennt neuere Spalten
+    // noch nicht; für sie gilt dann der Vorgabewert der Tabelle.
+    final columns = [
+      'updated_at',
+      'deleted',
+      ...syncTables[table]!.where(row.containsKey),
+    ];
     final uuid = row['uuid'] as String;
     final local =
         _db.select('SELECT updated_at FROM $table WHERE uuid = ?', [uuid]);

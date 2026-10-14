@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 
 import '../ble/device_kind.dart';
+import '../breath/breath_run.dart';
 import '../ble/ftms_control.dart';
 import '../ble/sensor_connection.dart';
 import '../data/database.dart';
@@ -42,6 +43,7 @@ class WorkoutSession extends ChangeNotifier {
     required List<SavedDevice> devices,
     this.template,
     this.program,
+    this.breath,
     Stream<GpsFix>? positions,
     bool controlMachine = false,
     bool autoPause = false,
@@ -76,6 +78,8 @@ class WorkoutSession extends ChangeNotifier {
     }
     final program = this.program;
     if (program != null) _handleProgram(program.start());
+    final breath = this.breath;
+    if (breath != null) _handleBreath(breath.start());
     if (sport.usesGps || sport == Sport.treadmill) {
       recorder.enableAutoLap(_autoLapM);
     }
@@ -134,6 +138,9 @@ class WorkoutSession extends ChangeNotifier {
   /// Der Ablauf des Trainingsprogramms, wenn eines gespielt wird.
   final ProgramRun? program;
 
+  /// Der Ablauf der Atemübung, wenn eine geführt wird.
+  final BreathRun? breath;
+
   /// Die letzte Fehlermeldung des GPS, zur Anzeige.
   String? gpsError;
 
@@ -188,6 +195,26 @@ class WorkoutSession extends ChangeNotifier {
     if (run != null) _handle(run.tick());
     final program = this.program;
     if (program != null) _handleProgram(program.tick());
+    final breath = this.breath;
+    if (breath != null) _handleBreath(breath.tick());
+  }
+
+  void _handleBreath(List<BreathEvent> events) {
+    for (final event in events) {
+      switch (event) {
+        case BreathStepStarted(:final step, :final rapid, :final startsRapid):
+          if (rapid) {
+            if (startsRapid) signals.say('Los');
+            signals.warn();
+          } else {
+            signals.change();
+            signals.say(step.label);
+          }
+        case BreathFinished():
+          signals.finish();
+          signals.say('Atemübung beendet');
+      }
+    }
   }
 
   void _handle(List<IntervalEvent> events) {
@@ -206,11 +233,7 @@ class WorkoutSession extends ChangeNotifier {
           _logSet(phase, elapsedS);
         case PhaseStarted(:final phase):
           signals.change();
-          signals.say(phase.isRest
-              ? 'Pause. Danach: ${phase.exercise.name}'
-              : phase.item.timed
-                  ? '${phase.exercise.name}, ${phase.item.amount} Sekunden'
-                  : '${phase.exercise.name}, ${phase.item.amount} Wiederholungen');
+          signals.say(programAnnouncement(phase));
         case ProgramFinished():
           signals.finish();
           signals.say('Programm beendet');
@@ -465,4 +488,18 @@ class WorkoutSession extends ChangeNotifier {
     (on ? WakelockPlus.enable() : WakelockPlus.disable())
         .catchError((Object _) {});
   }
+}
+
+/// Die Ansage zu Beginn einer Phase des Programms.
+String programAnnouncement(ProgramPhase phase) {
+  if (phase.isSideSwitch) return 'Seite wechseln';
+  if (phase.isRest) return 'Pause. Danach: ${phase.exercise.name}';
+  final amount = phase.item.timed
+      ? '${phase.item.amount} Sekunden'
+      : '${phase.item.amount} Wiederholungen';
+  return switch (phase.side) {
+    Side.right => '${phase.exercise.name}, rechte Seite, $amount',
+    Side.left => 'Linke Seite, $amount',
+    null => '${phase.exercise.name}, $amount',
+  };
 }
