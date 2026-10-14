@@ -8,7 +8,7 @@ Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSP
 
 ### Geändert
 - Zehn Übungsbilder neu erzeugt und eingebunden. Richtig sind jetzt: Schultertippen im Stütz, umgekehrte Planke, Pflug, gedrehter Stuhl, Welpe, Stütz halten, Schulterstand mit einem Bein; Tuck Front Lever ist besser, aber noch nicht waagerecht.
-- Gedrehtes Dreieck in einem weiteren Anlauf neu erzeugt, jetzt mit Blick auf den Rücken der gedrehten Figur. Knie zu den Ohren ebenfalls neu, nach mehreren Anläufen mit Hinweisen des Nutzers zu Fußrichtung und Kopf: Hinterkopf auf der Matte, Knie neben dem Kopf, Schienbeine flach, Füße auf dem Fußrücken. Ihre Beschreibung in der Grafikliste ist noch einmal neu gefasst, mit Blick von schräg hinten und ausdrücklicher Angabe der linken und rechten Hand beziehungsweise der Knie neben den Ohren.
+- Gedrehtes Dreieck in einem weiteren Anlauf neu erzeugt, jetzt mit Blick auf den Rücken der gedrehten Figur. Knie zu den Ohren ebenfalls neu, nach mehreren Anläufen und einer Vorlage des Nutzers: kompakt eingerollt, Knie in der Mitte neben dem verborgenen Kopf, Schienbeine und Füße flach zur einen Seite, Arme zur anderen. Ihre Beschreibung in der Grafikliste ist noch einmal neu gefasst, mit Blick von schräg hinten und ausdrücklicher Angabe der linken und rechten Hand beziehungsweise der Knie neben den Ohren.
 
 ## [0.14.0] – 2026-10-14
 
