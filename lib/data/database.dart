@@ -147,11 +147,14 @@ class AppDatabase {
     if (version < 4) {
       // Spazieren und Wandern sind zu einer Sportart zusammengelegt.
       _db.execute(
-          "UPDATE workouts SET sport = 'hiking', updated_at = ? "
-          "WHERE sport = 'walking'",
-          [_now()]);
-      _db.execute("INSERT OR IGNORE INTO sport_devices (sport, device_id) "
-          "SELECT 'hiking', device_id FROM sport_devices WHERE sport = 'walking'");
+        "UPDATE workouts SET sport = 'hiking', updated_at = ? "
+        "WHERE sport = 'walking'",
+        [_now()],
+      );
+      _db.execute(
+        "INSERT OR IGNORE INTO sport_devices (sport, device_id) "
+        "SELECT 'hiking', device_id FROM sport_devices WHERE sport = 'walking'",
+      );
       _db.execute("DELETE FROM sport_devices WHERE sport = 'walking'");
       _db.execute('PRAGMA user_version = 4');
     }
@@ -171,20 +174,25 @@ class AppDatabase {
     if (version < 6) {
       _db.execute('ALTER TABLE workouts ADD COLUMN strava_id INTEGER');
       _db.execute(
-          'ALTER TABLE workouts ADD COLUMN imported INTEGER NOT NULL DEFAULT 0');
+        'ALTER TABLE workouts ADD COLUMN imported INTEGER NOT NULL DEFAULT 0',
+      );
       _db.execute('PRAGMA user_version = 6');
     }
     if (version < 7) {
       // Körperbereiche je Übung; dazu die Erweiterung um 80 Übungen ohne
       // Geräte und weitere Programme.
-      _db.execute("ALTER TABLE exercises ADD COLUMN areas TEXT NOT NULL DEFAULT ''");
+      _db.execute(
+        "ALTER TABLE exercises ADD COLUMN areas TEXT NOT NULL DEFAULT ''",
+      );
       for (final e in builtinExercises) {
         // Schon vorhandene Übungen bleiben, wie sie sind, auch gelöschte.
         _insertBuiltin(e);
         // Eigene Angaben des Nutzers gibt es hier noch nicht; die Bereiche
         // werden für alle mitgelieferten Übungen gesetzt.
-        _db.execute('UPDATE exercises SET areas = ? WHERE uuid = ?',
-            [BodyArea.store(e.areas), e.uuid]);
+        _db.execute('UPDATE exercises SET areas = ? WHERE uuid = ?', [
+          BodyArea.store(e.areas),
+          e.uuid,
+        ]);
       }
       builtinProgramsBatch2.forEach(saveProgram);
       _db.execute('PRAGMA user_version = 7');
@@ -195,7 +203,8 @@ class AppDatabase {
     }
     if (version < 9) {
       _db.execute(
-          'ALTER TABLE workouts ADD COLUMN energy_estimated INTEGER NOT NULL DEFAULT 0');
+        'ALTER TABLE workouts ADD COLUMN energy_estimated INTEGER NOT NULL DEFAULT 0',
+      );
       _db.execute('''
         CREATE TABLE set_logs (
           id INTEGER PRIMARY KEY,
@@ -207,21 +216,27 @@ class AppDatabase {
           seconds INTEGER
         )''');
       _db.execute(
-          'CREATE INDEX set_logs_by_exercise ON set_logs (exercise_uuid)');
+        'CREATE INDEX set_logs_by_exercise ON set_logs (exercise_uuid)',
+      );
       _db.execute('PRAGMA user_version = 9');
     }
     if (version < 10) {
       // Angaben für Yoga und Programme: Sanskrit-Name, Gruppe, Stufe,
       // beide Seiten, Hinweis und Varianten (I-046, I-047, I-051, I-052).
       _db.execute(
-          "ALTER TABLE exercises ADD COLUMN sanskrit TEXT NOT NULL DEFAULT ''");
+        "ALTER TABLE exercises ADD COLUMN sanskrit TEXT NOT NULL DEFAULT ''",
+      );
       _db.execute('ALTER TABLE exercises ADD COLUMN pose_group TEXT');
       _db.execute(
-          'ALTER TABLE exercises ADD COLUMN level INTEGER NOT NULL DEFAULT 0');
-      _db.execute('ALTER TABLE exercises '
-          'ADD COLUMN both_sides INTEGER NOT NULL DEFAULT 0');
+        'ALTER TABLE exercises ADD COLUMN level INTEGER NOT NULL DEFAULT 0',
+      );
       _db.execute(
-          "ALTER TABLE exercises ADD COLUMN caution TEXT NOT NULL DEFAULT ''");
+        'ALTER TABLE exercises '
+        'ADD COLUMN both_sides INTEGER NOT NULL DEFAULT 0',
+      );
+      _db.execute(
+        "ALTER TABLE exercises ADD COLUMN caution TEXT NOT NULL DEFAULT ''",
+      );
       _db.execute('ALTER TABLE exercises ADD COLUMN easier_uuid TEXT');
       _db.execute('ALTER TABLE exercises ADD COLUMN harder_uuid TEXT');
       // Die neuen Angaben gab es bisher nicht; sie gelten auch für
@@ -287,41 +302,12 @@ class AppDatabase {
     }
     if (version < 12) {
       // Vierte Lieferung: 48 Übungen (G-165 bis G-212) und sechs Programme.
-      // Vorhandene Übungen bekommen ihre neuen Varianten, sofern der
-      // Nutzer sie nicht selbst festgelegt hat.
-      for (final e in builtinExercises) {
-        _insertBuiltin(e);
-        _db.execute(
-          'UPDATE exercises SET areas = ?, sanskrit = ?, pose_group = ?, '
-          'level = ?, both_sides = ?, caution = ? '
-          "WHERE uuid = ? AND updated_at = ? AND areas = ''",
-          [
-            BodyArea.store(e.areas),
-            e.sanskrit,
-            e.poseGroup?.id,
-            e.level,
-            e.bothSides ? 1 : 0,
-            e.caution,
-            e.uuid,
-            _pristine,
-          ],
-        );
-        for (final (column, key) in [
-          ('easier_uuid', e.easierKey),
-          ('harder_uuid', e.harderKey),
-        ]) {
-          if (key == null) continue;
-          _db.execute(
-            'UPDATE exercises SET $column = ? '
-            'WHERE uuid = ? AND (updated_at = ? OR $column IS NULL)',
-            [BuiltinExercise.uuidOf(key), e.uuid, _pristine],
-          );
-        }
-      }
+      _addNewBuiltinExercises();
       for (final p in builtinProgramsBatch3) {
         final uuid = 'builtin-program:${p.name}';
-        if (_db.select('SELECT 1 FROM programs WHERE uuid = ?', [uuid])
-            .isNotEmpty) {
+        if (_db.select('SELECT 1 FROM programs WHERE uuid = ?', [
+          uuid,
+        ]).isNotEmpty) {
           continue;
         }
         _db.execute(
@@ -344,6 +330,46 @@ class AppDatabase {
           down_s INTEGER
         )''');
       _db.execute('PRAGMA user_version = 13');
+    }
+    if (version < 14) {
+      // Glühwürmchen (G-213) als schwerere Variante der Krähe.
+      _addNewBuiltinExercises();
+      _db.execute('PRAGMA user_version = 14');
+    }
+  }
+
+  /// Legt mitgelieferte Übungen an, die es hier noch nicht gibt, mit allen
+  /// Angaben. Vorhandene Übungen bekommen ihre neuen Varianten, sofern der
+  /// Nutzer sie nicht selbst festgelegt hat.
+  void _addNewBuiltinExercises() {
+    for (final e in builtinExercises) {
+      _insertBuiltin(e);
+      _db.execute(
+        'UPDATE exercises SET areas = ?, sanskrit = ?, pose_group = ?, '
+        'level = ?, both_sides = ?, caution = ? '
+        "WHERE uuid = ? AND updated_at = ? AND areas = ''",
+        [
+          BodyArea.store(e.areas),
+          e.sanskrit,
+          e.poseGroup?.id,
+          e.level,
+          e.bothSides ? 1 : 0,
+          e.caution,
+          e.uuid,
+          _pristine,
+        ],
+      );
+      for (final (column, key) in [
+        ('easier_uuid', e.easierKey),
+        ('harder_uuid', e.harderKey),
+      ]) {
+        if (key == null) continue;
+        _db.execute(
+          'UPDATE exercises SET $column = ? '
+          'WHERE uuid = ? AND (updated_at = ? OR $column IS NULL)',
+          [BuiltinExercise.uuidOf(key), e.uuid, _pristine],
+        );
+      }
     }
   }
 
@@ -374,28 +400,43 @@ class AppDatabase {
       );
     }
     for (final p in [...builtinPrograms, ...builtinProgramsBatch2]) {
-      _adoptBuiltin('programs', 'builtin-program:${p.name}',
-          'name = ? AND category = ? AND rounds = ? AND items = ?',
-          [p.name, p.category.id, p.rounds, p.itemsJson()]);
+      _adoptBuiltin(
+        'programs',
+        'builtin-program:${p.name}',
+        'name = ? AND category = ? AND rounds = ? AND items = ?',
+        [p.name, p.category.id, p.rounds, p.itemsJson()],
+      );
     }
     for (final t in _exampleTemplates) {
-      _adoptBuiltin('interval_templates', 'builtin-interval:${t.name}',
-          'name = ? AND target_kind = ? AND blocks = ?',
-          [t.name, t.targetKind.id, t.blocksJson()]);
+      _adoptBuiltin(
+        'interval_templates',
+        'builtin-interval:${t.name}',
+        'name = ? AND target_kind = ? AND blocks = ?',
+        [t.name, t.targetKind.id, t.blocksJson()],
+      );
     }
   }
 
   void _adoptBuiltin(
-      String table, String uuid, String unchanged, List<Object?> values) {
-    final taken =
-        _db.select('SELECT 1 FROM $table WHERE uuid = ?', [uuid]).isNotEmpty;
+    String table,
+    String uuid,
+    String unchanged,
+    List<Object?> values,
+  ) {
+    final taken = _db.select('SELECT 1 FROM $table WHERE uuid = ?', [
+      uuid,
+    ]).isNotEmpty;
     if (taken) return;
     final rows = _db.select(
-        'SELECT id FROM $table WHERE deleted = 0 AND $unchanged LIMIT 1',
-        values);
+      'SELECT id FROM $table WHERE deleted = 0 AND $unchanged LIMIT 1',
+      values,
+    );
     if (rows.isEmpty) return;
-    _db.execute('UPDATE $table SET uuid = ?, updated_at = ? WHERE id = ?',
-        [uuid, _pristine, rows.first['id']]);
+    _db.execute('UPDATE $table SET uuid = ?, updated_at = ? WHERE id = ?', [
+      uuid,
+      _pristine,
+      rows.first['id'],
+    ]);
   }
 
   /// Legt eine mitgelieferte Übung an, falls es sie noch nicht gibt. Schreibt
@@ -424,25 +465,31 @@ class AppDatabase {
       name: 'Lauf-Intervalle 5 × 2 min',
       targetKind: TargetKind.speed,
       blocks: [
-        IntervalBlock(steps: [
-          IntervalStep(label: 'Einlaufen', durationS: 300, target: 7),
-        ]),
-        IntervalBlock(repeat: 5, steps: [
-          IntervalStep(label: 'Schnell', durationS: 120, target: 11),
-          IntervalStep(label: 'Locker', durationS: 60, target: 7),
-        ]),
-        IntervalBlock(steps: [
-          IntervalStep(label: 'Auslaufen', durationS: 300, target: 6),
-        ]),
+        IntervalBlock(
+          steps: [IntervalStep(label: 'Einlaufen', durationS: 300, target: 7)],
+        ),
+        IntervalBlock(
+          repeat: 5,
+          steps: [
+            IntervalStep(label: 'Schnell', durationS: 120, target: 11),
+            IntervalStep(label: 'Locker', durationS: 60, target: 7),
+          ],
+        ),
+        IntervalBlock(
+          steps: [IntervalStep(label: 'Auslaufen', durationS: 300, target: 6)],
+        ),
       ],
     ),
     IntervalTemplate(
       name: 'Tabata 8 × 20/10',
       blocks: [
-        IntervalBlock(repeat: 8, steps: [
-          IntervalStep(label: 'Belastung', durationS: 20),
-          IntervalStep(label: 'Pause', durationS: 10),
-        ]),
+        IntervalBlock(
+          repeat: 8,
+          steps: [
+            IntervalStep(label: 'Belastung', durationS: 20),
+            IntervalStep(label: 'Pause', durationS: 10),
+          ],
+        ),
       ],
     ),
   ];
@@ -451,9 +498,10 @@ class AppDatabase {
 
   static String _newUuid() {
     final r = Random.secure();
-    return List.generate(16, (_) => r.nextInt(256))
-        .map((b) => b.toRadixString(16).padLeft(2, '0'))
-        .join();
+    return List.generate(
+      16,
+      (_) => r.nextInt(256),
+    ).map((b) => b.toRadixString(16).padLeft(2, '0')).join();
   }
 
   // --- Trainings ---
@@ -507,11 +555,13 @@ class AppDatabase {
 
   List<Lap> laps(int workoutId) => _db
       .select('SELECT * FROM laps WHERE workout_id = ? ORDER BY t', [workoutId])
-      .map((r) => Lap(
-            t: r['t'] as int,
-            distanceM: (r['distance'] as num).toDouble(),
-            auto: r['auto'] == 1,
-          ))
+      .map(
+        (r) => Lap(
+          t: r['t'] as int,
+          distanceM: (r['distance'] as num).toDouble(),
+          auto: r['auto'] == 1,
+        ),
+      )
       .toList();
 
   /// Schließt ein Training ab; die Kennzahlen werden aus den Messwerten
@@ -541,7 +591,7 @@ class AppDatabase {
     // geschätzt, sofern Gewicht und Geburtsjahr hinterlegt sind.
     final estimated = energyKcal == null
         ? HeartProfile.load(this)
-            .estimateEnergyKcal(samples(workoutId), DateTime.now())
+              .estimateEnergyKcal(samples(workoutId), DateTime.now())
         : null;
     _db.execute(
       'UPDATE workouts SET duration_s = ?, distance_m = ?, avg_hr = ?, '
@@ -571,8 +621,9 @@ class AppDatabase {
   /// Schließt Trainings ab, die beim letzten Lauf der App nicht beendet wurden.
   /// Gibt deren Anzahl zurück.
   int recoverUnfinished() {
-    final rows = _db.select(
-        'SELECT id FROM workouts WHERE status = ?', [WorkoutStatus.recording.id]);
+    final rows = _db.select('SELECT id FROM workouts WHERE status = ?', [
+      WorkoutStatus.recording.id,
+    ]);
     var kept = 0;
     for (final row in rows) {
       if (finishWorkout(row['id'] as int, status: WorkoutStatus.recovered)) {
@@ -610,21 +661,24 @@ class AppDatabase {
   }
 
   List<Sample> samples(int workoutId) => _db
-      .select('SELECT * FROM samples WHERE workout_id = ? ORDER BY t',
-          [workoutId])
-      .map((r) => Sample(
-            t: r['t'] as int,
-            heartRate: r['hr'] as int?,
-            speedKmh: (r['speed'] as num?)?.toDouble(),
-            cadence: (r['cadence'] as num?)?.toDouble(),
-            power: r['power'] as int?,
-            distanceM: (r['distance'] as num?)?.toDouble(),
-            incline: (r['incline'] as num?)?.toDouble(),
-            resistance: (r['resistance'] as num?)?.toDouble(),
-            latitude: (r['lat'] as num?)?.toDouble(),
-            longitude: (r['lon'] as num?)?.toDouble(),
-            altitudeM: (r['altitude'] as num?)?.toDouble(),
-          ))
+      .select('SELECT * FROM samples WHERE workout_id = ? ORDER BY t', [
+        workoutId,
+      ])
+      .map(
+        (r) => Sample(
+          t: r['t'] as int,
+          heartRate: r['hr'] as int?,
+          speedKmh: (r['speed'] as num?)?.toDouble(),
+          cadence: (r['cadence'] as num?)?.toDouble(),
+          power: r['power'] as int?,
+          distanceM: (r['distance'] as num?)?.toDouble(),
+          incline: (r['incline'] as num?)?.toDouble(),
+          resistance: (r['resistance'] as num?)?.toDouble(),
+          latitude: (r['lat'] as num?)?.toDouble(),
+          longitude: (r['lon'] as num?)?.toDouble(),
+          altitudeM: (r['altitude'] as num?)?.toDouble(),
+        ),
+      )
       .toList();
 
   /// Markiert ein Training als gelöscht. Die Zeile bleibt für die spätere
@@ -635,43 +689,49 @@ class AppDatabase {
     _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM set_logs WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM link_losses WHERE workout_id = ?', [id]);
-    _db.execute('UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
-        [_now(), id]);
+    _db.execute(
+      'UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
+      [_now(), id],
+    );
   }
 
   Workout _workout(Row r) => Workout(
-        id: r['id'] as int,
-        uuid: r['uuid'] as String,
-        sport: Sport.fromId(r['sport'] as String),
-        startedAt: DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int),
-        status: WorkoutStatus.fromId(r['status'] as String),
-        title: r['title'] as String?,
-        durationS: r['duration_s'] as int,
-        distanceM: (r['distance_m'] as num).toDouble(),
-        avgHeartRate: r['avg_hr'] as int?,
-        maxHeartRate: r['max_hr'] as int?,
-        avgPower: r['avg_power'] as int?,
-        maxPower: r['max_power'] as int?,
-        avgCadence: r['avg_cadence'] as int?,
-        energyKcal: r['energy_kcal'] as int?,
-        ascentM: r['ascent_m'] as int?,
-        notes: r['notes'] as String?,
-        stravaId: r['strava_id'] as int?,
-        imported: r['imported'] == 1,
-        energyEstimated: r['energy_estimated'] == 1,
-      );
+    id: r['id'] as int,
+    uuid: r['uuid'] as String,
+    sport: Sport.fromId(r['sport'] as String),
+    startedAt: DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int),
+    status: WorkoutStatus.fromId(r['status'] as String),
+    title: r['title'] as String?,
+    durationS: r['duration_s'] as int,
+    distanceM: (r['distance_m'] as num).toDouble(),
+    avgHeartRate: r['avg_hr'] as int?,
+    maxHeartRate: r['max_hr'] as int?,
+    avgPower: r['avg_power'] as int?,
+    maxPower: r['max_power'] as int?,
+    avgCadence: r['avg_cadence'] as int?,
+    energyKcal: r['energy_kcal'] as int?,
+    ascentM: r['ascent_m'] as int?,
+    notes: r['notes'] as String?,
+    stravaId: r['strava_id'] as int?,
+    imported: r['imported'] == 1,
+    energyEstimated: r['energy_estimated'] == 1,
+  );
 
   // --- Intervall-Vorlagen ---
 
   List<IntervalTemplate> intervalTemplates() => _db
-      .select('SELECT * FROM interval_templates WHERE deleted = 0 '
-          'ORDER BY name COLLATE NOCASE')
-      .map((r) => IntervalTemplate(
-            id: r['id'] as int,
-            name: r['name'] as String,
-            targetKind: TargetKind.fromId(r['target_kind'] as String),
-            blocks: IntervalTemplate.blocksFromJson(r['blocks'] as String),
-          ))
+      .select(
+        'SELECT * FROM interval_templates WHERE deleted = 0 '
+        'ORDER BY name COLLATE NOCASE',
+      )
+      .map(
+        (r) => IntervalTemplate(
+          id: r['id'] as int,
+          name: r['name'] as String,
+          targetKind: TargetKind.fromId(r['target_kind'] as String),
+          blocks: IntervalTemplate.blocksFromJson(r['blocks'] as String),
+        ),
+      )
       .toList();
 
   /// Speichert eine neue oder geänderte Vorlage und gibt ihre Nummer zurück.
@@ -697,8 +757,9 @@ class AppDatabase {
   /// Synchronisation erhalten.
   void deleteIntervalTemplate(int id) {
     _db.execute(
-        'UPDATE interval_templates SET deleted = 1, updated_at = ? WHERE id = ?',
-        [_now(), id]);
+      'UPDATE interval_templates SET deleted = 1, updated_at = ? WHERE id = ?',
+      [_now(), id],
+    );
   }
 
   // --- Übungen und Programme ---
@@ -711,24 +772,26 @@ class AppDatabase {
         'ORDER BY name COLLATE NOCASE',
         [if (category != null) category.id],
       )
-      .map((r) => Exercise(
-            id: r['id'] as int,
-            uuid: r['uuid'] as String,
-            category: ExerciseCategory.fromId(r['category'] as String),
-            name: r['name'] as String,
-            description: r['description'] as String,
-            builtinKey: r['builtin_key'] as String?,
-            imagePath: r['image_path'] as String?,
-            timed: r['timed'] == 1,
-            areas: BodyArea.parse(r['areas'] as String?),
-            sanskrit: r['sanskrit'] as String,
-            poseGroup: PoseGroup.fromId(r['pose_group'] as String?),
-            level: r['level'] as int,
-            bothSides: r['both_sides'] == 1,
-            caution: r['caution'] as String,
-            easierUuid: r['easier_uuid'] as String?,
-            harderUuid: r['harder_uuid'] as String?,
-          ))
+      .map(
+        (r) => Exercise(
+          id: r['id'] as int,
+          uuid: r['uuid'] as String,
+          category: ExerciseCategory.fromId(r['category'] as String),
+          name: r['name'] as String,
+          description: r['description'] as String,
+          builtinKey: r['builtin_key'] as String?,
+          imagePath: r['image_path'] as String?,
+          timed: r['timed'] == 1,
+          areas: BodyArea.parse(r['areas'] as String?),
+          sanskrit: r['sanskrit'] as String,
+          poseGroup: PoseGroup.fromId(r['pose_group'] as String?),
+          level: r['level'] as int,
+          bothSides: r['both_sides'] == 1,
+          caution: r['caution'] as String,
+          easierUuid: r['easier_uuid'] as String?,
+          harderUuid: r['harder_uuid'] as String?,
+        ),
+      )
       .toList();
 
   static const _exerciseColumns = [
@@ -789,20 +852,26 @@ class AppDatabase {
   String newExerciseUuid() => _newUuid();
 
   void deleteExercise(int id) {
-    _db.execute('UPDATE exercises SET deleted = 1, updated_at = ? WHERE id = ?',
-        [_now(), id]);
+    _db.execute(
+      'UPDATE exercises SET deleted = 1, updated_at = ? WHERE id = ?',
+      [_now(), id],
+    );
   }
 
   List<Program> programs() => _db
-      .select('SELECT * FROM programs WHERE deleted = 0 '
-          'ORDER BY name COLLATE NOCASE')
-      .map((r) => Program(
-            id: r['id'] as int,
-            name: r['name'] as String,
-            category: ExerciseCategory.fromId(r['category'] as String),
-            rounds: r['rounds'] as int,
-            items: Program.itemsFromJson(r['items'] as String),
-          ))
+      .select(
+        'SELECT * FROM programs WHERE deleted = 0 '
+        'ORDER BY name COLLATE NOCASE',
+      )
+      .map(
+        (r) => Program(
+          id: r['id'] as int,
+          name: r['name'] as String,
+          category: ExerciseCategory.fromId(r['category'] as String),
+          rounds: r['rounds'] as int,
+          items: Program.itemsFromJson(r['items'] as String),
+        ),
+      )
       .toList();
 
   /// Speichert ein neues oder geändertes Programm und gibt seine Nummer zurück.
@@ -825,8 +894,10 @@ class AppDatabase {
   }
 
   void deleteProgram(int id) {
-    _db.execute('UPDATE programs SET deleted = 1, updated_at = ? WHERE id = ?',
-        [_now(), id]);
+    _db.execute(
+      'UPDATE programs SET deleted = 1, updated_at = ? WHERE id = ?',
+      [_now(), id],
+    );
   }
 
   // --- Verbindungsabbrüche ---
@@ -843,19 +914,24 @@ class AppDatabase {
   }
 
   void setLinkLossDuration(int id, int seconds) {
-    _db.execute(
-        'UPDATE link_losses SET down_s = ? WHERE id = ?', [seconds, id]);
+    _db.execute('UPDATE link_losses SET down_s = ? WHERE id = ?', [
+      seconds,
+      id,
+    ]);
   }
 
   List<LinkLoss> linkLosses(int workoutId) => _db
-      .select('SELECT * FROM link_losses WHERE workout_id = ? ORDER BY t, id',
-          [workoutId])
-      .map((r) => LinkLoss(
-            t: r['t'] as int,
-            device: r['device'] as String,
-            reason: r['reason'] as String?,
-            downS: r['down_s'] as int?,
-          ))
+      .select('SELECT * FROM link_losses WHERE workout_id = ? ORDER BY t, id', [
+        workoutId,
+      ])
+      .map(
+        (r) => LinkLoss(
+          t: r['t'] as int,
+          device: r['device'] as String,
+          reason: r['reason'] as String?,
+          downS: r['down_s'] as int?,
+        ),
+      )
       .toList();
 
   // --- Sätze (Kraft-Protokoll) ---
@@ -871,8 +947,9 @@ class AppDatabase {
   /// Die Sätze eines Trainings in der Reihenfolge, in der sie absolviert
   /// wurden.
   List<SetLog> setLogs(int workoutId) => _db
-      .select('SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id',
-          [workoutId])
+      .select('SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id', [
+        workoutId,
+      ])
       .map(_setLog)
       .toList();
 
@@ -900,15 +977,15 @@ class AppDatabase {
   }
 
   SetLog _setLog(Row r) => SetLog(
-        exerciseUuid: r['exercise_uuid'] as String,
-        t: r['t'] as int,
-        reps: r['reps'] as int?,
-        weightKg: (r['weight_kg'] as num?)?.toDouble(),
-        seconds: r['seconds'] as int?,
-        performedAt: r.keys.contains('started_at')
-            ? DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int)
-            : null,
-      );
+    exerciseUuid: r['exercise_uuid'] as String,
+    t: r['t'] as int,
+    reps: r['reps'] as int?,
+    weightKg: (r['weight_kg'] as num?)?.toDouble(),
+    seconds: r['seconds'] as int?,
+    performedAt: r.keys.contains('started_at')
+        ? DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int)
+        : null,
+  );
 
   // --- Synchronisation ---
 
@@ -955,8 +1032,9 @@ class AppDatabase {
       ...syncTables[table]!.where(row.containsKey),
     ];
     final uuid = row['uuid'] as String;
-    final local =
-        _db.select('SELECT updated_at FROM $table WHERE uuid = ?', [uuid]);
+    final local = _db.select('SELECT updated_at FROM $table WHERE uuid = ?', [
+      uuid,
+    ]);
     final values = [for (final c in columns) row[c]];
     if (local.isEmpty) {
       _db.execute(
@@ -1016,18 +1094,21 @@ class AppDatabase {
         'SELECT uuid, updated_at, deleted FROM workouts WHERE status != ?',
         [WorkoutStatus.recording.id],
       )
-      .map((r) => {
-            'uuid': r['uuid'],
-            'updated_at': r['updated_at'],
-            'deleted': r['deleted'],
-          })
+      .map(
+        (r) => {
+          'uuid': r['uuid'],
+          'updated_at': r['updated_at'],
+          'deleted': r['deleted'],
+        },
+      )
       .toList();
 
   /// Ein Training mit Messpunkten und Runden, wie es zu einem anderen Gerät
   /// geht.
   Map<String, Object?> workoutSyncData(String uuid) {
-    final row =
-        _db.select('SELECT * FROM workouts WHERE uuid = ?', [uuid]).first;
+    final row = _db.select('SELECT * FROM workouts WHERE uuid = ?', [
+      uuid,
+    ]).first;
     final id = row['id'] as int;
     return {
       'uuid': uuid,
@@ -1035,22 +1116,30 @@ class AppDatabase {
       for (final c in _workoutSyncColumns) c: row[c],
       'samples': [
         for (final s in _db.select(
-            'SELECT * FROM samples WHERE workout_id = ? ORDER BY t', [id]))
+          'SELECT * FROM samples WHERE workout_id = ? ORDER BY t',
+          [id],
+        ))
           [for (final c in _sampleSyncColumns) s[c]],
       ],
       'laps': [
-        for (final l in _db
-            .select('SELECT * FROM laps WHERE workout_id = ? ORDER BY t', [id]))
+        for (final l in _db.select(
+          'SELECT * FROM laps WHERE workout_id = ? ORDER BY t',
+          [id],
+        ))
           [l['t'], l['distance'], l['auto']],
       ],
       'sets': [
         for (final s in _db.select(
-            'SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id', [id]))
+          'SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id',
+          [id],
+        ))
           [s['exercise_uuid'], s['t'], s['reps'], s['weight_kg'], s['seconds']],
       ],
       'links': [
         for (final l in _db.select(
-            'SELECT * FROM link_losses WHERE workout_id = ? ORDER BY id', [id]))
+          'SELECT * FROM link_losses WHERE workout_id = ? ORDER BY id',
+          [id],
+        ))
           [l['t'], l['device'], l['reason'], l['down_s']],
       ],
     };
@@ -1082,11 +1171,7 @@ class AppDatabase {
         'UPDATE workouts SET '
         '${_workoutSyncColumns.map((c) => '$c = ?').join(', ')}, '
         'updated_at = ?, deleted = 0 WHERE id = ?',
-        [
-          for (final c in _workoutSyncColumns) data[c],
-          data['updated_at'],
-          id,
-        ],
+        [for (final c in _workoutSyncColumns) data[c], data['updated_at'], id],
       );
       final placeholders = List.filled(_sampleSyncColumns.length + 1, '?');
       for (final s in data['samples'] as List) {
@@ -1143,8 +1228,10 @@ class AppDatabase {
     _db.execute('DELETE FROM samples WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
-    _db.execute('UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
-        [updatedAt, id]);
+    _db.execute(
+      'UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
+      [updatedAt, id],
+    );
   }
 
   // --- Strava ---
@@ -1152,8 +1239,9 @@ class AppDatabase {
   /// Merkt sich, unter welcher Nummer ein Training bei Strava liegt.
   void setStravaId(int workoutId, int stravaId) {
     _db.execute(
-        'UPDATE workouts SET strava_id = ?, updated_at = ? WHERE id = ?',
-        [stravaId, _now(), workoutId]);
+      'UPDATE workouts SET strava_id = ?, updated_at = ? WHERE id = ?',
+      [stravaId, _now(), workoutId],
+    );
   }
 
   /// Die Strava-Nummern aller Trainings, die hochgeladen oder importiert
@@ -1166,8 +1254,10 @@ class AppDatabase {
 
   /// Ob es schon ein Training gibt, das höchstens [tolerance] vor oder nach
   /// [start] begonnen hat. Gelöschte zählen nicht.
-  bool hasWorkoutNear(DateTime start,
-      {Duration tolerance = const Duration(minutes: 1)}) {
+  bool hasWorkoutNear(
+    DateTime start, {
+    Duration tolerance = const Duration(minutes: 1),
+  }) {
     final ms = start.millisecondsSinceEpoch;
     return _db.select(
       'SELECT 1 FROM workouts WHERE deleted = 0 AND status != ? '
@@ -1198,9 +1288,10 @@ class AppDatabase {
       }
       finishWorkout(id, ascentM: ascentM);
       _db.execute(
-          'UPDATE workouts SET title = ?, strava_id = ?, imported = 1 '
-          'WHERE id = ?',
-          [title.trim().isEmpty ? null : title.trim(), stravaId, id]);
+        'UPDATE workouts SET title = ?, strava_id = ?, imported = 1 '
+        'WHERE id = ?',
+        [title.trim().isEmpty ? null : title.trim(), stravaId, id],
+      );
       _db.execute('COMMIT');
       return id;
     } catch (_) {
@@ -1213,8 +1304,12 @@ class AppDatabase {
 
   /// Ändert Titel, Sportart und Notiz eines Trainings. Leere Texte werden
   /// als „nicht gesetzt" gespeichert.
-  void updateWorkout(int id,
-      {required String title, required Sport sport, required String notes}) {
+  void updateWorkout(
+    int id, {
+    required String title,
+    required Sport sport,
+    required String notes,
+  }) {
     String? orNull(String s) => s.trim().isEmpty ? null : s.trim();
     _db.execute(
       'UPDATE workouts SET title = ?, sport = ?, notes = ?, updated_at = ? '
@@ -1226,7 +1321,11 @@ class AppDatabase {
   /// Sekunden mit Pulsmessung in jeder der fünf Zonen, aufsteigend.
   /// [thresholds] sind die vier Grenzen zwischen den Zonen. Mit [workoutId]
   /// nur dieses Training, mit [since] nur Trainings ab diesem Zeitpunkt.
-  List<int> zoneSeconds(List<int> thresholds, {int? workoutId, DateTime? since}) {
+  List<int> zoneSeconds(
+    List<int> thresholds, {
+    int? workoutId,
+    DateTime? since,
+  }) {
     final row = _db.select(
       'SELECT '
       'SUM(s.hr < ?1) AS z1, '
@@ -1270,8 +1369,9 @@ class AppDatabase {
     void store(String kind, num? value) {
       if (value == null) return;
       _db.execute(
-          'INSERT INTO best_efforts (workout_id, kind, value) VALUES (?, ?, ?)',
-          [workoutId, kind, value.toDouble()]);
+        'INSERT INTO best_efforts (workout_id, kind, value) VALUES (?, ?, ?)',
+        [workoutId, kind, value.toDouble()],
+      );
     }
 
     for (final kind in EffortKind.values) {
@@ -1304,7 +1404,8 @@ class AppDatabase {
 
   /// Der beste Wert jeder Art in einer Sportart, mit dem Training dazu.
   Map<EffortKind, ({double value, int workoutId, DateTime date})> bestEfforts(
-      Sport sport) {
+    Sport sport,
+  ) {
     ensureBestEfforts();
     final rows = _db.select(
       'SELECT e.kind, e.value, w.id, w.started_at FROM best_efforts e '
@@ -1319,7 +1420,8 @@ class AppDatabase {
       if (kind == null) continue;
       final value = (r['value'] as num).toDouble();
       final current = best[kind];
-      final better = current == null ||
+      final better =
+          current == null ||
           (kind.isTime ? value < current.value : value > current.value);
       if (better) {
         best[kind] = (
@@ -1377,8 +1479,10 @@ class AppDatabase {
   }
 
   void renameDevice(String deviceId, String name) {
-    _db.execute(
-        'UPDATE devices SET name = ? WHERE device_id = ?', [name, deviceId]);
+    _db.execute('UPDATE devices SET name = ? WHERE device_id = ?', [
+      name,
+      deviceId,
+    ]);
   }
 
   void forgetDevice(String deviceId) {
@@ -1387,12 +1491,16 @@ class AppDatabase {
 
   List<SavedDevice> devices() => _db
       .select('SELECT * FROM devices ORDER BY added_at')
-      .map((r) => SavedDevice(
-            deviceId: r['device_id'] as String,
-            name: r['name'] as String,
-            kind: DeviceKind.values.firstWhere((k) => k.name == r['kind'],
-                orElse: () => DeviceKind.unknown),
-          ))
+      .map(
+        (r) => SavedDevice(
+          deviceId: r['device_id'] as String,
+          name: r['name'] as String,
+          kind: DeviceKind.values.firstWhere(
+            (k) => k.name == r['kind'],
+            orElse: () => DeviceKind.unknown,
+          ),
+        ),
+      )
       .toList();
 
   /// Die Geräte, die zuletzt für diese Sportart gewählt waren.
@@ -1404,8 +1512,10 @@ class AppDatabase {
   void setDevicesForSport(Sport sport, Iterable<String> deviceIds) {
     _db.execute('DELETE FROM sport_devices WHERE sport = ?', [sport.id]);
     for (final id in deviceIds) {
-      _db.execute('INSERT INTO sport_devices (sport, device_id) VALUES (?, ?)',
-          [sport.id, id]);
+      _db.execute(
+        'INSERT INTO sport_devices (sport, device_id) VALUES (?, ?)',
+        [sport.id, id],
+      );
     }
   }
 }

@@ -783,6 +783,7 @@ const List<BuiltinExercise> builtinExercises = [
     caution:
         'Ein Kissen vor den Kopf legen; die Handgelenke vorher aufwärmen.',
     easierKey: 'cali_50_froschstand',
+    harderKey: 'yoga_70_gluehwuermchen',
   ),
   BuiltinExercise(
     key: 'dehnen_01_nacken',
@@ -2729,5 +2730,21 @@ const List<BuiltinExercise> builtinExercises = [
     caution:
         'Bei Knieschmerzen auf einem Kissen sitzen oder nur die Arme üben.',
     easierKey: 'dehnen_24_kuhgesicht_arme',
+  ),
+  BuiltinExercise(
+    key: 'yoga_70_gluehwuermchen',
+    category: ExerciseCategory.yoga,
+    name: 'Glühwürmchen (Tittibhasana)',
+    description:
+        'Aus der tiefen Hocke mit gegrätschten Füßen die Hände schulterbreit hinter den Fersen flach aufsetzen und die Oberschenkel möglichst hoch auf die Oberarme legen. Gewicht nach hinten auf die Hände verlagern, bis die Füße abheben, dann beide Beine nach vorn strecken. Bauch fest, Arme kräftig in den Boden drücken.',
+    areas: [BodyArea.arms, BodyArea.shoulders, BodyArea.core, BodyArea.legs],
+    timed: true,
+    batch: 3,
+    sanskrit: 'Tittibhasana',
+    poseGroup: PoseGroup.armSupport,
+    level: 3,
+    caution:
+        'Erst üben, wenn die Krähe sicher gelingt. Handgelenke vorher aufwärmen und ein Kissen unter das Gesäß legen.',
+    easierKey: 'cali_20_kraehe',
   ),
 ];

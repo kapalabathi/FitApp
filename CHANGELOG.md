@@ -4,6 +4,16 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.15.0] – 2026-10-14
+
+### Hinzugefügt
+- Neue Yoga-Übung **Glühwürmchen** (Tittibhasana, G-213) auf Wunsch des Nutzers: Armbalance, Stufe schwer, mit Anleitung und Sicherheitshinweis, als schwerere Variante der Krähe verknüpft. Damit 213 Übungen.
+- Ein automatischer Test dazu (insgesamt 237).
+
+### Geändert
+- Bild „Knie zu den Ohren" endgültig nach der Vorlage des Nutzers, jetzt auch mit Füßen in normaler Größe.
+- Die Datenbank hat eine neue Fassung (14), die das Glühwürmchen auf bestehenden Geräten nachträglich anlegt. Das Nachrüsten neuer mitgelieferter Übungen ist dafür in eine wiederverwendbare Methode gewandert.
+
 ## [0.14.1] – 2026-10-14
 
 ### Geändert

@@ -210,7 +210,7 @@ void main() {
       final byKey = {
         for (final e in upgraded.exercises()) e.builtinKey: e,
       };
-      expect(byKey, hasLength(212));
+      expect(byKey, hasLength(213));
       expect(byKey['yoga_45_fisch']!.poseGroup, PoseGroup.backbend);
       expect(byKey['yoga_45_fisch']!.areas, isNotEmpty);
       expect(byKey['yoga_05_kindhaltung']!.harderUuid,
@@ -223,6 +223,23 @@ void main() {
             'Calisthenics: Weg zu Liegestütz und Dip',
             'Yoga: Nach dem Laufen',
           ]));
+    });
+
+    test('Fassung 14 bringt das Glühwürmchen', () {
+      final raw = sqlite3.openInMemory();
+      AppDatabase(raw);
+      raw.execute(
+          "DELETE FROM exercises WHERE builtin_key = 'yoga_70_gluehwuermchen'");
+      raw.execute("UPDATE exercises SET harder_uuid = NULL "
+          "WHERE uuid = 'builtin-cali_20_kraehe'");
+      raw.execute('PRAGMA user_version = 13');
+      final upgraded = AppDatabase(raw);
+      addTearDown(upgraded.close);
+      final byKey = {for (final e in upgraded.exercises()) e.builtinKey: e};
+      expect(byKey['yoga_70_gluehwuermchen']!.poseGroup, PoseGroup.armSupport);
+      expect(byKey['yoga_70_gluehwuermchen']!.areas, isNotEmpty);
+      expect(byKey['cali_20_kraehe']!.harderUuid,
+          'builtin-yoga_70_gluehwuermchen');
     });
 
     test('mitgelieferte Programme üben einseitige Haltungen beidseitig', () {

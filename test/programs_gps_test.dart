@@ -46,19 +46,19 @@ Iterable<String> flow(List<ProgramEvent> events) =>
 
 void main() {
   group('Mitgelieferte Inhalte', () {
-    test('212 Übungen mit eindeutigen Kennungen', () {
-      expect(builtinExercises, hasLength(212));
+    test('213 Übungen mit eindeutigen Kennungen', () {
+      expect(builtinExercises, hasLength(213));
       for (final c in ExerciseCategory.values) {
         expect(
             builtinExercises.where((e) => e.category == c),
             hasLength(switch (c) {
-              ExerciseCategory.yoga => 69,
+              ExerciseCategory.yoga => 70,
               ExerciseCategory.crossfit => 50,
               ExerciseCategory.calisthenics => 53,
               ExerciseCategory.stretching => 40,
             }));
       }
-      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(212));
+      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(213));
       expect(builtinExercises.where((e) => e.batch == 1), hasLength(80));
       // Jede Übung nennt mindestens einen Körperbereich.
       expect(builtinExercises.every((e) => e.areas.isNotEmpty), isTrue);
@@ -91,8 +91,8 @@ void main() {
     test('eine neue Datenbank enthält Übungen und Programme', () {
       final db = AppDatabase.inMemory();
       addTearDown(db.close);
-      expect(db.exercises(), hasLength(212));
-      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(69));
+      expect(db.exercises(), hasLength(213));
+      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(70));
       expect(db.programs(),
           hasLength(builtinPrograms.length +
               builtinProgramsBatch2.length +
@@ -131,10 +131,10 @@ void main() {
       stored = db.exercises().firstWhere((e) => e.id == id);
       expect(stored.name, 'Schlitten');
       expect(stored.imagePath, '/x.jpg');
-      expect(db.exercises(), hasLength(213));
+      expect(db.exercises(), hasLength(214));
 
       db.deleteExercise(id);
-      expect(db.exercises(), hasLength(212));
+      expect(db.exercises(), hasLength(213));
     });
 
     test('Programm speichern und wieder laden', () {

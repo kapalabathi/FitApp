@@ -52,7 +52,7 @@ void main() {
   test('zwei frische Geräte haben nach dem Abgleich nichts doppelt', () async {
     await syncBoth();
     for (final db in [phone, tablet]) {
-      expect(db.exercises(), hasLength(212));
+      expect(db.exercises(), hasLength(213));
       expect(db.programs(), hasLength(32));
       expect(db.intervalTemplates(), hasLength(2));
     }
@@ -185,7 +185,7 @@ void main() {
     final onTablet =
         tablet.exercises().firstWhere((e) => e.builtinKey == 'yoga_11_baum');
     expect(onTablet.description, 'Meine Notiz zum Baum');
-    expect(tablet.exercises(), hasLength(212));
+    expect(tablet.exercises(), hasLength(213));
   });
 
   test('eine gelöschte Vorlage verschwindet auch auf dem anderen Gerät',
