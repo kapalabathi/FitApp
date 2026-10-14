@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.14.1] – 2026-10-14
+
+### Geändert
+- Zehn Übungsbilder neu erzeugt und eingebunden. Richtig sind jetzt: Schultertippen im Stütz, umgekehrte Planke, Pflug, gedrehter Stuhl, Welpe, Stütz halten, Schulterstand mit einem Bein; Tuck Front Lever ist besser, aber noch nicht waagerecht.
+- Gedrehtes Dreieck und Knie zu den Ohren stimmen weiterhin nicht. Ihre Beschreibung in der Grafikliste ist noch einmal neu gefasst, mit Blick von schräg hinten und ausdrücklicher Angabe der linken und rechten Hand beziehungsweise der Knie neben den Ohren.
+
 ## [0.14.0] – 2026-10-14
 
 Anlass: FIT-Datei vom Laufband (2 Stunden, 9,4 km) mit 38 Verbindungsabbrüchen von je etwa 9 bis 10 Sekunden. Strecke und Rundenzeiten waren trotzdem richtig; die vier automatischen Pausen hatte der Nutzer selbst ausgelöst, indem er das Band anhielt.
