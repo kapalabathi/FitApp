@@ -659,7 +659,8 @@
   "gruppe": "stuetz",
   "stufe": 3,
   "hinweis": "Ein Kissen vor den Kopf legen; die Handgelenke vorher aufwärmen.",
-  "leichter": "cali_50_froschstand"
+  "leichter": "cali_50_froschstand",
+  "schwerer": "yoga_70_gluehwuermchen"
  },
  "G-061": {
   "anleitung": "Den Kopf zur Schulter neigen, die Hand liegt nur leicht auf. Die Gegenschulter nach unten ziehen. Seite wechseln.",
@@ -2315,5 +2316,20 @@
   "seiten": true,
   "hinweis": "Bei Knieschmerzen auf einem Kissen sitzen oder nur die Arme üben.",
   "leichter": "dehnen_24_kuhgesicht_arme"
+ },
+ "G-213": {
+  "anleitung": "Aus der tiefen Hocke mit gegrätschten Füßen die Hände schulterbreit hinter den Fersen flach aufsetzen und die Oberschenkel möglichst hoch auf die Oberarme legen. Gewicht nach hinten auf die Hände verlagern, bis die Füße abheben, dann beide Beine nach vorn strecken. Bauch fest, Arme kräftig in den Boden drücken.",
+  "bereiche": [
+   "arme",
+   "schultern",
+   "rumpf",
+   "beine"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Tittibhasana",
+  "gruppe": "stuetz",
+  "stufe": 3,
+  "hinweis": "Erst üben, wenn die Krähe sicher gelingt. Handgelenke vorher aufwärmen und ein Kissen unter das Gesäß legen.",
+  "leichter": "cali_20_kraehe"
  }
 }

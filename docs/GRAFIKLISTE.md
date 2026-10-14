@@ -1,6 +1,6 @@
 # Grafikliste Übungen (zu I-020)
 
-212 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-212`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
+213 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-213`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
 
 ## Allgemeine Vorgaben für alle Grafiken
 
@@ -303,19 +303,27 @@ Ergänzt am 2026-10-14 nach einem Abgleich mit dem Buch: die Haltungen, die es f
 | G-207 | `yoga_64_stock` | Stock (Dandasana) | Seite | 1 | Aufrechter Sitz am Boden, beide Beine gestreckt und geschlossen nach vorn, die Fersen schieben weg, die Zehen zeigen nach oben. Die Hände liegen flach neben der Hüfte, Arme gestreckt, Rücken senkrecht, Blick geradeaus. |
 | G-208 | `yoga_65_liegende_hand_zum_zeh` | Liegende Hand zum Zeh (Supta Padangusthasana) | Seite | 1 | Rückenlage, ein Bein gestreckt am Boden, das andere gestreckt senkrecht nach oben gehoben. Die Hand derselben Seite hält den großen Zeh des gehobenen Beins mit Zeige- und Mittelfinger, die andere Hand liegt auf dem Oberschenkel des unteren Beins. Kopf am Boden. |
 | G-209 | `yoga_66_liegender_heldensitz` | Liegender Heldensitz (Supta Virasana) | Seite | 1 | Aus dem Heldensitz nach hinten gelegt: das Gesäß zwischen den Füßen am Boden, Unterschenkel flach neben den Oberschenkeln, die Knie geschlossen am Boden. Der Rücken liegt flach auf der Matte, die Arme sind über dem Kopf ausgestreckt. |
-| G-210 | `yoga_67_ohrendruck` | Knie zu den Ohren (Karnapidasana) | Seite | 1 | Kompakte, symmetrische Haltung von der Seite. In der Bildmitte ein hoher, runder Rücken: Die Schultern liegen auf der Matte, das Becken ist senkrecht darüber der höchste Punkt. Die Oberschenkel hängen fast SENKRECHT dicht vor dem Rumpf herab, die KNIE liegen genau in der Mitte auf der Matte, direkt an den Schultern links und rechts neben dem Kopf. Der KOPF ist zwischen den Knien verborgen und kaum zu sehen: Hinterkopf auf der Matte, Kinn fest zur Brust, KEIN langer Hals. Von den Knien aus liegen Schienbeine und Füße flach auf der Matte und zeigen waagerecht zur EINEN Seite (im Bild nach links), auf dem Fußrücken, Fußsohlen nach oben. Die ARME liegen gestreckt flach auf der Matte und zeigen waagerecht zur ANDEREN Seite (im Bild nach rechts), die Hände am Ende verschränkt. Beine und Arme bilden so eine flache Linie am Boden, die sich unter dem hohen Rücken in der Mitte trifft. Keine Decke. |
+| G-210 | `yoga_67_ohrendruck` | Knie zu den Ohren (Karnapidasana) | Seite | 1 | Kompakte, symmetrische Haltung von der Seite. In der Bildmitte ein hoher, runder Rücken: Die Schultern liegen auf der Matte, das Becken ist senkrecht darüber der höchste Punkt. Die Oberschenkel hängen fast SENKRECHT dicht vor dem Rumpf herab, die KNIE liegen genau in der Mitte auf der Matte, direkt an den Schultern links und rechts neben dem Kopf. Der KOPF ist zwischen den Knien verborgen und kaum zu sehen: Hinterkopf auf der Matte, Kinn fest zur Brust, KEIN langer Hals. Von den Knien aus liegen Schienbeine und Füße flach auf der Matte und zeigen waagerecht zur EINEN Seite (im Bild nach links), auf dem Fußrücken, Fußsohlen nach oben. Die FÜSSE haben normale Größe: ein Fuß ist etwa so lang wie der Unterarm ohne Hand, keinesfalls länger; die Schienbeine sind deutlich länger als die Füße. Die ARME liegen gestreckt flach auf der Matte und zeigen waagerecht zur ANDEREN Seite (im Bild nach rechts), die Hände am Ende verschränkt. Beine und Arme bilden so eine flache Linie am Boden, die sich unter dem hohen Rücken in der Mitte trifft. Keine Decke. |
 | G-211 | `yoga_68_schulterstand_ein_bein` | Schulterstand mit einem Bein (Eka Pada Sarvangasana) | Seite | 1 | Schulterstand auf einer flach gefalteten Decke, Rumpf senkrecht, die Hände stützen den Rücken. Ein Bein bleibt gestreckt senkrecht nach oben. Das andere ist gestreckt über den Kopf gesenkt, seine Zehen berühren hinter dem Kopf die Matte. FUSS des gesenkten Beins: die Zehen zeigen vom Kopf WEG, die Ferse zeigt nach oben; der Fuß ist nicht zum Kopf hin zurückgeknickt. |
 | G-212 | `yoga_69_kuhgesicht` | Kuhgesicht (Gomukhasana) | Front | 1 | Aufrechter Sitz am Boden, die Knie liegen genau übereinander, die Füße zeigen links und rechts neben der Hüfte nach hinten. Ein Arm greift von oben über die Schulter, der andere von unten hinter den Rücken, die Finger beider Hände haken zwischen den Schulterblättern ineinander. |
+
+## Erweiterung Armbalance
+
+Ergänzt am 2026-10-14 auf Wunsch des Nutzers. Die Krähe gibt es bereits als G-060.
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-213 | `yoga_70_gluehwuermchen` | Glühwürmchen (Tittibhasana) | Front | 1 | Armbalance von vorn gesehen: Die Figur trägt ihr ganzes Gewicht nur auf beiden Händen, die flach und schulterbreit zwischen den Beinen am Boden stehen, Finger nach vorn, Arme fast gestreckt. Die Rückseiten der Oberschenkel liegen hoch auf den Oberarmen, nah an den Schultern. Beide Beine sind GESTRECKT, weit gegrätscht und schräg nach vorn oben gehoben, die Füße mindestens auf Höhe der Schultern, Zehen gestreckt. Das Gesäß schwebt frei über dem Boden, kein Fuß und kein Knie berührt die Matte. Oberkörper leicht nach vorn geneigt zwischen den Beinen, Kopf gehoben, Blick nach vorn. |
 
 ## Zusammenfassung
 
 | Kategorie | Nummern | Anzahl |
 |-----------|---------|--------|
-| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-176, G-200 – G-212 | 69 |
+| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-176, G-200 – G-213 | 70 |
 | Crossfit | G-021 – G-040, G-101 – G-120, G-177 – G-186 | 50 |
 | Calisthenics | G-041 – G-060, G-121 – G-140, G-187 – G-199 | 53 |
 | Dehnen | G-061 – G-080, G-141 – G-160 | 40 |
-| **Gesamt** | | **212** |
+| **Gesamt** | | **213** |
 
 Die Erweiterung G-081 bis G-160 (Stand 2026-10-11) kommt ohne Geräte aus. Bei
 Crossfit trägt die Figur weiterhin Sportschuhe, sonst ist sie barfuß.
