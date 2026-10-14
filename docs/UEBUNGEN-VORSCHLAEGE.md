@@ -4,7 +4,7 @@ Stand: 2026-10-12
 
 Diese Liste ist eine **Sammlung zur Auswahl**. Bis auf die als übernommen markierten ist keine der Übungen in der App, in der [Grafikliste](GRAFIKLISTE.md) oder in `tools/uebungen.json` enthalten. Die 160 vorhandenen Übungen sind hier nicht noch einmal aufgeführt.
 
-Übernommen sind bisher V-014, V-015, V-027 und V-028 (2026-10-14, als G-161 bis G-164) sowie V-013, V-016, V-019, V-003, V-004, V-002, V-005, V-006, V-008, V-011, V-009, V-213, V-116, V-118, V-120, V-122, V-123 (2026-10-14, als G-165 bis G-181).
+Übernommen sind bisher V-014, V-015, V-027 und V-028 (2026-10-14, als G-161 bis G-164) sowie V-013, V-016, V-019, V-003, V-004, V-002, V-005, V-006, V-008, V-011, V-009, V-213 (2026-10-14, als G-165 bis G-176) und V-043, V-045, V-040, V-041, V-060, V-056, V-053, V-058, V-050, V-052, V-061, V-062, V-063, V-065, V-070, V-071, V-067, V-073, V-074, V-076, V-082, V-077, V-087 (2026-10-14, als G-177 bis G-199) sowie V-007 und V-020 (2026-10-14, als G-206 und G-212).
 
 Die Nummern (V-001 …) sind fest und dienen nur der Auswahl, z. B. „nimm V-003, V-017 und alle aus Abschnitt 5". Für jede übernommene Übung wird später eine Grafik gebraucht.
 
@@ -37,7 +37,7 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | V-004 | Gedrehter seitlicher Winkel *(übernommen als G-169)* | Ausfallschritt, Oberkörper über das vordere Knie gedreht | Beine, Rumpf | – | Zeit | 2 |
 | V-005 | Göttin *(übernommen als G-171)* | Breiter Stand, Knie gebeugt, Arme im rechten Winkel erhoben | Beine, Hüfte | – | Zeit | 1 |
 | V-006 | Hoher Ausfallschritt *(übernommen als G-172)* | Ausfallschritt auf dem hinteren Fußballen, Arme nach oben | Beine, Hüfte | – | Zeit | 1 |
-| V-007 | Stehender Spagat | Vorbeuge auf einem Bein, das andere Bein gestreckt nach oben | Beine, Gleichgewicht | – | Zeit | 2 |
+| V-007 | Stehender Spagat *(übernommen als G-206)* | Vorbeuge auf einem Bein, das andere Bein gestreckt nach oben | Beine, Gleichgewicht | – | Zeit | 2 |
 | V-008 | Hand-zum-Zeh im Stand *(übernommen als G-173)* | Einbeinstand, das gestreckte Bein mit der Hand nach vorn gehalten | Beine, Gleichgewicht | – | Zeit | 3 |
 | V-009 | Dreibeiniger Hund *(übernommen als G-175)* | Herabschauender Hund, ein Bein gestreckt nach oben | Schultern, Beine | – | Zeit | 1 |
 | V-010 | Wilder Hund | Aus dem dreibeinigen Hund nach hinten aufgedreht, Brust nach oben | Schultern, Rumpf | – | Zeit | 2 |
@@ -50,7 +50,7 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | V-017 | Gestützte Brücke | Schulterbrücke mit Block unter dem Kreuzbein | Rücken, Hüfte | Yoga-Block | Zeit | 1 |
 | V-018 | Rad | Volle Rückbeuge auf Händen und Füßen | Rücken, Schultern | – | Zeit | 3 |
 | V-019 | Heldensitz *(übernommen als G-167)* | Fersensitz, Gesäß zwischen den Füßen am Boden | Oberschenkel, Knie | – | Zeit | 2 |
-| V-020 | Kuhgesicht (Gomukhasana) | Sitz mit übereinandergelegten Knien, Hände greifen hinter dem Rücken | Hüfte, Schultern | – | Zeit | 2 |
+| V-020 | Kuhgesicht (Gomukhasana) *(übernommen als G-212)* | Sitz mit übereinandergelegten Knien, Hände greifen hinter dem Rücken | Hüfte, Schultern | – | Zeit | 2 |
 | V-021 | Feuerholz | Sitz, Unterschenkel waagerecht übereinandergelegt | Hüfte, Gesäß | – | Zeit | 2 |
 | V-022 | Kompass | Sitz, ein Bein gestreckt über die Schulter geführt, Oberkörper gedreht | Beine, Rumpf | – | Zeit | 3 |
 | V-023 | Schildkröte | Sitz mit gegrätschten Beinen, Arme unter den Knien nach außen | Rücken, Hüfte | – | Zeit | 3 |
@@ -75,59 +75,59 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | V-037 | Stoßen (Push Jerk) | Hantel von den Schultern mit Beinimpuls über den Kopf | Schultern, Beine | Langhantel | Wdh. | 3 |
 | V-038 | Schulterdrücken stehend | Hantel streng von den Schultern über den Kopf drücken | Schultern, Arme | Langhantel | Wdh. | 2 |
 | V-039 | Sumo-Kreuzheben mit hohem Zug | Breiter Stand, Hantel vom Boden bis unter das Kinn | Beine, Schultern | Langhantel, Kettlebell | Wdh. | 2 |
-| V-040 | Kurzhantel-Thruster | Kniebeuge und Überkopfdrücken mit zwei Kurzhanteln | Ganzkörper | Kurzhanteln | Wdh. | 2 |
-| V-041 | Devil Press | Burpee auf zwei Kurzhanteln, danach beide in einem Zug über den Kopf | Ganzkörper | Kurzhanteln | Wdh. | 3 |
+| V-040 | Kurzhantel-Thruster *(übernommen als G-179)* | Kniebeuge und Überkopfdrücken mit zwei Kurzhanteln | Ganzkörper | Kurzhanteln | Wdh. | 2 |
+| V-041 | Devil Press *(übernommen als G-180)* | Burpee auf zwei Kurzhanteln, danach beide in einem Zug über den Kopf | Ganzkörper | Kurzhanteln | Wdh. | 3 |
 | V-042 | Man Maker | Liegestütz, Rudern je Seite, Umsetzen und Drücken mit Kurzhanteln | Ganzkörper | Kurzhanteln | Wdh. | 3 |
-| V-043 | Kettlebell-Umsetzen und Drücken | Kettlebell zur Schulter umsetzen, dann über den Kopf drücken | Schultern, Rumpf | Kettlebell | Wdh. | 2 |
+| V-043 | Kettlebell-Umsetzen und Drücken *(übernommen als G-177)* | Kettlebell zur Schulter umsetzen, dann über den Kopf drücken | Schultern, Rumpf | Kettlebell | Wdh. | 2 |
 | V-044 | Kettlebell-Reißen | Kettlebell in einem Zug vom Schwung über den Kopf | Schultern, Hüfte | Kettlebell | Wdh. | 3 |
-| V-045 | Türkisches Aufstehen | Aus der Rückenlage mit gestreckt gehaltener Kettlebell aufstehen | Ganzkörper | Kettlebell | Wdh. | 3 |
+| V-045 | Türkisches Aufstehen *(übernommen als G-178)* | Aus der Rückenlage mit gestreckt gehaltener Kettlebell aufstehen | Ganzkörper | Kettlebell | Wdh. | 3 |
 | V-046 | Medizinball-Slam | Ball über den Kopf heben und kräftig auf den Boden werfen | Rumpf, Schultern | Medizinball | Wdh. | 1 |
 | V-047 | Medizinball-Clean | Ball vom Boden in die tiefe Hocke umsetzen | Beine, Rumpf | Medizinball | Wdh. | 2 |
 | V-048 | Kipping-Klimmzug | Klimmzug mit Schwung aus der Hüfte | Rücken, Arme | Klimmzugstange | Wdh. | 3 |
 | V-049 | Brust-zur-Stange | Klimmzug, bis die Brust die Stange berührt | Rücken, Arme | Klimmzugstange | Wdh. | 3 |
-| V-050 | Knie-zu-Ellbogen | Im Hang die Knie bis an die Ellbogen ziehen | Rumpf, Griffkraft | Klimmzugstange | Wdh. | 2 |
+| V-050 | Knie-zu-Ellbogen *(übernommen als G-185)* | Im Hang die Knie bis an die Ellbogen ziehen | Rumpf, Griffkraft | Klimmzugstange | Wdh. | 2 |
 | V-051 | Handstand-Liegestütz an der Wand | Im Handstand an der Wand Kopf zum Boden und wieder hoch | Schultern, Arme | Wand | Wdh. | 3 |
-| V-052 | Wandlauf (Wall Walk) | Aus der Bauchlage mit den Füßen die Wand hoch bis in den Handstand | Schultern, Rumpf | Wand | Wdh. | 3 |
-| V-053 | Doppelsprünge (Double Under) | Seilspringen, das Seil geht je Sprung zweimal durch | Waden, Ausdauer | Springseil | Wdh. | 3 |
+| V-052 | Wandlauf (Wall Walk) *(übernommen als G-186)* | Aus der Bauchlage mit den Füßen die Wand hoch bis in den Handstand | Schultern, Rumpf | Wand | Wdh. | 3 |
+| V-053 | Doppelsprünge (Double Under) *(übernommen als G-183)* | Seilspringen, das Seil geht je Sprung zweimal durch | Waden, Ausdauer | Springseil | Wdh. | 3 |
 | V-054 | Burpee über die Hantel | Burpee, danach seitlicher Sprung über die Hantelstange | Ganzkörper | Langhantel | Wdh. | 2 |
 | V-055 | Burpee mit Box Jump | Burpee, danach Sprung auf die Box | Ganzkörper | Box | Wdh. | 3 |
-| V-056 | Ausfallschritt über Kopf | Gehender Ausfallschritt mit gestreckt über dem Kopf gehaltenem Gewicht | Beine, Schultern | Hantelscheibe, Kurzhantel | Wdh. | 2 |
+| V-056 | Ausfallschritt über Kopf *(übernommen als G-182)* | Gehender Ausfallschritt mit gestreckt über dem Kopf gehaltenem Gewicht | Beine, Schultern | Hantelscheibe, Kurzhantel | Wdh. | 2 |
 | V-057 | Sandsack über die Schulter | Sandsack vom Boden aufnehmen und über die Schulter werfen | Rücken, Beine | Sandsack | Wdh. | 2 |
-| V-058 | Pendellauf (Shuttle Run) | Kurze Strecke hin und zurück sprinten, Boden berühren | Beine, Ausdauer | – | Wdh. | 1 |
+| V-058 | Pendellauf (Shuttle Run) *(übernommen als G-184)* | Kurze Strecke hin und zurück sprinten, Boden berühren | Beine, Ausdauer | – | Wdh. | 1 |
 | V-059 | Sit-up mit Ball | Sit-up, Ball über dem Kopf und vorn auf den Boden tippen | Rumpf | Medizinball | Wdh. | 1 |
-| V-060 | Rudern im Stütz (Renegade Row) | Im Liegestütz auf zwei Kurzhanteln abwechselnd rudern | Rücken, Rumpf | Kurzhanteln | Wdh. | 2 |
+| V-060 | Rudern im Stütz (Renegade Row) *(übernommen als G-181)* | Im Liegestütz auf zwei Kurzhanteln abwechselnd rudern | Rücken, Rumpf | Kurzhanteln | Wdh. | 2 |
 
 ## 3 Calisthenics
 
 | Nr. | Übung | Kurzbeschreibung | Bereiche | Gerät | Art | Stufe |
 |---|---|---|---|---|---|---|
-| V-061 | Liegestütz erhöht (Hände) | Hände auf einer Erhöhung, leichter als am Boden | Brust, Arme | Bank, Stuhl | Wdh. | 1 |
-| V-062 | Liegestütz mit erhöhten Füßen | Füße auf einer Erhöhung, mehr Last auf den Schultern | Brust, Schultern | Bank, Stuhl | Wdh. | 2 |
-| V-063 | Liegestütz mit Klatschen | Explosiv hochdrücken, in der Luft klatschen | Brust, Arme | – | Wdh. | 3 |
+| V-061 | Liegestütz erhöht (Hände) *(übernommen als G-187)* | Hände auf einer Erhöhung, leichter als am Boden | Brust, Arme | Bank, Stuhl | Wdh. | 1 |
+| V-062 | Liegestütz mit erhöhten Füßen *(übernommen als G-188)* | Füße auf einer Erhöhung, mehr Last auf den Schultern | Brust, Schultern | Bank, Stuhl | Wdh. | 2 |
+| V-063 | Liegestütz mit Klatschen *(übernommen als G-189)* | Explosiv hochdrücken, in der Luft klatschen | Brust, Arme | – | Wdh. | 3 |
 | V-064 | Liegestütz mit Aufdrehen (T) | Nach jedem Liegestütz in den Seitstütz aufdrehen | Brust, Rumpf | – | Wdh. | 2 |
-| V-065 | Negativer Liegestütz | Nur langsam absenken, über die Knie zurück nach oben | Brust, Arme | – | Wdh. | 1 |
+| V-065 | Negativer Liegestütz *(übernommen als G-190)* | Nur langsam absenken, über die Knie zurück nach oben | Brust, Arme | – | Wdh. | 1 |
 | V-066 | Einarmiger Liegestütz | Liegestütz auf einem Arm, Beine weit gegrätscht | Brust, Rumpf | – | Wdh. | 3 |
-| V-067 | Negativer Klimmzug | Oben einsteigen und langsam ablassen | Rücken, Arme | Klimmzugstange | Wdh. | 1 |
+| V-067 | Negativer Klimmzug *(übernommen als G-193)* | Oben einsteigen und langsam ablassen | Rücken, Arme | Klimmzugstange | Wdh. | 1 |
 | V-068 | Klimmzug breit | Klimmzug mit weitem Obergriff | Rücken | Klimmzugstange | Wdh. | 3 |
 | V-069 | Klimmzug im Neutralgriff | Handflächen zeigen zueinander | Rücken, Arme | Klimmzugstange | Wdh. | 2 |
-| V-070 | Aktives Hängen | Im Hang die Schulterblätter nach unten ziehen und halten | Schultern, Griffkraft | Klimmzugstange | Zeit | 1 |
-| V-071 | Schulterblatt-Klimmzug | Im Hang nur die Schulterblätter senken und heben | Rücken, Schultern | Klimmzugstange | Wdh. | 1 |
+| V-070 | Aktives Hängen *(übernommen als G-191)* | Im Hang die Schulterblätter nach unten ziehen und halten | Schultern, Griffkraft | Klimmzugstange | Zeit | 1 |
+| V-071 | Schulterblatt-Klimmzug *(übernommen als G-192)* | Im Hang nur die Schulterblätter senken und heben | Rücken, Schultern | Klimmzugstange | Wdh. | 1 |
 | V-072 | Muscle-up an der Stange | Klimmzug mit Übergang in den Stütz über der Stange | Rücken, Brust, Arme | Klimmzugstange | Wdh. | 3 |
-| V-073 | Stütz halten | Mit gestreckten Armen auf den Barrenholmen halten | Schultern, Arme | Barren | Zeit | 1 |
-| V-074 | Negativer Dip | Im Stütz einsteigen und langsam absenken | Brust, Arme | Barren | Wdh. | 1 |
+| V-073 | Stütz halten *(übernommen als G-194)* | Mit gestreckten Armen auf den Barrenholmen halten | Schultern, Arme | Barren | Zeit | 1 |
+| V-074 | Negativer Dip *(übernommen als G-195)* | Im Stütz einsteigen und langsam absenken | Brust, Arme | Barren | Wdh. | 1 |
 | V-075 | Tuck Planche | Armstütz, Knie an der Brust, Füße vom Boden | Schultern, Rumpf | – | Zeit | 3 |
-| V-076 | Frosch-Stand | Armstütz, Knie auf den Ellbogen abgelegt | Arme, Gleichgewicht | – | Zeit | 2 |
-| V-077 | Tuck Front Lever | Im Hang den Körper waagerecht, Knie angezogen | Rücken, Rumpf | Klimmzugstange | Zeit | 3 |
+| V-076 | Frosch-Stand *(übernommen als G-196)* | Armstütz, Knie auf den Ellbogen abgelegt | Arme, Gleichgewicht | – | Zeit | 2 |
+| V-077 | Tuck Front Lever *(übernommen als G-198)* | Im Hang den Körper waagerecht, Knie angezogen | Rücken, Rumpf | Klimmzugstange | Zeit | 3 |
 | V-078 | Tuck Back Lever | Im Hang rücklings waagerecht, Knie angezogen | Schultern, Rumpf | Klimmzugstange | Zeit | 3 |
 | V-079 | Skin the Cat | Im Hang die Beine durch die Arme nach hinten führen und zurück | Schultern, Rumpf | Klimmzugstange | Wdh. | 3 |
 | V-080 | Scheibenwischer im Hang | Im Hang die gestreckten Beine nach links und rechts schwenken | Rumpf | Klimmzugstange | Wdh. | 3 |
 | V-081 | Drachenflagge | Auf der Bank den gestreckten Körper nur auf den Schultern senken | Rumpf | Bank | Wdh. | 3 |
-| V-082 | Knieheben im Hang | Im Hang die Knie zur Brust ziehen | Rumpf, Hüftbeuger | Klimmzugstange | Wdh. | 1 |
+| V-082 | Knieheben im Hang *(übernommen als G-197)* | Im Hang die Knie zur Brust ziehen | Rumpf, Hüftbeuger | Klimmzugstange | Wdh. | 1 |
 | V-083 | Shrimp-Kniebeuge | Einbeinige Kniebeuge, hinterer Fuß in der Hand | Beine, Gleichgewicht | – | Wdh. | 3 |
 | V-084 | Sissy-Kniebeuge | Knie weit nach vorn, Oberkörper lehnt nach hinten | Oberschenkel | – | Wdh. | 3 |
 | V-085 | Nordic Curl | Kniend, Füße fixiert, Körper langsam nach vorn ablassen | Oberschenkel-Rückseite | Fußfixierung | Wdh. | 3 |
 | V-086 | Einbeiniges Wadenheben | Wadenheben auf einem Bein an einer Stufe | Waden | Stufe | Wdh. | 1 |
-| V-087 | Einbeiniges Kreuzheben ohne Gewicht | Standwaage: Oberkörper vor, freies Bein nach hinten | Gesäß, Gleichgewicht | – | Wdh. | 1 |
+| V-087 | Einbeiniges Kreuzheben ohne Gewicht *(übernommen als G-199)* | Standwaage: Oberkörper vor, freies Bein nach hinten | Gesäß, Gleichgewicht | – | Wdh. | 1 |
 | V-088 | Sprung-Kniebeuge einbeinig | Aus der einbeinigen Halbhocke abspringen | Beine | – | Wdh. | 3 |
 | V-089 | Handstand frei | Handstand ohne Wand halten | Schultern, Gleichgewicht | – | Zeit | 3 |
 | V-090 | Ellbogenhebel | Körper waagerecht, Ellbogen in die Hüfte gestützt | Arme, Rumpf | – | Zeit | 3 |
@@ -166,14 +166,14 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 
 | Nr. | Übung | Kurzbeschreibung | Bereiche | Gerät | Art | Stufe |
 |---|---|---|---|---|---|---|
-| V-116 | Armkreisen *(übernommen als G-177)* | Gestreckte Arme groß vorwärts und rückwärts kreisen | Schultern | – | Wdh. | 1 |
+| V-116 | Armkreisen | Gestreckte Arme groß vorwärts und rückwärts kreisen | Schultern | – | Wdh. | 1 |
 | V-117 | Schulterkreisen | Schultern hochziehen und nach hinten kreisen | Schultern, Nacken | – | Wdh. | 1 |
-| V-118 | Hüftkreisen *(übernommen als G-178)* | Hände an der Hüfte, Becken groß kreisen | Hüfte | – | Wdh. | 1 |
+| V-118 | Hüftkreisen | Hände an der Hüfte, Becken groß kreisen | Hüfte | – | Wdh. | 1 |
 | V-119 | Kniekreisen | Hände auf den Knien, beide Knie gemeinsam kreisen | Knie | – | Wdh. | 1 |
-| V-120 | Fußgelenkkreisen *(übernommen als G-179)* | Im Einbeinstand den freien Fuß kreisen | Sprunggelenk | – | Wdh. | 1 |
+| V-120 | Fußgelenkkreisen | Im Einbeinstand den freien Fuß kreisen | Sprunggelenk | – | Wdh. | 1 |
 | V-121 | Handgelenkkreisen | Hände gefaltet, Handgelenke in alle Richtungen kreisen | Handgelenke | – | Wdh. | 1 |
-| V-122 | Beinpendel vor und zurück *(übernommen als G-180)* | Gestrecktes Bein locker vor und zurück schwingen | Hüfte, Beine | – | Wdh. | 1 |
-| V-123 | Beinpendel seitlich *(übernommen als G-181)* | Bein vor dem Körper zur Seite und nach innen schwingen | Hüfte, Adduktoren | – | Wdh. | 1 |
+| V-122 | Beinpendel vor und zurück | Gestrecktes Bein locker vor und zurück schwingen | Hüfte, Beine | – | Wdh. | 1 |
+| V-123 | Beinpendel seitlich | Bein vor dem Körper zur Seite und nach innen schwingen | Hüfte, Adduktoren | – | Wdh. | 1 |
 | V-124 | Rumpfdrehen im Stand | Arme locker, Oberkörper schwungvoll drehen | Rumpf, Rücken | – | Wdh. | 1 |
 | V-125 | Größte Dehnung der Welt | Ausfallschritt, Ellbogen zum Fuß, dann Arm nach oben aufdrehen | Hüfte, Brustwirbelsäule | – | Wdh. | 2 |
 | V-126 | Hüftöffner im Gehen | Knie heben und nach außen führen, Schritt | Hüfte | – | Wdh. | 1 |

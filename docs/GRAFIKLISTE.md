@@ -1,6 +1,6 @@
 # Grafikliste Übungen (zu I-020)
 
-181 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-181`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
+212 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-212`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
 
 ## Allgemeine Vorgaben für alle Grafiken
 
@@ -238,9 +238,9 @@ Ergänzt am 2026-10-14 aus den Vorschlägen V-014, V-015, V-027 und V-028 der [�
 | G-163 | `yoga_43_unterarmstand_wand` | Unterarmstand an der Wand (Pincha Mayurasana) | Seite | 1 | Eine Wand als senkrechte Linie am rechten Bildrand. Kopfüber auf den Unterarmen: Unterarme parallel und schulterbreit flach am Boden, Ellbogen genau unter den Schultern, Kopf frei über dem Boden. Körper senkrecht, Beine gestreckt und geschlossen, die Fersen lehnen an der Wand. Blick zum Boden zwischen den Händen. |
 | G-164 | `yoga_44_kopfstand` | Kopfstand (Salamba Sirsasana) | Seite | 1 | Unterarme am Boden, Ellbogen schulterbreit, Finger verschränkt. Der Scheitel liegt am Boden, der Hinterkopf in den Händen. Körper von den Schultern bis zu den Zehen senkrecht, Beine gestreckt und geschlossen, Zehen zur Decke. Schultern deutlich vom Boden weg nach oben gezogen, der Hals bleibt lang. |
 
-## Erweiterung Yoga und Aufwärmen
+## Erweiterung Yoga
 
-Ergänzt am 2026-10-14 aus der [Übungsliste](UEBUNGEN-VORSCHLAEGE.md): Haltungen, die dem Yoga-Grundkurs und den Atemübungen noch fehlen, und Aufwärmübungen vor dem Laufen. Bei den kreisenden Übungen zeigt ausnahmsweise auch eine einzelne Figur einen Pfeil.
+Ergänzt am 2026-10-14 aus der [Übungsliste](UEBUNGEN-VORSCHLAEGE.md): Haltungen, die dem Yoga-Grundkurs und den Atemübungen noch fehlen.
 
 | Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
 |-----|-------|-------|---------|-------|------------------------|
@@ -256,21 +256,66 @@ Ergänzt am 2026-10-14 aus der [Übungsliste](UEBUNGEN-VORSCHLAEGE.md): Haltunge
 | G-174 | `yoga_54_welpe` | Welpe (Uttana Shishosana) | Seite | 1 | Vierfüßlerstand mit den Hüften genau über den Knien. Die Arme sind weit nach vorn gestreckt, die Hände flach am Boden, Brust und Stirn sinken zur Matte. Der Rücken hängt zwischen Hüfte und Schultern leicht durch. |
 | G-175 | `yoga_55_dreibeiniger_hund` | Dreibeiniger Hund | Seite | 1 | Herabschauender Hund (umgekehrtes V, Hände und ein Fuß am Boden), ein Bein ist gestreckt schräg nach oben in Verlängerung des Rückens gehoben, die Hüfte bleibt gerade zum Boden. Kopf zwischen den Oberarmen. |
 | G-176 | `yoga_56_bequemer_sitz` | Bequemer Sitz (Sukhasana) | Front | 1 | Schneidersitz auf einem flachen Kissen, die Knie etwas tiefer als die Hüfte. Wirbelsäule aufrecht, Schultern entspannt, die Hände liegen mit den Handflächen nach oben auf den Knien, Daumen und Zeigefinger berühren sich. Augen geschlossen, ruhiger Gesichtsausdruck. |
-| G-177 | `dehnen_41_armkreisen` | Armkreisen | Seite | 1 | Aufrechter Stand, Füße hüftbreit. Ein Arm ist gestreckt senkrecht nach oben, der andere gestreckt nach hinten unten. Ein großer kreisförmiger Pfeil in Dunkelorange um die Schulter zeigt die Kreisbewegung der Arme. |
-| G-178 | `dehnen_42_hueftkreisen` | Hüftkreisen | Front | 1 | Stand mit hüftbreit gestellten Füßen, leicht gebeugten Knien, die Hände an der Hüfte. Das Becken ist zur Seite geschoben. Ein flacher, kreisförmiger Pfeil in Dunkelorange um das Becken zeigt die Kreisbewegung. |
-| G-179 | `dehnen_43_fussgelenkkreisen` | Fußgelenkkreisen | Seite | 1 | Einbeinstand, eine Hand stützt an einer Stuhllehne. Das andere Bein ist leicht gebeugt angehoben, die Fußspitze zeigt nach unten. Ein kleiner kreisförmiger Pfeil in Dunkelorange um den angehobenen Fuß zeigt die Kreisbewegung. |
-| G-180 | `dehnen_44_beinpendel` | Beinpendel vor und zurück | Seite | 2 | Einbeinstand, eine Hand an einer Wand oder Stuhllehne. Links: das gestreckte Schwungbein schwingt nach hinten. Rechts: das gestreckte Schwungbein schwingt nach vorn bis etwa Hüfthöhe. Oberkörper bleibt aufrecht. |
-| G-181 | `dehnen_45_beinpendel_seitlich` | Beinpendel seitlich | Front | 2 | Stand zur Wand hin, beide Hände an der Wand auf Schulterhöhe. Links: das gestreckte Schwungbein schwingt vor dem Standbein zur anderen Seite. Rechts: das gestreckte Schwungbein schwingt nach außen zur Seite. |
+
+## Erweiterung Crossfit und Calisthenics
+
+Ergänzt am 2026-10-14 aus der [Übungsliste](UEBUNGEN-VORSCHLAEGE.md). Bei Calisthenics vor allem Vorstufen, die den Weg zu Liegestütz, Klimmzug, Dip und Krähe in kleinen Schritten machen. Die Nummern G-177 bis G-181 waren kurz für Aufwärmübungen vorgesehen, die nie erzeugt wurden.
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-177 | `crossfit_41_kettlebell_umsetzen_druecken` | Kettlebell umsetzen und drücken | Seite | 2 | Links: aufrechter Stand, die Kettlebell liegt in einer Hand vorn an der Schulter (Rack-Position), Ellbogen nah am Körper, die Kugel ruht außen auf dem Unterarm. Rechts: derselbe Arm gestreckt senkrecht über dem Kopf, die Kettlebell liegt außen auf dem Unterarm, Bizeps neben dem Ohr. Andere Hand locker an der Seite. |
+| G-178 | `crossfit_42_tuerkisches_aufstehen` | Türkisches Aufstehen (Turkish Get-up) | Schräg | 2 | Links: Rückenlage, ein Bein angewinkelt mit Fuß am Boden, der Arm derselben Seite hält die Kettlebell gestreckt senkrecht nach oben, der andere Arm liegt schräg am Boden. Rechts: aufrechter Stand, derselbe Arm hält die Kettlebell weiter gestreckt über dem Kopf. Blick zur Kettlebell. |
+| G-179 | `crossfit_43_kurzhantel_thruster` | Kurzhantel-Thruster | Seite | 2 | Links: tiefe Kniebeuge, Oberschenkel waagerecht, zwei Kurzhanteln liegen vorn auf den Schultern, Ellbogen vorn. Rechts: aufrechter Stand mit gestreckten Beinen, beide Kurzhanteln mit gestreckten Armen senkrecht über dem Kopf. |
+| G-180 | `crossfit_44_devil_press` | Devil Press | Seite | 2 | Links: Liegestützposition, die Hände umgreifen zwei Kurzhanteln am Boden, Körper gerade. Rechts: aufrechter Stand, beide Kurzhanteln mit gestreckten Armen über dem Kopf. |
+| G-181 | `crossfit_45_rudern_im_stuetz` | Rudern im Stütz (Renegade Row) | Seite | 1 | Hoher Liegestütz mit gestreckten Armen auf zwei Kurzhanteln, Füße etwas breiter als hüftbreit. Eine Hantel ist mit gebeugtem Ellbogen bis an die Rippen hochgezogen, der Ellbogen zeigt nach hinten oben. Körper gerade, Hüfte parallel zum Boden. |
+| G-182 | `crossfit_46_ausfallschritt_ueber_kopf` | Ausfallschritt über Kopf | Seite | 1 | Tiefer Ausfallschritt: vorderes Knie 90 Grad über dem Knöchel, hinteres Knie knapp über dem Boden. Oberkörper aufrecht, beide Arme halten eine Kurzhantel waagerecht mit gestreckten Armen senkrecht über dem Kopf. |
+| G-183 | `crossfit_47_doppelsprung` | Doppelsprung (Double Under) | Front | 1 | Die Figur ist im Sprung in der Luft, Beine fast gestreckt und geschlossen, Füße zeigen nach unten. Die Hände halten die Griffe eines Springseils seitlich auf Hüfthöhe, das Seil verläuft unter den Füßen. Zwei kleine gebogene Bewegungslinien neben den Händen deuten die schnelle Drehung an. |
+| G-184 | `crossfit_48_pendellauf` | Pendellauf | Seite | 1 | Die Figur ist tief gebeugt im Wendepunkt eines Sprints: ein Fuß weit vorn mit gebeugtem Knie, die Hand berührt eine Linie am Boden, der Körper ist schon zur Rückrichtung gedreht. Eine zweite Bodenmarkierung im Hintergrund zeigt die Strecke. |
+| G-185 | `crossfit_49_knie_zu_ellbogen` | Knie zu Ellbogen | Seite | 1 | Hang an einer Klimmzugstange mit schulterbreitem Obergriff, Arme gestreckt. Die Knie sind maximal angezogen und berühren die Ellbogen, der Rücken ist gerundet. |
+| G-186 | `crossfit_50_wandlauf` | Wandlauf (Wall Walk) | Seite | 2 | Eine Wand als senkrechte Linie am rechten Bildrand. Links: Bauchlage mit den Füßen an der Wand, die Hände neben der Brust. Rechts: Handstand mit dem Bauch zur Wand, die Hände nah an der Wand, Zehen berühren die Wand oben, Körper gerade. |
+| G-187 | `cali_41_liegestuetz_erhoeht` | Liegestütz an der Bank | Seite | 1 | Liegestütz mit den Händen auf einer Bank, Arme gebeugt, die Brust knapp über der Bankkante. Körper von Kopf bis Ferse eine schräge gerade Linie, Zehen am Boden. |
+| G-188 | `cali_42_liegestuetz_fuesse_erhoeht` | Liegestütz mit erhöhten Füßen | Seite | 1 | Liegestütz mit den Füßen auf einer Bank, die Hände schulterbreit am Boden, Arme gebeugt, Gesicht knapp über dem Boden. Körper von Kopf bis Ferse gerade und nach vorn unten geneigt. |
+| G-189 | `cali_43_klatsch_liegestuetz` | Liegestütz mit Klatschen | Seite | 1 | Die Figur schwebt nach einem explosiven Liegestütz mit gestrecktem Körper knapp über dem Boden, nur die Zehen berühren ihn, die Hände klatschen unter der Brust zusammen. |
+| G-190 | `cali_44_negativer_liegestuetz` | Negativer Liegestütz | Seite | 2 | Links: hoher Liegestütz mit gestreckten Armen, Körper gerade. Rechts: derselbe Liegestütz kurz vor dem Boden, Arme gebeugt, Ellbogen nah am Körper. Der Pfeil zeigt langsam nach unten. |
+| G-191 | `cali_45_aktives_haengen` | Aktives Hängen | Front | 1 | Hang an einer Klimmzugstange mit schulterbreitem Obergriff, Arme gestreckt. Die Schultern sind deutlich von den Ohren weg nach unten gezogen, der Hals ist frei und lang. Beine gestreckt und geschlossen. |
+| G-192 | `cali_46_schulterblatt_klimmzug` | Schulterblatt-Klimmzug | Front | 2 | Links: lockeres Hängen an der Stange, Schultern bis zu den Ohren hochgezogen. Rechts: gleiches Hängen mit gestreckten Armen, aber die Schultern weit nach unten gezogen, der Körper steht dadurch ein paar Zentimeter höher. |
+| G-193 | `cali_47_negativer_klimmzug` | Negativer Klimmzug | Seite | 2 | Links: oberste Klimmzugposition, das Kinn über der Stange, Obergriff. Rechts: Hang mit gestreckten Armen. Der Pfeil zeigt langsam nach unten. |
+| G-194 | `cali_48_stuetz_halten` | Stütz halten | Seite | 1 | Stütz auf einem Barren: Arme gestreckt, Hände auf den Holmen neben der Hüfte, Schultern nach unten gedrückt, Körper senkrecht, Beine gestreckt und frei über dem Boden. |
+| G-195 | `cali_49_negativer_dip` | Negativer Dip | Seite | 2 | Links: Stütz auf dem Barren mit gestreckten Armen. Rechts: unterste Dip-Position, Ellbogen 90 Grad gebeugt und nach hinten zeigend, Oberkörper leicht nach vorn geneigt. Der Pfeil zeigt langsam nach unten. |
+| G-196 | `cali_50_froschstand` | Frosch-Stand | Seite | 1 | Hocke mit den Händen schulterbreit flach am Boden, Arme leicht gebeugt. Die Knie liegen außen auf den Oberarmen, der Oberkörper ist nach vorn geneigt, beide Füße schweben knapp über dem Boden. Blick nach vorn. |
+| G-197 | `cali_51_knieheben_im_hang` | Knieheben im Hang | Seite | 1 | Hang an einer Klimmzugstange, Arme gestreckt. Die Knie sind zur Brust gezogen, Oberschenkel waagerecht, Unterschenkel hängen senkrecht. |
+| G-198 | `cali_52_tuck_front_lever` | Tuck Front Lever | Seite | 1 | Hang an der Stange mit gestreckten Armen im Obergriff. Der Rumpf ist waagerecht mit dem Rücken nach unten, die Knie sind eng an die Brust gezogen, die Arme ziehen schräg nach hinten unten. |
+| G-199 | `cali_53_einbeiniges_kreuzheben` | Einbeiniges Kreuzheben | Seite | 1 | Standwaage: auf einem leicht gebeugten Bein stehend, der Oberkörper ist fast waagerecht nach vorn geneigt, das freie Bein gestreckt nach hinten in Verlängerung des Rückens. Die Arme hängen locker senkrecht nach unten. |
+
+## Erweiterung Yoga nach „Light on Yoga"
+
+Ergänzt am 2026-10-14 nach einem Abgleich mit dem Buch: die Haltungen, die es für den ersten Kurs als besonders wichtig nennt und die hier noch fehlten (halbes Boot, Lotus, Marichyasana III), dazu Grundhaltungen, die in seinen Kursen fast jede Woche vorkommen. Beschreibungen in eigenen Worten.
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-200 | `yoga_57_halbes_boot` | Halbes Boot (Ardha Navasana) | Seite | 1 | Sitz auf dem Gesäß, der Oberkörper ist weit nach hinten geneigt, die gestreckten, geschlossenen Beine sind schräg angehoben, sodass die Füße etwa auf Augenhöhe sind. Die Hände sind hinter dem Kopf verschränkt, die Ellbogen zeigen zur Seite. |
+| G-201 | `yoga_58_lotus` | Lotussitz (Padmasana) | Front | 1 | Aufrechter Sitz am Boden. Der rechte Fuß liegt mit der Sohle nach oben auf dem linken Oberschenkel nahe der Leiste, der linke Fuß ebenso auf dem rechten Oberschenkel; beide Knie liegen am Boden. Hände mit den Handflächen nach oben auf den Knien, Rücken gerade, Augen geschlossen. |
+| G-202 | `yoga_59_marichyasana_1` | Vorbeuge mit angewinkeltem Bein (Marichyasana I) | Seite | 1 | Sitz am Boden, ein Bein gestreckt nach vorn, das andere Knie aufgestellt mit dem Fuß flach neben dem Oberschenkel des gestreckten Beins. Der Arm auf der Seite des aufgestellten Knies umschließt das Schienbein, beide Hände greifen hinter dem Rücken ineinander. Der Oberkörper ist mit langem Rücken über das gestreckte Bein nach vorn gebeugt. |
+| G-203 | `yoga_60_marichyasana_3` | Drehung mit aufgestelltem Knie (Marichyasana III) | Front | 1 | Sitz am Boden, ein Bein gestreckt, das andere Knie aufgestellt, Fuß flach am Boden. Der Oberkörper ist aufrecht zum aufgestellten Knie gedreht, der gegenüberliegende Ellbogen liegt außen am Knie, die andere Hand stützt hinter dem Rücken am Boden. Blick über die hintere Schulter. |
+| G-204 | `yoga_61_bharadvajasana` | Sanfte Drehung im Sitz (Bharadvajasana) | Front | 1 | Sitz am Boden, beide Unterschenkel liegen zur selben Seite neben der Hüfte, die Füße neben dem Gesäß. Der Oberkörper ist aufrecht zur anderen Seite gedreht, eine Hand liegt auf dem gegenüberliegenden Knie, die andere stützt hinter dem Rücken am Boden. Blick über die Schulter. |
+| G-205 | `yoga_62_tor` | Tor (Parighasana) | Front | 1 | Kniestand auf einem Knie, das andere Bein ist gestreckt zur Seite ausgestellt, der Fuß flach am Boden. Der Oberkörper ist seitlich über das gestreckte Bein geneigt, die untere Hand liegt am Schienbein, der obere Arm ist im Bogen über den Kopf zur gleichen Seite gestreckt. |
+| G-206 | `yoga_63_stehender_spagat` | Stehender Spagat (Urdhva Prasarita Eka Padasana) | Seite | 1 | Tiefe Vorbeuge auf einem gestreckten Standbein, die Hände liegen neben dem Standfuß am Boden oder umfassen den Knöchel, die Stirn ist am Schienbein. Das andere Bein ist gestreckt weit nach oben gehoben, sodass beide Beine fast eine senkrechte Linie bilden. |
+| G-207 | `yoga_64_stock` | Stock (Dandasana) | Seite | 1 | Aufrechter Sitz am Boden, beide Beine gestreckt und geschlossen nach vorn, die Fersen schieben weg, die Zehen zeigen nach oben. Die Hände liegen flach neben der Hüfte, Arme gestreckt, Rücken senkrecht, Blick geradeaus. |
+| G-208 | `yoga_65_liegende_hand_zum_zeh` | Liegende Hand zum Zeh (Supta Padangusthasana) | Seite | 1 | Rückenlage, ein Bein gestreckt am Boden, das andere gestreckt senkrecht nach oben gehoben. Die Hand derselben Seite hält den großen Zeh des gehobenen Beins mit Zeige- und Mittelfinger, die andere Hand liegt auf dem Oberschenkel des unteren Beins. Kopf am Boden. |
+| G-209 | `yoga_66_liegender_heldensitz` | Liegender Heldensitz (Supta Virasana) | Seite | 1 | Aus dem Heldensitz nach hinten gelegt: das Gesäß zwischen den Füßen am Boden, Unterschenkel flach neben den Oberschenkeln, die Knie geschlossen am Boden. Der Rücken liegt flach auf der Matte, die Arme sind über dem Kopf ausgestreckt. |
+| G-210 | `yoga_67_ohrendruck` | Knie zu den Ohren (Karnapidasana) | Seite | 1 | Aus dem Pflug: Schultern auf einer flach gefalteten Decke, Becken über den Schultern, die Knie sind gebeugt und liegen neben den Ohren am Boden, die Schienbeine und Fußrücken liegen auf der Matte. Arme gestreckt hinter dem Rücken am Boden. |
+| G-211 | `yoga_68_schulterstand_ein_bein` | Schulterstand mit einem Bein (Eka Pada Sarvangasana) | Seite | 1 | Schulterstand auf einer flach gefalteten Decke, Hände stützen den Rücken. Ein Bein bleibt gestreckt senkrecht nach oben, das andere ist gestreckt über den Kopf gesenkt, die Zehen berühren hinter dem Kopf den Boden wie beim Pflug. |
+| G-212 | `yoga_69_kuhgesicht` | Kuhgesicht (Gomukhasana) | Front | 1 | Aufrechter Sitz am Boden, die Knie liegen genau übereinander, die Füße zeigen links und rechts neben der Hüfte nach hinten. Ein Arm greift von oben über die Schulter, der andere von unten hinter den Rücken, die Finger beider Hände haken zwischen den Schulterblättern ineinander. |
 
 ## Zusammenfassung
 
 | Kategorie | Nummern | Anzahl |
 |-----------|---------|--------|
-| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-176 | 56 |
-| Crossfit | G-021 – G-040, G-101 – G-120 | 40 |
-| Calisthenics | G-041 – G-060, G-121 – G-140 | 40 |
-| Dehnen | G-061 – G-080, G-141 – G-160, G-177 – G-181 | 45 |
-| **Gesamt** | | **181** |
+| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-176, G-200 – G-212 | 69 |
+| Crossfit | G-021 – G-040, G-101 – G-120, G-177 – G-186 | 50 |
+| Calisthenics | G-041 – G-060, G-121 – G-140, G-187 – G-199 | 53 |
+| Dehnen | G-061 – G-080, G-141 – G-160 | 40 |
+| **Gesamt** | | **212** |
 
 Die Erweiterung G-081 bis G-160 (Stand 2026-10-11) kommt ohne Geräte aus. Bei
 Crossfit trägt die Figur weiterhin Sportschuhe, sonst ist sie barfuß.

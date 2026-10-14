@@ -164,7 +164,8 @@
   "sanskrit": "Uttanasana",
   "gruppe": "vorbeuge",
   "stufe": 1,
-  "hinweis": "Bei Bandscheibenbeschwerden die Knie beugen; langsam aufrollen."
+  "hinweis": "Bei Bandscheibenbeschwerden die Knie beugen; langsam aufrollen.",
+  "schwerer": "yoga_63_stehender_spagat"
  },
  "G-014": {
   "anleitung": "Mit gestreckten Beinen sitzen, mit langem Rücken nach vorn beugen und Richtung Füße greifen. Nicht ziehen, mit jeder Ausatmung etwas tiefer sinken.",
@@ -176,7 +177,8 @@
   "sanskrit": "Paschimottanasana",
   "gruppe": "vorbeuge",
   "stufe": 1,
-  "hinweis": "Bei Bandscheibenbeschwerden die Knie beugen und den Rücken lang lassen."
+  "hinweis": "Bei Bandscheibenbeschwerden die Knie beugen und den Rücken lang lassen.",
+  "leichter": "yoga_64_stock"
  },
  "G-015": {
   "anleitung": "In Rückenlage die Füße hüftbreit aufstellen und das Becken anheben. Die Knie bleiben parallel, Schultern und Kopf liegen am Boden.",
@@ -200,7 +202,8 @@
   "auf_zeit": null,
   "sanskrit": "Navasana",
   "gruppe": "sitzen",
-  "stufe": 2
+  "stufe": 2,
+  "schwerer": "yoga_57_halbes_boot"
  },
  "G-017": {
   "anleitung": "Ein Bein angewinkelt vor dem Körper ablegen, das andere lang nach hinten strecken. Das Becken gerade ausrichten, den Oberkörper aufrichten oder nach vorn ablegen. Seite wechseln.",
@@ -318,7 +321,8 @@
    "beine"
   ],
   "auf_zeit": true,
-  "stufe": 1
+  "stufe": 1,
+  "schwerer": "crossfit_47_doppelsprung"
  },
  "G-028": {
   "anleitung": "Die Stange nah am Schienbein greifen, Rücken gerade, Schultern über der Stange. Mit Beinen und Hüfte aufrichten, die Stange bleibt nah am Körper.",
@@ -357,7 +361,8 @@
    "huefte"
   ],
   "auf_zeit": null,
-  "stufe": 3
+  "stufe": 3,
+  "leichter": "crossfit_49_knie_zu_ellbogen"
  },
  "G-032": {
   "anleitung": "Im hohen Stütz die Knie abwechselnd schnell zur Brust ziehen. Die Hüfte bleibt tief, die Schultern über den Händen.",
@@ -462,7 +467,8 @@
   ],
   "auf_zeit": null,
   "stufe": 1,
-  "schwerer": "cali_01_liegestuetz"
+  "schwerer": "cali_01_liegestuetz",
+  "leichter": "cali_41_liegestuetz_erhoeht"
  },
  "G-043": {
   "anleitung": "Die Hände unter der Brust so aufsetzen, dass Daumen und Zeigefinger eine Raute bilden. Die Ellbogen nah am Körper führen.",
@@ -652,7 +658,8 @@
   "sanskrit": "Bakasana",
   "gruppe": "stuetz",
   "stufe": 3,
-  "hinweis": "Ein Kissen vor den Kopf legen; die Handgelenke vorher aufwärmen."
+  "hinweis": "Ein Kissen vor den Kopf legen; die Handgelenke vorher aufwärmen.",
+  "leichter": "cali_50_froschstand"
  },
  "G-061": {
   "anleitung": "Den Kopf zur Schulter neigen, die Hand liegt nur leicht auf. Die Gegenschulter nach unten ziehen. Seite wechseln.",
@@ -1525,7 +1532,8 @@
   "auf_zeit": true,
   "sanskrit": "Gomukhasana (Arme)",
   "stufe": 1,
-  "seiten": true
+  "seiten": true,
+  "schwerer": "yoga_69_kuhgesicht"
  },
  "G-145": {
   "anleitung": "Einen Arm nach vorn strecken, die Hand nach unten abknicken und mit der anderen Hand den Handrücken sanft heranziehen. Seite wechseln.",
@@ -1688,7 +1696,8 @@
   "sanskrit": "Halasana",
   "gruppe": "umkehr",
   "stufe": 2,
-  "hinweis": "Nicht bei Nacken- oder Bandscheibenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Erreichen die Füße den Boden nicht, auf einem Stuhl oder Block ablegen."
+  "hinweis": "Nicht bei Nacken- oder Bandscheibenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Erreichen die Füße den Boden nicht, auf einem Stuhl oder Block ablegen.",
+  "schwerer": "yoga_67_ohrendruck"
  },
  "G-162": {
   "anleitung": "Rückenlage, Schultern auf einer gefalteten Decke, der Kopf auf der Matte. Die Beine über den Kopf heben, die Hände stützen den Rücken, dann Becken und Beine senkrecht nach oben strecken. Das Gewicht liegt auf Schultern und Oberarmen, nicht auf dem Nacken. Langsam abrollen.",
@@ -1702,7 +1711,8 @@
   "gruppe": "umkehr",
   "stufe": 2,
   "hinweis": "Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Die Decke unter den Schultern hält den Nacken frei; den Kopf in der Haltung nie drehen.",
-  "leichter": "yoga_46_beine_an_der_wand"
+  "leichter": "yoga_46_beine_an_der_wand",
+  "schwerer": "yoga_68_schulterstand_ein_bein"
  },
  "G-163": {
   "anleitung": "Vor einer Wand in den Delfin: Unterarme schulterbreit und parallel, Ellbogen unter den Schultern. Mit kleinen Schwüngen erst ein Bein, dann das andere an die Wand bringen. Schultern aktiv nach oben drücken, Bauch fest, Blick zwischen die Hände.",
@@ -1766,7 +1776,8 @@
   "sanskrit": "Virasana",
   "gruppe": "sitzen",
   "stufe": 2,
-  "hinweis": "Bei Knieschmerzen erhöht auf einem Block oder Kissen sitzen."
+  "hinweis": "Bei Knieschmerzen erhöht auf einem Block oder Kissen sitzen.",
+  "schwerer": "yoga_66_liegender_heldensitz"
  },
  "G-168": {
   "anleitung": "Breiter Stand, das vordere Bein nach außen drehen. Den Oberkörper zum vorderen Bein drehen und über das Bein beugen, die gegenüberliegende Hand außen neben den vorderen Fuß oder ans Schienbein legen, den anderen Arm zur Decke strecken. Beide Beine gestreckt, Hüfte gerade. Seite wechseln.",
@@ -1878,53 +1889,430 @@
   "auf_zeit": null,
   "sanskrit": "Sukhasana",
   "gruppe": "sitzen",
-  "stufe": 1
+  "stufe": 1,
+  "schwerer": "yoga_58_lotus"
  },
  "G-177": {
-  "anleitung": "Aufrecht stehen und die gestreckten Arme in großen Kreisen bewegen, erst vorwärts, dann rückwärts. Locker und gleichmäßig, die Bewegung kommt aus der Schulter. Gut zum Aufwärmen vor dem Laufen.",
+  "anleitung": "Die Kettlebell aus dem Schwung zwischen den Beinen eng am Körper zur Schulter holen, sodass sie außen auf dem Unterarm liegt. Kurz stabilisieren, dann senkrecht über den Kopf drücken. Kontrolliert zurück zur Schulter und nach unten. Seite wechseln.",
   "bereiche": [
+   "schultern",
+   "arme",
+   "rumpf",
+   "beine"
+  ],
+  "auf_zeit": null,
+  "stufe": 2,
+  "seiten": true,
+  "hinweis": "Rücken gerade, Handgelenk gerade halten; die Kugel nicht auf den Unterarm fallen lassen."
+ },
+ "G-178": {
+  "anleitung": "Aus der Rückenlage mit gestreckt gehaltener Kettlebell Schritt für Schritt aufstehen: auf den Ellbogen, auf die Hand, Hüfte heben, Bein durchziehen ins Knien, aufstehen. Der Arm bleibt die ganze Zeit senkrecht, der Blick bei der Kettlebell. Rückwärts zurück. Seite wechseln.",
+  "bereiche": [
+   "ganzkoerper",
+   "schultern",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "stufe": 3,
+  "seiten": true,
+  "hinweis": "Erst ohne oder mit sehr leichtem Gewicht lernen; der Arm mit dem Gewicht bleibt immer gestreckt und senkrecht."
+ },
+ "G-179": {
+  "anleitung": "Zwei Kurzhanteln vorn auf den Schultern. In die tiefe Kniebeuge gehen und aus dem Schwung der Beine aufstehen und die Hanteln in einem Zug über den Kopf drücken. Mit den Hanteln zurück an die Schultern und direkt in die nächste Kniebeuge.",
+  "bereiche": [
+   "ganzkoerper",
+   "beine",
+   "schultern"
+  ],
+  "auf_zeit": null,
+  "stufe": 2
+ },
+ "G-180": {
+  "anleitung": "Hände an zwei Kurzhanteln, einen Burpee machen: Brust zum Boden, zurück in den Stütz, Füße zu den Händen springen. Dann die Hanteln mit geradem Rücken aus dem Schwung zwischen den Beinen in einem Zug über den Kopf bringen.",
+  "bereiche": [
+   "ganzkoerper",
+   "schultern",
+   "beine"
+  ],
+  "auf_zeit": null,
+  "stufe": 3,
+  "hinweis": "Der Rücken bleibt beim Schwung gerade; mit leichten Hanteln beginnen."
+ },
+ "G-181": {
+  "anleitung": "Im Liegestütz auf zwei Kurzhanteln, Füße etwas breiter. Abwechselnd eine Hantel bis an die Rippen ziehen und wieder absetzen. Die Hüfte bleibt ruhig und dreht nicht auf.",
+  "bereiche": [
+   "ruecken",
+   "rumpf",
+   "arme"
+  ],
+  "auf_zeit": null,
+  "stufe": 2
+ },
+ "G-182": {
+  "anleitung": "Eine Kurzhantel mit gestreckten Armen über dem Kopf halten. Im Gehen abwechselnd tiefe Ausfallschritte machen, das hintere Knie kurz vor dem Boden. Die Arme bleiben senkrecht, der Rumpf fest.",
+  "bereiche": [
+   "beine",
+   "gesaess",
+   "schultern",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "stufe": 2
+ },
+ "G-183": {
+  "anleitung": "Wie Seilspringen, aber etwas höher springen und das Seil bei jedem Sprung zweimal durchschwingen. Die Drehung kommt aus den Handgelenken, die Ellbogen bleiben nah am Körper. Weich auf den Fußballen landen.",
+  "bereiche": [
+   "waden",
+   "beine",
+   "schultern"
+  ],
+  "auf_zeit": null,
+  "stufe": 3,
+  "leichter": "crossfit_07_seilspringen"
+ },
+ "G-184": {
+  "anleitung": "Zwei Markierungen im Abstand von etwa 10 Metern. Hin- und hersprinten, an jeder Markierung tief gehen und den Boden mit der Hand berühren. Eine Wiederholung ist eine Strecke.",
+  "bereiche": [
+   "beine",
+   "ganzkoerper"
+  ],
+  "auf_zeit": null,
+  "stufe": 1
+ },
+ "G-185": {
+  "anleitung": "An der Stange hängen, Schultern aktiv. Die Knie mit gerundetem Rücken so weit hochziehen, bis sie die Ellbogen berühren. Kontrolliert absenken, ohne zu schwingen.",
+  "bereiche": [
+   "rumpf",
+   "arme"
+  ],
+  "auf_zeit": null,
+  "stufe": 2,
+  "schwerer": "crossfit_11_toes_to_bar",
+  "leichter": "cali_51_knieheben_im_hang"
+ },
+ "G-186": {
+  "anleitung": "In Bauchlage mit den Füßen an die Wand. In den Stütz drücken, mit den Füßen die Wand hochlaufen und mit den Händen Richtung Wand gehen, bis Brust und Bauch fast die Wand berühren. Kontrolliert denselben Weg zurück.",
+  "bereiche": [
+   "schultern",
+   "arme",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "stufe": 3,
+  "hinweis": "Umkehrhaltung: nicht bei hohem Blutdruck, Glaukom oder Schulterbeschwerden. Nur so weit hochlaufen, wie der Rückweg sicher gelingt."
+ },
+ "G-187": {
+  "anleitung": "Hände schulterbreit auf eine Bank, Stuhl oder Tischkante, Füße zurück, bis der Körper gerade ist. Die Brust zur Kante senken und wieder hochdrücken. Je höher die Stütze, desto leichter.",
+  "bereiche": [
+   "brust",
+   "arme",
+   "schultern"
+  ],
+  "auf_zeit": null,
+  "stufe": 1,
+  "schwerer": "cali_02_liegestuetz_knie"
+ },
+ "G-188": {
+  "anleitung": "Füße auf eine Bank oder einen Stuhl, Hände schulterbreit am Boden. Körper gerade halten und die Brust zum Boden senken, dann hochdrücken. Mehr Last auf Schultern und oberer Brust.",
+  "bereiche": [
+   "brust",
    "schultern",
    "arme"
   ],
-  "auf_zeit": false,
+  "auf_zeit": null,
+  "stufe": 2
+ },
+ "G-189": {
+  "anleitung": "Aus dem Liegestütz explosiv hochdrücken, sodass die Hände abheben, in der Luft klatschen und mit leicht gebeugten Armen weich landen. Direkt in den nächsten Liegestütz.",
+  "bereiche": [
+   "brust",
+   "arme",
+   "schultern"
+  ],
+  "auf_zeit": null,
+  "stufe": 3,
+  "hinweis": "Weich mit gebeugten Armen landen; bei Handgelenksbeschwerden weglassen."
+ },
+ "G-190": {
+  "anleitung": "Aus dem hohen Liegestütz so langsam wie möglich absenken, etwa drei bis fünf Sekunden, Körper gerade. Unten ablegen und über die Knie zurück nach oben. Baut Kraft für den ganzen Liegestütz auf.",
+  "bereiche": [
+   "brust",
+   "arme",
+   "rumpf"
+  ],
+  "auf_zeit": null,
   "stufe": 1
  },
- "G-178": {
-  "anleitung": "Hüftbreit stehen, Hände an die Hüfte, Knie locker. Das Becken in großen Kreisen bewegen, der Oberkörper bleibt ruhig. Nach einigen Kreisen die Richtung wechseln.",
+ "G-191": {
+  "anleitung": "An der Stange hängen und die Schulterblätter nach unten ziehen, sodass die Schultern weg von den Ohren kommen. Arme bleiben gestreckt. Halten und ruhig atmen. Grundlage für alle Übungen an der Stange.",
   "bereiche": [
-   "huefte",
-   "ruecken"
+   "schultern",
+   "ruecken",
+   "arme"
   ],
-  "auf_zeit": false,
-  "stufe": 1
+  "auf_zeit": true,
+  "stufe": 1,
+  "schwerer": "cali_46_schulterblatt_klimmzug"
  },
- "G-179": {
-  "anleitung": "Auf einem Bein stehen, wenn nötig an einer Stuhllehne festhalten. Den anderen Fuß anheben und das Fußgelenk langsam in großen Kreisen bewegen, dann die Richtung wechseln. Seite wechseln.",
+ "G-192": {
+  "anleitung": "Mit gestreckten Armen an der Stange hängen. Nur die Schulterblätter nach unten und zusammenziehen, sodass sich der Körper ein Stück hebt, dann wieder locker lassen. Die Arme bleiben gestreckt.",
   "bereiche": [
-   "waden"
+   "ruecken",
+   "schultern"
   ],
-  "auf_zeit": false,
+  "auf_zeit": null,
+  "stufe": 1,
+  "leichter": "cali_45_aktives_haengen",
+  "schwerer": "cali_47_negativer_klimmzug"
+ },
+ "G-193": {
+  "anleitung": "Mit einem Sprung oder von einem Stuhl in die obere Klimmzugposition, Kinn über der Stange. So langsam wie möglich bis zum gestreckten Hang absenken, etwa drei bis fünf Sekunden.",
+  "bereiche": [
+   "ruecken",
+   "arme"
+  ],
+  "auf_zeit": null,
+  "stufe": 2,
+  "leichter": "cali_46_schulterblatt_klimmzug"
+ },
+ "G-194": {
+  "anleitung": "Auf den Barren stützen, Arme gestreckt, Schultern weit nach unten weg von den Ohren. Körper ruhig und gerade halten. Grundlage für Dips.",
+  "bereiche": [
+   "schultern",
+   "arme",
+   "brust"
+  ],
+  "auf_zeit": true,
+  "stufe": 1,
+  "schwerer": "cali_49_negativer_dip"
+ },
+ "G-195": {
+  "anleitung": "Im Stütz am Barren beginnen und so langsam wie möglich absenken, bis die Ellbogen etwa rechtwinklig sind. Mit den Füßen wieder in den Stütz zurück und erneut absenken.",
+  "bereiche": [
+   "brust",
+   "arme",
+   "schultern"
+  ],
+  "auf_zeit": null,
+  "stufe": 2,
+  "hinweis": "Nur so tief, wie es die Schultern ohne Schmerz zulassen.",
+  "leichter": "cali_48_stuetz_halten"
+ },
+ "G-196": {
+  "anleitung": "Aus der Hocke die Hände flach vor die Füße, die Knie außen auf die Oberarme legen. Gewicht langsam nach vorn verlagern, bis die Füße abheben. Vorstufe zur Krähe.",
+  "bereiche": [
+   "arme",
+   "schultern",
+   "rumpf"
+  ],
+  "auf_zeit": true,
+  "stufe": 2,
+  "hinweis": "Ein Kissen vor den Kopf legen; die Handgelenke vorher aufwärmen.",
+  "schwerer": "cali_20_kraehe"
+ },
+ "G-197": {
+  "anleitung": "An der Stange hängen, Schultern aktiv. Die Knie zur Brust ziehen, bis die Oberschenkel mindestens waagerecht sind, und langsam senken. Nicht schwingen.",
+  "bereiche": [
+   "rumpf",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "stufe": 1,
+  "schwerer": "crossfit_49_knie_zu_ellbogen"
+ },
+ "G-198": {
+  "anleitung": "Im Hang die Knie zur Brust ziehen und mit gestreckten Armen den Körper nach hinten kippen, bis der Rücken waagerecht ist. Die Arme drücken die Stange Richtung Hüfte. Halten.",
+  "bereiche": [
+   "ruecken",
+   "rumpf",
+   "arme"
+  ],
+  "auf_zeit": true,
+  "stufe": 3
+ },
+ "G-199": {
+  "anleitung": "Auf einem Bein stehen, das Knie leicht gebeugt. Mit geradem Rücken den Oberkörper nach vorn neigen und das freie Bein nach hinten strecken, bis Oberkörper und Bein fast waagerecht sind. Langsam aufrichten. Seite wechseln.",
+  "bereiche": [
+   "gesaess",
+   "beine",
+   "rumpf"
+  ],
+  "auf_zeit": null,
   "stufe": 1,
   "seiten": true
  },
- "G-180": {
-  "anleitung": "Seitlich an eine Wand stellen und mit einer Hand abstützen. Das äußere Bein locker und gestreckt vor und zurück schwingen, mit jedem Schwung etwas höher. Oberkörper aufrecht. Seite wechseln.",
+ "G-200": {
+  "anleitung": "Im Sitz die Hände hinter dem Kopf verschränken. Oberkörper nach hinten neigen und gleichzeitig die gestreckten Beine heben, bis die Füße etwa auf Augenhöhe sind. Bauch fest, ruhig weiteratmen. Stärkt Bauch und unteren Rücken.",
+  "bereiche": [
+   "rumpf",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Ardha Navasana",
+  "gruppe": "sitzen",
+  "stufe": 2,
+  "leichter": "yoga_16_boot"
+ },
+ "G-201": {
+  "anleitung": "Im Sitz erst einen Fuß auf den gegenüberliegenden Oberschenkel nahe der Leiste legen, dann den anderen Fuß ebenso. Die Knie sinken zum Boden, der Rücken ist aufrecht. Wechselnd mit dem anderen Bein zuerst üben. Klassische Haltung für Atemübungen.",
   "bereiche": [
    "huefte",
    "beine"
   ],
-  "auf_zeit": false,
+  "auf_zeit": null,
+  "sanskrit": "Padmasana",
+  "gruppe": "sitzen",
+  "stufe": 3,
+  "hinweis": "Nie mit Kraft in die Haltung ziehen: Die Öffnung muss aus der Hüfte kommen. Bei Knieschmerzen sofort lösen und den halben Lotus oder den bequemen Sitz wählen.",
+  "leichter": "yoga_56_bequemer_sitz"
+ },
+ "G-202": {
+  "anleitung": "Im Sitz ein Knie aufstellen, den Fuß neben den anderen Oberschenkel. Den Arm dieser Seite um das Schienbein legen und die Hände hinter dem Rücken fassen, wenn es geht. Mit langem Rücken über das gestreckte Bein nach vorn beugen. Seite wechseln.",
+  "bereiche": [
+   "ruecken",
+   "beine",
+   "schultern"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Marichyasana I",
+  "gruppe": "vorbeuge",
+  "stufe": 2,
+  "seiten": true
+ },
+ "G-203": {
+  "anleitung": "Im Sitz ein Knie aufstellen. Den Oberkörper aufrichten und zum aufgestellten Knie drehen, den gegenüberliegenden Ellbogen außen ans Knie legen, die andere Hand hinter dem Rücken aufstützen. Mit jedem Einatmen wachsen, mit jedem Ausatmen etwas weiter drehen. Seite wechseln.",
+  "bereiche": [
+   "ruecken",
+   "rumpf",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Marichyasana III",
+  "gruppe": "drehung",
+  "stufe": 2,
+  "seiten": true,
+  "hinweis": "Langsam und ohne Ruck drehen; bei Bandscheibenbeschwerden vorsichtig.",
+  "leichter": "yoga_61_bharadvajasana"
+ },
+ "G-204": {
+  "anleitung": "Beide Unterschenkel zur selben Seite neben die Hüfte legen. Aufrecht sitzen und den Oberkörper zur anderen Seite drehen: eine Hand ans gegenüberliegende Knie, die andere hinter dem Rücken auf den Boden. Eine sanfte Drehung für den Einstieg. Seite wechseln.",
+  "bereiche": [
+   "ruecken",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Bharadvajasana",
+  "gruppe": "drehung",
+  "stufe": 1,
+  "seiten": true,
+  "schwerer": "yoga_60_marichyasana_3"
+ },
+ "G-205": {
+  "anleitung": "Im Kniestand ein Bein gestreckt zur Seite stellen, der Fuß zeigt nach vorn. Den Oberkörper über das gestreckte Bein neigen, die Hand ans Schienbein, den anderen Arm im Bogen über den Kopf strecken. Die Hüfte bleibt nach vorn gerichtet. Seite wechseln.",
+  "bereiche": [
+   "rumpf",
+   "beine",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Parighasana",
+  "gruppe": "stehen",
   "stufe": 1,
   "seiten": true
  },
- "G-181": {
-  "anleitung": "Mit Blick zur Wand stehen, beide Hände an der Wand. Ein Bein locker vor dem Standbein zur Seite und wieder nach außen schwingen. Hüfte bleibt ruhig nach vorn gerichtet. Seite wechseln.",
+ "G-206": {
+  "anleitung": "Aus der stehenden Vorbeuge das Gewicht auf ein Bein bringen und das andere gestreckt nach oben heben. Die Hände neben dem Standfuß oder am Knöchel, die Hüfte bleibt gerade. Seite wechseln.",
   "bereiche": [
-   "huefte",
+   "beine",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Urdhva Prasarita Eka Padasana",
+  "gruppe": "vorbeuge",
+  "stufe": 2,
+  "seiten": true,
+  "hinweis": "Bei hohem Blutdruck oder Schwindel nur kurz halten und langsam aufrichten.",
+  "leichter": "yoga_13_stehende_vorbeuge"
+ },
+ "G-207": {
+  "anleitung": "Mit gestreckten, geschlossenen Beinen aufrecht sitzen, die Hände neben der Hüfte am Boden. Die Fersen wegschieben, die Wirbelsäule nach oben strecken. Ausgangshaltung für alle Vorbeugen und Drehungen im Sitz.",
+  "bereiche": [
+   "ruecken",
    "beine"
   ],
-  "auf_zeit": false,
+  "auf_zeit": null,
+  "sanskrit": "Dandasana",
+  "gruppe": "sitzen",
+  "stufe": 1,
+  "schwerer": "yoga_14_sitzende_vorbeuge"
+ },
+ "G-208": {
+  "anleitung": "In Rückenlage ein Bein gestreckt nach oben heben und den großen Zeh fassen, wer nicht hinkommt, nimmt einen Gurt. Das untere Bein bleibt gestreckt am Boden, beide Hüften liegen gleich. Dehnt die Beinrückseite, gut nach dem Laufen. Seite wechseln.",
+  "bereiche": [
+   "beine",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Supta Padangusthasana",
+  "gruppe": "liegen",
   "stufe": 1,
   "seiten": true
+ },
+ "G-209": {
+  "anleitung": "Aus dem Heldensitz die Hände hinter die Füße setzen und erst auf die Ellbogen, dann mit dem Rücken auf den Boden sinken. Die Knie bleiben geschlossen am Boden. Wer nicht ganz liegen kann, legt sich auf eine Rolle oder Kissen. Mit Hilfe der Ellbogen wieder aufrichten.",
+  "bereiche": [
+   "beine",
+   "huefte",
+   "brust"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Supta Virasana",
+  "gruppe": "liegen",
+  "stufe": 2,
+  "hinweis": "Bei Knie- oder Rückenbeschwerden nur mit Kissen unter dem Rücken; heben sich die Knie, ist es zu weit.",
+  "leichter": "yoga_47_heldensitz"
+ },
+ "G-210": {
+  "anleitung": "Aus dem Pflug die Knie beugen und neben die Ohren sinken lassen, die Fußrücken am Boden. Arme lang hinter dem Rücken oder die Hände am Rücken. Ruhig atmen und über den Pflug zurück abrollen.",
+  "bereiche": [
+   "ruecken",
+   "nacken"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Karnapidasana",
+  "gruppe": "umkehr",
+  "stufe": 2,
+  "hinweis": "Nicht bei Nacken- oder Bandscheibenbeschwerden, hohem Blutdruck, Glaukom oder in der Schwangerschaft.",
+  "leichter": "yoga_41_pflug"
+ },
+ "G-211": {
+  "anleitung": "Aus dem Schulterstand ein Bein gestreckt über den Kopf senken, bis die Zehen den Boden berühren, das andere bleibt senkrecht. Beide Beine gestreckt, der Rumpf bleibt aufrecht. Zurück in den Schulterstand und Seite wechseln.",
+  "bereiche": [
+   "schultern",
+   "beine",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Eka Pada Sarvangasana",
+  "gruppe": "umkehr",
+  "stufe": 2,
+  "seiten": true,
+  "hinweis": "Wie beim Schulterstand: nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom oder in der Schwangerschaft; den Kopf nie drehen.",
+  "leichter": "yoga_42_schulterstand"
+ },
+ "G-212": {
+  "anleitung": "Im Sitz die Knie übereinanderlegen, die Füße neben der Hüfte. Einen Arm von oben, den anderen von unten hinter den Rücken führen und die Finger ineinanderhaken oder ein Tuch greifen. Rücken aufrecht. Seite wechseln.",
+  "bereiche": [
+   "huefte",
+   "schultern",
+   "arme"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Gomukhasana",
+  "gruppe": "sitzen",
+  "stufe": 2,
+  "seiten": true,
+  "hinweis": "Bei Knieschmerzen auf einem Kissen sitzen oder nur die Arme üben.",
+  "leichter": "dehnen_24_kuhgesicht_arme"
  }
 }
