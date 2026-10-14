@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.12.1] – 2026-10-14
+
+### Hinzugefügt
+- Die Grafiken der vier Umkehrhaltungen (G-161 bis G-164) sind eingebunden, erzeugt in niedriger Qualität (`--qualitaet low`), die dem Nutzer genügt. Damit haben alle 164 Übungen ihr Bild.
+
 ## [0.12.0] – 2026-10-14
 
 ### Hinzugefügt

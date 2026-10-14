@@ -61,19 +61,11 @@ void main() {
     });
 
     test('zu jeder mitgelieferten Übung liegt die Grafik bei', () {
-      // Noch nicht gezeichnet (G-161 bis G-164); bis dahin zeigt die App
-      // den Platzhalter.
-      const pending = {
-        'yoga_41_pflug',
-        'yoga_42_schulterstand',
-        'yoga_43_unterarmstand_wand',
-        'yoga_44_kopfstand',
-      };
       final missing = [
         for (final e in builtinExercises)
           if (!File('assets/exercises/${e.key}.webp').existsSync()) e.key,
       ];
-      expect(missing.toSet().difference(pending), isEmpty);
+      expect(missing, isEmpty);
     });
 
     test('jedes mitgelieferte Programm verweist nur auf vorhandene Übungen',
