@@ -4,7 +4,7 @@ Stand: 2026-10-12
 
 Diese Liste ist eine **Sammlung zur Auswahl**. Bis auf die als übernommen markierten ist keine der Übungen in der App, in der [Grafikliste](GRAFIKLISTE.md) oder in `tools/uebungen.json` enthalten. Die 160 vorhandenen Übungen sind hier nicht noch einmal aufgeführt.
 
-Übernommen sind bisher V-014, V-015, V-027 und V-028 (2026-10-14, als G-161 bis G-164).
+Übernommen sind bisher V-014, V-015, V-027 und V-028 (2026-10-14, als G-161 bis G-164) sowie V-013, V-016, V-019, V-003, V-004, V-002, V-005, V-006, V-008, V-011, V-009, V-213, V-116, V-118, V-120, V-122, V-123 (2026-10-14, als G-165 bis G-181).
 
 Die Nummern (V-001 …) sind fest und dienen nur der Auswahl, z. B. „nimm V-003, V-017 und alle aus Abschnitt 5". Für jede übernommene Übung wird später eine Grafik gebraucht.
 
@@ -32,24 +32,24 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | Nr. | Übung | Kurzbeschreibung | Bereiche | Gerät | Art | Stufe |
 |---|---|---|---|---|---|---|
 | V-001 | Girlande (Malasana) | Tiefe Hocke, Ellbogen drücken die Knie auseinander, Hände vor der Brust | Hüfte, Beine | – | Zeit | 1 |
-| V-002 | Gedrehter Stuhl | Stuhlhaltung, Oberkörper zur Seite gedreht, Ellbogen außen am Knie | Beine, Rumpf | – | Zeit | 2 |
-| V-003 | Gedrehtes Dreieck | Dreieck mit Drehung zum vorderen Bein, hintere Hand am Boden | Beine, Rücken | – | Zeit | 2 |
-| V-004 | Gedrehter seitlicher Winkel | Ausfallschritt, Oberkörper über das vordere Knie gedreht | Beine, Rumpf | – | Zeit | 2 |
-| V-005 | Göttin | Breiter Stand, Knie gebeugt, Arme im rechten Winkel erhoben | Beine, Hüfte | – | Zeit | 1 |
-| V-006 | Hoher Ausfallschritt | Ausfallschritt auf dem hinteren Fußballen, Arme nach oben | Beine, Hüfte | – | Zeit | 1 |
+| V-002 | Gedrehter Stuhl *(übernommen als G-170)* | Stuhlhaltung, Oberkörper zur Seite gedreht, Ellbogen außen am Knie | Beine, Rumpf | – | Zeit | 2 |
+| V-003 | Gedrehtes Dreieck *(übernommen als G-168)* | Dreieck mit Drehung zum vorderen Bein, hintere Hand am Boden | Beine, Rücken | – | Zeit | 2 |
+| V-004 | Gedrehter seitlicher Winkel *(übernommen als G-169)* | Ausfallschritt, Oberkörper über das vordere Knie gedreht | Beine, Rumpf | – | Zeit | 2 |
+| V-005 | Göttin *(übernommen als G-171)* | Breiter Stand, Knie gebeugt, Arme im rechten Winkel erhoben | Beine, Hüfte | – | Zeit | 1 |
+| V-006 | Hoher Ausfallschritt *(übernommen als G-172)* | Ausfallschritt auf dem hinteren Fußballen, Arme nach oben | Beine, Hüfte | – | Zeit | 1 |
 | V-007 | Stehender Spagat | Vorbeuge auf einem Bein, das andere Bein gestreckt nach oben | Beine, Gleichgewicht | – | Zeit | 2 |
-| V-008 | Hand-zum-Zeh im Stand | Einbeinstand, das gestreckte Bein mit der Hand nach vorn gehalten | Beine, Gleichgewicht | – | Zeit | 3 |
-| V-009 | Dreibeiniger Hund | Herabschauender Hund, ein Bein gestreckt nach oben | Schultern, Beine | – | Zeit | 1 |
+| V-008 | Hand-zum-Zeh im Stand *(übernommen als G-173)* | Einbeinstand, das gestreckte Bein mit der Hand nach vorn gehalten | Beine, Gleichgewicht | – | Zeit | 3 |
+| V-009 | Dreibeiniger Hund *(übernommen als G-175)* | Herabschauender Hund, ein Bein gestreckt nach oben | Schultern, Beine | – | Zeit | 1 |
 | V-010 | Wilder Hund | Aus dem dreibeinigen Hund nach hinten aufgedreht, Brust nach oben | Schultern, Rumpf | – | Zeit | 2 |
-| V-011 | Welpe | Aus dem Vierfüßler Arme weit nach vorn, Brust sinkt zum Boden | Schultern, Rücken | – | Zeit | 1 |
+| V-011 | Welpe *(übernommen als G-174)* | Aus dem Vierfüßler Arme weit nach vorn, Brust sinkt zum Boden | Schultern, Rücken | – | Zeit | 1 |
 | V-012 | Krokodil | Bauchlage, Stirn auf den übereinandergelegten Händen | Rücken, Entspannung | – | Zeit | 1 |
-| V-013 | Fisch | Rückenlage, Brust angehoben, Scheitel leicht am Boden | Brust, Nacken | – | Zeit | 2 |
+| V-013 | Fisch *(übernommen als G-165)* | Rückenlage, Brust angehoben, Scheitel leicht am Boden | Brust, Nacken | – | Zeit | 2 |
 | V-014 | Pflug *(übernommen als G-161)* | Rückenlage, Beine über den Kopf, Zehen am Boden | Rücken, Nacken | – | Zeit | 3 |
 | V-015 | Schulterstand *(übernommen als G-162)* | Körper senkrecht auf den Schultern, Hände stützen den Rücken | Schultern, Rumpf | – | Zeit | 3 |
-| V-016 | Beine an der Wand | Rückenlage, Beine senkrecht an die Wand gelehnt | Beine, Entspannung | Wand | Zeit | 1 |
+| V-016 | Beine an der Wand *(übernommen als G-166)* | Rückenlage, Beine senkrecht an die Wand gelehnt | Beine, Entspannung | Wand | Zeit | 1 |
 | V-017 | Gestützte Brücke | Schulterbrücke mit Block unter dem Kreuzbein | Rücken, Hüfte | Yoga-Block | Zeit | 1 |
 | V-018 | Rad | Volle Rückbeuge auf Händen und Füßen | Rücken, Schultern | – | Zeit | 3 |
-| V-019 | Heldensitz | Fersensitz, Gesäß zwischen den Füßen am Boden | Oberschenkel, Knie | – | Zeit | 2 |
+| V-019 | Heldensitz *(übernommen als G-167)* | Fersensitz, Gesäß zwischen den Füßen am Boden | Oberschenkel, Knie | – | Zeit | 2 |
 | V-020 | Kuhgesicht (Gomukhasana) | Sitz mit übereinandergelegten Knien, Hände greifen hinter dem Rücken | Hüfte, Schultern | – | Zeit | 2 |
 | V-021 | Feuerholz | Sitz, Unterschenkel waagerecht übereinandergelegt | Hüfte, Gesäß | – | Zeit | 2 |
 | V-022 | Kompass | Sitz, ein Bein gestreckt über die Schulter geführt, Oberkörper gedreht | Beine, Rumpf | – | Zeit | 3 |
@@ -166,14 +166,14 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 
 | Nr. | Übung | Kurzbeschreibung | Bereiche | Gerät | Art | Stufe |
 |---|---|---|---|---|---|---|
-| V-116 | Armkreisen | Gestreckte Arme groß vorwärts und rückwärts kreisen | Schultern | – | Wdh. | 1 |
+| V-116 | Armkreisen *(übernommen als G-177)* | Gestreckte Arme groß vorwärts und rückwärts kreisen | Schultern | – | Wdh. | 1 |
 | V-117 | Schulterkreisen | Schultern hochziehen und nach hinten kreisen | Schultern, Nacken | – | Wdh. | 1 |
-| V-118 | Hüftkreisen | Hände an der Hüfte, Becken groß kreisen | Hüfte | – | Wdh. | 1 |
+| V-118 | Hüftkreisen *(übernommen als G-178)* | Hände an der Hüfte, Becken groß kreisen | Hüfte | – | Wdh. | 1 |
 | V-119 | Kniekreisen | Hände auf den Knien, beide Knie gemeinsam kreisen | Knie | – | Wdh. | 1 |
-| V-120 | Fußgelenkkreisen | Im Einbeinstand den freien Fuß kreisen | Sprunggelenk | – | Wdh. | 1 |
+| V-120 | Fußgelenkkreisen *(übernommen als G-179)* | Im Einbeinstand den freien Fuß kreisen | Sprunggelenk | – | Wdh. | 1 |
 | V-121 | Handgelenkkreisen | Hände gefaltet, Handgelenke in alle Richtungen kreisen | Handgelenke | – | Wdh. | 1 |
-| V-122 | Beinpendel vor und zurück | Gestrecktes Bein locker vor und zurück schwingen | Hüfte, Beine | – | Wdh. | 1 |
-| V-123 | Beinpendel seitlich | Bein vor dem Körper zur Seite und nach innen schwingen | Hüfte, Adduktoren | – | Wdh. | 1 |
+| V-122 | Beinpendel vor und zurück *(übernommen als G-180)* | Gestrecktes Bein locker vor und zurück schwingen | Hüfte, Beine | – | Wdh. | 1 |
+| V-123 | Beinpendel seitlich *(übernommen als G-181)* | Bein vor dem Körper zur Seite und nach innen schwingen | Hüfte, Adduktoren | – | Wdh. | 1 |
 | V-124 | Rumpfdrehen im Stand | Arme locker, Oberkörper schwungvoll drehen | Rumpf, Rücken | – | Wdh. | 1 |
 | V-125 | Größte Dehnung der Welt | Ausfallschritt, Ellbogen zum Fuß, dann Arm nach oben aufdrehen | Hüfte, Brustwirbelsäule | – | Wdh. | 2 |
 | V-126 | Hüftöffner im Gehen | Knie heben und nach außen führen, Schritt | Hüfte | – | Wdh. | 1 |
@@ -293,7 +293,7 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | V-210 | Verlängertes Ausatmen | Doppelt so lang aus- wie einatmen | Atmung | – | Zeit | 1 |
 | V-211 | Progressive Muskelentspannung | Muskelgruppen nacheinander anspannen und lösen | Entspannung | – | Zeit | 1 |
 | V-212 | Körperreise (Body Scan) | Aufmerksamkeit langsam durch den Körper führen | Entspannung | – | Zeit | 1 |
-| V-213 | Meditationssitz | Aufrecht sitzen, Atem beobachten | Entspannung | Kissen | Zeit | 1 |
+| V-213 | Meditationssitz *(übernommen als G-176)* | Aufrecht sitzen, Atem beobachten | Entspannung | Kissen | Zeit | 1 |
 
 ## Hinweise zur Übernahme
 

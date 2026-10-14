@@ -61,7 +61,8 @@
   "auf_zeit": null,
   "sanskrit": "Balasana",
   "gruppe": "liegen",
-  "stufe": 1
+  "stufe": 1,
+  "schwerer": "yoga_54_welpe"
  },
  "G-006": {
   "anleitung": "Im Vierfüßlerstand beim Einatmen ins Hohlkreuz gehen und den Blick heben, beim Ausatmen den Rücken rund machen und das Kinn zur Brust ziehen. Fließend wechseln.",
@@ -1700,7 +1701,8 @@
   "sanskrit": "Salamba Sarvangasana",
   "gruppe": "umkehr",
   "stufe": 2,
-  "hinweis": "Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Die Decke unter den Schultern hält den Nacken frei; den Kopf in der Haltung nie drehen."
+  "hinweis": "Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Die Decke unter den Schultern hält den Nacken frei; den Kopf in der Haltung nie drehen.",
+  "leichter": "yoga_46_beine_an_der_wand"
  },
  "G-163": {
   "anleitung": "Vor einer Wand in den Delfin: Unterarme schulterbreit und parallel, Ellbogen unter den Schultern. Mit kleinen Schwüngen erst ein Bein, dann das andere an die Wand bringen. Schultern aktiv nach oben drücken, Bauch fest, Blick zwischen die Hände.",
@@ -1728,5 +1730,201 @@
   "stufe": 3,
   "hinweis": "Am besten unter Anleitung lernen, anfangs an einer Wand und nur kurz. Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, Herzbeschwerden, während der Menstruation oder in der Schwangerschaft. Der Nacken darf nie schmerzen.",
   "leichter": "yoga_35_delfin"
+ },
+ "G-165": {
+  "anleitung": "Rückenlage, die Hände mit den Handflächen nach unten unter das Gesäß schieben. Auf die Unterarme stützen, die Brust weit zur Decke heben und den Kopf nach hinten sinken lassen, bis der Scheitel die Matte berührt, ohne Gewicht darauf. Ausgleich nach Schulterstand und Pflug.",
+  "bereiche": [
+   "brust",
+   "nacken",
+   "ruecken"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Matsyasana",
+  "gruppe": "rueckbeuge",
+  "stufe": 2,
+  "hinweis": "Das Gewicht liegt auf den Unterarmen, nicht auf dem Kopf. Nicht bei Nackenbeschwerden."
+ },
+ "G-166": {
+  "anleitung": "Seitlich an die Wand setzen, dann in die Rückenlage drehen und die Beine an der Wand hochlegen, das Gesäß nah an der Wand. Arme locker neben dem Körper, ruhig atmen. Eine sanfte Umkehrhaltung zum Entspannen und als Vorstufe zum Schulterstand.",
+  "bereiche": [
+   "beine",
+   "ruecken"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Viparita Karani",
+  "gruppe": "umkehr",
+  "stufe": 1,
+  "schwerer": "yoga_42_schulterstand"
+ },
+ "G-167": {
+  "anleitung": "Aus dem Kniestand die Füße etwas weiter als hüftbreit stellen, die Fußrücken flach am Boden, und das Gesäß zwischen die Füße setzen. Knie geschlossen, Rücken aufrecht. Geht es nicht bis zum Boden, auf einem Block oder Kissen sitzen. Gute Haltung für Atemübungen.",
+  "bereiche": [
+   "beine",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Virasana",
+  "gruppe": "sitzen",
+  "stufe": 2,
+  "hinweis": "Bei Knieschmerzen erhöht auf einem Block oder Kissen sitzen."
+ },
+ "G-168": {
+  "anleitung": "Breiter Stand, das vordere Bein nach außen drehen. Den Oberkörper zum vorderen Bein drehen und über das Bein beugen, die gegenüberliegende Hand außen neben den vorderen Fuß oder ans Schienbein legen, den anderen Arm zur Decke strecken. Beide Beine gestreckt, Hüfte gerade. Seite wechseln.",
+  "bereiche": [
+   "beine",
+   "ruecken",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Parivrtta Trikonasana",
+  "gruppe": "drehung",
+  "stufe": 2,
+  "seiten": true,
+  "hinweis": "Die Drehung kommt aus der Brustwirbelsäule; bei Rückenbeschwerden die Hand auf einen Block legen."
+ },
+ "G-169": {
+  "anleitung": "Aus dem tiefen Ausfallschritt die Hände vor der Brust zusammenlegen, den Oberkörper zum vorderen Bein drehen und den gegenüberliegenden Ellbogen außen ans vordere Knie legen. Mit jedem Ausatmen etwas weiter drehen. Seite wechseln.",
+  "bereiche": [
+   "beine",
+   "rumpf",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Parivrtta Parsvakonasana",
+  "gruppe": "drehung",
+  "stufe": 2,
+  "seiten": true
+ },
+ "G-170": {
+  "anleitung": "In die Stuhlhaltung gehen, die Hände vor der Brust zusammenlegen und den Oberkörper zur Seite drehen, bis ein Ellbogen außen am gegenüberliegenden Knie liegt. Die Knie bleiben nebeneinander, das Gesäß tief. Seite wechseln.",
+  "bereiche": [
+   "beine",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Parivrtta Utkatasana",
+  "gruppe": "drehung",
+  "stufe": 2,
+  "seiten": true
+ },
+ "G-171": {
+  "anleitung": "Weiter Stand, Füße nach außen gedreht. Die Knie über den Zehen beugen und das Becken absenken, Oberkörper aufrecht. Arme seitlich heben und im rechten Winkel nach oben beugen. Halten und ruhig atmen.",
+  "bereiche": [
+   "beine",
+   "huefte",
+   "gesaess"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Utkata Konasana",
+  "gruppe": "stehen",
+  "stufe": 1
+ },
+ "G-172": {
+  "anleitung": "Aus dem Stand einen langen Schritt nach hinten. Das vordere Knie über dem Knöchel beugen, das hintere Bein strecken, nur der hintere Fußballen am Boden. Oberkörper aufrichten und die Arme nach oben strecken. Seite wechseln.",
+  "bereiche": [
+   "beine",
+   "huefte"
+  ],
+  "auf_zeit": null,
+  "gruppe": "stehen",
+  "stufe": 1,
+  "seiten": true
+ },
+ "G-173": {
+  "anleitung": "Aus der Berghaltung ein Knie heben und den großen Zeh mit Zeige- und Mittelfinger fassen, die andere Hand an die Hüfte. Das Bein nach vorn strecken, so weit es geht, der Oberkörper bleibt aufrecht. Geht das Strecken noch nicht, das Knie gebeugt lassen oder einen Gurt nehmen. Seite wechseln.",
+  "bereiche": [
+   "beine",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Utthita Hasta Padangusthasana",
+  "gruppe": "stehen",
+  "stufe": 3,
+  "seiten": true,
+  "hinweis": "Wer im Gleichgewicht unsicher ist, übt neben einer Wand."
+ },
+ "G-174": {
+  "anleitung": "Aus dem Vierfüßlerstand die Hände weit nach vorn wandern lassen, die Hüfte bleibt über den Knien. Brust und Stirn sinken zum Boden, die Arme bleiben aktiv. Dehnt Schultern und oberen Rücken.",
+  "bereiche": [
+   "schultern",
+   "ruecken",
+   "brust"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Uttana Shishosana",
+  "gruppe": "vorbeuge",
+  "stufe": 1,
+  "leichter": "yoga_05_kindhaltung"
+ },
+ "G-175": {
+  "anleitung": "Aus dem herabschauenden Hund ein Bein gestreckt nach oben heben, in Verlängerung des Rückens. Die Hüfte bleibt gerade, beide Hände drücken gleichmäßig. Seite wechseln.",
+  "bereiche": [
+   "schultern",
+   "beine",
+   "gesaess"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Eka Pada Adho Mukha Svanasana",
+  "gruppe": "umkehr",
+  "stufe": 1,
+  "seiten": true
+ },
+ "G-176": {
+  "anleitung": "Mit gekreuzten Beinen auf ein Kissen setzen, sodass die Knie tiefer als die Hüfte liegen. Aufrecht sitzen, Schultern locker, Hände auf den Knien. Die Grundhaltung für Atemübungen und zum Ankommen.",
+  "bereiche": [
+   "huefte",
+   "ruecken"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Sukhasana",
+  "gruppe": "sitzen",
+  "stufe": 1
+ },
+ "G-177": {
+  "anleitung": "Aufrecht stehen und die gestreckten Arme in großen Kreisen bewegen, erst vorwärts, dann rückwärts. Locker und gleichmäßig, die Bewegung kommt aus der Schulter. Gut zum Aufwärmen vor dem Laufen.",
+  "bereiche": [
+   "schultern",
+   "arme"
+  ],
+  "auf_zeit": false,
+  "stufe": 1
+ },
+ "G-178": {
+  "anleitung": "Hüftbreit stehen, Hände an die Hüfte, Knie locker. Das Becken in großen Kreisen bewegen, der Oberkörper bleibt ruhig. Nach einigen Kreisen die Richtung wechseln.",
+  "bereiche": [
+   "huefte",
+   "ruecken"
+  ],
+  "auf_zeit": false,
+  "stufe": 1
+ },
+ "G-179": {
+  "anleitung": "Auf einem Bein stehen, wenn nötig an einer Stuhllehne festhalten. Den anderen Fuß anheben und das Fußgelenk langsam in großen Kreisen bewegen, dann die Richtung wechseln. Seite wechseln.",
+  "bereiche": [
+   "waden"
+  ],
+  "auf_zeit": false,
+  "stufe": 1,
+  "seiten": true
+ },
+ "G-180": {
+  "anleitung": "Seitlich an eine Wand stellen und mit einer Hand abstützen. Das äußere Bein locker und gestreckt vor und zurück schwingen, mit jedem Schwung etwas höher. Oberkörper aufrecht. Seite wechseln.",
+  "bereiche": [
+   "huefte",
+   "beine"
+  ],
+  "auf_zeit": false,
+  "stufe": 1,
+  "seiten": true
+ },
+ "G-181": {
+  "anleitung": "Mit Blick zur Wand stehen, beide Hände an der Wand. Ein Bein locker vor dem Standbein zur Seite und wieder nach außen schwingen. Hüfte bleibt ruhig nach vorn gerichtet. Seite wechseln.",
+  "bereiche": [
+   "huefte",
+   "beine"
+  ],
+  "auf_zeit": false,
+  "stufe": 1,
+  "seiten": true
  }
 }

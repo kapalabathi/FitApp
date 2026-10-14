@@ -1,6 +1,6 @@
 # Grafikliste Übungen (zu I-020)
 
-164 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-164`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
+181 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-181`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
 
 ## Allgemeine Vorgaben für alle Grafiken
 
@@ -238,15 +238,39 @@ Ergänzt am 2026-10-14 aus den Vorschlägen V-014, V-015, V-027 und V-028 der [�
 | G-163 | `yoga_43_unterarmstand_wand` | Unterarmstand an der Wand (Pincha Mayurasana) | Seite | 1 | Eine Wand als senkrechte Linie am rechten Bildrand. Kopfüber auf den Unterarmen: Unterarme parallel und schulterbreit flach am Boden, Ellbogen genau unter den Schultern, Kopf frei über dem Boden. Körper senkrecht, Beine gestreckt und geschlossen, die Fersen lehnen an der Wand. Blick zum Boden zwischen den Händen. |
 | G-164 | `yoga_44_kopfstand` | Kopfstand (Salamba Sirsasana) | Seite | 1 | Unterarme am Boden, Ellbogen schulterbreit, Finger verschränkt. Der Scheitel liegt am Boden, der Hinterkopf in den Händen. Körper von den Schultern bis zu den Zehen senkrecht, Beine gestreckt und geschlossen, Zehen zur Decke. Schultern deutlich vom Boden weg nach oben gezogen, der Hals bleibt lang. |
 
+## Erweiterung Yoga und Aufwärmen
+
+Ergänzt am 2026-10-14 aus der [Übungsliste](UEBUNGEN-VORSCHLAEGE.md): Haltungen, die dem Yoga-Grundkurs und den Atemübungen noch fehlen, und Aufwärmübungen vor dem Laufen. Bei den kreisenden Übungen zeigt ausnahmsweise auch eine einzelne Figur einen Pfeil.
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-165 | `yoga_45_fisch` | Fisch (Matsyasana) | Seite | 1 | Rückenlage mit gestreckten, geschlossenen Beinen. Die Unterarme liegen unter dem Körper am Boden, die Ellbogen stützen. Die Brust ist hoch zur Decke gewölbt, der Kopf nach hinten geneigt, nur der Scheitel berührt ganz leicht die Matte, ohne Gewicht. Blick nach hinten. |
+| G-166 | `yoga_46_beine_an_der_wand` | Beine an der Wand (Viparita Karani) | Seite | 1 | Eine Wand als senkrechte Linie am rechten Bildrand. Rückenlage auf der Matte, das Gesäß dicht an der Wand, die gestreckten Beine lehnen senkrecht an der Wand. Arme entspannt seitlich mit den Handflächen nach oben, Augen geschlossen, ruhiger Gesichtsausdruck. |
+| G-167 | `yoga_47_heldensitz` | Heldensitz (Virasana) | Seite | 1 | Kniestand mit geschlossenen Knien, die Unterschenkel liegen flach auf der Matte, die Füße etwas weiter als hüftbreit mit den Sohlen nach oben. Das Gesäß sitzt zwischen den Füßen auf der Matte. Oberkörper aufrecht, Hände auf den Oberschenkeln, Blick geradeaus. |
+| G-168 | `yoga_48_gedrehtes_dreieck` | Gedrehtes Dreieck (Parivrtta Trikonasana) | Front | 1 | Breiter Stand mit gestreckten Beinen, vorderer Fuß zeigt zur Seite. Der Oberkörper ist über das vordere Bein gebeugt und zu ihm gedreht: die gegenüberliegende Hand liegt außen neben dem vorderen Fuß am Boden, der andere Arm zeigt senkrecht zur Decke, beide Arme bilden eine Linie. Blick zur oberen Hand. |
+| G-169 | `yoga_49_gedrehter_winkel` | Gedrehter seitlicher Winkel (Parivrtta Parsvakonasana) | Front | 1 | Tiefer Ausfallschritt mit 90 Grad gebeugtem vorderem Knie, hinteres Bein gestreckt. Der Oberkörper ist zum vorderen Bein gedreht, der gegenüberliegende Ellbogen hakt außen am vorderen Knie ein, die Handflächen sind vor der Brust aneinandergelegt. Blick nach oben. |
+| G-170 | `yoga_50_gedrehter_stuhl` | Gedrehter Stuhl (Parivrtta Utkatasana) | Schräg | 1 | Stuhlhaltung: Füße geschlossen, Knie gebeugt, Gesäß nach hinten wie auf einem Stuhl. Der Oberkörper ist zur Seite gedreht, ein Ellbogen hakt außen am gegenüberliegenden Knie ein, die Handflächen liegen vor der Brust aneinander. Knie bleiben auf gleicher Höhe. |
+| G-171 | `yoga_51_goettin` | Göttin (Utkata Konasana) | Front | 1 | Sehr breiter Stand, Füße und Knie nach außen gedreht, die Knie tief gebeugt über den Zehen, Oberschenkel fast waagerecht. Oberkörper aufrecht. Beide Arme seitlich auf Schulterhöhe, die Ellbogen 90 Grad gebeugt, Unterarme senkrecht nach oben, Handflächen nach vorn. |
+| G-172 | `yoga_52_hoher_ausfallschritt` | Hoher Ausfallschritt | Seite | 1 | Langer Schritt: vorderes Knie 90 Grad gebeugt über dem Knöchel, hinteres Bein gestreckt, die hintere Ferse ist angehoben, nur der Fußballen am Boden. Oberkörper aufrecht, beide Arme gestreckt senkrecht nach oben, Handflächen zueinander. |
+| G-173 | `yoga_53_hand_zum_zeh` | Hand-zum-Zeh im Stand (Utthita Hasta Padangusthasana) | Seite | 1 | Einbeinstand auf dem gestreckten Standbein. Das andere Bein ist gestreckt nach vorn auf Hüfthöhe gehoben, Zeige- und Mittelfinger halten den großen Zeh. Die andere Hand liegt an der Hüfte. Oberkörper aufrecht, Blick geradeaus. |
+| G-174 | `yoga_54_welpe` | Welpe (Uttana Shishosana) | Seite | 1 | Vierfüßlerstand mit den Hüften genau über den Knien. Die Arme sind weit nach vorn gestreckt, die Hände flach am Boden, Brust und Stirn sinken zur Matte. Der Rücken hängt zwischen Hüfte und Schultern leicht durch. |
+| G-175 | `yoga_55_dreibeiniger_hund` | Dreibeiniger Hund | Seite | 1 | Herabschauender Hund (umgekehrtes V, Hände und ein Fuß am Boden), ein Bein ist gestreckt schräg nach oben in Verlängerung des Rückens gehoben, die Hüfte bleibt gerade zum Boden. Kopf zwischen den Oberarmen. |
+| G-176 | `yoga_56_bequemer_sitz` | Bequemer Sitz (Sukhasana) | Front | 1 | Schneidersitz auf einem flachen Kissen, die Knie etwas tiefer als die Hüfte. Wirbelsäule aufrecht, Schultern entspannt, die Hände liegen mit den Handflächen nach oben auf den Knien, Daumen und Zeigefinger berühren sich. Augen geschlossen, ruhiger Gesichtsausdruck. |
+| G-177 | `dehnen_41_armkreisen` | Armkreisen | Seite | 1 | Aufrechter Stand, Füße hüftbreit. Ein Arm ist gestreckt senkrecht nach oben, der andere gestreckt nach hinten unten. Ein großer kreisförmiger Pfeil in Dunkelorange um die Schulter zeigt die Kreisbewegung der Arme. |
+| G-178 | `dehnen_42_hueftkreisen` | Hüftkreisen | Front | 1 | Stand mit hüftbreit gestellten Füßen, leicht gebeugten Knien, die Hände an der Hüfte. Das Becken ist zur Seite geschoben. Ein flacher, kreisförmiger Pfeil in Dunkelorange um das Becken zeigt die Kreisbewegung. |
+| G-179 | `dehnen_43_fussgelenkkreisen` | Fußgelenkkreisen | Seite | 1 | Einbeinstand, eine Hand stützt an einer Stuhllehne. Das andere Bein ist leicht gebeugt angehoben, die Fußspitze zeigt nach unten. Ein kleiner kreisförmiger Pfeil in Dunkelorange um den angehobenen Fuß zeigt die Kreisbewegung. |
+| G-180 | `dehnen_44_beinpendel` | Beinpendel vor und zurück | Seite | 2 | Einbeinstand, eine Hand an einer Wand oder Stuhllehne. Links: das gestreckte Schwungbein schwingt nach hinten. Rechts: das gestreckte Schwungbein schwingt nach vorn bis etwa Hüfthöhe. Oberkörper bleibt aufrecht. |
+| G-181 | `dehnen_45_beinpendel_seitlich` | Beinpendel seitlich | Front | 2 | Stand zur Wand hin, beide Hände an der Wand auf Schulterhöhe. Links: das gestreckte Schwungbein schwingt vor dem Standbein zur anderen Seite. Rechts: das gestreckte Schwungbein schwingt nach außen zur Seite. |
+
 ## Zusammenfassung
 
 | Kategorie | Nummern | Anzahl |
 |-----------|---------|--------|
-| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-164 | 44 |
+| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-176 | 56 |
 | Crossfit | G-021 – G-040, G-101 – G-120 | 40 |
 | Calisthenics | G-041 – G-060, G-121 – G-140 | 40 |
-| Dehnen | G-061 – G-080, G-141 – G-160 | 40 |
-| **Gesamt** | | **164** |
+| Dehnen | G-061 – G-080, G-141 – G-160, G-177 – G-181 | 45 |
+| **Gesamt** | | **181** |
 
 Die Erweiterung G-081 bis G-160 (Stand 2026-10-11) kommt ohne Geräte aus. Bei
 Crossfit trägt die Figur weiterhin Sportschuhe, sonst ist sie barfuß.
