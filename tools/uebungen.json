@@ -1049,7 +1049,8 @@
   "gruppe": "umkehr",
   "stufe": 2,
   "hinweis": "Der Kopf ist unter dem Herzen: bei hohem Blutdruck, Glaukom oder Schwindel nur kurz und vorsichtig.",
-  "leichter": "yoga_02_herabschauender_hund"
+  "leichter": "yoga_02_herabschauender_hund",
+  "schwerer": "yoga_44_kopfstand"
  },
  "G-096": {
   "anleitung": "Im Sitz die Hände hinter dem Gesäß aufsetzen, die Füße aufstellen und die Hüfte heben, bis Rumpf und Oberschenkel waagerecht sind. Das Gesäß fest anspannen.",
@@ -1674,5 +1675,58 @@
   ],
   "auf_zeit": true,
   "stufe": 1
+ },
+ "G-161": {
+  "anleitung": "Aus dem Schulterstand die gestreckten Beine langsam über den Kopf senken, bis die Zehen hinter dem Kopf den Boden berühren. Arme lang hinter dem Rücken am Boden, den Nacken lang lassen und den Kopf nicht drehen. Zum Lösen Wirbel für Wirbel abrollen.",
+  "bereiche": [
+   "ruecken",
+   "nacken",
+   "beine"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Halasana",
+  "gruppe": "umkehr",
+  "stufe": 2,
+  "hinweis": "Nicht bei Nacken- oder Bandscheibenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Erreichen die Füße den Boden nicht, auf einem Stuhl oder Block ablegen."
+ },
+ "G-162": {
+  "anleitung": "Rückenlage, Schultern auf einer gefalteten Decke, der Kopf auf der Matte. Die Beine über den Kopf heben, die Hände stützen den Rücken, dann Becken und Beine senkrecht nach oben strecken. Das Gewicht liegt auf Schultern und Oberarmen, nicht auf dem Nacken. Langsam abrollen.",
+  "bereiche": [
+   "schultern",
+   "rumpf",
+   "nacken"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Salamba Sarvangasana",
+  "gruppe": "umkehr",
+  "stufe": 2,
+  "hinweis": "Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Die Decke unter den Schultern hält den Nacken frei; den Kopf in der Haltung nie drehen."
+ },
+ "G-163": {
+  "anleitung": "Vor einer Wand in den Delfin: Unterarme schulterbreit und parallel, Ellbogen unter den Schultern. Mit kleinen Schwüngen erst ein Bein, dann das andere an die Wand bringen. Schultern aktiv nach oben drücken, Bauch fest, Blick zwischen die Hände.",
+  "bereiche": [
+   "schultern",
+   "arme",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Pincha Mayurasana",
+  "gruppe": "umkehr",
+  "stufe": 3,
+  "hinweis": "Nicht bei hohem Blutdruck, Glaukom, Beschwerden in Schultern oder Nacken und nicht in der Schwangerschaft. Nur an einer festen Wand mit freiem Raum ringsum."
+ },
+ "G-164": {
+  "anleitung": "Finger verschränken, Unterarme am Boden, Ellbogen schulterbreit. Den Scheitel auf den Boden legen, den Hinterkopf in die Hände. Mit den Füßen herangehen, bis der Rücken senkrecht ist, dann die Beine langsam heben. Das Gewicht tragen vor allem die Unterarme, nicht der Kopf.",
+  "bereiche": [
+   "schultern",
+   "arme",
+   "rumpf"
+  ],
+  "auf_zeit": null,
+  "sanskrit": "Salamba Sirsasana",
+  "gruppe": "umkehr",
+  "stufe": 3,
+  "hinweis": "Am besten unter Anleitung lernen, anfangs an einer Wand und nur kurz. Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, Herzbeschwerden, während der Menstruation oder in der Schwangerschaft. Der Nacken darf nie schmerzen.",
+  "leichter": "yoga_35_delfin"
  }
 }

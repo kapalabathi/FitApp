@@ -254,6 +254,37 @@ class AppDatabase {
       }
       _db.execute('PRAGMA user_version = 10');
     }
+    if (version < 11) {
+      // Dritte Lieferung: die Umkehrhaltungen Pflug, Schulterstand,
+      // Unterarmstand und Kopfstand, dazu die neue schwerere Variante des
+      // Delfins. Bei neuen Installationen sind sie schon angelegt.
+      for (final e in builtinExercises.where((e) => e.batch == 3)) {
+        _insertBuiltin(e);
+        _db.execute(
+          'UPDATE exercises SET areas = ?, sanskrit = ?, pose_group = ?, '
+          'level = ?, both_sides = ?, caution = ?, easier_uuid = ?, '
+          'harder_uuid = ? WHERE uuid = ? AND updated_at = ?',
+          [
+            BodyArea.store(e.areas),
+            e.sanskrit,
+            e.poseGroup?.id,
+            e.level,
+            e.bothSides ? 1 : 0,
+            e.caution,
+            BuiltinExercise.uuidOf(e.easierKey),
+            BuiltinExercise.uuidOf(e.harderKey),
+            e.uuid,
+            _pristine,
+          ],
+        );
+      }
+      _db.execute(
+        'UPDATE exercises SET harder_uuid = ? '
+        'WHERE uuid = ? AND harder_uuid IS NULL',
+        ['builtin-yoga_44_kopfstand', 'builtin-yoga_35_delfin'],
+      );
+      _db.execute('PRAGMA user_version = 11');
+    }
   }
 
   /// Zeitstempel unveränderter mitgelieferter Inhalte. Jede Änderung des

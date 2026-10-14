@@ -48,9 +48,10 @@ GRUPPE = {
     "sitzen": "seated", "liegen": "supine",
 }
 
-# Bis zu dieser Nummer reicht die erste Lieferung; die App legt spätere
-# Übungen bei bestehenden Installationen nachträglich an.
+# Bis zu diesen Nummern reichen die erste und zweite Lieferung; die App legt
+# spätere Übungen bei bestehenden Installationen nachträglich an.
 ERSTE_LIEFERUNG_BIS = 80
+ZWEITE_LIEFERUNG_BIS = 160
 
 
 def dart_string(text):
@@ -79,7 +80,8 @@ def main():
             "anleitung": d["anleitung"],
             "bereiche": [BEREICH[b] for b in d["bereiche"]],
             "auf_zeit": auf_zeit,
-            "lieferung": 1 if int(nr[2:]) <= ERSTE_LIEFERUNG_BIS else 2,
+            "lieferung": 1 if int(nr[2:]) <= ERSTE_LIEFERUNG_BIS
+            else 2 if int(nr[2:]) <= ZWEITE_LIEFERUNG_BIS else 3,
             "sanskrit": d.get("sanskrit", ""),
             "gruppe": GRUPPE[d["gruppe"]] if "gruppe" in d else None,
             "stufe": d.get("stufe", 0),

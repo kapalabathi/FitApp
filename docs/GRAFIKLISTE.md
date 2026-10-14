@@ -1,6 +1,6 @@
 # Grafikliste Übungen (zu I-020)
 
-160 Grafiken, 40 je Kategorie. Jede Grafik hat eine feste Nummer (`G-001` bis `G-160`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
+164 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-164`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
 
 ## Allgemeine Vorgaben für alle Grafiken
 
@@ -227,15 +227,26 @@ Bei allen Dehnübungen: entspannter Gesichtsausdruck, keine Bewegungspfeile.
 | G-159 | `dehnen_39_seitbeuge_sitz` | Seitbeuge im Schneidersitz | Front | 1 | Schneidersitz, eine Hand stützt seitlich neben dem Gesäß am Boden, der andere Arm ist im Bogen über den Kopf zur gestützten Seite gestreckt, Oberkörper seitlich geneigt, beide Gesäßhälften am Boden. |
 | G-160 | `dehnen_40_ganzkoerper_strecken` | Ganzkörper strecken | Seite, leicht von oben | 1 | Gestreckte Rückenlage, Arme lang über dem Kopf am Boden, Zehen gestreckt, der ganze Körper in die Länge gezogen. |
 
+## Yoga (Umkehrhaltungen)
+
+Ergänzt am 2026-10-14 aus den Vorschlägen V-014, V-015, V-027 und V-028 der [Übungsliste](UEBUNGEN-VORSCHLAEGE.md), für den Yoga-Grundkurs.
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-161 | `yoga_41_pflug` | Pflug (Halasana) | Seite | 1 | Schultern liegen auf einer flach gefalteten Decke, der Kopf auf der Matte dahinter. Becken senkrecht über den Schultern, die gestreckten Beine sind über den Kopf geführt, die Zehen berühren hinter dem Kopf den Boden. Arme gestreckt hinter dem Rücken flach am Boden. Kinn Richtung Brust, Nacken lang ohne Knick, Kopf gerade (nicht gedreht). |
+| G-162 | `yoga_42_schulterstand` | Schulterstand (Salamba Sarvangasana) | Seite | 1 | Schultern und Oberarme liegen auf einer flach gefalteten Decke, der Kopf auf der Matte dahinter. Rumpf und gestreckte, geschlossene Beine bilden von den Schultern bis zu den Zehen eine senkrechte Linie. Die Ellbogen stehen schulterbreit am Boden, die Hände stützen den unteren Rücken. Kinn Richtung Brust, Hals frei, Blick zur Brust. |
+| G-163 | `yoga_43_unterarmstand_wand` | Unterarmstand an der Wand (Pincha Mayurasana) | Seite | 1 | Eine Wand als senkrechte Linie am rechten Bildrand. Kopfüber auf den Unterarmen: Unterarme parallel und schulterbreit flach am Boden, Ellbogen genau unter den Schultern, Kopf frei über dem Boden. Körper senkrecht, Beine gestreckt und geschlossen, die Fersen lehnen an der Wand. Blick zum Boden zwischen den Händen. |
+| G-164 | `yoga_44_kopfstand` | Kopfstand (Salamba Sirsasana) | Seite | 1 | Unterarme am Boden, Ellbogen schulterbreit, Finger verschränkt. Der Scheitel liegt am Boden, der Hinterkopf in den Händen. Körper von den Schultern bis zu den Zehen senkrecht, Beine gestreckt und geschlossen, Zehen zur Decke. Schultern deutlich vom Boden weg nach oben gezogen, der Hals bleibt lang. |
+
 ## Zusammenfassung
 
 | Kategorie | Nummern | Anzahl |
 |-----------|---------|--------|
-| Yoga | G-001 – G-020, G-081 – G-100 | 40 |
+| Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-164 | 44 |
 | Crossfit | G-021 – G-040, G-101 – G-120 | 40 |
 | Calisthenics | G-041 – G-060, G-121 – G-140 | 40 |
 | Dehnen | G-061 – G-080, G-141 – G-160 | 40 |
-| **Gesamt** | | **160** |
+| **Gesamt** | | **164** |
 
 Die Erweiterung G-081 bis G-160 (Stand 2026-10-11) kommt ohne Geräte aus. Bei
 Crossfit trägt die Figur weiterhin Sportschuhe, sonst ist sie barfuß.

@@ -116,7 +116,7 @@ Die Gruppen entsprechen der Ordnung im Buch und den Ordnungsregeln oben. Sie erl
 | Vorbeugen | Stehende und sitzende Vorbeuge, Kopf-zu-Knie, Pyramide |
 | Drehungen | Drehsitz, liegende Drehung |
 | Rückbeugen | Kobra, Heuschrecke, Bogen, Kamel, Schulterbrücke |
-| Umkehrhaltungen | (bisher keine; Vorschläge V-014, V-015, V-027, V-028) |
+| Umkehrhaltungen | Herabschauender Hund, Delfin, Pflug, Schulterstand, Unterarmstand an der Wand, Kopfstand |
 | Armbalancen | Krähe, Brett, tiefes Brett |
 | Sitzhaltungen | Schmetterling, Heldensitz (V-019), Kuhgesicht (V-020) |
 | Liegehaltungen | Glückliches Baby, Totenstellung |
@@ -141,7 +141,7 @@ Die acht Atemübungen der Vorschlagsliste ([UEBUNGEN-VORSCHLAEGE.md](UEBUNGEN-VO
 
 Am 2026-10-14 entschieden und mit Version 0.11.0 umgesetzt (Lastenheft A-080): ein eigener Yoga-Grundkurs mit 6 Stufen à 2 Wochen und drei Einheiten je Woche, gebaut nach den Ordnungsregeln oben. Die Tabellen des Buches sind nicht abgeschrieben. Das Buch erschien 1966, B. K. S. Iyengar starb 2014; in Deutschland ist es bis Ende 2084 geschützt.
 
-Was dem Kurs noch fehlt, weil es dafür keine Übungen mit Grafik gibt: echte Umkehrhaltungen wie Schulterstand, Pflug und Kopfstand, die im Buch einen festen Platz haben (Vorschläge V-014, V-015, V-027, V-028).
+Seit Version 0.12.0 gehören Schulterstand und Pflug ab Stufe 2 zu jeder Einheit, gegen Ende vor der Entspannung, mit wachsender Haltezeit (Schulterstand 30 s bis 3 min). Kopfstand und Unterarmstand stehen in der Übungsbibliothek, aber nicht im Kurs: Sie belasten Nacken und Schultern stark und sollten unter Anleitung gelernt werden; im Buch kommt der Kopfstand erst ab Woche 14, also nach dem Ende unseres zwölfwöchigen Kurses.
 
 ## 4 Sicherheit
 

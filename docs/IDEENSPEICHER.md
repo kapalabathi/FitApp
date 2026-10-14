@@ -72,6 +72,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-050 | Haltedauer wahlweise in Atemzügen statt Sekunden | Programme | S | Neu | Vorschlag |
 | I-051 | Vorstufen und Varianten einer Übung verknüpfen (leichter / schwerer) | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-052 | Hinweise je Übung, Warnung bei Umkehrhaltungen und Atemanhalten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
+| I-053 | Umkehrhaltungen Pflug, Schulterstand, Unterarmstand und Kopfstand; Schulterstand und Pflug im Yoga-Grundkurs | Programme | S | Umgesetzt, ungetestet | Nutzer |
 
 ## Details
 
@@ -173,3 +174,6 @@ Im Lastenheft, Abschnitt 6, bisher ausdrücklich ausgeschlossen (Trainingspläne
 
 ### I-046 bis I-052 – Struktur für Yoga und Atemübungen
 Hervorgegangen aus der Auswertung von „Light on Yoga" (B. K. S. Iyengar) am 2026-10-14, auf Wunsch des Nutzers. Herleitung, Haltungsgruppen und Ordnungsregeln stehen in [YOGA-STRUKTUR.md](YOGA-STRUKTUR.md). Übernommen werden nur Ordnungsprinzipien, keine Texte, Bilder oder Kurstabellen des Buches. Am 2026-10-14 hat der Auftraggeber entschieden: Kurse übernehmen, ein Kurs mit drei Einheiten je Woche (Lastenheft A-080). Umgesetzt mit Version 0.11.0 außer I-050. Der Kurs ist ein eigener Aufbau nach den Ordnungsregeln des Buches; dessen Kurstabellen sind urheberrechtlich geschützt (Iyengar † 2014, Schutz bis Ende 2084) und wurden nicht übernommen.
+
+### I-053 – Umkehrhaltungen
+Wunsch des Nutzers vom 2026-10-14: die im Kurs fehlenden Umkehrhaltungen ergänzen. Übernommen aus der Übungsliste V-014, V-015, V-027 und V-028 als G-161 bis G-164. Die Grafiken fehlen noch; bis sie erzeugt sind, zeigt die App den Platzhalter (A-046). Kopf- und Unterarmstand bleiben bewusst außerhalb des Grundkurses (siehe [YOGA-STRUKTUR.md](YOGA-STRUKTUR.md)).

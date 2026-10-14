@@ -1242,6 +1242,7 @@ const List<BuiltinExercise> builtinExercises = [
     caution:
         'Der Kopf ist unter dem Herzen: bei hohem Blutdruck, Glaukom oder Schwindel nur kurz und vorsichtig.',
     easierKey: 'yoga_02_herabschauender_hund',
+    harderKey: 'yoga_44_kopfstand',
   ),
   BuiltinExercise(
     key: 'yoga_36_umgekehrter_tisch',
@@ -1998,5 +1999,66 @@ const List<BuiltinExercise> builtinExercises = [
     timed: true,
     batch: 2,
     level: 1,
+  ),
+  BuiltinExercise(
+    key: 'yoga_41_pflug',
+    category: ExerciseCategory.yoga,
+    name: 'Pflug (Halasana)',
+    description:
+        'Aus dem Schulterstand die gestreckten Beine langsam über den Kopf senken, bis die Zehen hinter dem Kopf den Boden berühren. Arme lang hinter dem Rücken am Boden, den Nacken lang lassen und den Kopf nicht drehen. Zum Lösen Wirbel für Wirbel abrollen.',
+    areas: [BodyArea.back, BodyArea.neck, BodyArea.legs],
+    timed: true,
+    batch: 3,
+    sanskrit: 'Halasana',
+    poseGroup: PoseGroup.inversion,
+    level: 2,
+    caution:
+        'Nicht bei Nacken- oder Bandscheibenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Erreichen die Füße den Boden nicht, auf einem Stuhl oder Block ablegen.',
+  ),
+  BuiltinExercise(
+    key: 'yoga_42_schulterstand',
+    category: ExerciseCategory.yoga,
+    name: 'Schulterstand (Salamba Sarvangasana)',
+    description:
+        'Rückenlage, Schultern auf einer gefalteten Decke, der Kopf auf der Matte. Die Beine über den Kopf heben, die Hände stützen den Rücken, dann Becken und Beine senkrecht nach oben strecken. Das Gewicht liegt auf Schultern und Oberarmen, nicht auf dem Nacken. Langsam abrollen.',
+    areas: [BodyArea.shoulders, BodyArea.core, BodyArea.neck],
+    timed: true,
+    batch: 3,
+    sanskrit: 'Salamba Sarvangasana',
+    poseGroup: PoseGroup.inversion,
+    level: 2,
+    caution:
+        'Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, während der Menstruation oder in der Schwangerschaft. Die Decke unter den Schultern hält den Nacken frei; den Kopf in der Haltung nie drehen.',
+  ),
+  BuiltinExercise(
+    key: 'yoga_43_unterarmstand_wand',
+    category: ExerciseCategory.yoga,
+    name: 'Unterarmstand an der Wand (Pincha Mayurasana)',
+    description:
+        'Vor einer Wand in den Delfin: Unterarme schulterbreit und parallel, Ellbogen unter den Schultern. Mit kleinen Schwüngen erst ein Bein, dann das andere an die Wand bringen. Schultern aktiv nach oben drücken, Bauch fest, Blick zwischen die Hände.',
+    areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.core],
+    timed: true,
+    batch: 3,
+    sanskrit: 'Pincha Mayurasana',
+    poseGroup: PoseGroup.inversion,
+    level: 3,
+    caution:
+        'Nicht bei hohem Blutdruck, Glaukom, Beschwerden in Schultern oder Nacken und nicht in der Schwangerschaft. Nur an einer festen Wand mit freiem Raum ringsum.',
+  ),
+  BuiltinExercise(
+    key: 'yoga_44_kopfstand',
+    category: ExerciseCategory.yoga,
+    name: 'Kopfstand (Salamba Sirsasana)',
+    description:
+        'Finger verschränken, Unterarme am Boden, Ellbogen schulterbreit. Den Scheitel auf den Boden legen, den Hinterkopf in die Hände. Mit den Füßen herangehen, bis der Rücken senkrecht ist, dann die Beine langsam heben. Das Gewicht tragen vor allem die Unterarme, nicht der Kopf.',
+    areas: [BodyArea.shoulders, BodyArea.arms, BodyArea.core],
+    timed: true,
+    batch: 3,
+    sanskrit: 'Salamba Sirsasana',
+    poseGroup: PoseGroup.inversion,
+    level: 3,
+    caution:
+        'Am besten unter Anleitung lernen, anfangs an einer Wand und nur kurz. Nicht bei Nackenbeschwerden, hohem Blutdruck, Glaukom, Herzbeschwerden, während der Menstruation oder in der Schwangerschaft. Der Nacken darf nie schmerzen.',
+    easierKey: 'yoga_35_delfin',
   ),
 ];

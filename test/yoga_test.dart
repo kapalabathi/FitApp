@@ -162,6 +162,34 @@ void main() {
       expect(hips.items.single.bothSides, isFalse);
     });
 
+    test('Fassung 11 bringt die Umkehrhaltungen nachträglich', () {
+      final raw = sqlite3.openInMemory();
+      AppDatabase(raw);
+      raw.execute("DELETE FROM exercises WHERE builtin_key LIKE 'yoga_4%' "
+          "AND builtin_key > 'yoga_40'");
+      raw.execute("UPDATE exercises SET harder_uuid = NULL "
+          "WHERE uuid = 'builtin-yoga_35_delfin'");
+      raw.execute('PRAGMA user_version = 10');
+
+      final upgraded = AppDatabase(raw);
+      addTearDown(upgraded.close);
+      final byKey = {
+        for (final e in upgraded.exercises()) e.builtinKey: e,
+      };
+      for (final key in [
+        'yoga_41_pflug',
+        'yoga_42_schulterstand',
+        'yoga_43_unterarmstand_wand',
+        'yoga_44_kopfstand',
+      ]) {
+        expect(byKey[key]?.poseGroup, PoseGroup.inversion, reason: key);
+        expect(byKey[key]!.caution, isNotEmpty);
+        expect(byKey[key]!.areas, isNotEmpty);
+      }
+      expect(byKey['yoga_35_delfin']!.harderUuid, 'builtin-yoga_44_kopfstand');
+      expect(byKey['yoga_44_kopfstand']!.easierUuid, 'builtin-yoga_35_delfin');
+    });
+
     test('mitgelieferte Programme üben einseitige Haltungen beidseitig', () {
       final kopfKnie = db
           .programs()
@@ -387,6 +415,32 @@ void main() {
       await synchronize(other, store);
       await synchronize(db, store);
       expect(CourseProgress.load(db, course).done, 5);
+    });
+
+    test('ab Stufe 2 Schulterstand und Pflug vor der Entspannung', () {
+      const stand = 'builtin-yoga_42_schulterstand';
+      const plough = 'builtin-yoga_41_pflug';
+      for (var stage = 0; stage < course.stages.length; stage++) {
+        for (final s in course.stages[stage].sessions) {
+          final uuids = s.items.map((i) => i.exerciseUuid).toList();
+          if (stage == 0) {
+            expect(uuids, isNot(contains(stand)));
+            continue;
+          }
+          final i = uuids.indexOf(stand);
+          expect(i, greaterThan(0), reason: 'Stufe ${stage + 1} ${s.title}');
+          expect(uuids[i + 1], plough);
+          // Danach nur noch Ausgleich und Entspannung
+          expect(uuids.length - i, lessThanOrEqualTo(4));
+        }
+      }
+      // Kopf- und Unterarmstand gehören nicht zum Grundkurs.
+      final all = [
+        for (final st in course.stages)
+          for (final s in st.sessions) ...s.items.map((i) => i.exerciseUuid),
+      ];
+      expect(all, isNot(contains('builtin-yoga_44_kopfstand')));
+      expect(all, isNot(contains('builtin-yoga_43_unterarmstand_wand')));
     });
 
     test('der Sonnengruß des Kurses ist der mitgelieferte', () {

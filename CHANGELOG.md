@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.12.0] – 2026-10-14
+
+### Hinzugefügt
+- Vier Umkehrhaltungen (I-053), übernommen aus der Übungsliste (V-014, V-015, V-027, V-028): **Pflug** (Halasana), **Schulterstand** (Salamba Sarvangasana), **Unterarmstand an der Wand** (Pincha Mayurasana) und **Kopfstand** (Salamba Sirsasana). Alle mit Anleitung, Sicherheitshinweis und Gruppe „Umkehrhaltung"; der Delfin führt als leichtere Variante zum Kopfstand. Damit 164 Übungen.
+- **Yoga-Grundkurs:** Ab Stufe 2 enden alle Einheiten mit Schulterstand und Pflug vor der Entspannung. Der Schulterstand wächst von 30 Sekunden auf 3 Minuten, der Pflug von 20 Sekunden auf 1 Minute; die Einheiten werden dadurch 1 bis 4 Minuten länger. Kopf- und Unterarmstand gehören bewusst nicht zum Kurs.
+- Grafikliste um G-161 bis G-164 ergänzt. **Die Grafiken fehlen noch**; bis dahin zeigt die App den Platzhalter.
+- Zwei automatische Tests dazu (insgesamt 230).
+
+### Geändert
+- Die Datenbank hat eine neue Fassung (11), die bestehenden Installationen die neuen Übungen nachträglich anlegt.
+
 ## [0.11.0] – 2026-10-14
 
 Yoga-Struktur nach der Auswertung von „Light on Yoga" ([YOGA-STRUKTUR.md](docs/YOGA-STRUKTUR.md)), vom Nutzer ausgewählt: I-046 bis I-049, I-051, I-052. Alles ist durch automatische Tests gedeckt, aber **noch nicht am Gerät erprobt**.

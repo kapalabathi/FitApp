@@ -2,7 +2,9 @@
 
 Stand: 2026-10-12
 
-Diese Liste ist eine **Sammlung zur Auswahl**. Keine der Übungen ist in der App, in der [Grafikliste](GRAFIKLISTE.md) oder in `tools/uebungen.json` enthalten. Die 160 vorhandenen Übungen sind hier nicht noch einmal aufgeführt.
+Diese Liste ist eine **Sammlung zur Auswahl**. Bis auf die als übernommen markierten ist keine der Übungen in der App, in der [Grafikliste](GRAFIKLISTE.md) oder in `tools/uebungen.json` enthalten. Die 160 vorhandenen Übungen sind hier nicht noch einmal aufgeführt.
+
+Übernommen sind bisher V-014, V-015, V-027 und V-028 (2026-10-14, als G-161 bis G-164).
 
 Die Nummern (V-001 …) sind fest und dienen nur der Auswahl, z. B. „nimm V-003, V-017 und alle aus Abschnitt 5". Für jede übernommene Übung wird später eine Grafik gebraucht.
 
@@ -42,8 +44,8 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | V-011 | Welpe | Aus dem Vierfüßler Arme weit nach vorn, Brust sinkt zum Boden | Schultern, Rücken | – | Zeit | 1 |
 | V-012 | Krokodil | Bauchlage, Stirn auf den übereinandergelegten Händen | Rücken, Entspannung | – | Zeit | 1 |
 | V-013 | Fisch | Rückenlage, Brust angehoben, Scheitel leicht am Boden | Brust, Nacken | – | Zeit | 2 |
-| V-014 | Pflug | Rückenlage, Beine über den Kopf, Zehen am Boden | Rücken, Nacken | – | Zeit | 3 |
-| V-015 | Schulterstand | Körper senkrecht auf den Schultern, Hände stützen den Rücken | Schultern, Rumpf | – | Zeit | 3 |
+| V-014 | Pflug *(übernommen als G-161)* | Rückenlage, Beine über den Kopf, Zehen am Boden | Rücken, Nacken | – | Zeit | 3 |
+| V-015 | Schulterstand *(übernommen als G-162)* | Körper senkrecht auf den Schultern, Hände stützen den Rücken | Schultern, Rumpf | – | Zeit | 3 |
 | V-016 | Beine an der Wand | Rückenlage, Beine senkrecht an die Wand gelehnt | Beine, Entspannung | Wand | Zeit | 1 |
 | V-017 | Gestützte Brücke | Schulterbrücke mit Block unter dem Kreuzbein | Rücken, Hüfte | Yoga-Block | Zeit | 1 |
 | V-018 | Rad | Volle Rückbeuge auf Händen und Füßen | Rücken, Schultern | – | Zeit | 3 |
@@ -55,8 +57,8 @@ Die Abschnitte 5 bis 11 wären in der App neue Kategorien oder müssten einer de
 | V-024 | Seitliche Planke mit Baum | Seitstütz, oberer Fuß am Oberschenkel des Standbeins | Rumpf, Schultern | – | Zeit | 2 |
 | V-025 | Achtwinkel-Haltung | Armbalance, beide Beine seitlich um einen Arm geschlungen | Arme, Rumpf | – | Zeit | 3 |
 | V-026 | Seitliche Krähe | Armbalance, beide Knie seitlich auf einem Oberarm | Arme, Rumpf | – | Zeit | 3 |
-| V-027 | Unterarmstand an der Wand | Kopfüber auf den Unterarmen, Fersen an der Wand | Schultern, Rumpf | Wand | Zeit | 3 |
-| V-028 | Kopfstand | Kopfüber auf Unterarmen und Scheitel | Schultern, Rumpf | – | Zeit | 3 |
+| V-027 | Unterarmstand an der Wand *(übernommen als G-163)* | Kopfüber auf den Unterarmen, Fersen an der Wand | Schultern, Rumpf | Wand | Zeit | 3 |
+| V-028 | Kopfstand *(übernommen als G-164)* | Kopfüber auf Unterarmen und Scheitel | Schultern, Rumpf | – | Zeit | 3 |
 | V-029 | Sonnengruß A | Fließende Abfolge aus Berghaltung, Vorbeuge, Brett, Hund | Ganzkörper | – | Wdh. | 1 |
 | V-030 | Sonnengruß B | Wie A, zusätzlich Stuhl und Krieger I | Ganzkörper | – | Wdh. | 2 |
 

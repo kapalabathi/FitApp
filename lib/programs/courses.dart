@@ -105,21 +105,19 @@ class CourseProgress {
 
   /// Speichert den Stand; [updatedAt] nur beim Übernehmen von einem anderen
   /// Gerät angeben.
-  void save(AppDatabase db, Course course, {int? updatedAt}) =>
-      db.setSetting(
-        key(course.id),
-        jsonEncode({
-          'stage': stage,
-          'done': done,
-          'updated_at': updatedAt ?? DateTime.now().millisecondsSinceEpoch,
-        }),
-      );
+  void save(AppDatabase db, Course course, {int? updatedAt}) => db.setSetting(
+    key(course.id),
+    jsonEncode({
+      'stage': stage,
+      'done': done,
+      'updated_at': updatedAt ?? DateTime.now().millisecondsSinceEpoch,
+    }),
+  );
 
   bool get started => stage > 0 || done > 0;
 
   /// Die nächste Einheit der Stufe: reihum Tag 1, 2, 3, 1, …
-  int nextSession(Course course) =>
-      done % course.stages[stage].sessions.length;
+  int nextSession(Course course) => done % course.stages[stage].sessions.length;
 
   /// Alle Einheiten der Stufe sind geschafft; Zeit für die nächste Stufe.
   bool stageComplete(Course course) =>
@@ -129,11 +127,14 @@ class CourseProgress {
 
   CourseProgress sessionDone() => CourseProgress(stage: stage, done: done + 1);
 
-  CourseProgress toStage(Course course, int stage) => CourseProgress(
-      stage: stage.clamp(0, course.stages.length - 1), done: 0);
+  CourseProgress toStage(Course course, int stage) =>
+      CourseProgress(stage: stage.clamp(0, course.stages.length - 1), done: 0);
 
-  Map<String, Object?> toJson() =>
-      {'stage': stage, 'done': done, 'updated_at': updatedAt};
+  Map<String, Object?> toJson() => {
+    'stage': stage,
+    'done': done,
+    'updated_at': updatedAt,
+  };
 }
 
 /// Alle Kurse der App.
@@ -165,10 +166,10 @@ ProgramItem _savasana(int seconds) =>
     _p('yoga_20_totenstellung', seconds, rest: 0);
 
 List<ProgramItem> _sun(int rounds) => [
-      for (var i = 0; i < rounds; i++) ...sunSalutation,
-      // Nach dem letzten Sonnengruß kurz in der Berghaltung ankommen.
-      _p('yoga_01_berghaltung', 15),
-    ];
+  for (var i = 0; i < rounds; i++) ...sunSalutation,
+  // Nach dem letzten Sonnengruß kurz in der Berghaltung ankommen.
+  _p('yoga_01_berghaltung', 15),
+];
 
 const _berg = 'yoga_01_berghaltung';
 const _hund = 'yoga_02_herabschauender_hund';
@@ -209,131 +210,155 @@ const _spagat = 'yoga_40_halber_spagat';
 const _schmetterling = 'dehnen_10_schmetterling';
 const _liegDrehung = 'dehnen_14_wirbelsaeule_drehung';
 const _kraehe = 'cali_20_kraehe';
+const _pflug = 'yoga_41_pflug';
+const _schulterstand = 'yoga_42_schulterstand';
+
+/// Schulterstand und Pflug gegen Ende der Einheit, vor der Entspannung,
+/// wie es die Ordnungsregeln vorsehen. Ab Stufe 2.
+List<ProgramItem> _inversions(int stand, int plough) => [
+  _p(_schulterstand, stand),
+  _p(_pflug, plough),
+];
 
 /// Stufen 3 und 4: gleiche Haltungen, in Stufe 4 länger gehalten.
-List<CourseSession> _sunStage(int hold, int sunRounds, int savasana,
-        List<(String, int)> breaths) =>
-    [
-      CourseSession(
-        title: 'Tag 1 – Stehhaltungen',
-        items: [
-          ..._sun(sunRounds),
-          _s(_krieger2, hold),
-          _s(_winkel, hold),
-          _s(_dreieck, hold),
-          _s(_krieger1, hold),
-          _s(_krieger3, hold ~/ 2 + 5),
-          _s(_halbmond, hold ~/ 2 + 5),
-          _s(_pyramide, hold),
-          _p(_graetsche, hold + 15),
-          _p(_kind, 45),
-          _savasana(savasana),
-        ],
-        breathKey: breaths[0].$1,
-        breathMinutes: breaths[0].$2,
-      ),
-      CourseSession(
-        title: 'Tag 2 – Vorbeugen und Hüfte',
-        items: [
-          ..._sun(sunRounds),
-          _s(_ausfallschritt, hold),
-          _s(_spagat, hold),
-          _p(_sitzVorbeuge, hold + 30),
-          _s(_kopfKnie, hold),
-          _s(_drehsitz, hold),
-          _s(_taube, hold + 15),
-          _p(_liegSchmetterling, 60),
-          _s(_liegDrehung, 30),
-          _savasana(savasana),
-        ],
-        breathKey: breaths[1].$1,
-        breathMinutes: breaths[1].$2,
-      ),
-      CourseSession(
-        title: 'Tag 3 – Rücken und Balance',
-        items: [
-          ..._sun(sunRounds),
-          _s(_adler, hold - 5),
-          _s(_baum, hold),
-          _p(_stuhl, hold),
-          _p(_heuschrecke, hold - 5),
-          _p(_bogen, hold - 10),
-          _p(_kind, 30),
-          _p(_delfin, hold - 10),
-          _p(_bruecke, hold),
-          _p(_tisch, hold - 10),
-          _p(_boot, hold - 10),
-          _p(_baby, 30),
-          _savasana(savasana),
-        ],
-        breathKey: breaths[2].$1,
-        breathMinutes: breaths[2].$2,
-      ),
-    ];
+List<CourseSession> _sunStage(
+  int hold,
+  int sunRounds,
+  int savasana,
+  List<(String, int)> breaths,
+  List<ProgramItem> inversions,
+) => [
+  CourseSession(
+    title: 'Tag 1 – Stehhaltungen',
+    items: [
+      ..._sun(sunRounds),
+      _s(_krieger2, hold),
+      _s(_winkel, hold),
+      _s(_dreieck, hold),
+      _s(_krieger1, hold),
+      _s(_krieger3, hold ~/ 2 + 5),
+      _s(_halbmond, hold ~/ 2 + 5),
+      _s(_pyramide, hold),
+      _p(_graetsche, hold + 15),
+      _p(_kind, 45),
+      ...inversions,
+      _savasana(savasana),
+    ],
+    breathKey: breaths[0].$1,
+    breathMinutes: breaths[0].$2,
+  ),
+  CourseSession(
+    title: 'Tag 2 – Vorbeugen und Hüfte',
+    items: [
+      ..._sun(sunRounds),
+      _s(_ausfallschritt, hold),
+      _s(_spagat, hold),
+      _p(_sitzVorbeuge, hold + 30),
+      _s(_kopfKnie, hold),
+      _s(_drehsitz, hold),
+      _s(_taube, hold + 15),
+      _p(_liegSchmetterling, 60),
+      ...inversions,
+      _s(_liegDrehung, 30),
+      _savasana(savasana),
+    ],
+    breathKey: breaths[1].$1,
+    breathMinutes: breaths[1].$2,
+  ),
+  CourseSession(
+    title: 'Tag 3 – Rücken und Balance',
+    items: [
+      ..._sun(sunRounds),
+      _s(_adler, hold - 5),
+      _s(_baum, hold),
+      _p(_stuhl, hold),
+      _p(_heuschrecke, hold - 5),
+      _p(_bogen, hold - 10),
+      _p(_kind, 30),
+      _p(_delfin, hold - 10),
+      _p(_bruecke, hold),
+      _p(_tisch, hold - 10),
+      _p(_boot, hold - 10),
+      ...inversions,
+      _p(_baby, 30),
+      _savasana(savasana),
+    ],
+    breathKey: breaths[2].$1,
+    breathMinutes: breaths[2].$2,
+  ),
+];
 
 /// Stufen 5 und 6: Fließen, tiefere Rückbeugen und Balance.
-List<CourseSession> _flowStage(int hold, int sunRounds, int savasana,
-        List<(String, int)> breaths, {bool crow = false}) =>
-    [
-      CourseSession(
-        title: 'Tag 1 – Stehhaltungen',
-        items: [
-          ..._sun(sunRounds),
-          _s(_krieger2, hold),
-          _s(_umgKrieger, hold - 15),
-          _s(_winkel, hold),
-          _s(_dreieck, hold),
-          _s(_halbmond, hold - 15),
-          _s(_krieger1, hold),
-          _s(_krieger3, hold - 15),
-          _s(_pyramide, hold),
-          _p(_graetsche, hold + 15),
-          _p(_kind, 45),
-          _savasana(savasana),
-        ],
-        breathKey: breaths[0].$1,
-        breathMinutes: breaths[0].$2,
-      ),
-      CourseSession(
-        title: 'Tag 2 – Vorbeugen und Hüfte',
-        items: [
-          ..._sun(sunRounds),
-          _p(_hund, 60),
-          _p(_delfin, hold - 15),
-          _s(_ausfallschritt, hold),
-          _s(_spagat, hold),
-          _p(_sitzVorbeuge, hold + 45),
-          _s(_kopfKnie, hold + 15),
-          _s(_drehsitz, hold),
-          _s(_taube, hold + 15),
-          _p(_liegSchmetterling, 90),
-          _savasana(savasana),
-        ],
-        breathKey: breaths[1].$1,
-        breathMinutes: breaths[1].$2,
-      ),
-      CourseSession(
-        title: 'Tag 3 – Rücken und Balance',
-        items: [
-          ..._sun(sunRounds),
-          _s(_taenzer, hold - 20),
-          _s(_adler, hold - 15),
-          _s(_baum, hold),
-          _p(_heuschrecke, hold - 15),
-          _p(_bogen, hold - 20),
-          _p(_kamel, hold - 25),
-          _p(_kind, 45),
-          _p(_bruecke, hold - 5),
-          _p(_tisch, hold - 20),
-          if (crow) _p(_kraehe, 15),
-          _p(_boot, hold - 15),
-          _s(_liegDrehung, 45),
-          _savasana(savasana),
-        ],
-        breathKey: breaths[2].$1,
-        breathMinutes: breaths[2].$2,
-      ),
-    ];
+List<CourseSession> _flowStage(
+  int hold,
+  int sunRounds,
+  int savasana,
+  List<(String, int)> breaths,
+  List<ProgramItem> inversions, {
+  bool crow = false,
+}) => [
+  CourseSession(
+    title: 'Tag 1 – Stehhaltungen',
+    items: [
+      ..._sun(sunRounds),
+      _s(_krieger2, hold),
+      _s(_umgKrieger, hold - 15),
+      _s(_winkel, hold),
+      _s(_dreieck, hold),
+      _s(_halbmond, hold - 15),
+      _s(_krieger1, hold),
+      _s(_krieger3, hold - 15),
+      _s(_pyramide, hold),
+      _p(_graetsche, hold + 15),
+      _p(_kind, 45),
+      ...inversions,
+      _savasana(savasana),
+    ],
+    breathKey: breaths[0].$1,
+    breathMinutes: breaths[0].$2,
+  ),
+  CourseSession(
+    title: 'Tag 2 – Vorbeugen und Hüfte',
+    items: [
+      ..._sun(sunRounds),
+      _p(_hund, 60),
+      _p(_delfin, hold - 15),
+      _s(_ausfallschritt, hold),
+      _s(_spagat, hold),
+      _p(_sitzVorbeuge, hold + 45),
+      _s(_kopfKnie, hold + 15),
+      _s(_drehsitz, hold),
+      _s(_taube, hold + 15),
+      _p(_liegSchmetterling, 90),
+      ...inversions,
+      _savasana(savasana),
+    ],
+    breathKey: breaths[1].$1,
+    breathMinutes: breaths[1].$2,
+  ),
+  CourseSession(
+    title: 'Tag 3 – Rücken und Balance',
+    items: [
+      ..._sun(sunRounds),
+      _s(_taenzer, hold - 20),
+      _s(_adler, hold - 15),
+      _s(_baum, hold),
+      _p(_heuschrecke, hold - 15),
+      _p(_bogen, hold - 20),
+      _p(_kamel, hold - 25),
+      _p(_kind, 45),
+      _p(_bruecke, hold - 5),
+      _p(_tisch, hold - 20),
+      if (crow) _p(_kraehe, 15),
+      _p(_boot, hold - 15),
+      ...inversions,
+      _s(_liegDrehung, 45),
+      _savasana(savasana),
+    ],
+    breathKey: breaths[2].$1,
+    breathMinutes: breaths[2].$2,
+  ),
+];
 
 final Course yogaBasicCourse = Course(
   id: 'yoga-grundkurs',
@@ -342,7 +367,8 @@ final Course yogaBasicCourse = Course(
       'Zwölf Wochen in sechs Stufen, drei Einheiten je Woche. Jede Stufe '
       'hat drei Einheiten mit eigenem Schwerpunkt: Stehhaltungen, Vorbeugen '
       'und Hüfte, Rücken und Balance. Neue Haltungen kommen schrittweise '
-      'dazu, die Haltezeiten wachsen von 20 auf 60 Sekunden. Nach den '
+      'dazu, die Haltezeiten wachsen von 20 auf 60 Sekunden. Ab Stufe 2 '
+      'gehören Schulterstand und Pflug zu jeder Einheit. Nach den '
       'Haltungen folgt eine Atemübung. Weiter geht es erst, wenn die '
       'Haltungen einer Stufe sicher sitzen.',
   sessionsPerWeek: 3,
@@ -351,7 +377,8 @@ final Course yogaBasicCourse = Course(
     CourseStage(
       title: 'Ankommen und Stehen',
       weeks: 2,
-      focus: 'Die Grundhaltungen kennenlernen: fester Stand, gestreckte '
+      focus:
+          'Die Grundhaltungen kennenlernen: fester Stand, gestreckte '
           'Beine, ruhiger Atem. Lieber kürzer und sauber halten.',
       sessions: [
         CourseSession(
@@ -410,8 +437,11 @@ final Course yogaBasicCourse = Course(
     CourseStage(
       title: 'Festigen und Erweitern',
       weeks: 2,
-      focus: 'Haltungen 30 Sekunden halten, neue dazu: umgekehrter Krieger, '
-          'Stuhl, Adler, Drehsitz. Nach den Haltungen der siegreiche Atem.',
+      focus:
+          'Haltungen 30 Sekunden halten, neue dazu: umgekehrter Krieger, '
+          'Stuhl, Adler, Drehsitz und als erste Umkehrhaltungen Schulterstand '
+          'und Pflug, mit einer gefalteten Decke unter den Schultern. Nach den '
+          'Haltungen der siegreiche Atem.',
       sessions: [
         CourseSession(
           title: 'Tag 1 – Stehhaltungen',
@@ -427,6 +457,7 @@ final Course yogaBasicCourse = Course(
             _p(_graetsche, 40),
             _p(_stuhl, 20),
             _p(_kind, 45),
+            ..._inversions(30, 20),
             _savasana(180),
           ],
           breathKey: 'ujjayi',
@@ -445,6 +476,7 @@ final Course yogaBasicCourse = Course(
             _s(_drehsitz, 30),
             _p(_liegSchmetterling, 60),
             _s(_liegDrehung, 30),
+            ..._inversions(30, 20),
             _savasana(180),
           ],
           breathKey: 'ujjayi',
@@ -465,6 +497,7 @@ final Course yogaBasicCourse = Course(
             _p(_bruecke, 30),
             _p(_boot, 15),
             _p(_baby, 30),
+            ..._inversions(30, 20),
             _savasana(180),
           ],
           breathKey: 'ujjayi',
@@ -475,52 +508,54 @@ final Course yogaBasicCourse = Course(
     CourseStage(
       title: 'Sonnengruß und Kraft',
       weeks: 2,
-      focus: 'Jede Einheit beginnt mit zwei Sonnengrüßen. Neu: Krieger III, '
+      focus:
+          'Jede Einheit beginnt mit zwei Sonnengrüßen. Neu: Krieger III, '
           'Halbmond, Taube, Bogen, Delfin. Erstmals die Wechselatmung.',
       sessions: _sunStage(30, 2, 240, [
         ('ujjayi', 6),
         ('wechselatmung', 5),
         ('langes_ausatmen', 5),
-      ]),
+      ], _inversions(60, 30)),
     ),
     CourseStage(
       title: 'Festigung: länger halten',
       weeks: 2,
-      focus: 'Dieselben Haltungen wie in Stufe 3, jetzt 45 Sekunden und mit '
+      focus:
+          'Dieselben Haltungen wie in Stufe 3, jetzt 45 Sekunden und mit '
           'drei Sonnengrüßen. Ziel: ruhig atmen, auch wenn es anstrengt.',
       sessions: _sunStage(45, 3, 300, [
         ('ujjayi', 8),
         ('wechselatmung', 8),
         ('gestuft', 6),
-      ]),
+      ], _inversions(90, 45)),
     ),
     CourseStage(
       title: 'Fließen und Rückbeugen',
       weeks: 2,
-      focus: 'Neu: Tänzer und Kamel als tiefere Rückbeuge und Balance. Die '
+      focus:
+          'Neu: Tänzer und Kamel als tiefere Rückbeuge und Balance. Die '
           'Vorbeugen werden länger gehalten.',
       sessions: _flowStage(45, 3, 300, [
         ('ujjayi', 8),
         ('wechselatmung', 10),
         ('gestuft', 8),
-      ]),
+      ], _inversions(120, 60)),
     ),
     CourseStage(
       title: 'Vertiefen',
       weeks: 2,
-      focus: 'Die Haltungen eine Minute halten, vier Sonnengrüße, dazu die '
+      focus:
+          'Die Haltungen eine Minute halten, vier Sonnengrüße, dazu die '
           'Krähe als erste Armbalance. Danach lässt sich jede Stufe beliebig '
           'wiederholen.',
       sessions: _flowStage(
-          60,
-          4,
-          300,
-          [
-            ('ujjayi', 10),
-            ('wechselatmung', 10),
-            ('sonnenatmung', 8),
-          ],
-          crow: true),
+        60,
+        4,
+        300,
+        [('ujjayi', 10), ('wechselatmung', 10), ('sonnenatmung', 8)],
+        _inversions(180, 60),
+        crow: true,
+      ),
     ),
   ],
 );

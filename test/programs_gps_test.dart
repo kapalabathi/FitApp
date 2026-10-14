@@ -46,12 +46,14 @@ Iterable<String> flow(List<ProgramEvent> events) =>
 
 void main() {
   group('Mitgelieferte Inhalte', () {
-    test('160 Übungen, 40 je Bereich, mit eindeutigen Kennungen', () {
-      expect(builtinExercises, hasLength(160));
+    test('164 Übungen, 40 je Bereich und 4 Umkehrhaltungen, mit eindeutigen '
+        'Kennungen', () {
+      expect(builtinExercises, hasLength(164));
       for (final c in ExerciseCategory.values) {
-        expect(builtinExercises.where((e) => e.category == c), hasLength(40));
+        expect(builtinExercises.where((e) => e.category == c),
+            hasLength(c == ExerciseCategory.yoga ? 44 : 40));
       }
-      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(160));
+      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(164));
       expect(builtinExercises.where((e) => e.batch == 1), hasLength(80));
       // Jede Übung nennt mindestens einen Körperbereich.
       expect(builtinExercises.every((e) => e.areas.isNotEmpty), isTrue);
@@ -59,11 +61,19 @@ void main() {
     });
 
     test('zu jeder mitgelieferten Übung liegt die Grafik bei', () {
+      // Noch nicht gezeichnet (G-161 bis G-164); bis dahin zeigt die App
+      // den Platzhalter.
+      const pending = {
+        'yoga_41_pflug',
+        'yoga_42_schulterstand',
+        'yoga_43_unterarmstand_wand',
+        'yoga_44_kopfstand',
+      };
       final missing = [
         for (final e in builtinExercises)
           if (!File('assets/exercises/${e.key}.webp').existsSync()) e.key,
       ];
-      expect(missing, isEmpty);
+      expect(missing.toSet().difference(pending), isEmpty);
     });
 
     test('jedes mitgelieferte Programm verweist nur auf vorhandene Übungen',
@@ -80,8 +90,8 @@ void main() {
     test('eine neue Datenbank enthält Übungen und Programme', () {
       final db = AppDatabase.inMemory();
       addTearDown(db.close);
-      expect(db.exercises(), hasLength(160));
-      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(40));
+      expect(db.exercises(), hasLength(164));
+      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(44));
       expect(db.programs(),
           hasLength(builtinPrograms.length + builtinProgramsBatch2.length));
       final first = db.exercises().firstWhere(
@@ -118,10 +128,10 @@ void main() {
       stored = db.exercises().firstWhere((e) => e.id == id);
       expect(stored.name, 'Schlitten');
       expect(stored.imagePath, '/x.jpg');
-      expect(db.exercises(), hasLength(161));
+      expect(db.exercises(), hasLength(165));
 
       db.deleteExercise(id);
-      expect(db.exercises(), hasLength(160));
+      expect(db.exercises(), hasLength(164));
     });
 
     test('Programm speichern und wieder laden', () {
