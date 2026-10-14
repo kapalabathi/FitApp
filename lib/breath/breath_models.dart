@@ -76,6 +76,12 @@ class BreathExercise {
 
   /// In welcher Haltung geübt wird.
   final String posture;
+
+  /// Die Grafik zur Haltung: liegend die Totenstellung, sonst der bequeme
+  /// Sitz.
+  String get postureImageKey => posture.startsWith('Rückenlage')
+      ? 'yoga_20_totenstellung'
+      : 'yoga_56_bequemer_sitz';
   final List<BreathStep> cycle;
   final int defaultMinutes;
 

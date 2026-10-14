@@ -46,14 +46,19 @@ Iterable<String> flow(List<ProgramEvent> events) =>
 
 void main() {
   group('Mitgelieferte Inhalte', () {
-    test('164 Übungen, 40 je Bereich und 4 Umkehrhaltungen, mit eindeutigen '
-        'Kennungen', () {
-      expect(builtinExercises, hasLength(164));
+    test('212 Übungen mit eindeutigen Kennungen', () {
+      expect(builtinExercises, hasLength(212));
       for (final c in ExerciseCategory.values) {
-        expect(builtinExercises.where((e) => e.category == c),
-            hasLength(c == ExerciseCategory.yoga ? 44 : 40));
+        expect(
+            builtinExercises.where((e) => e.category == c),
+            hasLength(switch (c) {
+              ExerciseCategory.yoga => 69,
+              ExerciseCategory.crossfit => 50,
+              ExerciseCategory.calisthenics => 53,
+              ExerciseCategory.stretching => 40,
+            }));
       }
-      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(164));
+      expect(builtinExercises.map((e) => e.uuid).toSet(), hasLength(212));
       expect(builtinExercises.where((e) => e.batch == 1), hasLength(80));
       // Jede Übung nennt mindestens einen Körperbereich.
       expect(builtinExercises.every((e) => e.areas.isNotEmpty), isTrue);
@@ -71,7 +76,11 @@ void main() {
     test('jedes mitgelieferte Programm verweist nur auf vorhandene Übungen',
         () {
       final known = builtinExercises.map((e) => e.uuid).toSet();
-      for (final p in [...builtinPrograms, ...builtinProgramsBatch2]) {
+      for (final p in [
+        ...builtinPrograms,
+        ...builtinProgramsBatch2,
+        ...builtinProgramsBatch3,
+      ]) {
         expect(p.items, isNotEmpty, reason: p.name);
         for (final item in p.items) {
           expect(known, contains(item.exerciseUuid), reason: p.name);
@@ -82,10 +91,12 @@ void main() {
     test('eine neue Datenbank enthält Übungen und Programme', () {
       final db = AppDatabase.inMemory();
       addTearDown(db.close);
-      expect(db.exercises(), hasLength(164));
-      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(44));
+      expect(db.exercises(), hasLength(212));
+      expect(db.exercises(category: ExerciseCategory.yoga), hasLength(69));
       expect(db.programs(),
-          hasLength(builtinPrograms.length + builtinProgramsBatch2.length));
+          hasLength(builtinPrograms.length +
+              builtinProgramsBatch2.length +
+              builtinProgramsBatch3.length));
       final first = db.exercises().firstWhere(
           (e) => e.builtinKey == 'yoga_01_berghaltung');
       expect(first.imageAsset, 'assets/exercises/yoga_01_berghaltung.webp');
@@ -120,10 +131,10 @@ void main() {
       stored = db.exercises().firstWhere((e) => e.id == id);
       expect(stored.name, 'Schlitten');
       expect(stored.imagePath, '/x.jpg');
-      expect(db.exercises(), hasLength(165));
+      expect(db.exercises(), hasLength(213));
 
       db.deleteExercise(id);
-      expect(db.exercises(), hasLength(164));
+      expect(db.exercises(), hasLength(212));
     });
 
     test('Programm speichern und wieder laden', () {

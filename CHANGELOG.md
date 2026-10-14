@@ -4,6 +4,23 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.13.0] – 2026-10-14
+
+### Hinzugefügt
+- **48 neue Übungen** (I-054), Grafiken G-165 bis G-212 vom Nutzer erzeugt. Damit 212 Übungen.
+  - **Yoga (25):** u. a. Fisch, Beine an der Wand, Heldensitz und liegender Heldensitz, bequemer Sitz, Lotus, Stock, gedrehtes Dreieck, gedrehter seitlicher Winkel, gedrehter Stuhl, Göttin, hoher Ausfallschritt, Hand zum Zeh stehend und liegend, stehender Spagat, Tor, Welpe, dreibeiniger Hund, halbes Boot, Marichyasana I und III, Bharadvajasana, Kuhgesicht, Schulterstand mit einem Bein, Knie zu den Ohren. Darunter die Haltungen, die „Light on Yoga" für den ersten Kurs als wichtig nennt und die noch fehlten.
+  - **Crossfit (10):** Kettlebell umsetzen und drücken, türkisches Aufstehen, Kurzhantel-Thruster, Devil Press, Rudern im Stütz, Ausfallschritt über Kopf, Doppelsprung, Pendellauf, Knie zu Ellbogen, Wandlauf.
+  - **Calisthenics (13):** Vorstufen zu Liegestütz, Klimmzug, Dip und Krähe (z. B. aktives Hängen → Schulterblatt-Klimmzug → negativer Klimmzug), dazu Klatsch-Liegestütz, Tuck Front Lever, einbeiniges Kreuzheben.
+  - Viele neue Varianten-Verknüpfungen, auch zu vorhandenen Übungen (z. B. Kindhaltung → Welpe, Seilspringen → Doppelsprung).
+- **Sechs neue Programme:** Yoga: Nach dem Laufen; Yoga: Sitzen und Drehen; Calisthenics: Weg zum Klimmzug; Calisthenics: Weg zu Liegestütz und Dip; Crossfit: Kurzhantel-Zirkel; Crossfit: Kettlebell lang.
+- **Yoga-Grundkurs erweitert:** Jede Einheit endet mit einer Umkehrhaltung: in Stufe 1 Beine an der Wand, ab Stufe 2 Schulterstand, Pflug und Fisch, in Stufe 6 zusätzlich Schulterstand mit einem Bein und Knie zu den Ohren. Die Drehungen im Stand und im Sitz, Tor, Göttin, Welpe, halbes Boot, Held, Kuhgesicht, Hand zum Zeh und stehender Spagat kommen stufenweise dazu. Die Einheiten dauern jetzt 11 bis 42 Minuten, dazu die Atemübung.
+- Die Seite einer Atemübung zeigt die passende Haltung als Bild: Totenstellung oder bequemer Sitz.
+- Ein automatischer Test dazu (insgesamt 231).
+
+### Geändert
+- Die Datenbank hat eine neue Fassung (12), die bestehenden Installationen die neuen Übungen, Varianten und Programme nachträglich anlegt. Selbst festgelegte Varianten bleiben erhalten.
+- Die Grafik des Pflugs wurde neu erzeugt.
+
 ## [0.12.1] – 2026-10-14
 
 ### Hinzugefügt

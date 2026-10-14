@@ -190,6 +190,41 @@ void main() {
       expect(byKey['yoga_44_kopfstand']!.easierUuid, 'builtin-yoga_35_delfin');
     });
 
+    test('Fassung 12 bringt 48 Übungen, Varianten und sechs Programme', () {
+      final raw = sqlite3.openInMemory();
+      AppDatabase(raw);
+      // Zustand von Fassung 11 nachstellen
+      raw.execute("DELETE FROM exercises WHERE builtin_key IN "
+          "('yoga_45_fisch', 'yoga_54_welpe', 'cali_47_negativer_klimmzug')");
+      raw.execute("UPDATE exercises SET harder_uuid = NULL "
+          "WHERE uuid = 'builtin-yoga_05_kindhaltung'");
+      // Eine eigene Variante des Nutzers bleibt erhalten.
+      raw.execute("UPDATE exercises SET harder_uuid = 'eigene', "
+          "updated_at = 99 WHERE uuid = 'builtin-yoga_16_boot'");
+      raw.execute("DELETE FROM programs WHERE uuid LIKE "
+          "'builtin-program:Calisthenics: Weg%'");
+      raw.execute('PRAGMA user_version = 11');
+
+      final upgraded = AppDatabase(raw);
+      addTearDown(upgraded.close);
+      final byKey = {
+        for (final e in upgraded.exercises()) e.builtinKey: e,
+      };
+      expect(byKey, hasLength(212));
+      expect(byKey['yoga_45_fisch']!.poseGroup, PoseGroup.backbend);
+      expect(byKey['yoga_45_fisch']!.areas, isNotEmpty);
+      expect(byKey['yoga_05_kindhaltung']!.harderUuid,
+          'builtin-yoga_54_welpe');
+      expect(byKey['yoga_16_boot']!.harderUuid, 'eigene');
+      expect(
+          upgraded.programs().map((p) => p.name),
+          containsAll([
+            'Calisthenics: Weg zum Klimmzug',
+            'Calisthenics: Weg zu Liegestütz und Dip',
+            'Yoga: Nach dem Laufen',
+          ]));
+    });
+
     test('mitgelieferte Programme üben einseitige Haltungen beidseitig', () {
       final kopfKnie = db
           .programs()
@@ -425,13 +460,17 @@ void main() {
           final uuids = s.items.map((i) => i.exerciseUuid).toList();
           if (stage == 0) {
             expect(uuids, isNot(contains(stand)));
+            expect(uuids[uuids.length - 2], 'builtin-yoga_46_beine_an_der_wand');
             continue;
           }
           final i = uuids.indexOf(stand);
           expect(i, greaterThan(0), reason: 'Stufe ${stage + 1} ${s.title}');
-          expect(uuids[i + 1], plough);
-          // Danach nur noch Ausgleich und Entspannung
-          expect(uuids.length - i, lessThanOrEqualTo(4));
+          // Danach Pflug und Fisch als Ausgleich, dann die Entspannung
+          final rest = uuids.sublist(i);
+          expect(rest, contains(plough));
+          expect(rest.indexOf('builtin-yoga_45_fisch'),
+              greaterThan(rest.indexOf(plough)));
+          expect(rest.length, lessThanOrEqualTo(7));
         }
       }
       // Kopf- und Unterarmstand gehören nicht zum Grundkurs.

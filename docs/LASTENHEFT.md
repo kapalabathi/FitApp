@@ -98,7 +98,7 @@ Spalte „Idee" verweist auf den Ideenspeicher.
 
 | Nr. | Anforderung | Prio | Idee |
 |-----|-------------|------|------|
-| A-040 | Übungsbibliothek mit 164 mitgelieferten Übungen, je 40 für Crossfit, Calisthenics und Dehnen und 44 für Yoga, davon die Hälfte ohne Geräte (erweitert am 2026-10-11 und um vier Umkehrhaltungen am 2026-10-14). Jede Übung hat Name, Beschreibung, Grafik und die trainierten Körperbereiche. | Muss | I-007, I-020, I-021 |
+| A-040 | Übungsbibliothek mit 212 mitgelieferten Übungen: 69 Yoga, 50 Crossfit, 53 Calisthenics, 40 Dehnen (erweitert am 2026-10-11 und zweimal am 2026-10-14). Jede Übung hat Name, Beschreibung, Grafik und die trainierten Körperbereiche. | Muss | I-007, I-020, I-021 |
 | A-041 | Eigene Übungen anlegen, ändern, löschen; eigenes Bild hinterlegbar. | Muss | I-007 |
 | A-042 | Programme aus Übungen zusammenstellen: Reihenfolge, je Übung Dauer oder Wiederholungen, Pausen, Rundenzahl. | Muss | I-007 |
 | A-043 | Programm geführt abspielen: aktuelle Übung mit Grafik, Countdown oder Wiederholungszahl, Vorschau der nächsten Übung, Signal beim Wechsel. | Muss | I-007 |

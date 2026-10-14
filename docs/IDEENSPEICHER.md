@@ -73,6 +73,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-051 | Vorstufen und Varianten einer Übung verknüpfen (leichter / schwerer) | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-052 | Hinweise je Übung, Warnung bei Umkehrhaltungen und Atemanhalten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-053 | Umkehrhaltungen Pflug, Schulterstand, Unterarmstand und Kopfstand; Schulterstand und Pflug im Yoga-Grundkurs | Programme | S | Umgesetzt, ungetestet | Nutzer |
+| I-054 | 48 weitere Übungen: Yoga-Haltungen aus „Light on Yoga", Crossfit mit Kettlebell und Kurzhanteln, Calisthenics-Vorstufen; sechs neue Programme; Kurs damit erweitert | Programme | M | Umgesetzt, ungetestet | Nutzer |
 
 ## Details
 
@@ -177,3 +178,6 @@ Hervorgegangen aus der Auswertung von „Light on Yoga" (B. K. S. Iyengar) am 20
 
 ### I-053 – Umkehrhaltungen
 Wunsch des Nutzers vom 2026-10-14: die im Kurs fehlenden Umkehrhaltungen ergänzen. Übernommen aus der Übungsliste V-014, V-015, V-027 und V-028 als G-161 bis G-164. Die Grafiken hat der Nutzer am 2026-10-14 in niedriger Qualität (`--qualitaet low`) erzeugt; sie sind seit Version 0.12.1 eingebunden. Kopf- und Unterarmstand bleiben bewusst außerhalb des Grundkurses (siehe [YOGA-STRUKTUR.md](YOGA-STRUKTUR.md)).
+
+### I-054 – Zweite Erweiterung der Übungsbibliothek
+Wunsch des Nutzers vom 2026-10-14: weitere Übungen für Yoga, Crossfit und Calisthenics; Aufwärmübungen vor dem Laufen hat er wieder abgewählt. Ausgewählt aus der Übungsliste und nach einem Abgleich mit „Light on Yoga" (die dort für den ersten Kurs als wichtig genannten Haltungen, die noch fehlten). Bei Calisthenics vor allem Vorstufen, die als Varianten verknüpft sind. Grafiken G-165 bis G-212 vom Nutzer in niedriger Qualität erzeugt.

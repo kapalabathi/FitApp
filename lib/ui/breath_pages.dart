@@ -4,6 +4,7 @@ import '../breath/breath_models.dart';
 import '../data/database.dart';
 import '../data/models.dart';
 import '../programs/program_models.dart';
+import 'exercise_image.dart';
 import 'program_start.dart';
 
 /// Hinweis zur sicheren Ausführung, deutlich abgesetzt (I-052).
@@ -65,6 +66,11 @@ class _BreathExercisePageState extends State<BreathExercisePage> {
 
   bool get _holds => widget.db.flag(breathHoldsKey, fallback: false);
 
+  late final Exercise? _postureImage = widget.db
+      .exercises()
+      .where((x) => x.builtinKey == widget.exercise.postureImageKey)
+      .firstOrNull;
+
   Future<void> _setHolds(bool on) async {
     if (on) {
       await confirmBreathHolds(context, widget.db);
@@ -102,6 +108,13 @@ class _BreathExercisePageState extends State<BreathExercisePage> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
         children: [
+          if (_postureImage case final image?)
+            Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12),
+                child: ExerciseImage(exercise: image, size: 180),
+              ),
+            ),
           if (e.sanskrit.isNotEmpty)
             Text(e.sanskrit,
                 style: theme.textTheme.titleMedium

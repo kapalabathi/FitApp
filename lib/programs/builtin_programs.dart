@@ -308,6 +308,83 @@ const List<Program> builtinProgramsBatch2 = [
   ),
 ];
 
+/// Die dritte Lieferung: Programme mit den Übungen G-165 bis G-212.
+const List<Program> builtinProgramsBatch3 = [
+  Program(
+    name: 'Yoga: Nach dem Laufen',
+    category: ExerciseCategory.yoga,
+    items: [
+      _Timed('yoga_52_hoher_ausfallschritt', 30, sides: true),
+      _Timed('yoga_02_herabschauender_hund', 45),
+      _Timed('yoga_65_liegende_hand_zum_zeh', 45, sides: true),
+      _Timed('dehnen_12_figur_4', 40, sides: true),
+      _Timed('dehnen_14_wirbelsaeule_drehung', 30, sides: true),
+      _Timed('yoga_46_beine_an_der_wand', 180, rest: 0),
+    ],
+  ),
+  Program(
+    name: 'Yoga: Sitzen und Drehen',
+    category: ExerciseCategory.yoga,
+    items: [
+      _Timed('yoga_64_stock', 30),
+      _Timed('yoga_61_bharadvajasana', 30, sides: true),
+      _Timed('yoga_59_marichyasana_1', 30, sides: true),
+      _Timed('yoga_60_marichyasana_3', 30, sides: true),
+      _Timed('yoga_37_kopf_zu_knie', 40, sides: true),
+      _Timed('yoga_14_sitzende_vorbeuge', 60),
+      _Timed('yoga_69_kuhgesicht', 30, sides: true),
+      _Timed('yoga_20_totenstellung', 120, rest: 0),
+    ],
+  ),
+  Program(
+    name: 'Calisthenics: Weg zum Klimmzug',
+    category: ExerciseCategory.calisthenics,
+    rounds: 3,
+    items: [
+      _Timed('cali_45_aktives_haengen', 20, rest: 40),
+      _Reps('cali_46_schulterblatt_klimmzug', 8, rest: 40),
+      _Reps('cali_07_australian_pullup', 8, rest: 40),
+      _Reps('cali_47_negativer_klimmzug', 4, rest: 90),
+    ],
+  ),
+  Program(
+    name: 'Calisthenics: Weg zu Liegestütz und Dip',
+    category: ExerciseCategory.calisthenics,
+    rounds: 3,
+    items: [
+      _Reps('cali_41_liegestuetz_erhoeht', 10, rest: 40),
+      _Reps('cali_44_negativer_liegestuetz', 5, rest: 40),
+      _Timed('cali_48_stuetz_halten', 20, rest: 40),
+      _Reps('cali_49_negativer_dip', 5, rest: 40),
+      _Timed('cali_50_froschstand', 15, rest: 90),
+    ],
+  ),
+  Program(
+    name: 'Crossfit: Kurzhantel-Zirkel',
+    category: ExerciseCategory.crossfit,
+    rounds: 4,
+    items: [
+      _Reps('crossfit_43_kurzhantel_thruster', 10, rest: 20),
+      _Reps('crossfit_45_rudern_im_stuetz', 10, rest: 20),
+      _Reps('crossfit_46_ausfallschritt_ueber_kopf', 12, rest: 20),
+      _Reps('crossfit_44_devil_press', 6, rest: 60),
+    ],
+  ),
+  Program(
+    name: 'Crossfit: Kettlebell lang',
+    category: ExerciseCategory.crossfit,
+    rounds: 3,
+    items: [
+      _Reps('crossfit_41_kettlebell_umsetzen_druecken', 6,
+          rest: 30, sides: true),
+      _Reps('crossfit_04_kettlebell_swing', 15, rest: 30),
+      _Reps('crossfit_09_goblet_squat', 10, rest: 30),
+      _Reps('crossfit_42_tuerkisches_aufstehen', 2, rest: 30, sides: true),
+      _Timed('crossfit_16_farmers_carry', 40, rest: 60),
+    ],
+  ),
+];
+
 /// Eine Runde Sonnengruß; die Haltungen gehen ohne Pause ineinander über.
 const sunSalutation = [
   _Timed('yoga_01_berghaltung', 10, rest: 0),

@@ -285,6 +285,53 @@ class AppDatabase {
       );
       _db.execute('PRAGMA user_version = 11');
     }
+    if (version < 12) {
+      // Vierte Lieferung: 48 Übungen (G-165 bis G-212) und sechs Programme.
+      // Vorhandene Übungen bekommen ihre neuen Varianten, sofern der
+      // Nutzer sie nicht selbst festgelegt hat.
+      for (final e in builtinExercises) {
+        _insertBuiltin(e);
+        _db.execute(
+          'UPDATE exercises SET areas = ?, sanskrit = ?, pose_group = ?, '
+          'level = ?, both_sides = ?, caution = ? '
+          "WHERE uuid = ? AND updated_at = ? AND areas = ''",
+          [
+            BodyArea.store(e.areas),
+            e.sanskrit,
+            e.poseGroup?.id,
+            e.level,
+            e.bothSides ? 1 : 0,
+            e.caution,
+            e.uuid,
+            _pristine,
+          ],
+        );
+        for (final (column, key) in [
+          ('easier_uuid', e.easierKey),
+          ('harder_uuid', e.harderKey),
+        ]) {
+          if (key == null) continue;
+          _db.execute(
+            'UPDATE exercises SET $column = ? '
+            'WHERE uuid = ? AND (updated_at = ? OR $column IS NULL)',
+            [BuiltinExercise.uuidOf(key), e.uuid, _pristine],
+          );
+        }
+      }
+      for (final p in builtinProgramsBatch3) {
+        final uuid = 'builtin-program:${p.name}';
+        if (_db.select('SELECT 1 FROM programs WHERE uuid = ?', [uuid])
+            .isNotEmpty) {
+          continue;
+        }
+        _db.execute(
+          'INSERT INTO programs (uuid, name, category, rounds, items, '
+          'updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+          [uuid, p.name, p.category.id, p.rounds, p.itemsJson(), _pristine],
+        );
+      }
+      _db.execute('PRAGMA user_version = 12');
+    }
   }
 
   /// Zeitstempel unveränderter mitgelieferter Inhalte. Jede Änderung des
