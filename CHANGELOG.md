@@ -14,7 +14,7 @@ Anlass: FIT-Datei vom Laufband (2 Stunden, 9,4 km) mit 38 Verbindungsabbrüchen 
 - Sechs automatische Tests dazu (insgesamt 236).
 
 ### Geändert
-- Alle 212 Übungsbilder geprüft. Für acht Bilder ist die Beschreibung in der Grafikliste geschärft, damit sie neu erzeugt werden können. Sechs zeigen eine falsche Haltung: Schultertippen im Stütz, umgekehrte Planke, gedrehtes Dreieck, gedrehter Stuhl, Welpe, Knie zu den Ohren. Zwei sind ungenau: Stütz halten, Tuck Front Lever.
+- Alle 212 Übungsbilder geprüft. Für zehn Bilder ist die Beschreibung in der Grafikliste geschärft, damit sie neu erzeugt werden können. Acht zeigen eine falsche Haltung: Schultertippen im Stütz, umgekehrte Planke, gedrehtes Dreieck, gedrehter Stuhl, Welpe, Knie zu den Ohren sowie Pflug und Schulterstand mit einem Bein, bei denen der Fuß zum Kopf hin zurückgeknickt ist (Hinweis des Nutzers). Zwei sind ungenau: Stütz halten, Tuck Front Lever.
 - Die Datenbank hat eine neue Fassung (13) mit der Tabelle der Verbindungsabbrüche.
 
 ## [0.13.0] – 2026-10-14
