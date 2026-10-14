@@ -8,6 +8,7 @@ import '../interval/interval_models.dart';
 import 'decoders.dart';
 import 'ftms.dart';
 import 'ftms_control.dart';
+import 'link_monitor.dart';
 import 'uuids.dart';
 
 enum LinkState {
@@ -25,7 +26,19 @@ enum LinkState {
 /// liefert dessen Messwerte. Bricht die Verbindung ab, verbindet sie sich
 /// von selbst neu (Lastenheft A-011).
 class SensorConnection extends ChangeNotifier {
-  SensorConnection(this.saved, {required this.onData});
+  SensorConnection(
+    this.saved, {
+    required this.onData,
+    this.onLinkLost,
+    this.onLinkRestored,
+  });
+
+  /// Die bestehende Verbindung ist abgebrochen; [reason] ist der Grund, den
+  /// Android meldet.
+  final void Function(SavedDevice device, String? reason)? onLinkLost;
+
+  /// Nach einem Abbruch steht die Verbindung wieder.
+  final void Function(SavedDevice device)? onLinkRestored;
 
   static const _connectTimeout = Duration(seconds: 15);
   static const _retryDelay = Duration(seconds: 3);
@@ -42,7 +55,9 @@ class SensorConnection extends ChangeNotifier {
   late final BleDevice _device =
       BleDevice(deviceId: saved.deviceId, name: saved.name);
   final List<StreamSubscription<dynamic>> _subs = [];
-  StreamSubscription<bool>? _linkSub;
+  StreamSubscription<LinkUpdate>? _linkSub;
+  String? _lostReason;
+  bool _lostReported = false;
   Completer<void>? _lost;
   Timer? _keepAlive;
   bool _stopped = false;
@@ -62,8 +77,10 @@ class SensorConnection extends ChangeNotifier {
   int connectCount = 0;
 
   void start() {
-    _linkSub = _device.connectionStream.listen((connected) {
-      if (!connected) _signalLost();
+    _linkSub = LinkMonitor.forDevice(saved.deviceId).listen((update) {
+      if (update.connected) return;
+      _lostReason = update.reason;
+      _signalLost();
     });
     _run();
   }
@@ -108,12 +125,21 @@ class SensorConnection extends ChangeNotifier {
         lastError = null;
         connectCount++;
         wasConnected = true;
+        if (_lostReported) {
+          _lostReported = false;
+          onLinkRestored?.call(saved);
+        }
         if (machine != null) {
           _keepAlive =
               Timer.periodic(_keepAliveInterval, (_) => machine.keepAlive());
         }
         _setState(LinkState.connected);
+        _lostReason = null;
         await lost.future;
+        if (!_stopped) {
+          _lostReported = true;
+          onLinkLost?.call(saved, _lostReason);
+        }
       } catch (e) {
         lastError = '$e';
       }

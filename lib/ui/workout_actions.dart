@@ -40,9 +40,10 @@ enum ExportFormat {
 List<int>? exportBytes(AppDatabase db, Workout w, ExportFormat format) {
   final samples = db.samples(w.id);
   return switch (format) {
-    ExportFormat.fit => buildFit(w, samples, db.laps(w.id)),
+    ExportFormat.fit =>
+      buildFit(w, samples, db.laps(w.id), linkLosses: db.linkLosses(w.id)),
     ExportFormat.fitWithLocation => buildFit(w, samples, db.laps(w.id),
-        fixedLocation: trainingLocation(db)),
+        fixedLocation: trainingLocation(db), linkLosses: db.linkLosses(w.id)),
     ExportFormat.gpx => switch (buildGpx(w, samples)) {
         final gpx? => utf8.encode(gpx),
         null => null,

@@ -60,8 +60,12 @@ class WorkoutSession extends ChangeNotifier {
         device.deviceId,
         dedicatedHeartRate: device.kind == DeviceKind.heartRate,
       );
-      final connection = SensorConnection(device, onData: _onData)
-        ..addListener(_onLinkChanged);
+      final connection = SensorConnection(
+        device,
+        onData: _onData,
+        onLinkLost: _onLinkLost,
+        onLinkRestored: _onLinkRestored,
+      )..addListener(_onLinkChanged);
       connections.add(connection);
       connection.start();
     }
@@ -157,6 +161,24 @@ class WorkoutSession extends ChangeNotifier {
 
   Sport get sport => recorder.sport;
   TargetKind get targetKind => template?.targetKind ?? TargetKind.none;
+
+  /// Die offenen Abbrüche je Gerät: Nummer in der Datenbank und Beginn.
+  final Map<String, (int, DateTime)> _openLosses = {};
+
+  void _onLinkLost(SavedDevice device, String? reason) {
+    final id = recorder.db.addLinkLoss(
+      recorder.workoutId,
+      LinkLoss(t: recorder.elapsedS, device: device.name, reason: reason),
+    );
+    _openLosses[device.deviceId] = (id, clock.now());
+  }
+
+  void _onLinkRestored(SavedDevice device) {
+    final open = _openLosses.remove(device.deviceId);
+    if (open == null) return;
+    final (id, since) = open;
+    recorder.db.setLinkLossDuration(id, clock.now().difference(since).inSeconds);
+  }
 
   void _onData(SavedDevice device, Map<Metric, double> values) {
     recorder.onData(device.deviceId, values);

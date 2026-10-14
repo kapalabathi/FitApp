@@ -74,6 +74,8 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-052 | Hinweise je Übung, Warnung bei Umkehrhaltungen und Atemanhalten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-053 | Umkehrhaltungen Pflug, Schulterstand, Unterarmstand und Kopfstand; Schulterstand und Pflug im Yoga-Grundkurs | Programme | S | Umgesetzt, ungetestet | Nutzer |
 | I-054 | 48 weitere Übungen: Yoga-Haltungen aus „Light on Yoga", Crossfit mit Kettlebell und Kurzhanteln, Calisthenics-Vorstufen; sechs neue Programme; Kurs damit erweitert | Programme | M | Umgesetzt, ungetestet | Nutzer |
+| I-055 | Verbindungsabbrüche protokollieren: Zeitpunkt, Gerät, Grund von Android, Dauer; Anzeige im Training und Ereignis in der FIT-Datei | Geräte | S | Umgesetzt, ungetestet | Nutzer |
+| I-056 | Kurze Verbindungsabbrüche überbrücken: letzten Gerätewert bis etwa 15 s halten, damit Kurve, Pace und FIT keine Lücken haben | Geräte | S | Neu | Vorschlag |
 
 ## Details
 
@@ -181,3 +183,6 @@ Wunsch des Nutzers vom 2026-10-14: die im Kurs fehlenden Umkehrhaltungen ergänz
 
 ### I-054 – Zweite Erweiterung der Übungsbibliothek
 Wunsch des Nutzers vom 2026-10-14: weitere Übungen für Yoga, Crossfit und Calisthenics; Aufwärmübungen vor dem Laufen hat er wieder abgewählt. Ausgewählt aus der Übungsliste und nach einem Abgleich mit „Light on Yoga" (die dort für den ersten Kurs als wichtig genannten Haltungen, die noch fehlten). Bei Calisthenics vor allem Vorstufen, die als Varianten verknüpft sind. Grafiken G-165 bis G-212 vom Nutzer in niedriger Qualität erzeugt.
+
+### I-055 – Protokoll der Verbindungsabbrüche
+Anlass: FIT-Datei vom Laufband vom 2026-10-14 mit 38 Abbrüchen von je 9 bis 10 Sekunden, etwa alle 2½ bis 4 Minuten (vorher alle 73 s; das Lebenszeichen aus Version 0.9 hat also geholfen). Ob das Band, das Phone oder die Funkstrecke trennt, war nicht zu erkennen. Android meldet beim Trennen einen Grund (HCI-Fehlercode), den die Bluetooth-Bibliothek als Text weitergibt; die App speichert ihn je Abbruch. In FIT gibt es dafür kein Textfeld, nur das Ereignis comm_timeout mit der Unterscheidung „Verbindung verloren" oder „Zeitüberschreitung".

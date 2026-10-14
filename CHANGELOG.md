@@ -4,6 +4,19 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.14.0] – 2026-10-14
+
+Anlass: FIT-Datei vom Laufband (2 Stunden, 9,4 km) mit 38 Verbindungsabbrüchen von je etwa 9 bis 10 Sekunden. Strecke und Rundenzeiten waren trotzdem richtig; die vier automatischen Pausen hatte der Nutzer selbst ausgelöst, indem er das Band anhielt.
+
+### Hinzugefügt
+- **Protokoll der Verbindungsabbrüche** (I-055): Bricht während eines Trainings die Bluetooth-Verbindung zu einem Gerät ab, speichert die App Zeitpunkt, Gerät, den Grund, den Android meldet, und wie lange es bis zur Neuverbindung dauerte. Die Detailansicht des Trainings zeigt unter „Verbindung" die Zahl der Abbrüche, die mittlere Dauer, die Gründe und auf Wunsch jeden einzelnen. Die gängigen Gründe sind übersetzt, etwa „Funkverbindung abgerissen (Zeitüberschreitung)", „vom Gerät beendet" oder „vom Phone beendet". Das Protokoll wandert bei Sicherung und Synchronisation mit.
+- In der **FIT-Datei** steht jeder Abbruch als Ereignis „comm_timeout" an seiner Stelle, unterschieden nach „Zeitüberschreitung" und „Verbindung beendet". Einen Freitext für den genauen Grund sieht FIT nicht vor.
+- Sechs automatische Tests dazu (insgesamt 236).
+
+### Geändert
+- Alle 212 Übungsbilder geprüft. Für acht Bilder ist die Beschreibung in der Grafikliste geschärft, damit sie neu erzeugt werden können. Sechs zeigen eine falsche Haltung: Schultertippen im Stütz, umgekehrte Planke, gedrehtes Dreieck, gedrehter Stuhl, Welpe, Knie zu den Ohren. Zwei sind ungenau: Stütz halten, Tuck Front Lever.
+- Die Datenbank hat eine neue Fassung (13) mit der Tabelle der Verbindungsabbrüche.
+
 ## [0.13.0] – 2026-10-14
 
 ### Hinzugefügt

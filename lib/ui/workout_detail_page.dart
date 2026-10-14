@@ -195,6 +195,7 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
     ];
     final laps = db.laps(workoutId);
     final sets = db.setLogs(workoutId);
+    final losses = db.linkLosses(workoutId);
     final exerciseNames = sets.isEmpty
         ? const <String, String>{}
         : {for (final e in db.exercises()) e.uuid: e.name};
@@ -326,6 +327,10 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
               ),
             const SizedBox(height: 24),
           ],
+          if (losses.isNotEmpty) ...[
+            _LinkLosses(losses: losses),
+            const SizedBox(height: 24),
+          ],
           if (laps.isNotEmpty) ...[
             _LapTable(laps: laps, workout: w),
             const SizedBox(height: 24),
@@ -406,6 +411,63 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
 
 /// Die Runden eines Trainings mit Zeit, Strecke und Tempo je Runde. Der Rest
 /// nach der letzten Marke zählt als eigene Runde.
+/// Die Verbindungsabbrüche des Trainings: Zusammenfassung nach Grund und
+/// auf Wunsch jeder einzelne mit Zeitpunkt und Dauer.
+class _LinkLosses extends StatelessWidget {
+  const _LinkLosses({required this.losses});
+
+  final List<LinkLoss> losses;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final byReason = <String, int>{};
+    for (final l in losses) {
+      byReason.update(l.reasonLabel, (n) => n + 1, ifAbsent: () => 1);
+    }
+    final durations = [for (final l in losses) ?l.downS];
+    final average = durations.isEmpty
+        ? null
+        : (durations.reduce((a, b) => a + b) / durations.length).round();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text('Verbindung', style: theme.textTheme.titleSmall),
+        const SizedBox(height: 4),
+        Text([
+          '${losses.length} ${losses.length == 1 ? 'Abbruch' : 'Abbrüche'}',
+          if (average != null) 'im Mittel $average s getrennt',
+        ].join(', ')),
+        for (final e in byReason.entries)
+          Text('${e.value} × ${e.key}', style: theme.textTheme.bodySmall),
+        ExpansionTile(
+          tilePadding: EdgeInsets.zero,
+          title: const Text('Alle Abbrüche'),
+          children: [
+            for (final l in losses)
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: 64,
+                      child: Text(formatDuration(l.t)),
+                    ),
+                    Expanded(
+                      child: Text('${l.device}: ${l.reasonLabel}'
+                          '${l.downS == null ? ', nicht zurückgekommen' : ', ${l.downS} s'}'),
+                    ),
+                  ],
+                ),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
 class _LapTable extends StatelessWidget {
   const _LapTable({required this.laps, required this.workout});
 

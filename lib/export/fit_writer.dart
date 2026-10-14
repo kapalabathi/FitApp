@@ -11,11 +11,17 @@ import '../data/models.dart';
 /// Mit [fixedLocation] bekommt ein Training ohne eigene Strecke in jedem
 /// Messpunkt diesen einen Standort. Manche Programme nehmen nur Dateien mit
 /// Standort an. Hat das Training eine Strecke, bleibt sie unverändert.
+///
+/// Jeder Abbruch aus [linkLosses] wird als Ereignis „Verbindung verloren"
+/// (comm_timeout) an seiner Stelle eingefügt. Einen Freitext sieht FIT dort
+/// nicht vor; unterschieden wird nur, ob die Funkstrecke abriss
+/// (connection_timeout) oder die Verbindung beendet wurde (connection_lost).
 Uint8List buildFit(
   Workout workout,
   List<Sample> samples,
   List<Lap> laps, {
   ({double latitude, double longitude})? fixedLocation,
+  List<LinkLoss> linkLosses = const [],
 }) {
   final hasRoute = samples.any((s) => s.latitude != null);
   final everywhere = hasRoute ? null : fixedLocation;
@@ -41,6 +47,12 @@ Uint8List buildFit(
       (1, _T.enumeration), // Art
     ])
     ..data(1, [start, _eventTimer, _eventStart])
+    ..define(6, _event, const [
+      (253, _T.uint32),
+      (0, _T.enumeration), // Ereignis
+      (1, _T.enumeration), // Art
+      (3, _T.uint32), // Daten: Art des Abbruchs
+    ])
     ..define(2, _record, const [
       (253, _T.uint32),
       (0, _T.sint32), // Breite in Halbkreisen
@@ -53,7 +65,22 @@ Uint8List buildFit(
       (7, _T.uint16), // Leistung in W
     ]);
 
+  final losses = [...linkLosses]..sort((a, b) => a.t.compareTo(b.t));
+  var nextLoss = 0;
+  void writeLossesUntil(int t) {
+    while (nextLoss < losses.length && losses[nextLoss].t <= t) {
+      final loss = losses[nextLoss++];
+      out.data(6, [
+        start + loss.t,
+        _eventCommTimeout,
+        _eventMarker,
+        loss.isTimeout ? _commConnectionTimeout : _commConnectionLost,
+      ]);
+    }
+  }
+
   for (final s in samples) {
+    writeLossesUntil(s.t);
     final speed = s.speedKmh;
     final altitude = s.altitudeM;
     final distance = s.distanceM;
@@ -70,6 +97,7 @@ Uint8List buildFit(
     ]);
   }
 
+  writeLossesUntil(workout.durationS);
   out
     ..data(1, [end, _eventTimer, _eventStopAll])
     ..define(3, _lap, const [
@@ -189,6 +217,10 @@ const _eventActivity = 26;
 const _eventStart = 0;
 const _eventStop = 1;
 const _eventStopAll = 4;
+const _eventMarker = 3;
+const _eventCommTimeout = 47;
+const _commConnectionLost = 2;
+const _commConnectionTimeout = 3;
 
 const _sportRunning = 1;
 const _sportHiking = 17;

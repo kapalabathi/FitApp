@@ -332,6 +332,19 @@ class AppDatabase {
       }
       _db.execute('PRAGMA user_version = 12');
     }
+    if (version < 13) {
+      // Protokoll der Verbindungsabbrüche je Training.
+      _db.execute('''
+        CREATE TABLE IF NOT EXISTS link_losses (
+          id INTEGER PRIMARY KEY,
+          workout_id INTEGER NOT NULL REFERENCES workouts(id) ON DELETE CASCADE,
+          t INTEGER NOT NULL,
+          device TEXT NOT NULL,
+          reason TEXT,
+          down_s INTEGER
+        )''');
+      _db.execute('PRAGMA user_version = 13');
+    }
   }
 
   /// Zeitstempel unveränderter mitgelieferter Inhalte. Jede Änderung des
@@ -621,6 +634,7 @@ class AppDatabase {
     _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
     _db.execute('DELETE FROM set_logs WHERE workout_id = ?', [id]);
+    _db.execute('DELETE FROM link_losses WHERE workout_id = ?', [id]);
     _db.execute('UPDATE workouts SET deleted = 1, updated_at = ? WHERE id = ?',
         [_now(), id]);
   }
@@ -815,6 +829,35 @@ class AppDatabase {
         [_now(), id]);
   }
 
+  // --- Verbindungsabbrüche ---
+
+  /// Hält einen Abbruch fest und gibt seine Nummer zurück, unter der später
+  /// die Dauer nachgetragen wird.
+  int addLinkLoss(int workoutId, LinkLoss loss) {
+    _db.execute(
+      'INSERT INTO link_losses (workout_id, t, device, reason, down_s) '
+      'VALUES (?, ?, ?, ?, ?)',
+      [workoutId, loss.t, loss.device, loss.reason, loss.downS],
+    );
+    return _db.lastInsertRowId;
+  }
+
+  void setLinkLossDuration(int id, int seconds) {
+    _db.execute(
+        'UPDATE link_losses SET down_s = ? WHERE id = ?', [seconds, id]);
+  }
+
+  List<LinkLoss> linkLosses(int workoutId) => _db
+      .select('SELECT * FROM link_losses WHERE workout_id = ? ORDER BY t, id',
+          [workoutId])
+      .map((r) => LinkLoss(
+            t: r['t'] as int,
+            device: r['device'] as String,
+            reason: r['reason'] as String?,
+            downS: r['down_s'] as int?,
+          ))
+      .toList();
+
   // --- Sätze (Kraft-Protokoll) ---
 
   void addSetLog(int workoutId, SetLog log) {
@@ -1005,6 +1048,11 @@ class AppDatabase {
             'SELECT * FROM set_logs WHERE workout_id = ? ORDER BY id', [id]))
           [s['exercise_uuid'], s['t'], s['reps'], s['weight_kg'], s['seconds']],
       ],
+      'links': [
+        for (final l in _db.select(
+            'SELECT * FROM link_losses WHERE workout_id = ? ORDER BY id', [id]))
+          [l['t'], l['device'], l['reason'], l['down_s']],
+      ],
     };
   }
 
@@ -1029,6 +1077,7 @@ class AppDatabase {
       _db.execute('DELETE FROM laps WHERE workout_id = ?', [id]);
       _db.execute('DELETE FROM best_efforts WHERE workout_id = ?', [id]);
       _db.execute('DELETE FROM set_logs WHERE workout_id = ?', [id]);
+      _db.execute('DELETE FROM link_losses WHERE workout_id = ?', [id]);
       _db.execute(
         'UPDATE workouts SET '
         '${_workoutSyncColumns.map((c) => '$c = ?').join(', ')}, '
@@ -1059,6 +1108,13 @@ class AppDatabase {
           'INSERT INTO set_logs (workout_id, exercise_uuid, t, reps, '
           'weight_kg, seconds) VALUES (?, ?, ?, ?, ?, ?)',
           [id, ...s as List],
+        );
+      }
+      for (final l in data['links'] as List? ?? const []) {
+        _db.execute(
+          'INSERT INTO link_losses (workout_id, t, device, reason, down_s) '
+          'VALUES (?, ?, ?, ?, ?)',
+          [id, ...l as List],
         );
       }
       computeBestEfforts(id);

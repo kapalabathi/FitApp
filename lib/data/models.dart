@@ -231,3 +231,62 @@ class SavedDevice {
   final String name;
   final DeviceKind kind;
 }
+
+/// Ein Abbruch der Bluetooth-Verbindung zu einem Gerät während eines
+/// Trainings, mit dem Grund, den Android dafür meldet.
+class LinkLoss {
+  const LinkLoss({
+    required this.t,
+    required this.device,
+    this.reason,
+    this.downS,
+  });
+
+  /// Aktive Sekunde des Trainings, in der die Verbindung abbrach.
+  final int t;
+
+  /// Name des Geräts.
+  final String device;
+
+  /// Der Grund in der Fassung von Android (englisch), oder `null`, wenn
+  /// keiner gemeldet wurde.
+  final String? reason;
+
+  /// Sekunden bis zur erneuten Verbindung; `null`, wenn sie bis zum Ende
+  /// des Trainings nicht zurückkam.
+  final int? downS;
+
+  /// Der Grund auf Deutsch.
+  String get reasonLabel => linkReasonLabel(reason);
+
+  /// Ob die Funkstrecke abgerissen ist, statt dass eine Seite die
+  /// Verbindung bewusst beendet hat.
+  bool get isTimeout {
+    final r = reason?.toLowerCase() ?? '';
+    return r.contains('timeout');
+  }
+}
+
+/// Übersetzt die Gründe für einen Verbindungsabbruch, die Android meldet.
+String linkReasonLabel(String? reason) {
+  if (reason == null || reason.isEmpty) return 'ohne Angabe von Android';
+  const known = {
+    'Connection Timeout':
+        'Funkverbindung abgerissen (Zeitüberschreitung)',
+    'LMP Response Timeout / LL Response Timeout':
+        'Gerät antwortet nicht mehr (Zeitüberschreitung)',
+    'Remote User Terminated Connection': 'vom Gerät beendet',
+    'Remote Device Terminated Connection due to Low Resources':
+        'vom Gerät beendet, zu wenig Ressourcen',
+    'Remote Device Terminated Connection due to Power Off':
+        'Gerät ausgeschaltet',
+    'Connection Terminated By Local Host': 'vom Phone beendet',
+    'Connection Failed to be Established / Synchronization Timeout':
+        'Verbindung kam nicht zustande',
+    'Connection Terminated due to MIC Failure':
+        'Verbindung wegen Prüfsummenfehler beendet',
+    'Unacceptable Connection Parameters':
+        'Verbindungsparameter nicht angenommen',
+  };
+  return known[reason] ?? reason;
+}
