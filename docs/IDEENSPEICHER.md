@@ -65,6 +65,13 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-043 | Wochenplan: geplante Einheiten im Kalender mit Erinnerung | Programme | L | Neu | Vorschlag |
 | I-044 | Energieverbrauch aus Puls, Gewicht und Alter schätzen, wenn das Gerät keinen liefert | Auswertung | S | Umgesetzt, ungetestet | Vorschlag |
 | I-045 | Automatische Sicherung: regelmäßig eine Sicherungsdatei in einem gewählten Ordner ablegen | Daten | S | Umgesetzt, ungetestet | Vorschlag |
+| I-046 | Yoga-Übungen mit Sanskrit-Namen, Haltungsgruppe (Stehhaltung, Vorbeuge, Rückbeuge …) und Schwierigkeit | Programme | M | Neu | Vorschlag |
+| I-047 | „Je Seite": Übung spielt beide Seiten ab und sagt den Seitenwechsel an | Programme | S | Neu | Vorschlag |
+| I-048 | Geführte Atemübungen (Pranayama): Phasen mit Verhältnis, Nasenseite, Zyklen, ruhiger Takt | Programme | M | Neu | Vorschlag |
+| I-049 | Aufbaukurse: Programme in Stufen über mehrere Wochen, Weiterschalten wenn eine Stufe sitzt | Programme | L | Neu | Vorschlag |
+| I-050 | Haltedauer wahlweise in Atemzügen statt Sekunden | Programme | S | Neu | Vorschlag |
+| I-051 | Vorstufen und Varianten einer Übung verknüpfen (leichter / schwerer) | Programme | M | Neu | Vorschlag |
+| I-052 | Hinweise je Übung, Warnung bei Umkehrhaltungen und Atemanhalten | Programme | S | Neu | Vorschlag |
 
 ## Details
 
@@ -163,3 +170,6 @@ Setzt die Steuerung von Laufband und Bike (I-011, I-019) und einen Pulssensor vo
 
 ### I-043 – Wochenplan
 Im Lastenheft, Abschnitt 6, bisher ausdrücklich ausgeschlossen (Trainingspläne über Wochen). Aufnahme nur nach Entscheidung des Auftraggebers.
+
+### I-046 bis I-052 – Struktur für Yoga und Atemübungen
+Hervorgegangen aus der Auswertung von „Light on Yoga" (B. K. S. Iyengar) am 2026-10-14, auf Wunsch des Nutzers. Herleitung, Haltungsgruppen und Ordnungsregeln stehen in [YOGA-STRUKTUR.md](YOGA-STRUKTUR.md). Übernommen werden nur Ordnungsprinzipien, keine Texte, Bilder oder Kurstabellen des Buches. I-049 berührt den Ausschluss „Trainingspläne über Wochen" im Lastenheft (Abschnitt 6) und braucht wie I-043 erst eine Entscheidung des Auftraggebers.
