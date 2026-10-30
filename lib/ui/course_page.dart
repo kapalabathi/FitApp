@@ -348,31 +348,37 @@ class CoursesAndBreathList extends StatelessWidget {
               },
             );
           }),
-        Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Text('Hero-WODs mit Kamera',
-              style: theme.textTheme.titleMedium),
-        ),
-        for (final w in heroWorkouts)
-          ListTile(
-            leading: const Icon(Icons.videocam_outlined),
-            title: Text(w.name),
-            subtitle: Text([
-              '${w.totalReps} Wiederholungen',
-              if (heroBestTime(db, w) case final best?)
-                'Bestzeit ${formatDuration(best)}',
-            ].join('  ·  ')),
-            onTap: () async {
-              await Navigator.of(context).push(MaterialPageRoute(
-                builder: (_) => HeroWorkoutPage(
-                  db: db,
-                  workout: w,
-                  onWorkoutSaved: onWorkoutSaved,
-                ),
-              ));
-              onChanged();
-            },
+        for (final family in HeroFamily.values) ...[
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+            child: Text('${family.label}-WODs mit Kamera',
+                style: theme.textTheme.titleMedium),
           ),
+          for (final w in heroWorkouts.where((w) => w.family == family))
+            ListTile(
+              leading: Icon(w.runMeters > 0
+                  ? Icons.directions_run
+                  : Icons.videocam_outlined),
+              title: Text(w.name),
+              subtitle: Text([
+                if (w.totalReps > 0) '${w.totalReps} Wiederholungen',
+                if (w.runMeters > 0)
+                  '${formatKm(w.runMeters.toDouble())} km Lauf',
+                if (heroBestTime(db, w) case final best?)
+                  'Bestzeit ${formatDuration(best)}',
+              ].join('  ·  ')),
+              onTap: () async {
+                await Navigator.of(context).push(MaterialPageRoute(
+                  builder: (_) => HeroWorkoutPage(
+                    db: db,
+                    workout: w,
+                    onWorkoutSaved: onWorkoutSaved,
+                  ),
+                ));
+                onChanged();
+              },
+            ),
+        ],
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: Text('Atemübungen', style: theme.textTheme.titleMedium),

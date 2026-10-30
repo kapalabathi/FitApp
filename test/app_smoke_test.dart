@@ -301,7 +301,7 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Kurse & Atem'));
     await tester.pumpAndSettle();
-    expect(find.text('Wechselatmung'), findsOneWidget);
+    expect(find.text('Hero-WODs mit Kamera'), findsOneWidget);
     await tester.tap(find.text('Yoga-Grundkurs'));
     await tester.pumpAndSettle();
     expect(find.text('Stufe 1 von 6: Ankommen und Stehen'), findsOneWidget);

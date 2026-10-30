@@ -4,6 +4,17 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.18.0] – 2026-10-30
+
+Die Kamera ist auf dem Gerät des Nutzers gelaufen. Die Zählung ist weiterhin nicht auf ihre Genauigkeit geprüft.
+
+### Hinzugefügt
+- **Der volle Murph** und eine Fassung mit halber Menge samt Lauf.
+- **WODs mit Lauf:** Michael, Griff, Helen, Eva, Kelly und Nancy, wo nötig mit Ersatz für Geräte und meist auch in einer kürzeren Fassung. Damit sind es 17 Workouts, getrennt nach Hero und Girl.
+- **Läufe im Workout:** Die Laufzeit läuft, bis die nächste Übung ihre erste Wiederholung meldet. Wiederholungen in den ersten 30 Sekunden eines Laufs zählen nicht, damit Vorbeilaufen an der Kamera ihn nicht beendet. Ein Lauf am Ende und Läufe ohne zählbare Übung danach enden mit „Lauf beendet". Die Laufzeiten stehen in der Notiz des Trainings.
+- **Sit-ups** zählt die Kamera jetzt. Superman wird von Hand gezählt.
+- 13 automatische Tests dazu (insgesamt 279).
+
 ## [0.17.1] – 2026-10-30
 
 ### Behoben

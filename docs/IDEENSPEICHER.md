@@ -216,3 +216,5 @@ Zu zerlegen in: (1) Prototyp mit einer Übung, z. B. Kniebeuge, um die Genauigke
 Risiken: Der ganze Körper muss im Bild sein, die Kamera braucht einen festen Platz. Übungen am Boden und schnelle Bewegungen sind schwieriger, weil Gliedmaßen sich verdecken. Dauerbetrieb von Kamera und Erkennung belastet Akku und Temperatur. Saubere Ausführung bewertet der Zähler damit noch nicht. Baut auf I-058 auf.
 
 Stand Version 0.17.0: Die Schritte 1 bis 3 sind als erste Fassung gebaut, mit vier Hero-WODs und ohne die Workout-Formate aus I-058, weil ein eigener einfacher Ablauf genügte. Gezählt wird über Gelenkwinkel; die Grenzwerte sind Schätzungen und müssen am Gerät eingestellt werden. Noch nie mit echter Kamera gelaufen.
+
+Stand Version 0.18.0: 17 Workouts, darunter der volle Murph und die WODs mit Lauf, jeweils auch in kürzerer Fassung. Ein Lauf ist die Zeit bis zur ersten erkannten Wiederholung der nächsten Übung, so vom Nutzer festgelegt; ein Lauf am Ende und reine Läufe enden von Hand. Sit-ups zählt die Kamera jetzt, Superman nur von Hand. Nicole und die übrigen Formate mit fester Zeit warten auf I-058.

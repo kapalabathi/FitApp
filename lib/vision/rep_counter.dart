@@ -41,10 +41,21 @@ enum RepKind {
   pikePushUp(_Signal.elbow, low: 115, high: 150, hint: 'Genau von der Seite'),
   benchDip(_Signal.elbow, low: 115, high: 150, hint: 'Genau von der Seite'),
   pullUp(_Signal.elbow, low: 90, high: 145, hint: 'Von vorn oder hinten'),
-  burpee(_Signal.torso, low: 125, high: 155, hint: 'Genau von der Seite');
+  burpee(_Signal.torso, low: 125, high: 155, hint: 'Genau von der Seite'),
+
+  /// Beginnt liegend, also unten; die erste Wiederholung zählt beim
+  /// Aufrichten.
+  sitUp(_Signal.torso,
+      low: 120, high: 150, hint: 'Genau von der Seite', startsLow: true);
 
   const RepKind(this._signal,
-      {required this.low, required this.high, required this.hint});
+      {required this.low,
+      required this.high,
+      required this.hint,
+      this.startsLow = false});
+
+  /// Die Ausgangshaltung ist unten statt oben.
+  final bool startsLow;
 
   final _Signal _signal;
 
@@ -62,7 +73,7 @@ enum RepKind {
 ///
 /// Kennt weder Kamera noch Uhr: [add] bekommt jede Haltung mit ihrem Zeitpunkt.
 class RepCounter {
-  RepCounter(this.kind);
+  RepCounter(this.kind) : _seenHigh = kind.startsLow;
 
   /// Unsicherer erkannte Gelenke werden nicht verwendet.
   static const minLikelihood = 0.5;
@@ -81,7 +92,7 @@ class RepCounter {
 
   final RepKind kind;
   final List<double> _recent = [];
-  bool _seenHigh = false;
+  bool _seenHigh;
   bool _wentLow = false;
   Duration? _lastRep;
   Duration? _lastSeen;

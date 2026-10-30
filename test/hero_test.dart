@@ -120,6 +120,24 @@ void main() {
       expect(c.tracking, isFalse);
     });
 
+    test('Sit-ups beginnen liegend, die erste zählt beim Aufrichten', () {
+      final c = RepCounter(RepKind.sitUp);
+      var at = Duration.zero;
+      void hold(bool upright) {
+        for (var i = 0; i < 3; i++) {
+          at += const Duration(milliseconds: 200);
+          c.add(torso(upright: upright), at);
+        }
+      }
+
+      hold(false);
+      hold(true);
+      expect(c.count, 1);
+      hold(false);
+      hold(true);
+      expect(c.count, 2);
+    });
+
     test('Burpees zählen über die Lage des Oberkörpers', () {
       final c = RepCounter(RepKind.burpee);
       var t = Duration.zero;
@@ -185,15 +203,32 @@ void main() {
   });
 
   group('Workouts', () {
-    test('es gibt vier, und alle Übungen sind vorhanden', () {
+    test('alle Übungen sind vorhanden, Titel sind eindeutig', () {
       final known = {for (final e in builtinExercises) e.key};
-      expect(heroWorkouts, hasLength(4));
+      expect(heroWorkouts, hasLength(17));
+      expect(heroWorkouts.map((w) => w.title).toSet(), hasLength(17));
       for (final w in heroWorkouts) {
         for (final b in w.blocks) {
+          if (b.isRun) continue;
           expect(known, contains(b.exerciseKey), reason: w.name);
           expect(b.reps, greaterThan(0));
         }
       }
+    });
+
+    test('der volle Murph hat zwei Läufe und alle Wiederholungen', () {
+      final m = heroWorkouts.firstWhere((w) => w.name == 'Murph');
+      expect(m.blocks.first.isRun, isTrue);
+      expect(m.blocks.last.isRun, isTrue);
+      expect(m.runMeters, 3200);
+      expect(m.totalReps, 600);
+      expect(m.blocks.first.title, 'Lauf 1,6 km');
+    });
+
+    test('Girls und Heros stehen unter eigenem Titel', () {
+      final helen = heroWorkouts.firstWhere((w) => w.name.startsWith('Helen'));
+      expect(helen.title, 'Girl: Helen, skaliert');
+      expect(heroWorkouts.first.title, 'Hero: Murph, halbiert');
     });
 
     test('die Mengen stimmen', () {
@@ -222,6 +257,52 @@ void main() {
         HeroBlock('B', 'cali_01_liegestuetz', 1, RepKind.pushUp),
       ],
     );
+
+    final withRun = HeroWorkout(
+      name: 'Lauf',
+      description: '',
+      equipment: '',
+      blocks: const [
+        HeroBlock.run(800),
+        HeroBlock('A', 'cali_05_klimmzug', 2, RepKind.pullUp),
+        HeroBlock.run(800),
+      ],
+    );
+
+    test('die erste Wiederholung beendet den Lauf davor', () {
+      final run = HeroRun(withRun);
+      expect(run.current!.isRun, isTrue);
+      expect(run.countingKind, RepKind.pullUp);
+      expect(run.addRep(200), HeroChange.blockDone);
+      expect(run.splits.single.seconds, 200);
+      expect(run.current!.label, 'A');
+      // Die Wiederholung, die den Lauf beendet, zählt schon.
+      expect(run.count, 1);
+    });
+
+    test('der Lauf am Ende läuft bis zum Stopp', () {
+      final run = HeroRun(withRun);
+      run.addRep(200);
+      run.addRep(230);
+      expect(run.current!.isRun, isTrue);
+      expect(run.countingKind, isNull);
+      expect(run.addRep(300), isNull);
+      expect(run.skipBlock(500), HeroChange.finished);
+      expect(run.splits.last.seconds, 270);
+      expect(run.progress, 1);
+    });
+
+    test('Wiederholungen ganz am Anfang des Laufs zählen nicht', () {
+      final run = HeroRun(withRun);
+      expect(run.addRep(HeroRun.minRunS - 1), isNull);
+      expect(run.current!.isRun, isTrue);
+    });
+
+    test('im Lauf gibt es kein Zählen von Hand', () {
+      final run = HeroRun(withRun);
+      expect(run.addManualRep(100), isNull);
+      expect(run.count, 0);
+    });
 
     test('schaltet weiter und misst die Abschnitte', () {
       final run = HeroRun(workout);

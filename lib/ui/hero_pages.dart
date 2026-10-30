@@ -56,7 +56,7 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
       devices: heartRateSensors(db, Sport.crossfit),
       signals: createSignals(SignalSettings.load(db)),
     );
-    final done = await Navigator.of(context).push<(Workout, bool)?>(
+    final done = await Navigator.of(context).push<(Workout, bool, String)?>(
       MaterialPageRoute(
         fullscreenDialog: true,
         builder: (_) => HeroPlayerPage(
@@ -70,12 +70,12 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
       if (mounted) setState(() {});
       return;
     }
-    final (saved, complete) = done;
+    final (saved, complete, runs) = done;
     db.updateWorkout(
       saved.id,
       title: complete ? widget.workout.title : widget.workout.abortedTitle,
       sport: saved.sport,
-      notes: saved.notes ?? '',
+      notes: runs,
     );
     final titled = db.workout(saved.id) ?? saved;
     setState(() {});
@@ -88,7 +88,14 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
     final theme = Theme.of(context);
     final w = widget.workout;
     final best = heroBestTime(widget.db, w);
-    final kinds = {for (final b in w.blocks) b.label: b.kind};
+    final kinds = {
+      for (final b in w.blocks)
+        if (b.kind case final kind?) b.label: kind.hint,
+    };
+    final manual = {
+      for (final b in w.blocks)
+        if (!b.isRun && b.kind == null) b.label,
+    };
     return Scaffold(
       appBar: AppBar(title: Text(w.name)),
       floatingActionButton: FloatingActionButton.extended(
@@ -102,7 +109,11 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
         children: [
           Text(w.description, style: theme.textTheme.bodyLarge),
           const SizedBox(height: 8),
-          Text('${w.totalReps} Wiederholungen  ·  ${w.equipment}'),
+          Text([
+            if (w.totalReps > 0) '${w.totalReps} Wiederholungen',
+            if (w.runMeters > 0) '${formatKm(w.runMeters.toDouble())} km Lauf',
+            w.equipment,
+          ].join('  ·  ')),
           Text(best == null
               ? 'Noch keine Bestzeit'
               : 'Bestzeit ${formatDuration(best)}'),
@@ -134,8 +145,15 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
               'Abschnitt steht, wo die Kamera am besten steht; im Training '
               'lässt sie sich jederzeit wechseln.'),
           const SizedBox(height: 8),
-          for (final e in kinds.entries)
-            Text('${e.key}: ${e.value.hint}'),
+          for (final e in kinds.entries) Text('${e.key}: ${e.value}'),
+          for (final label in manual) Text('$label: von Hand zählen'),
+          if (w.runMeters > 0) ...[
+            const SizedBox(height: 12),
+            const Text('Beim Lauf läuft die Zeit, bis die nächste Übung ihre '
+                'erste Wiederholung meldet. Stell das Phone also vorher auf '
+                'und lauf dann los. Ein Lauf am Ende und reine Läufe endest '
+                'du mit „Lauf beendet".'),
+          ],
           const SizedBox(height: 12),
           const Text('Zählt die Kamera falsch, korrigierst du mit + und −, '
               'oder gehst mit „Weiter" zum nächsten Abschnitt. Die Bilder '
@@ -166,11 +184,16 @@ class HeroPlayerPage extends StatefulWidget {
 class _HeroPlayerPageState extends State<HeroPlayerPage> {
   late final HeroRun _run = HeroRun(widget.workout);
   late final PoseCamera _camera = PoseCamera(onPose: _onPose);
-  late RepCounter _counter = RepCounter(widget.workout.blocks.first.kind);
+  late RepCounter? _counter = _newCounter();
   bool _finishing = false;
 
   WorkoutSession get _session => widget.session;
   int get _elapsed => _session.recorder.elapsedS;
+
+  RepCounter? _newCounter() {
+    final kind = _run.countingKind;
+    return kind == null ? null : RepCounter(kind);
+  }
 
   @override
   void initState() {
@@ -189,12 +212,16 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     final block = _run.current;
     if (block == null) return;
     _session.signals.change();
-    _session.signals.say('${block.reps} ${block.label}');
+    _session.signals.say(
+        block.isRun ? block.title : '${block.reps} ${block.label}');
   }
 
   void _onPose(BodyPose pose, Duration at) {
     if (_session.recorder.paused || _finishing) return;
-    if (_counter.add(pose, at)) _apply(_run.addRep(_elapsed));
+    final counter = _counter;
+    if (counter != null && counter.add(pose, at)) {
+      _apply(_run.addRep(_elapsed));
+    }
   }
 
   void _apply(HeroChange? change) {
@@ -202,11 +229,11 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
       case HeroChange.counted:
         _session.signals.warn();
       case HeroChange.blockDone:
-        _logLastSplit();
-        _counter = RepCounter(_run.current!.kind);
+        _logFinishedSplits();
+        _counter = _newCounter();
         _announce();
       case HeroChange.finished:
-        _logLastSplit();
+        _logFinishedSplits();
         _finish(complete: true);
       case null:
         break;
@@ -214,25 +241,39 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     if (mounted) setState(() {});
   }
 
-  void _logLastSplit() {
-    final s = _run.splits.last;
-    _session.recorder.db.addSetLog(
-      _session.recorder.workoutId,
-      SetLog(
-        exerciseUuid: s.block.exerciseUuid,
-        t: s.endT,
-        reps: s.reps,
-        seconds: s.seconds,
-      ),
-    );
+  int _loggedSplits = 0;
+
+  /// Übungen werden als Sätze festgehalten; Läufe stehen in der Notiz.
+  void _logFinishedSplits() {
+    for (final s in _run.splits.skip(_loggedSplits)) {
+      _loggedSplits++;
+      if (s.block.isRun) continue;
+      _session.recorder.db.addSetLog(
+        _session.recorder.workoutId,
+        SetLog(
+          exerciseUuid: s.block.exerciseUuid,
+          t: s.endT,
+          reps: s.reps,
+          seconds: s.seconds,
+        ),
+      );
+    }
   }
+
+  /// Die Laufzeiten als Text für die Notiz des Trainings.
+  String get _runTimes => [
+        for (final s in _run.splits)
+          if (s.block.isRun)
+            '${s.block.title}: ${formatDuration(s.seconds)}',
+      ].join('\n');
 
   void _finish({required bool complete}) {
     if (_finishing) return;
     _finishing = true;
     if (complete) _session.signals.finish();
     final saved = _session.finish();
-    Navigator.of(context).pop(saved == null ? null : (saved, complete));
+    Navigator.of(context)
+        .pop(saved == null ? null : (saved, complete, _runTimes));
   }
 
   Future<void> _confirmStop() async {
@@ -257,6 +298,18 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
       ),
     );
     if (confirmed == true && mounted) _finish(complete: false);
+  }
+
+  String _hint(HeroBlock block) {
+    final counter = _counter;
+    if (block.isRun) {
+      return counter == null
+          ? 'Zum Abschluss „Lauf beendet" tippen'
+          : 'Endet mit der ersten Wiederholung der nächsten Übung';
+    }
+    if (counter == null) return 'Von Hand zählen';
+    final hint = counter.kind.hint;
+    return counter.tracking ? hint : 'Nicht im Bild: $hint';
   }
 
   @override
@@ -310,16 +363,14 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                         ],
                       ),
                     ),
-                    Text(block.label, style: theme.textTheme.titleLarge),
-                    Text('${_run.count} / ${block.reps}',
+                    Text(block.title, style: theme.textTheme.titleLarge),
+                    Text(
+                        block.isRun
+                            ? formatDuration(_run.blockSeconds(_elapsed))
+                            : '${_run.count} / ${block.reps}',
                         style: theme.textTheme.displayMedium
                             ?.copyWith(fontWeight: FontWeight.w600)),
-                    Text(
-                      _counter.tracking
-                          ? block.kind.hint
-                          : 'Nicht im Bild: ${block.kind.hint}',
-                      style: theme.textTheme.bodySmall,
-                    ),
+                    Text(_hint(block), style: theme.textTheme.bodySmall),
                   ],
                   Padding(
                     padding: const EdgeInsets.all(12),
@@ -333,13 +384,17 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                         const SizedBox(width: 8),
                         IconButton.filledTonal(
                           tooltip: 'Eine Wiederholung weniger',
-                          onPressed: () => setState(_run.removeRep),
+                          onPressed: block == null || block.isRun
+                              ? null
+                              : () => setState(_run.removeRep),
                           icon: const Icon(Icons.remove),
                         ),
                         const SizedBox(width: 8),
                         IconButton.filledTonal(
                           tooltip: 'Eine Wiederholung mehr',
-                          onPressed: () => _apply(_run.addRep(_elapsed)),
+                          onPressed: block == null || block.isRun
+                              ? null
+                              : () => _apply(_run.addManualRep(_elapsed)),
                           icon: const Icon(Icons.add),
                         ),
                         const SizedBox(width: 8),
@@ -348,7 +403,9 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                             onPressed: () =>
                                 _apply(_run.skipBlock(_elapsed)),
                             icon: const Icon(Icons.skip_next),
-                            label: const Text('Weiter'),
+                            label: Text(block?.isRun ?? false
+                                ? 'Lauf beendet'
+                                : 'Weiter'),
                           ),
                         ),
                       ],
