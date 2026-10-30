@@ -11,6 +11,35 @@ import '../vision/rep_counter.dart';
 import 'format.dart';
 import 'program_start.dart';
 
+/// Der Vorsatz der Notiz, unter dem ein Ergebnis gespeichert wird.
+const _scorePrefix = 'Ergebnis: ';
+
+/// Das beste Ergebnis eines Workouts, das nach Wiederholungen oder Runden
+/// wertet, oder `null`, wenn es noch keines gibt.
+int? heroBestScore(AppDatabase db, HeroWorkout workout) {
+  int? best;
+  final number = RegExp('^$_scorePrefix(\\d+)');
+  for (final w in db.workouts(sport: Sport.crossfit)) {
+    if (w.title != workout.title) continue;
+    final found = number.firstMatch(w.notes ?? '');
+    final value = found == null ? null : int.parse(found.group(1)!);
+    if (value != null && (best == null || value > best)) best = value;
+  }
+  return best;
+}
+
+/// Der Bestwert für die Anzeige, oder `null`, wenn es noch keinen gibt.
+String? heroBestLabel(AppDatabase db, HeroWorkout workout) {
+  if (workout.format == HeroFormat.forTime) {
+    final time = heroBestTime(db, workout);
+    return time == null ? null : 'Bestzeit ${formatDuration(time)}';
+  }
+  final score = heroBestScore(db, workout);
+  if (score == null) return null;
+  final unit = workout.format == HeroFormat.emom ? 'Runden' : 'Wiederholungen';
+  return 'Bestwert $score $unit';
+}
+
 /// Die Bestzeit eines Workouts in Sekunden, oder `null`, wenn es noch nie zu
 /// Ende geturnt wurde.
 int? heroBestTime(AppDatabase db, HeroWorkout workout) {
@@ -87,7 +116,7 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final w = widget.workout;
-    final best = heroBestTime(widget.db, w);
+    final best = heroBestLabel(widget.db, w);
     final kinds = {
       for (final b in w.blocks)
         if (b.kind case final kind?) b.label: kind.hint,
@@ -114,13 +143,14 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
           for (final d in w.deviations) Text('•  $d'),
           const SizedBox(height: 8),
           Text([
-            if (w.totalReps > 0) '${w.totalReps} Wiederholungen',
-            if (w.runMeters > 0) '${formatKm(w.runMeters.toDouble())} km Lauf',
+            w.formatLabel,
+            if (w.format == HeroFormat.forTime && w.totalReps > 0)
+              '${w.totalReps} Wiederholungen',
+            if (w.format == HeroFormat.forTime && w.runMeters > 0)
+              '${formatKm(w.runMeters.toDouble())} km Lauf',
             w.equipment,
           ].join('  ·  ')),
-          Text(best == null
-              ? 'Noch keine Bestzeit'
-              : 'Bestzeit ${formatDuration(best)}'),
+          Text(best ?? 'Noch kein Bestwert'),
           const SizedBox(height: 16),
           Text('Kamera', style: theme.textTheme.titleMedium),
           const SizedBox(height: 8),
@@ -207,7 +237,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     _announce();
   }
 
-  /// Der Takt der Trainingssitzung beendet abgelaufene Pausen.
+  /// Der Takt der Trainingssitzung beendet Pausen, Minuten und feste Zeiten.
   void _tick() {
     if (_finishing) return;
     final change = _run.tick(_elapsed);
@@ -225,9 +255,11 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     final block = _run.current;
     if (block == null) return;
     _session.signals.change();
-    _session.signals.say(block.counted
-        ? '${block.reps} ${block.label}'
-        : block.title);
+    _session.signals.say(block.isMax
+        ? '${block.label}, so viele wie möglich'
+        : block.counted
+            ? '${block.reps} ${block.label}'
+            : block.title);
   }
 
   void _onPose(BodyPose pose, Duration at) {
@@ -283,13 +315,19 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                 '${formatDuration(s.seconds)}',
       ].join('\n');
 
+  /// Das Ergebnis steht vorn in der Notiz; daraus liest sich der Bestwert.
+  String get _notes => [
+        if (_run.score case final score?) '$_scorePrefix$score',
+        if (_runTimes.isNotEmpty) _runTimes,
+      ].join('\n');
+
   void _finish({required bool complete}) {
     if (_finishing) return;
     _finishing = true;
     if (complete) _session.signals.finish();
     final saved = _session.finish();
     Navigator.of(context)
-        .pop(saved == null ? null : (saved, complete, _runTimes));
+        .pop(saved == null ? null : (saved, complete, _notes));
   }
 
   Future<void> _confirmStop() async {
@@ -314,6 +352,13 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
       ),
     );
     if (confirmed == true && mounted) _finish(complete: false);
+  }
+
+  String get _clockText {
+    final left = _run.timeLeft(_elapsed);
+    return left == null
+        ? formatDuration(_elapsed)
+        : 'noch ${formatDuration(left)}';
   }
 
   String _hint(HeroBlock block) {
@@ -357,7 +402,8 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
               ],
               bottom: PreferredSize(
                 preferredSize: const Size.fromHeight(4),
-                child: LinearProgressIndicator(value: _run.progress),
+                child: LinearProgressIndicator(
+                    value: _run.progressAt(_elapsed)),
               ),
             ),
             body: SafeArea(
@@ -370,10 +416,13 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(formatDuration(_elapsed),
+                          Text(
+                              _clockText,
                               style: theme.textTheme.titleMedium),
                           Text(
-                              'Abschnitt ${_run.blockNumber}/${_run.blockTotal}',
+                              widget.workout.format == HeroFormat.forTime
+                                  ? 'Abschnitt ${_run.blockNumber}/${_run.blockTotal}'
+                                  : 'Runde ${_run.rounds + 1}',
                               style: theme.textTheme.titleMedium),
                           Text(heartRate == null ? '♥ –' : '♥ $heartRate',
                               style: theme.textTheme.titleMedium),
@@ -385,9 +434,10 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                         block.isRun
                             ? formatDuration(_run.blockSeconds(_elapsed))
                             : block.isRest
-                                ? formatDuration(
-                                    block.restS! - _run.blockSeconds(_elapsed))
-                                : '${_run.count} / ${block.reps}',
+                                ? formatDuration(_run.restLeft(_elapsed))
+                                : block.isMax
+                                    ? '${_run.count}'
+                                    : '${_run.count} / ${block.reps}',
                         style: theme.textTheme.displayMedium
                             ?.copyWith(fontWeight: FontWeight.w600)),
                     Text(_hint(block), style: theme.textTheme.bodySmall),

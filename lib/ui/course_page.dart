@@ -363,11 +363,14 @@ class CoursesAndBreathList extends StatelessWidget {
                   title: Text(w.name),
                   subtitle: Text([
                     w.isOriginal ? 'Original' : 'Skaliert',
-                    if (w.totalReps > 0) '${w.totalReps} Wdh.',
-                    if (w.runMeters > 0)
-                      '${formatKm(w.runMeters.toDouble())} km',
-                    if (heroBestTime(db, w) case final best?)
-                      'Bestzeit ${formatDuration(best)}',
+                    if (w.format != HeroFormat.forTime)
+                      w.formatLabel
+                    else ...[
+                      if (w.totalReps > 0) '${w.totalReps} Wdh.',
+                      if (w.runMeters > 0)
+                        '${formatKm(w.runMeters.toDouble())} km',
+                    ],
+                    ?heroBestLabel(db, w),
                   ].join('  ·  ')),
                   onTap: () async {
                     await Navigator.of(context).push(MaterialPageRoute(

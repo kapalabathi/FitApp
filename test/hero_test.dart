@@ -212,7 +212,8 @@ void main() {
           if (b.exerciseKey != null) {
             expect(known, contains(b.exerciseKey), reason: w.name);
           }
-          if (!b.isRun && !b.isRest) expect(b.reps, greaterThan(0));
+          if (b.isRun || b.isRest || b.isMax) continue;
+          expect(b.reps, greaterThan(0));
         }
       }
     });
@@ -325,7 +326,7 @@ void main() {
       expect(run.addRep(300), isNull);
       expect(run.skipBlock(500), HeroChange.finished);
       expect(run.splits.last.seconds, 270);
-      expect(run.progress, 1);
+      expect(run.progressAt(0), 1);
     });
 
     test('Wiederholungen ganz am Anfang des Laufs zählen nicht', () {
@@ -368,7 +369,7 @@ void main() {
       expect(run.addRep(20), HeroChange.finished);
       expect(run.finished, isTrue);
       expect(run.splits.map((s) => (s.reps, s.seconds)), [(2, 12), (1, 8)]);
-      expect(run.progress, 1);
+      expect(run.progressAt(0), 1);
     });
 
     test('lässt sich von Hand korrigieren', () {
@@ -380,6 +381,114 @@ void main() {
       run.addRep(2);
       expect(run.skipBlock(9), HeroChange.blockDone);
       expect(run.splits.single.reps, 1);
+    });
+  });
+
+  group('Formate', () {
+    HeroWorkout make(HeroFormat format, List<HeroBlock> blocks, {int? capS}) =>
+        HeroWorkout(
+          name: 'Test',
+          description: '',
+          equipment: '',
+          format: format,
+          capS: capS,
+          blocks: blocks,
+        );
+    const a = HeroBlock('A', null, 2, null);
+    const b = HeroBlock('B', null, 1, null);
+
+    test('so viel wie möglich: Runden laufen bis zum Ablauf der Zeit', () {
+      final run = HeroRun(make(HeroFormat.amrap, const [a, b], capS: 60));
+      for (var i = 0; i < 4; i++) {
+        run.addManualRep(i);
+      }
+      expect(run.rounds, 1);
+      expect(run.current!.label, 'A');
+      expect(run.count, 1);
+      expect(run.tick(59), isNull);
+      expect(run.tick(60), HeroChange.finished);
+      expect(run.finished, isTrue);
+      expect(run.score, '4 Wiederholungen (1 Runden + 1)');
+      expect(run.progressAt(30), 0.5);
+    });
+
+    test('Minutentakt: wartet nach geschaffter Runde auf die nächste Minute',
+        () {
+      final run = HeroRun(make(HeroFormat.emom, const [a, b], capS: 180));
+      run.addManualRep(5);
+      run.addManualRep(10);
+      expect(run.addManualRep(20), HeroChange.blockDone);
+      expect(run.current!.isRest, isTrue);
+      expect(run.restLeft(40), 20);
+      expect(run.addManualRep(41), isNull);
+      expect(run.tick(60), HeroChange.blockDone);
+      expect(run.current!.label, 'A');
+      expect(run.rounds, 1);
+    });
+
+    test('Minutentakt: endet mit der ersten nicht geschafften Minute', () {
+      final run = HeroRun(make(HeroFormat.emom, const [a, b], capS: 180));
+      run.addManualRep(5);
+      expect(run.tick(60), HeroChange.finished);
+      expect(run.score, '0 Runden');
+    });
+
+    test('Maximalwerte: Serien enden von Hand und zählen zusammen', () {
+      final run = HeroRun(make(HeroFormat.maxReps, const [
+        HeroBlock.max('A', null, null),
+        HeroBlock.max('B', null, null),
+      ]));
+      for (var i = 0; i < 30; i++) {
+        expect(run.addManualRep(i), HeroChange.counted);
+      }
+      expect(run.skipBlock(40), HeroChange.blockDone);
+      run.addManualRep(41);
+      expect(run.skipBlock(50), HeroChange.finished);
+      expect(run.score, '31 Wiederholungen');
+    });
+
+    test('Nicole: die Klimmzüge beenden den Lauf, und die Runden wiederholen',
+        () {
+      final nicole = heroWorkouts.firstWhere((w) => w.name == 'Nicole');
+      final run = HeroRun(nicole);
+      expect(run.countingKind, RepKind.pullUp);
+      expect(run.addRep(120), HeroChange.blockDone);
+      expect(run.current!.isMax, isTrue);
+      expect(run.count, 1);
+      expect(run.skipBlock(140), HeroChange.blockDone);
+      expect(run.current!.isRun, isTrue);
+      expect(run.rounds, 1);
+      expect(run.tick(1200), HeroChange.finished);
+      expect(run.splits.last.block.isRun, isTrue);
+      expect(run.score, '1 Wiederholungen');
+    });
+
+    test('das Original von Cindy und Chelsea stimmt', () {
+      final cindy = heroWorkouts.firstWhere((w) => w.name == 'Cindy');
+      expect(cindy.capS, 1200);
+      expect(cindy.blocks.map((b) => b.reps), [5, 10, 15]);
+      final chelsea = heroWorkouts.firstWhere((w) => w.name == 'Chelsea');
+      expect(chelsea.format, HeroFormat.emom);
+      expect(chelsea.capS, 1800);
+    });
+
+    test('der Bestwert steht in der Notiz und gilt nur für Beendetes', () {
+      final db = AppDatabase.inMemory();
+      addTearDown(db.close);
+      final cindy = heroWorkouts.firstWhere((w) => w.name == 'Cindy');
+      void save(String title, String notes) {
+        final id = db.startWorkout(Sport.crossfit, DateTime(2026, 10, 30, 9));
+        db.addSample(id, const Sample(t: 1));
+        db.finishWorkout(id);
+        db.updateWorkout(id, title: title, sport: Sport.crossfit, notes: notes);
+      }
+
+      expect(heroBestLabel(db, cindy), isNull);
+      save(cindy.title, 'Ergebnis: 120 Wiederholungen (4 Runden + 0)');
+      save(cindy.title, 'Ergebnis: 95 Wiederholungen (3 Runden + 5)');
+      save(cindy.abortedTitle, 'Ergebnis: 500 Wiederholungen');
+      expect(heroBestScore(db, cindy), 120);
+      expect(heroBestLabel(db, cindy), 'Bestwert 120 Wiederholungen');
     });
   });
 

@@ -77,7 +77,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-055 | Verbindungsabbrüche protokollieren: Zeitpunkt, Gerät, Grund von Android, Dauer; Anzeige im Training und Ereignis in der FIT-Datei | Geräte | S | Umgesetzt, ungetestet | Nutzer |
 | I-056 | Kurze Verbindungsabbrüche überbrücken: letzten Gerätewert bis etwa 15 s halten, damit Kurve, Pace und FIT keine Lücken haben | Geräte | S | Umgesetzt, ungetestet | Vorschlag |
 | I-057 | Fertige Routinen aus vorhandenen Übungen: Post-Run, Hips, Lower Back, Sleep, Tech Neck | Programme | S | Umgesetzt, ungetestet | Vorschlag |
-| I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Neu | Vorschlag |
+| I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Umgesetzt, ungetestet | Vorschlag |
 | I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
 | I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Neu | Vorschlag |
@@ -220,3 +220,7 @@ Stand Version 0.17.0: Die Schritte 1 bis 3 sind als erste Fassung gebaut, mit vi
 Stand Version 0.18.0: 17 Workouts, darunter der volle Murph und die WODs mit Lauf, jeweils auch in kürzerer Fassung. Ein Lauf ist die Zeit bis zur ersten erkannten Wiederholung der nächsten Übung, so vom Nutzer festgelegt; ein Lauf am Ende und reine Läufe enden von Hand. Sit-ups zählt die Kamera jetzt, Superman nur von Hand. Nicole und die übrigen Formate mit fester Zeit warten auf I-058.
 
 Stand Version 0.19.0: 39 Workouts, davon 23 Originale und 16 skalierte Fassungen mit vollständiger Liste der Abweichungen. Cindy, Chelsea, Mary, Nicole und Lynne fehlen, weil sie feste Zeit, Minutentakt oder Maximalwerte brauchen (I-058). Die Mengen von Eva, Nancy, Jackie, Isabel, Linda, Amanda und Lynne stammen nicht aus dem Katalog des Nutzers, sondern aus allgemeinem Wissen.
+
+Stand Version 0.20.0: I-058 umgesetzt mit den Formaten auf Zeit, so viel wie möglich (AMRAP), jede Minute (EMOM) und Maximalwerte. Das Ergebnis steht in der ersten Zeile der Notiz, daraus liest sich der Bestwert. Damit 50 Workouts, 28 Originale und 22 skalierte Fassungen. Die Mengen von Lynne stammen wie bei Eva, Nancy, Jackie, Isabel, Linda und Amanda aus allgemeinem Wissen.
+
+Die Liste aller offenen Prüfungen am Gerät steht in [MANUELLE-TESTS.md](MANUELLE-TESTS.md).

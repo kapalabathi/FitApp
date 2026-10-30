@@ -4,7 +4,15 @@ import 'rep_counter.dart';
 class HeroBlock {
   const HeroBlock(this.label, this.exerciseKey, this.reps, this.kind)
     : meters = null,
-      restS = null;
+      restS = null,
+      isMax = false;
+
+  /// So viele Wiederholungen wie möglich; endet von Hand.
+  const HeroBlock.max(this.label, this.exerciseKey, this.kind)
+    : reps = 0,
+      meters = null,
+      restS = null,
+      isMax = true;
 
   /// Ein Lauf endet von selbst mit der ersten Wiederholung der nächsten
   /// Übung oder von Hand.
@@ -12,7 +20,8 @@ class HeroBlock {
     : exerciseKey = null,
       reps = 0,
       kind = null,
-      restS = null;
+      restS = null,
+      isMax = false;
 
   /// Eine feste Pause, die von selbst endet.
   const HeroBlock.rest(int this.restS)
@@ -20,7 +29,8 @@ class HeroBlock {
       exerciseKey = null,
       reps = 0,
       kind = null,
-      meters = null;
+      meters = null,
+      isMax = false;
 
   final String label;
 
@@ -41,8 +51,11 @@ class HeroBlock {
   bool get isRun => meters != null;
   bool get isRest => restS != null;
 
+  /// Zählt so viele Wiederholungen wie möglich statt einer festen Menge.
+  final bool isMax;
+
   /// Hat Wiederholungen, die sich zählen lassen.
-  bool get counted => reps > 0;
+  bool get counted => reps > 0 || isMax;
 
   String get exerciseUuid => 'builtin-$exerciseKey';
 
@@ -67,7 +80,26 @@ enum HeroFamily {
   final String label;
 }
 
-/// Ein Workout, das auf Zeit durchgeturnt wird und bei dem die Kamera zählt.
+/// Wie ein Workout läuft und was es wertet.
+enum HeroFormat {
+  /// Feste Menge, gewertet wird die Zeit.
+  forTime('Auf Zeit'),
+
+  /// Feste Zeit, so viele Runden wie möglich.
+  amrap('So viel wie möglich'),
+
+  /// Jede Minute eine Runde, bis eine nicht mehr gelingt.
+  emom('Jede Minute'),
+
+  /// Feste Serien, jede bis zum Maximum.
+  maxReps('Maximalwerte');
+
+  const HeroFormat(this.label);
+
+  final String label;
+}
+
+/// Ein Workout, bei dem die Kamera zählt.
 class HeroWorkout {
   const HeroWorkout({
     required this.name,
@@ -76,7 +108,18 @@ class HeroWorkout {
     required this.blocks,
     this.family = HeroFamily.hero,
     this.deviations = const [],
+    this.format = HeroFormat.forTime,
+    this.capS,
   });
+
+  final HeroFormat format;
+
+  /// Die feste Zeit des Workouts in Sekunden, sonst `null`.
+  final int? capS;
+
+  /// Das Format mit Dauer für die Anzeige.
+  String get formatLabel =>
+      capS == null ? format.label : '${format.label}, ${capS! ~/ 60} min';
 
   final String name;
   final String description;
@@ -126,6 +169,7 @@ const _swing32 = (
 );
 const _boxJump = ('Box Jumps 60 cm', 'crossfit_03_box_jump', null);
 const _wallBall = ('Wall Balls 9 kg', 'crossfit_06_wall_ball', RepKind.squat);
+const _pistol = ('Pistols', 'cali_15_pistol_squat', RepKind.squat);
 const _ohs = ('Overhead Squats 43 kg', null, RepKind.squat);
 const _thruster43 = ('Thruster 43 kg', 'crossfit_05_thruster', RepKind.squat);
 const _thruster20 = ('Thruster 20 kg', 'crossfit_05_thruster', RepKind.squat);
@@ -147,6 +191,9 @@ const _lindaClean = ('Cleans 0,75 × Körpergewicht', null, null);
 
 HeroBlock _b((String, String?, RepKind?) e, int reps) =>
     HeroBlock(e.$1, e.$2, reps, e.$3);
+
+HeroBlock _max((String, String?, RepKind?) e) =>
+    HeroBlock.max(e.$1, e.$2, e.$3);
 
 const _stange = 'Klimmzugstange, Laufstrecke oder Laufband';
 const _lauf = 'Laufstrecke oder Laufband';
@@ -479,6 +526,140 @@ final List<HeroWorkout> heroWorkouts = [
     blocks: _ladder(const [9, 7, 5], [_muscleUp, _squatSnatch]),
   ),
   HeroWorkout(
+    name: 'Cindy',
+    family: HeroFamily.girl,
+    format: HeroFormat.amrap,
+    capS: 1200,
+    description:
+        '20 Minuten so viele Runden wie möglich aus 5 Klimmzügen, 10 '
+        'Liegestützen und 15 Kniebeugen.',
+    equipment: 'Klimmzugstange',
+    blocks: [_b(_pullUp, 5), _b(_pushUp, 10), _b(_squat, 15)],
+  ),
+  HeroWorkout(
+    name: 'Cindy, kurz',
+    family: HeroFamily.girl,
+    format: HeroFormat.amrap,
+    capS: 600,
+    description:
+        '10 Minuten so viele Runden wie möglich aus 5 Klimmzügen, 10 '
+        'Liegestützen und 15 Kniebeugen.',
+    equipment: 'Klimmzugstange',
+    deviations: const ['10 statt 20 Minuten'],
+    blocks: [_b(_pullUp, 5), _b(_pushUp, 10), _b(_squat, 15)],
+  ),
+  HeroWorkout(
+    name: 'Chelsea',
+    family: HeroFamily.girl,
+    format: HeroFormat.emom,
+    capS: 1800,
+    description:
+        'Jede Minute 5 Klimmzüge, 10 Liegestütze und 15 Kniebeugen, '
+        '30 Minuten lang. Schaffst du eine Minute nicht, endet das Workout.',
+    equipment: 'Klimmzugstange',
+    blocks: [_b(_pullUp, 5), _b(_pushUp, 10), _b(_squat, 15)],
+  ),
+  HeroWorkout(
+    name: 'Chelsea, kurz',
+    family: HeroFamily.girl,
+    format: HeroFormat.emom,
+    capS: 900,
+    description:
+        'Jede Minute 5 Klimmzüge, 10 Liegestütze und 15 Kniebeugen, '
+        '15 Minuten lang.',
+    equipment: 'Klimmzugstange',
+    deviations: const ['15 statt 30 Minuten'],
+    blocks: [_b(_pullUp, 5), _b(_pushUp, 10), _b(_squat, 15)],
+  ),
+  HeroWorkout(
+    name: 'Chelsea, leicht',
+    family: HeroFamily.girl,
+    format: HeroFormat.emom,
+    capS: 1800,
+    description:
+        'Jede Minute 3 Klimmzüge, 6 Liegestütze und 9 Kniebeugen, 30 '
+        'Minuten lang.',
+    equipment: 'Klimmzugstange',
+    deviations: const [
+      '3 statt 5 Klimmzüge',
+      '6 statt 10 Liegestütze',
+      '9 statt 15 Kniebeugen',
+    ],
+    blocks: [_b(_pullUp, 3), _b(_pushUp, 6), _b(_squat, 9)],
+  ),
+  HeroWorkout(
+    name: 'Mary',
+    family: HeroFamily.girl,
+    format: HeroFormat.amrap,
+    capS: 1200,
+    description:
+        '20 Minuten so viele Runden wie möglich aus 5 '
+        'Handstand-Liegestützen, 10 Pistols im Wechsel und 15 Klimmzügen.',
+    equipment: 'Wand, Klimmzugstange',
+    blocks: [_b(_hspu, 5), _b(_pistol, 10), _b(_pullUp, 15)],
+  ),
+  HeroWorkout(
+    name: 'Mary, skaliert',
+    family: HeroFamily.girl,
+    format: HeroFormat.amrap,
+    capS: 1200,
+    description:
+        '20 Minuten so viele Runden wie möglich aus 5 '
+        'Pike-Liegestützen, 20 Kniebeugen und 15 Klimmzügen.',
+    equipment: 'Klimmzugstange',
+    deviations: const [
+      'Pike-Liegestütze statt Handstand-Liegestütze',
+      '20 Kniebeugen statt 10 Pistols',
+    ],
+    blocks: [_b(_pike, 5), _b(_squat, 20), _b(_pullUp, 15)],
+  ),
+  HeroWorkout(
+    name: 'Nicole',
+    family: HeroFamily.girl,
+    format: HeroFormat.amrap,
+    capS: 1200,
+    description:
+        '20 Minuten im Wechsel 400 m laufen und so viele Klimmzüge '
+        'wie möglich am Stück. Gewertet werden alle Klimmzüge. Eine '
+        'Klimmzug-Serie beendest du mit „Weiter".',
+    equipment: _stange,
+    blocks: [const HeroBlock.run(400), _max(_pullUp)],
+  ),
+  HeroWorkout(
+    name: 'Nicole, kurz',
+    family: HeroFamily.girl,
+    format: HeroFormat.amrap,
+    capS: 600,
+    description:
+        '10 Minuten im Wechsel 200 m laufen und so viele Klimmzüge '
+        'wie möglich am Stück.',
+    equipment: _stange,
+    deviations: const ['10 statt 20 Minuten', 'Läufe 200 m statt 400 m'],
+    blocks: [const HeroBlock.run(200), _max(_pullUp)],
+  ),
+  HeroWorkout(
+    name: 'Lynne',
+    family: HeroFamily.girl,
+    format: HeroFormat.maxReps,
+    description:
+        '5 Runden aus maximal vielen Wiederholungen Bankdrücken mit '
+        'dem Körpergewicht und maximal vielen Klimmzügen. Jede Serie beendest '
+        'du mit „Weiter".',
+    equipment: '$_hantel, Bank, Klimmzugstange',
+    blocks: _repeat(5, [_max(_lindaBench), _max(_pullUp)]),
+  ),
+  HeroWorkout(
+    name: 'Lynne, skaliert',
+    family: HeroFamily.girl,
+    format: HeroFormat.maxReps,
+    description:
+        '5 Runden aus maximal vielen Liegestützen und maximal vielen '
+        'Klimmzügen. Jede Serie beendest du mit „Weiter".',
+    equipment: 'Klimmzugstange',
+    deviations: const ['Liegestütze statt Bankdrücken mit dem Körpergewicht'],
+    blocks: _repeat(5, [_max(_pushUp), _max(_pullUp)]),
+  ),
+  HeroWorkout(
     name: 'Helen',
     family: HeroFamily.girl,
     description:
@@ -619,6 +800,10 @@ class HeroSplit {
 /// erste Wiederholung meldet; der Lauf ist also die Zeit bis dahin. Ein Lauf,
 /// nach dem keine zählbare Übung kommt, endet von Hand.
 ///
+/// Je nach [HeroWorkout.format] endet das Workout mit dem letzten Abschnitt,
+/// nach Ablauf der Zeit oder, beim Minutentakt, in der ersten Minute, die
+/// nicht geschafft wurde.
+///
 /// Kennt weder Kamera noch Uhr; [elapsedS] kommt jeweils von außen.
 class HeroRun {
   HeroRun(this.workout);
@@ -627,19 +812,40 @@ class HeroRun {
   /// Kamera vorbeiläuft, beendet den Lauf damit nicht versehentlich.
   static const minRunS = 30;
 
+  /// Das Warten auf die nächste Minute beim Minutentakt.
+  static const _minuteRest = HeroBlock.rest(60);
+
   final HeroWorkout workout;
   final List<HeroSplit> splits = [];
 
   int _index = 0;
   int _startT = 0;
+  bool _finished = false;
+  bool _waiting = false;
+  int _nextMinuteT = 60;
 
   /// Wiederholungen im laufenden Abschnitt.
   int count = 0;
 
-  bool get finished => _index >= workout.blocks.length;
-  HeroBlock? get current => finished ? null : workout.blocks[_index];
-  HeroBlock? get _next =>
-      _index + 1 < workout.blocks.length ? workout.blocks[_index + 1] : null;
+  /// Vollständig geschaffte Runden, bei Zeit- und Minutenformaten.
+  int rounds = 0;
+
+  /// Alle gezählten Wiederholungen des Workouts.
+  int totalCounted = 0;
+
+  bool get finished => _finished;
+  HeroBlock? get current => _finished
+      ? null
+      : _waiting
+      ? _minuteRest
+      : workout.blocks[_index];
+  HeroBlock? get _next {
+    if (_index + 1 < workout.blocks.length) {
+      return workout.blocks[_index + 1];
+    }
+    return workout.format == HeroFormat.amrap ? workout.blocks.first : null;
+  }
+
   int get blockNumber => _index + 1;
   int get blockTotal => workout.blocks.length;
 
@@ -650,18 +856,54 @@ class HeroRun {
     return block.isRun ? _next?.kind : block.kind;
   }
 
-  /// Beendet eine abgelaufene Pause. Einmal je Sekunde aufzurufen.
+  /// Das Ergebnis, wenn nicht die Zeit zählt.
+  String? get score => switch (workout.format) {
+    HeroFormat.forTime => null,
+    HeroFormat.emom => '$rounds Runden',
+    HeroFormat.maxReps => '$totalCounted Wiederholungen',
+    HeroFormat.amrap =>
+      workout.blocks.any((b) => b.isMax)
+          ? '$totalCounted Wiederholungen'
+          : '$totalCounted Wiederholungen ($rounds Runden + '
+                '${totalCounted - rounds * workout.totalReps})',
+  };
+
+  /// Sekunden bis zum Ende einer festen Zeit, sonst `null`.
+  int? timeLeft(int elapsedS) {
+    final cap = workout.capS;
+    return cap == null ? null : (cap - elapsedS).clamp(0, cap);
+  }
+
+  /// Sekunden bis zum Ende einer Pause.
+  int restLeft(int elapsedS) => _waiting
+      ? _nextMinuteT - elapsedS
+      : (current?.restS ?? 0) - blockSeconds(elapsedS);
+
+  /// Einmal je Sekunde aufzurufen: beendet Pausen, Minuten und feste Zeiten.
   HeroChange? tick(int elapsedS) {
+    if (_finished) return null;
+    final cap = workout.capS;
+    if (cap != null && elapsedS >= cap) return _finish(elapsedS);
+    if (workout.format == HeroFormat.emom && elapsedS >= _nextMinuteT) {
+      // Wer in der Minute nicht fertig wurde, ist am Ende angekommen.
+      if (!_waiting) return _finish(elapsedS);
+      _waiting = false;
+      _startT = elapsedS;
+      _nextMinuteT += 60;
+      return HeroChange.blockDone;
+    }
     final rest = current?.restS;
-    if (rest == null || blockSeconds(elapsedS) < rest) return null;
+    if (_waiting || rest == null || blockSeconds(elapsedS) < rest) return null;
     return _closeBlock(elapsedS);
   }
 
   /// Sekunden im laufenden Abschnitt.
   int blockSeconds(int elapsedS) => elapsedS - _startT;
 
-  /// Anteil der geschafften Abschnitte, 0 bis 1.
-  double get progress {
+  /// Fortschritt von 0 bis 1: nach der Zeit oder den Abschnitten.
+  double progressAt(int elapsedS) {
+    final cap = workout.capS;
+    if (cap != null) return (elapsedS / cap).clamp(0, 1);
     final block = current;
     if (block == null) return 1;
     final inBlock = block.reps == 0 ? 0.0 : count / block.reps;
@@ -690,23 +932,52 @@ class HeroRun {
 
   HeroChange _countRep(HeroBlock block, int elapsedS) {
     count++;
-    return count >= block.reps ? _closeBlock(elapsedS) : HeroChange.counted;
+    totalCounted++;
+    return !block.isMax && count >= block.reps
+        ? _closeBlock(elapsedS)
+        : HeroChange.counted;
   }
 
   /// Nimmt eine zu viel gezählte Wiederholung zurück.
   void removeRep() {
-    if (count > 0) count--;
+    if (count > 0) {
+      count--;
+      totalCounted--;
+    }
   }
 
   /// Schließt den Abschnitt von Hand ab, etwa den letzten Lauf.
   HeroChange? skipBlock(int elapsedS) =>
-      finished ? null : _closeBlock(elapsedS);
+      _finished || _waiting ? null : _closeBlock(elapsedS);
 
   HeroChange _closeBlock(int elapsedS) {
+    _addSplit(elapsedS);
+    _index++;
+    if (_index < workout.blocks.length) return HeroChange.blockDone;
+    rounds++;
+    _index = 0;
+    switch (workout.format) {
+      case HeroFormat.amrap:
+        return HeroChange.blockDone;
+      case HeroFormat.emom:
+        _waiting = true;
+        return HeroChange.blockDone;
+      case HeroFormat.forTime || HeroFormat.maxReps:
+        _finished = true;
+        return HeroChange.finished;
+    }
+  }
+
+  /// Beendet das Workout mitten im Abschnitt; Angefangenes zählt noch.
+  HeroChange _finish(int elapsedS) {
+    if (count > 0 || current?.isRun == true) _addSplit(elapsedS);
+    _finished = true;
+    return HeroChange.finished;
+  }
+
+  void _addSplit(int elapsedS) {
     splits.add(HeroSplit(current!, count, elapsedS - _startT, elapsedS));
     _startT = elapsedS;
     count = 0;
-    _index++;
-    return finished ? HeroChange.finished : HeroChange.blockDone;
   }
 }

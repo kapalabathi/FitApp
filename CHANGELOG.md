@@ -4,6 +4,15 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.20.0] – 2026-10-30
+
+### Hinzugefügt
+- **Workout-Formate** (I-058): Neben „auf Zeit" gibt es jetzt „so viel wie möglich" in fester Zeit (AMRAP), „jede Minute" (EMOM) und Maximalwerte. Gewertet wird je nach Format Zeit, Wiederholungen oder Runden; Pausen bis zur nächsten Minute zählen sichtbar herunter, und im Training läuft die Restzeit mit.
+- **Neue WODs:** Cindy und Chelsea als Original, kurz und bei Chelsea leicht; Mary, Nicole und Lynne als Original und skaliert oder kurz. Damit 50 Workouts: 28 Originale und 22 skalierte Fassungen.
+- Das Ergebnis steht in der Notiz des Trainings, der Bestwert in der Liste.
+- Testliste für das Gerät in [docs/MANUELLE-TESTS.md](docs/MANUELLE-TESTS.md).
+- 7 automatische Tests dazu (insgesamt 289).
+
 ## [0.19.0] – 2026-10-30
 
 ### Hinzugefügt
