@@ -76,6 +76,11 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-054 | 48 weitere Übungen: Yoga-Haltungen aus „Light on Yoga", Crossfit mit Kettlebell und Kurzhanteln, Calisthenics-Vorstufen; sechs neue Programme; Kurs damit erweitert | Programme | M | Umgesetzt, ungetestet | Nutzer |
 | I-055 | Verbindungsabbrüche protokollieren: Zeitpunkt, Gerät, Grund von Android, Dauer; Anzeige im Training und Ereignis in der FIT-Datei | Geräte | S | Umgesetzt, ungetestet | Nutzer |
 | I-056 | Kurze Verbindungsabbrüche überbrücken: letzten Gerätewert bis etwa 15 s halten, damit Kurve, Pace und FIT keine Lücken haben | Geräte | S | Neu | Vorschlag |
+| I-057 | Fertige Routinen aus vorhandenen Übungen: Post-Run, Hips, Lower Back, Sleep, Tech Neck | Programme | S | Neu | Vorschlag |
+| I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Neu | Vorschlag |
+| I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Neu | Vorschlag |
+| I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
+| I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Neu | Vorschlag |
 
 ## Details
 
@@ -186,3 +191,16 @@ Wunsch des Nutzers vom 2026-10-14: weitere Übungen für Yoga, Crossfit und Cali
 
 ### I-055 – Protokoll der Verbindungsabbrüche
 Anlass: FIT-Datei vom Laufband vom 2026-10-14 mit 38 Abbrüchen von je 9 bis 10 Sekunden, etwa alle 2½ bis 4 Minuten (vorher alle 73 s; das Lebenszeichen aus Version 0.9 hat also geholfen). Ob das Band, das Phone oder die Funkstrecke trennt, war nicht zu erkennen. Android meldet beim Trennen einen Grund (HCI-Fehlercode), den die Bluetooth-Bibliothek als Text weitergibt; die App speichert ihn je Abbruch. In FIT gibt es dafür kein Textfeld, nur das Ereignis comm_timeout mit der Unterscheidung „Verbindung verloren" oder „Zeitüberschreitung".
+
+### I-057 bis I-061 – Auswertung des Übungskatalogs
+Grundlage ist der „Calisthenics & Freeletics Übungskatalog" des Nutzers vom 2026-10-25 (Datei liegt nicht im Projekt). Vorgeschlagene Reihenfolge: I-057, I-058, I-059, I-060, I-061.
+
+**Ausstattung des Nutzers:** Klimmzugstange und einige kleine Kurzhanteln (Stand 2026-10-30). Keine Ringe, kein Barren, keine Langhantel, keine Kettlebell genannt. Workouts und Übungen aus diesem Katalog richten sich danach. Klimmzug-Workouts wie Cindy, Angie oder Barbara gehen; Barren-Übungen brauchen einen Ersatz, etwa Bank-Dips.
+
+**I-058:** Die App kennt bisher nur feste Runden. Neu wären Formate mit eigener Wertung und einem Bestwert je Workout. Geeignete erste Workouts: Cindy, Angie, Aphrodite, Tabata-Varianten. Die mitgelieferten Abläufe vor der Übernahme prüfen, weil der Katalog seine Quellen teils selbst als unsicher bezeichnet.
+
+**I-061:** Nicht die ganze Bend-Bibliothek übernehmen: Sie überschneidet sich stark mit dem Bestand, und jedes Bild muss geprüft werden. Kandidaten sind Froggers, Squat Thrust, Standups, Couch Stretch, Pancake und 90/90.
+
+**Bewusst nicht vorgesehen:** Elite-Skills wie Planche und Human Flag, Ring-Übungen, Langhantel-Workouts, Hero WODs und die unsicheren Götter-Workouts aus den Scribd-Quellen.
+
+**Fehler im Katalog, nicht übernehmen:** Devil Press ist kein Burpee mit zwei Liegestützen, sondern ein Burpee auf Kurzhanteln mit Zug über den Kopf (G-180). Sprawls sind leichter als Burpees, stehen dort aber mit ★★★ gegen ★★. „Reverse Lunge" bedeutet im Bend-Teil den halben Spagat.
