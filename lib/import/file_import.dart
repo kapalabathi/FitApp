@@ -167,8 +167,8 @@ Sport _guessSport(List<Sample> samples) {
   if (distance <= 0) return Sport.other;
   final kmh = distance / samples.last.t * 3.6;
   if (kmh < 7) return Sport.hiking;
-  if (kmh < 20) return Sport.running;
-  return Sport.other;
+  if (kmh < 13) return Sport.running;
+  return Sport.cycling;
 }
 
 /// Die Sportart zu einer Bezeichnung aus GPX oder TCX, oder `null`, wenn sie
@@ -180,7 +180,7 @@ Sport? _sportFromText(String? text) {
     return Sport.hiking;
   }
   if (t.contains('bik') || t.contains('cycl') || t.contains('ride')) {
-    return Sport.other;
+    return Sport.cycling;
   }
   return null;
 }
@@ -231,7 +231,7 @@ ParsedActivity _parseFit(Uint8List bytes) {
     sport: switch (sport) {
       fit.Sport.running => indoor ? Sport.treadmill : Sport.running,
       fit.Sport.walking || fit.Sport.hiking => Sport.hiking,
-      fit.Sport.cycling => indoor ? Sport.indoorBike : Sport.other,
+      fit.Sport.cycling => indoor ? Sport.indoorBike : Sport.cycling,
       null || fit.Sport.generic => null,
       _ => Sport.other,
     },

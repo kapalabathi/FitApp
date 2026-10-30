@@ -303,19 +303,7 @@ class AppDatabase {
     if (version < 12) {
       // Vierte Lieferung: 48 Übungen (G-165 bis G-212) und sechs Programme.
       _addNewBuiltinExercises();
-      for (final p in builtinProgramsBatch3) {
-        final uuid = 'builtin-program:${p.name}';
-        if (_db.select('SELECT 1 FROM programs WHERE uuid = ?', [
-          uuid,
-        ]).isNotEmpty) {
-          continue;
-        }
-        _db.execute(
-          'INSERT INTO programs (uuid, name, category, rounds, items, '
-          'updated_at) VALUES (?, ?, ?, ?, ?, ?)',
-          [uuid, p.name, p.category.id, p.rounds, p.itemsJson(), _pristine],
-        );
-      }
+      _addBuiltinPrograms(builtinProgramsBatch3);
       _db.execute('PRAGMA user_version = 12');
     }
     if (version < 13) {
@@ -335,6 +323,28 @@ class AppDatabase {
       // Glühwürmchen (G-213) als schwerere Variante der Krähe.
       _addNewBuiltinExercises();
       _db.execute('PRAGMA user_version = 14');
+    }
+    if (version < 15) {
+      // Fertige Dehn-Routinen (I-057).
+      _addBuiltinPrograms(builtinProgramsBatch4);
+      _db.execute('PRAGMA user_version = 15');
+    }
+  }
+
+  /// Legt mitgelieferte Programme an, die es noch nicht gibt, gleich mit
+  /// ihrer festen Kennung.
+  void _addBuiltinPrograms(List<Program> programs) {
+    for (final p in programs) {
+      final uuid = 'builtin-program:${p.name}';
+      if (_db.select('SELECT 1 FROM programs WHERE uuid = ?', [uuid])
+          .isNotEmpty) {
+        continue;
+      }
+      _db.execute(
+        'INSERT INTO programs (uuid, name, category, rounds, items, '
+        'updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+        [uuid, p.name, p.category.id, p.rounds, p.itemsJson(), _pristine],
+      );
     }
   }
 

@@ -108,6 +108,8 @@ Spalte „Idee" verweist auf den Ideenspeicher.
 | A-047 | Übungen haben Sanskrit-Name, Art der Haltung, Schwierigkeit, einen Hinweis zur sicheren Ausführung und eine leichtere und schwerere Variante. | Soll | I-046, I-051, I-052 |
 | A-048 | Einseitige Übungen laufen im Programm auf beiden Seiten, mit angesagtem Seitenwechsel. | Soll | I-047 |
 | A-049 | Geführte Atemübungen mit Phasen, Nasenseite und wählbarer Dauer; längeres Atemanhalten erst nach ausdrücklicher Freischaltung. | Soll | I-048, I-052 |
+| A-081 | Pulsgesteuertes Training: Laufband oder Bike halten einen Zielpuls unterhalb einer gewählten Obergrenze, mit Ansage vor jeder Änderung; ohne frischen Puls ruht die Regelung. | Kann | I-032 |
+| A-082 | Radfahren im Freien als Sportart mit GPS. | Soll | I-029 |
 | A-080 | Aufbauender Yoga-Kurs über zwölf Wochen mit drei Einheiten je Woche; die App merkt sich den Fortschritt und schlägt die nächste Stufe vor (Entscheidung des Auftraggebers vom 2026-10-14). | Soll | I-049 |
 
 ### 4.5 Auswertung

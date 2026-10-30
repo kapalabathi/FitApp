@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/models.dart';
+import '../programs/program_models.dart';
 import '../programs/program_run.dart';
 import '../session/workout_session.dart';
 import 'area_chips.dart';
@@ -29,6 +30,10 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
   String _weight = '';
 
   WorkoutSession get _session => widget.session;
+
+  late final Map<String, Exercise> _exercises = {
+    for (final e in _session.recorder.db.exercises()) e.uuid: e,
+  };
 
   /// Belegt die Eingaben für [phase] vor: die geplanten Wiederholungen und
   /// das zuletzt bei dieser Übung verwendete Gewicht.
@@ -138,7 +143,13 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
                             child: Text('Programm beendet',
                                 style: theme.textTheme.headlineMedium),
                           )
-                        : _PhaseView(run: run, phase: phase),
+                        : _PhaseView(
+                            run: run,
+                            phase: phase,
+                            easier: _exercises[phase.exercise.easierUuid],
+                            harder: _exercises[phase.exercise.harderUuid],
+                            onSwap: _session.swapExercise,
+                          ),
                   ),
                   if (counted)
                     Padding(
@@ -242,10 +253,21 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
 }
 
 class _PhaseView extends StatelessWidget {
-  const _PhaseView({required this.run, required this.phase});
+  const _PhaseView({
+    required this.run,
+    required this.phase,
+    this.easier,
+    this.harder,
+    required this.onSwap,
+  });
 
   final ProgramRun run;
   final ProgramPhase phase;
+
+  /// Die leichtere und schwerere Variante der Übung, falls es sie gibt.
+  final Exercise? easier;
+  final Exercise? harder;
+  final void Function(Exercise) onSwap;
 
   @override
   Widget build(BuildContext context) {
@@ -301,6 +323,29 @@ class _PhaseView extends StatelessWidget {
         Center(child: counter),
         if (!phase.isRest)
           AreaChips(areas: phase.exercise.areas, centered: true),
+        if (!phase.isRest && (easier != null || harder != null))
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              spacing: 8,
+              runSpacing: 4,
+              children: [
+                if (easier case final e?)
+                  OutlinedButton.icon(
+                    onPressed: () => onSwap(e),
+                    icon: const Icon(Icons.south, size: 18),
+                    label: Text('Leichter: ${e.name}'),
+                  ),
+                if (harder case final e?)
+                  OutlinedButton.icon(
+                    onPressed: () => onSwap(e),
+                    icon: const Icon(Icons.north, size: 18),
+                    label: Text('Schwerer: ${e.name}'),
+                  ),
+              ],
+            ),
+          ),
         if (!phase.isRest && phase.exercise.caution.isNotEmpty)
           CautionNote(phase.exercise.caution),
         if (!phase.isRest && phase.exercise.description.isNotEmpty)

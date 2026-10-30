@@ -385,6 +385,71 @@ const List<Program> builtinProgramsBatch3 = [
   ),
 ];
 
+/// Die vierte Lieferung: fertige Dehn-Routinen aus vorhandenen Übungen.
+const List<Program> builtinProgramsBatch4 = [
+  Program(
+    name: 'Routine: Nach dem Lauf',
+    category: ExerciseCategory.stretching,
+    items: [
+      _Timed('dehnen_06_wade_wand', 30, sides: true),
+      _Timed('dehnen_07_oberschenkel_vorn', 30, sides: true),
+      _Timed('yoga_65_liegende_hand_zum_zeh', 45, sides: true),
+      _Timed('dehnen_09_hueftbeuger', 40, sides: true),
+      _Timed('dehnen_12_figur_4', 40, sides: true),
+      _Timed('yoga_46_beine_an_der_wand', 120, rest: 0),
+    ],
+  ),
+  Program(
+    name: 'Routine: Hüfte',
+    category: ExerciseCategory.stretching,
+    items: [
+      _Timed('dehnen_20_weltbeste_dehnung', 30, sides: true),
+      _Timed('dehnen_32_eidechse', 45, sides: true),
+      _Timed('yoga_17_taube', 60, sides: true),
+      _Timed('dehnen_31_frosch', 60),
+      _Timed('dehnen_10_schmetterling', 60),
+      _Timed('dehnen_15_tiefe_hocke', 45, rest: 0),
+    ],
+  ),
+  Program(
+    name: 'Routine: Unterer Rücken',
+    category: ExerciseCategory.stretching,
+    items: [
+      _Timed('dehnen_13_knie_zur_brust', 45),
+      _Timed('yoga_06_katze_kuh', 45),
+      _Timed('dehnen_14_wirbelsaeule_drehung', 45, sides: true),
+      _Timed('dehnen_12_figur_4', 40, sides: true),
+      _Timed('yoga_34_sphinx', 30),
+      _Timed('yoga_05_kindhaltung', 60),
+      _Timed('yoga_20_totenstellung', 120, rest: 0),
+    ],
+  ),
+  Program(
+    name: 'Routine: Zur Ruhe kommen',
+    category: ExerciseCategory.stretching,
+    items: [
+      _Timed('yoga_05_kindhaltung', 60),
+      _Timed('yoga_39_liegender_schmetterling', 60),
+      _Timed('dehnen_13_knie_zur_brust', 60),
+      _Timed('dehnen_14_wirbelsaeule_drehung', 60, sides: true),
+      _Timed('yoga_46_beine_an_der_wand', 120),
+      _Timed('yoga_20_totenstellung', 120, rest: 0),
+    ],
+  ),
+  Program(
+    name: 'Routine: Nacken und Bildschirm',
+    category: ExerciseCategory.stretching,
+    items: [
+      _Timed('dehnen_01_nacken', 30, sides: true),
+      _Timed('dehnen_21_nacken_vorn', 30),
+      _Timed('dehnen_22_nacken_drehen', 20),
+      _Timed('dehnen_23_brustoeffner', 30),
+      _Timed('dehnen_04_brust_wand', 30, sides: true),
+      _Timed('dehnen_26_oberer_ruecken', 30, rest: 0),
+    ],
+  ),
+];
+
 /// Eine Runde Sonnengruß; die Haltungen gehen ohne Pause ineinander über.
 const sunSalutation = [
   _Timed('yoga_01_berghaltung', 10, rest: 0),

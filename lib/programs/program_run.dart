@@ -146,6 +146,24 @@ class ProgramRun {
     return phases;
   }
 
+  /// Tauscht die laufende Übung gegen eine leichtere oder schwerere, auch
+  /// in allen späteren Phasen. Menge und Zeit bleiben, wie sie sind.
+  void replaceExercise(Exercise replacement) {
+    final old = current?.exercise;
+    if (old == null) return;
+    for (var i = _index; i < phases.length; i++) {
+      final p = phases[i];
+      if (p.exercise.uuid != old.uuid) continue;
+      phases[i] = ProgramPhase(
+        exercise: replacement,
+        item: p.item,
+        isRest: p.isRest,
+        round: p.round,
+        side: p.side,
+      );
+    }
+  }
+
   bool get finished => _index >= phases.length;
   ProgramPhase? get current => finished ? null : phases[_index];
 

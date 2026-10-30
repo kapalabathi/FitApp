@@ -231,6 +231,7 @@ const _sportHiking = 17;
       Sport.treadmill => (_sportRunning, 1),
       Sport.indoorBike => (2, 6),
       Sport.hiking => (_sportHiking, 0),
+      Sport.cycling => (2, 0),
       Sport.skiErg => (4, 0), // Fitnessgerät
       Sport.yoga => (10, 43),
       Sport.stretching => (10, 19),

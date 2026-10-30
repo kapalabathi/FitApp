@@ -69,7 +69,8 @@ void main() {
 
   test('frühere Spaziergänge gehören zur Sportart Spazieren/Wandern', () {
     expect(Sport.fromId('walking'), Sport.hiking);
-    expect(Sport.values.where((s) => s.usesGps), [Sport.running, Sport.hiking]);
+    expect(Sport.values.where((s) => s.usesGps),
+        [Sport.running, Sport.hiking, Sport.cycling]);
   });
 
   group('Geräte', () {

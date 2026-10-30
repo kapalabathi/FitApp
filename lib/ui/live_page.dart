@@ -568,6 +568,22 @@ class _ManualControl extends StatelessWidget {
                 padding: const EdgeInsets.only(top: 4),
                 child: Text(message, style: theme.textTheme.bodySmall),
               ),
+            if (session.heartRateTarget != null)
+              Row(
+                children: [
+                  const Icon(Icons.favorite_border, size: 18),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(session.heartRateStatus,
+                        style: theme.textTheme.bodyMedium),
+                  ),
+                  if (session.heartRateControlActive)
+                    TextButton(
+                      onPressed: session.stopHeartRateControl,
+                      child: const Text('Stoppen'),
+                    ),
+                ],
+              ),
           ],
         ),
       ),

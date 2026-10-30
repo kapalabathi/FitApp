@@ -58,6 +58,8 @@ void main() {
       // Start: Sportarten und das gemerkte Gerät, als Pulssensor vorgewählt
       expect(find.text('Laufband'), findsOneWidget);
       expect(find.text('SkiErg'), findsOneWidget);
+      await tester.scrollUntilVisible(find.byType(CheckboxListTile), 200,
+          scrollable: find.byType(Scrollable).first);
       expect(
           tester.widget<CheckboxListTile>(find.byType(CheckboxListTile)).value,
           isTrue);
@@ -224,7 +226,7 @@ void main() {
   testWidgets('ein Programm wird geführt abgespielt und als Training gespeichert',
       (tester) async {
     // Hochformat wie auf einem Phone, damit die ganze Übung sichtbar ist.
-    tester.view.physicalSize = const Size(500, 1000);
+    tester.view.physicalSize = const Size(500, 1300);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
@@ -289,7 +291,7 @@ void main() {
   testWidgets('der Yoga-Grundkurs führt durch eine Einheit samt Atemübung',
       (tester) async {
     // Schmal wie ein kleines Phone
-    tester.view.physicalSize = const Size(360, 1100);
+    tester.view.physicalSize = const Size(360, 1400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
 
@@ -475,6 +477,46 @@ void main() {
     await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
     expect(find.text('Feierabend'), findsOneWidget);
+  });
+
+  testWidgets('die Zurück-Taste hebt die Auswahl im Verlauf auf',
+      (tester) async {
+    final id = recordWorkout();
+    db.updateWorkout(id, title: 'Eins', sport: Sport.indoorBike, notes: '');
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Verlauf'));
+    await tester.pumpAndSettle();
+    await tester.longPress(find.text('Eins'));
+    await tester.pumpAndSettle();
+    expect(find.text('1 ausgewählt'), findsOneWidget);
+
+    await tester.binding.handlePopRoute();
+    await tester.pumpAndSettle();
+    expect(find.text('1 ausgewählt'), findsNothing);
+    expect(find.text('Eins'), findsOneWidget);
+  });
+
+  testWidgets('Zielpuls erscheint nur mit Gerät und Pulssensor',
+      (tester) async {
+    tester.view.physicalSize = const Size(500, 1400);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    db.saveDevice(const SavedDevice(
+        deviceId: 'GURT', name: 'Brustgurt', kind: DeviceKind.heartRate));
+    db.saveDevice(const SavedDevice(
+        deviceId: 'BAND',
+        name: 'Laufband',
+        kind: DeviceKind.fitnessMachine));
+    await tester.pumpWidget(FitApp(db: db));
+    await tester.pumpAndSettle();
+    expect(find.text('Zielpuls halten'), findsNothing);
+
+    await tester.tap(find.widgetWithText(CheckboxListTile, 'Laufband'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Zielpuls halten'));
+    await tester.pumpAndSettle();
+    expect(find.text('Höchstens km/h'), findsOneWidget);
   });
 
   testWidgets('im Verlauf lassen sich mehrere Trainings auswählen und löschen',

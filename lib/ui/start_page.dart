@@ -8,6 +8,7 @@ import '../interval/interval_models.dart';
 import '../interval/signals.dart';
 import '../programs/program_models.dart';
 import '../session/auto_pause.dart';
+import '../session/heart_rate_regulator.dart';
 import '../session/quick_start.dart';
 import '../session/workout_session.dart';
 import 'format.dart';
@@ -44,6 +45,46 @@ class _StartPageState extends State<StartPage> {
   List<QuickStart> _quickStarts = [];
   IntervalTemplate? _template;
   bool _controlMachine = false;
+  bool _holdHeartRate = false;
+  late final _targetBpm = TextEditingController(
+      text: widget.db.setting(_targetBpmKey) ?? '130');
+  final _targetMax = TextEditingController();
+
+  static const _targetBpmKey = 'hrTarget.bpm';
+  static String _targetMaxKey(Sport sport) => 'hrTarget.max.${sport.id}';
+
+  @override
+  void dispose() {
+    _targetBpm.dispose();
+    _targetMax.dispose();
+    super.dispose();
+  }
+
+  /// Der Zielpuls lässt sich nur halten, wenn ein Gerät nachstellen kann und
+  /// ein Pulssensor mitläuft; ein Intervall-Timer hätte Vorrang.
+  bool get _canHoldHeartRate =>
+      (_sport == Sport.treadmill || _sport == Sport.indoorBike) &&
+      _template == null &&
+      _devices.any((d) =>
+          d.kind == DeviceKind.fitnessMachine &&
+          _selected.contains(d.deviceId)) &&
+      _devices.any((d) =>
+          d.kind == DeviceKind.heartRate && _selected.contains(d.deviceId));
+
+  /// Liest das Ziel aus den Feldern; meldet ungültige Eingaben.
+  HeartRateTarget? _readHeartRateTarget() {
+    final bpm = int.tryParse(_targetBpm.text.trim());
+    final max = double.tryParse(_targetMax.text.trim().replaceAll(',', '.'));
+    if (bpm == null || bpm < 80 || bpm > 200 || max == null || max <= 0) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          content: Text('Bitte Zielpuls (80 bis 200) und Obergrenze '
+              'eingeben.')));
+      return null;
+    }
+    widget.db.setSetting(_targetBpmKey, '$bpm');
+    widget.db.setSetting(_targetMaxKey(_sport), _targetMax.text.trim());
+    return HeartRateTarget(bpm: bpm, maxValue: max);
+  }
 
   @override
   void initState() {
@@ -66,6 +107,8 @@ class _StartPageState extends State<StartPage> {
           if (d.kind == DeviceKind.heartRate) d.deviceId,
       };
     }
+    _targetMax.text = widget.db.setting(_targetMaxKey(_sport)) ??
+        (_sport == Sport.indoorBike ? '12' : '10');
     setState(() {
       _devices = devices;
       _selected = selected;
@@ -82,18 +125,27 @@ class _StartPageState extends State<StartPage> {
       _devices.any((d) =>
           d.kind == DeviceKind.fitnessMachine && selected.contains(d.deviceId));
 
-  Future<void> _start() => _startWith(
-        sport: _sport,
-        selected: _selected,
-        template: _template,
-        controlMachine: _controlMachine,
-      );
+  Future<void> _start() async {
+    HeartRateTarget? heartRateTarget;
+    if (_holdHeartRate && _canHoldHeartRate) {
+      heartRateTarget = _readHeartRateTarget();
+      if (heartRateTarget == null) return;
+    }
+    await _startWith(
+      sport: _sport,
+      selected: _selected,
+      template: _template,
+      controlMachine: _controlMachine,
+      heartRateTarget: heartRateTarget,
+    );
+  }
 
   Future<void> _startWith({
     required Sport sport,
     required Set<String> selected,
     required IntervalTemplate? template,
     required bool controlMachine,
+    HeartRateTarget? heartRateTarget,
   }) async {
     if (sport.usesGps) {
       final problem = await PhoneGps.prepare();
@@ -123,6 +175,7 @@ class _StartPageState extends State<StartPage> {
       positions: sport.usesGps ? PhoneGps.positions() : null,
       controlMachine: control,
       autoPause: _autoPause,
+      heartRateTarget: heartRateTarget,
       // Im Freien sagt die App auch ohne Intervall jeden Kilometer an.
       signals: template == null && !sport.usesGps
           ? const SilentSignals()
@@ -321,6 +374,42 @@ class _StartPageState extends State<StartPage> {
               onChanged: (v) =>
                   setState(() => widget.db.setFlag(_autoPauseKey, v)),
             ),
+          if (_canHoldHeartRate) ...[
+            SwitchListTile(
+              contentPadding: EdgeInsets.zero,
+              title: const Text('Zielpuls halten'),
+              subtitle: const Text(
+                  'Stellt das Gerät in kleinen Schritten selbst nach, mit '
+                  'Ansage vor jeder Änderung'),
+              value: _holdHeartRate,
+              onChanged: (v) => setState(() => _holdHeartRate = v),
+            ),
+            if (_holdHeartRate)
+              Row(
+                children: [
+                  Expanded(
+                    child: TextField(
+                      controller: _targetBpm,
+                      keyboardType: TextInputType.number,
+                      decoration:
+                          const InputDecoration(labelText: 'Zielpuls'),
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: TextField(
+                      controller: _targetMax,
+                      keyboardType: const TextInputType.numberWithOptions(
+                          decimal: true),
+                      decoration: InputDecoration(
+                          labelText: _sport == Sport.treadmill
+                              ? 'Höchstens km/h'
+                              : 'Höchste Stufe'),
+                    ),
+                  ),
+                ],
+              ),
+          ],
           const SizedBox(height: 24),
           Text('Geräte', style: theme.textTheme.titleMedium),
           if (_devices.isEmpty)

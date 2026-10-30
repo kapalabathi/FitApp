@@ -24,6 +24,7 @@ class AutoPause {
         // längeres Abwarten, beim Gehen mehr als beim Laufen.
         Sport.running => AutoPause(thresholdKmh: 2, pauseAfterS: 6),
         Sport.hiking => AutoPause(thresholdKmh: 1, pauseAfterS: 10),
+        Sport.cycling => AutoPause(thresholdKmh: 3, pauseAfterS: 5),
         _ => null,
       };
 

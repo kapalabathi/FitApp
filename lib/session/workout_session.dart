@@ -14,10 +14,12 @@ import '../gps/geo.dart';
 import '../interval/interval_models.dart';
 import '../interval/interval_run.dart';
 import '../interval/signals.dart';
+import '../programs/program_models.dart';
 import '../programs/program_run.dart';
 import '../stats/stats.dart';
 import 'auto_pause.dart';
 import 'background_keeper.dart';
+import 'heart_rate_regulator.dart';
 import 'workout_recorder.dart';
 
 /// Ob und wie der Intervall-Timer das Fitnessgerät steuert.
@@ -47,6 +49,7 @@ class WorkoutSession extends ChangeNotifier {
     Stream<GpsFix>? positions,
     bool controlMachine = false,
     bool autoPause = false,
+    this.heartRateTarget,
     this.signals = const SilentSignals(),
   })  : recorder = WorkoutRecorder(
           db: db,
@@ -59,6 +62,8 @@ class WorkoutSession extends ChangeNotifier {
       recorder.addSource(
         device.deviceId,
         dedicatedHeartRate: device.kind == DeviceKind.heartRate,
+        bridgeGaps: device.kind == DeviceKind.heartRate ||
+            device.kind == DeviceKind.fitnessMachine,
       );
       final connection = SensorConnection(
         device,
@@ -85,7 +90,7 @@ class WorkoutSession extends ChangeNotifier {
     final breath = this.breath;
     if (breath != null) _handleBreath(breath.start());
     if (sport.usesGps || sport == Sport.treadmill) {
-      recorder.enableAutoLap(_autoLapM);
+      recorder.enableAutoLap(_lapEveryM);
     }
     _positions = positions?.listen(
       recorder.onPosition,
@@ -115,7 +120,9 @@ class WorkoutSession extends ChangeNotifier {
     final now = DateTime.now();
     return (heartRate) => profile.kcalPerMinute(heartRate, now);
   }
-  static const _autoLapM = 1000.0;
+
+  /// Beim Radfahren wäre jeder Kilometer eine zu häufige Ansage.
+  double get _lapEveryM => sport == Sport.cycling ? 5000 : 1000;
 
   /// Mehr Sekunden holt die Aufzeichnung nach einer Zwangspause des Systems
   /// nicht nach; so lange Lücken sind keine Trainingszeit mehr.
@@ -219,6 +226,76 @@ class WorkoutSession extends ChangeNotifier {
     if (program != null) _handleProgram(program.tick());
     final breath = this.breath;
     if (breath != null) _handleBreath(breath.tick());
+    _regulateHeartRate();
+  }
+
+  // --- Pulsgesteuertes Training ---
+
+  /// So viele Sekunden vor einer Änderung kündigt die App sie an. Das Gerät
+  /// ändert sich nie ohne Ankündigung.
+  static const _regulationNoticeS = 3;
+
+  /// Das Ziel des pulsgesteuerten Trainings, wenn eines gewählt wurde.
+  final HeartRateTarget? heartRateTarget;
+
+  HeartRateRegulator? _regulator;
+  double? _regulationPending;
+  int _regulationCountdown = 0;
+
+  /// Ob die Regelung läuft; der Nutzer kann sie jederzeit stoppen.
+  bool heartRateControlActive = true;
+
+  /// Der Stand der Regelung, zur Anzeige.
+  String get heartRateStatus {
+    final target = heartRateTarget;
+    if (target == null) return '';
+    final goal = 'Zielpuls ${target.bpm}';
+    if (!heartRateControlActive) return '$goal: gestoppt';
+    if (_manualMachine == null) return '$goal: wartet auf das Gerät';
+    if (_regulator?.holding ?? false) return '$goal: angehalten, kein Messwert';
+    return '$goal: Regelung aktiv';
+  }
+
+  void stopHeartRateControl() {
+    heartRateControlActive = false;
+    _regulationPending = null;
+    notifyListeners();
+  }
+
+  void _regulateHeartRate() {
+    final target = heartRateTarget;
+    final kind = manualKind;
+    if (target == null || kind == null || !heartRateControlActive) return;
+    if (_manualMachine == null) {
+      _regulationPending = null;
+      return;
+    }
+    final pending = _regulationPending;
+    if (pending != null) {
+      if (--_regulationCountdown <= 0) {
+        _regulationPending = null;
+        setManual(pending);
+      }
+      return;
+    }
+    final limits = manualLimits;
+    final regulator = _regulator ??= HeartRateRegulator(
+      targetBpm: target.bpm,
+      step: manualStep,
+      min: limits.min,
+      max: target.maxValue < limits.max ? target.maxValue : limits.max,
+    );
+    // Nur frische Messwerte: Überbrückte Werte taugen hier nicht.
+    final next = regulator.update(
+      recorder.liveValue(Metric.heartRate),
+      recorder.liveValue(
+          kind == TargetKind.speed ? Metric.speed : Metric.resistance),
+    );
+    if (next == null) return;
+    _regulationPending = next;
+    _regulationCountdown = _regulationNoticeS;
+    signals.warn();
+    signals.say('Gleich ${kind.format(next)}');
   }
 
   void _handleBreath(List<BreathEvent> events) {
@@ -268,7 +345,8 @@ class WorkoutSession extends ChangeNotifier {
     final previous = laps.length > 1 ? laps[laps.length - 2].t : 0;
     final seconds = lap.t - previous;
     signals.change();
-    signals.say('Kilometer ${(lap.distanceM / _autoLapM).floor()}. '
+    final km = (lap.distanceM / _lapEveryM).floor() * _lapEveryM ~/ 1000;
+    signals.say('Kilometer $km. '
         '${seconds ~/ 60} Minuten ${seconds % 60}');
   }
 
@@ -289,6 +367,13 @@ class WorkoutSession extends ChangeNotifier {
     _handleProgram(program.advance());
     _pendingReps = null;
     _pendingWeightKg = null;
+    notifyListeners();
+  }
+
+  /// Tauscht die laufende Übung gegen ihre leichtere oder schwerere Variante.
+  void swapExercise(Exercise replacement) {
+    program?.replaceExercise(replacement);
+    signals.say(replacement.name);
     notifyListeners();
   }
 

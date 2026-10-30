@@ -4,6 +4,23 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.16.0] – 2026-10-30
+
+Sieben Punkte aus dem Ideenspeicher, vom Nutzer ausgewählt. Alles ist durch automatische Tests gedeckt, aber **noch nicht am Gerät erprobt**.
+
+### Hinzugefügt
+- **Radfahren** (I-029): neue Sportart im Freien mit GPS. Rundenmarke und Ansage alle 5 km, automatische Pause unter 3 km/h. FIT, TCX, Strava und der Datei-Import kennen sie; importierte Radfahrten landen nicht mehr unter „Sonstiges".
+- **Zielpuls halten** (I-032): Auf der Startseite lassen sich bei Laufband und Bike mit Pulssensor ein Zielpuls und eine Obergrenze wählen. Die App stellt das Gerät dann selbst nach: immer nur um einen Schritt, mit Ansage 3 Sekunden vorher, frühestens alle 45 Sekunden, gesteigert wird erst nach 2 Minuten. Liegt der Puls 10 Schläge über dem Ziel, nimmt sie schneller zurück. Ohne frischen Puls ruht die Regelung, ein stehendes Band startet sie nie, und im Training lässt sie sich mit einem Tipp stoppen.
+- **Mehrere Trainings zu Strava hochladen** (I-026): In der Auswahl im Verlauf gibt es jetzt „Zu Strava hochladen", mit Fortschrittsanzeige. Bereits Hochgeladenes und Trainings mit ähnlicher Aktivität bei Strava werden übersprungen; ein Fehler hält die übrigen nicht auf.
+- **Fünf fertige Routinen** (I-057): Nach dem Lauf, Hüfte, Unterer Rücken, Zur Ruhe kommen, Nacken und Bildschirm. Sie stehen unter den Programmen im Bereich Dehnen und nutzen vorhandene Übungen.
+- **Leichter/Schwerer beim Abspielen** (I-059): Hat eine Übung Varianten, lässt sie sich im Programm mit einem Tipp tauschen, auch für alle späteren Runden. Menge und Zeit bleiben gleich.
+- 17 automatische Tests dazu (insgesamt 254).
+
+### Geändert
+- **Kurze Verbindungsabbrüche werden überbrückt** (I-056): Bei Fitnessgeräten und Pulssensoren gilt der letzte Wert jetzt 20 statt 5 Sekunden. Kurve, Pace und FIT-Datei haben dadurch keine Lücken mehr; die längsten bisher gemessenen Abbrüche dauerten 16 Sekunden. Andere Sensoren und das GPS bleiben bei 5 Sekunden.
+- **Zurück-Taste** (I-028): Sie hebt im Verlauf zuerst die Auswahl auf, statt die App zu verlassen.
+- Die Datenbank hat eine neue Fassung (15) für die neuen Routinen.
+
 ## [0.15.0] – 2026-10-14
 
 ### Hinzugefügt

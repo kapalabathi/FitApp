@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
@@ -135,6 +136,68 @@ Future<void> exportWorkouts(BuildContext context, AppDatabase db,
   } catch (e) {
     messenger.showSnackBar(
         SnackBar(content: Text('Export fehlgeschlagen: $e')));
+  }
+}
+
+/// Lädt die [workouts] nacheinander zu Strava hoch und zeigt den Fortschritt.
+/// Gibt zurück, ob mindestens eines hochgeladen wurde.
+Future<bool> uploadManyToStrava(
+    BuildContext context, AppDatabase db, List<Workout> workouts) async {
+  final messenger = ScaffoldMessenger.of(context);
+  void say(String text) =>
+      messenger.showSnackBar(SnackBar(content: Text(text)));
+  final service = StravaService(db, createStravaApi());
+  try {
+    if (!await service.api.isConnected) {
+      say('Die App ist nicht mit Strava verbunden. Ohne Strava-Abo geht es '
+          'so: als FIT exportieren und bei Strava von Hand hochladen.');
+      return false;
+    }
+  } catch (e) {
+    say('Upload fehlgeschlagen: $e');
+    return false;
+  }
+  if (!context.mounted) return false;
+  final progress = ValueNotifier((done: 0, total: workouts.length));
+  final navigator = Navigator.of(context, rootNavigator: true);
+  unawaited(showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => PopScope(
+      canPop: false,
+      child: AlertDialog(
+        title: const Text('Lade zu Strava hoch'),
+        content: ValueListenableBuilder(
+          valueListenable: progress,
+          builder: (_, p, _) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              LinearProgressIndicator(value: p.done / p.total),
+              const SizedBox(height: 12),
+              Text('${p.done} von ${p.total}'),
+            ],
+          ),
+        ),
+      ),
+    ),
+  ));
+  try {
+    final result = await service.uploadMany(
+      workouts,
+      onProgress: (done, total) =>
+          progress.value = (done: done, total: total),
+    );
+    say([
+      'Strava: ${result.summary}.',
+      if (result.firstError != null) result.firstError!,
+    ].join(' '));
+    return result.uploaded > 0;
+  } catch (e) {
+    say('Upload fehlgeschlagen: $e');
+    return false;
+  } finally {
+    navigator.pop();
+    progress.dispose();
   }
 }
 

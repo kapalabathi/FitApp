@@ -73,6 +73,13 @@ class _HistoryPageState extends State<HistoryPage> {
     if (mounted) setState(_selected.clear);
   }
 
+  Future<void> _uploadSelected() async {
+    await uploadManyToStrava(context, widget.db, _selectedWorkouts);
+    if (!mounted) return;
+    _selected.clear();
+    _load();
+  }
+
   Future<void> _deleteSelected() async {
     final count = _selected.length;
     final confirmed = await showDialog<bool>(
@@ -207,7 +214,14 @@ class _HistoryPageState extends State<HistoryPage> {
         ),
       ],
     );
-    return DefaultTabController(
+    return PopScope(
+      // Mit einer Auswahl hebt die Zurück-Taste erst sie auf, statt die App
+      // zu verlassen.
+      canPop: _selected.isEmpty,
+      onPopInvokedWithResult: (didPop, _) {
+        if (!didPop) setState(_selected.clear);
+      },
+      child: DefaultTabController(
       length: 4,
       child: Scaffold(
         appBar: AppBar(
@@ -241,6 +255,11 @@ class _HistoryPageState extends State<HistoryPage> {
                       child: Text('Als ${format.label} exportieren'),
                     ),
                 ],
+              ),
+              IconButton(
+                tooltip: 'Zu Strava hochladen',
+                icon: const Icon(Icons.cloud_upload_outlined),
+                onPressed: _uploadSelected,
               ),
               IconButton(
                 tooltip: 'Ausgewählte löschen',
@@ -304,6 +323,7 @@ class _HistoryPageState extends State<HistoryPage> {
             RecordsView(db: widget.db),
           ],
         ),
+      ),
       ),
     );
   }

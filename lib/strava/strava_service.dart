@@ -17,6 +17,7 @@ StravaApi Function() createStravaApi =
       Sport.indoorBike => (type: 'Ride', trainer: true),
       Sport.skiErg => (type: 'NordicSki', trainer: true),
       Sport.hiking => (type: 'Hike', trainer: false),
+      Sport.cycling => (type: 'Ride', trainer: false),
       Sport.yoga => (type: 'Yoga', trainer: false),
       Sport.crossfit => (type: 'Crossfit', trainer: false),
       Sport.calisthenics ||
@@ -32,6 +33,7 @@ Sport sportFromStrava(String? type, {required bool trainer}) => switch (type) {
       'Walk' || 'Hike' => Sport.hiking,
       'Ride' || 'VirtualRide' when trainer || type == 'VirtualRide' =>
         Sport.indoorBike,
+      'Ride' => Sport.cycling,
       'NordicSki' when trainer => Sport.skiErg,
       'Yoga' => Sport.yoga,
       'Crossfit' => Sport.crossfit,
@@ -39,6 +41,29 @@ Sport sportFromStrava(String? type, {required bool trainer}) => switch (type) {
     };
 
 /// Eine Aktivität bei Strava, so weit die App sie braucht.
+/// Das Ergebnis eines Uploads mehrerer Trainings.
+class StravaBatchResult {
+  const StravaBatchResult({
+    required this.uploaded,
+    required this.skipped,
+    required this.failed,
+    this.firstError,
+  });
+
+  final int uploaded;
+
+  /// Schon hochgeladen oder bei Strava schon ähnlich vorhanden.
+  final int skipped;
+  final int failed;
+  final String? firstError;
+
+  String get summary => [
+        '$uploaded hochgeladen',
+        if (skipped > 0) '$skipped übersprungen',
+        if (failed > 0) '$failed fehlgeschlagen',
+      ].join(', ');
+}
+
 class StravaActivity {
   StravaActivity(Map<String, dynamic> json)
       : id = json['id'] as int,
@@ -128,6 +153,41 @@ class StravaService {
     throw const StravaException(
         'Strava verarbeitet den Upload noch. Die Aktivität erscheint dort '
         'voraussichtlich in Kürze.');
+  }
+
+  /// Lädt mehrere Trainings nacheinander hoch. Übersprungen werden, die
+  /// schon bei Strava liegen oder dort eine ähnliche Aktivität haben; so
+  /// entstehen keine Doppelten. Ein Fehler hält die übrigen nicht auf.
+  Future<StravaBatchResult> uploadMany(
+    List<Workout> workouts, {
+    void Function(int done, int total)? onProgress,
+  }) async {
+    var uploaded = 0;
+    var skipped = 0;
+    var failed = 0;
+    String? firstError;
+    for (var i = 0; i < workouts.length; i++) {
+      onProgress?.call(i, workouts.length);
+      final w = workouts[i];
+      try {
+        if (w.stravaId != null || await similarActivity(w) != null) {
+          skipped++;
+          continue;
+        }
+        await upload(w);
+        uploaded++;
+      } on StravaException catch (e) {
+        failed++;
+        firstError ??= e.message;
+      }
+    }
+    onProgress?.call(workouts.length, workouts.length);
+    return StravaBatchResult(
+      uploaded: uploaded,
+      skipped: skipped,
+      failed: failed,
+      firstError: firstError,
+    );
   }
 
   /// Holt Aktivitäten, die die App noch nicht kennt, mit Strecke und Puls.

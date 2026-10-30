@@ -80,6 +80,7 @@ void main() {
         ...builtinPrograms,
         ...builtinProgramsBatch2,
         ...builtinProgramsBatch3,
+        ...builtinProgramsBatch4,
       ]) {
         expect(p.items, isNotEmpty, reason: p.name);
         for (final item in p.items) {
@@ -96,7 +97,8 @@ void main() {
       expect(db.programs(),
           hasLength(builtinPrograms.length +
               builtinProgramsBatch2.length +
-              builtinProgramsBatch3.length));
+              builtinProgramsBatch3.length +
+              builtinProgramsBatch4.length));
       final first = db.exercises().firstWhere(
           (e) => e.builtinKey == 'yoga_01_berghaltung');
       expect(first.imageAsset, 'assets/exercises/yoga_01_berghaltung.webp');

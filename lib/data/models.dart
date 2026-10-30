@@ -29,6 +29,7 @@ enum Sport {
   skiErg('ski_erg', 'SkiErg', Icons.downhill_skiing, indoorMachine: true),
   running('running', 'Laufen', Icons.directions_run),
   hiking('hiking', 'Spazieren/Wandern', Icons.hiking),
+  cycling('cycling', 'Radfahren', Icons.pedal_bike),
   yoga('yoga', 'Yoga', Icons.self_improvement),
   crossfit('crossfit', 'Crossfit', Icons.fitness_center),
   calisthenics('calisthenics', 'Calisthenics', Icons.sports_gymnastics),
@@ -39,11 +40,15 @@ enum Sport {
 
   /// Wird im Freien mit dem GPS des Phones aufgezeichnet.
   bool get usesGps =>
-      this == Sport.running || this == Sport.hiking;
+      this == Sport.running || this == Sport.hiking || this == Sport.cycling;
 
   /// Schneller bewegt man sich in dieser Sportart nicht; höhere Werte vom
   /// GPS sind Messfehler.
-  double get maxPlausibleSpeedMps => this == Sport.running ? 10 : 5;
+  double get maxPlausibleSpeedMps => switch (this) {
+        Sport.running => 10,
+        Sport.cycling => 25,
+        _ => 5,
+      };
 
   /// Lässt sich auf der Startseite frei starten; die übrigen Sportarten
   /// laufen über Trainingsprogramme.

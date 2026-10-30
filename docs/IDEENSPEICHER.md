@@ -45,13 +45,13 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-023 | Fertige Version: verkleinert, eigens signiert, eigenes App-Symbol, endgültiger Name | Plattform | M | Neu | Vorschlag |
 | I-024 | Eigene Übungsbilder synchronisieren | Daten | M | Neu | Vorschlag |
 | I-025 | Radumfang für Geschwindigkeitssensoren einstellbar | Geräte | S | Neu | Vorschlag |
-| I-026 | Mehrere Trainings auf einmal zu Strava hochladen | Strava | S | Neu | Vorschlag |
+| I-026 | Mehrere Trainings auf einmal zu Strava hochladen | Strava | S | Umgesetzt, ungetestet | Vorschlag |
 | I-027 | Kurven: Sekunde vor/zurück und Hineinzoomen in einen Abschnitt | Auswertung | M | Neu | Vorschlag |
-| I-028 | Zurück-Taste hebt eine Mehrfachauswahl im Verlauf auf, statt die App zu verlassen | Bedienung | S | Neu | Vorschlag |
-| I-029 | Radfahren im Freien als eigene Sportart mit GPS | Aufzeichnung | S | Neu | Vorschlag |
+| I-028 | Zurück-Taste hebt eine Mehrfachauswahl im Verlauf auf, statt die App zu verlassen | Bedienung | S | Umgesetzt, ungetestet | Vorschlag |
+| I-029 | Radfahren im Freien als eigene Sportart mit GPS | Aufzeichnung | S | Umgesetzt, ungetestet | Vorschlag |
 | I-030 | Übungsgrafiken auf anatomische Richtigkeit durchsehen und fehlerhafte neu erzeugen | Programme | M | Verworfen | Vorschlag |
 | I-031 | Health Connect: Trainings in Androids gemeinsamen Gesundheitsspeicher schreiben und von dort lesen | Daten | M | Neu | Vorschlag |
-| I-032 | Pulsgesteuertes Training: Laufband oder Bike regelt selbst, um einen Zielpuls zu halten | Timer / Geräte | L | Neu | Vorschlag |
+| I-032 | Pulsgesteuertes Training: Laufband oder Bike regelt selbst, um einen Zielpuls zu halten | Timer / Geräte | L | Umgesetzt, ungetestet | Vorschlag |
 | I-033 | Zielvorgabe und virtueller Mitläufer: Zielzeit, Zielpace oder eigene Bestzeit, mit Ansage des Vorsprungs oder Rückstands | Aufzeichnung | M | Neu | Vorschlag |
 | I-034 | Live-Kurve in der Trainingsansicht (Puls, Pace), besonders für das Tablet | Aufzeichnung | M | Umgesetzt, ungetestet | Vorschlag |
 | I-035 | Kacheln der Trainingsansicht selbst wählen und anordnen | Bedienung | M | Umgesetzt, ungetestet | Vorschlag |
@@ -75,10 +75,10 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-053 | Umkehrhaltungen Pflug, Schulterstand, Unterarmstand und Kopfstand; Schulterstand und Pflug im Yoga-Grundkurs | Programme | S | Umgesetzt, ungetestet | Nutzer |
 | I-054 | 48 weitere Übungen: Yoga-Haltungen aus „Light on Yoga", Crossfit mit Kettlebell und Kurzhanteln, Calisthenics-Vorstufen; sechs neue Programme; Kurs damit erweitert | Programme | M | Umgesetzt, ungetestet | Nutzer |
 | I-055 | Verbindungsabbrüche protokollieren: Zeitpunkt, Gerät, Grund von Android, Dauer; Anzeige im Training und Ereignis in der FIT-Datei | Geräte | S | Umgesetzt, ungetestet | Nutzer |
-| I-056 | Kurze Verbindungsabbrüche überbrücken: letzten Gerätewert bis etwa 15 s halten, damit Kurve, Pace und FIT keine Lücken haben | Geräte | S | Neu | Vorschlag |
-| I-057 | Fertige Routinen aus vorhandenen Übungen: Post-Run, Hips, Lower Back, Sleep, Tech Neck | Programme | S | Neu | Vorschlag |
+| I-056 | Kurze Verbindungsabbrüche überbrücken: letzten Gerätewert bis etwa 15 s halten, damit Kurve, Pace und FIT keine Lücken haben | Geräte | S | Umgesetzt, ungetestet | Vorschlag |
+| I-057 | Fertige Routinen aus vorhandenen Übungen: Post-Run, Hips, Lower Back, Sleep, Tech Neck | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Neu | Vorschlag |
-| I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Neu | Vorschlag |
+| I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
 | I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Neu | Vorschlag |
 | I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | Neu | Nutzer |
@@ -176,7 +176,7 @@ Verworfen am 2026-10-12: Der Nutzer hat die Grafiken selbst gesichtet und für i
 Android führt einen gemeinsamen Speicher für Gesundheits- und Trainingsdaten, auf den Apps mit Erlaubnis des Nutzers zugreifen. Schreibt FitApp seine Trainings dorthin, können andere Apps sie lesen; liest FitApp von dort, kommen Trainings anderer Apps ohne Dateiexport herein. Zu klären, bevor gebaut wird: Lesen die Strava-App und die Zepp-App aus Health Connect, und schreibt Zepp dorthin? Davon hängt der Nutzen ab.
 
 ### I-032 – Pulsgesteuertes Training
-Setzt die Steuerung von Laufband und Bike (I-011, I-019) und einen Pulssensor voraus. Die Regelung muss träge und begrenzt sein: kleine Schritte, Ober- und Untergrenze, sofortiger Halt der Regelung bei fehlendem Pulssignal.
+Setzt die Steuerung von Laufband und Bike (I-011, I-019) und einen Pulssensor voraus. Die Regelung muss träge und begrenzt sein: kleine Schritte, Ober- und Untergrenze, sofortiger Halt der Regelung bei fehlendem Pulssignal. Umgesetzt mit Version 0.16.0: ein Schritt je Änderung, 45 s Wartezeit (15 s bei deutlich zu hohem Puls), Steigerung erst nach 2 Minuten, Ansage 3 s vorher, nur mit frischen Messwerten. Abweichend von A-010 läuft die Regelung nach einem Verbindungsabbruch ohne Bestätigung weiter: Bei Abbrüchen alle paar Minuten wäre sie sonst unbrauchbar, und sie geht immer vom gemessenen Wert aus, ändert nur in kleinen Schritten und bleibt unter der gewählten Obergrenze.
 
 ### I-043 – Wochenplan
 Im Lastenheft, Abschnitt 6, bisher ausdrücklich ausgeschlossen (Trainingspläne über Wochen). Aufnahme nur nach Entscheidung des Auftraggebers.

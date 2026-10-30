@@ -38,7 +38,7 @@ String? buildGpx(Workout workout, List<Sample> samples) {
 String buildTcx(Workout workout, List<Sample> samples) {
   final sport = switch (workout.sport) {
     Sport.running || Sport.treadmill => 'Running',
-    Sport.indoorBike => 'Biking',
+    Sport.indoorBike || Sport.cycling => 'Biking',
     _ => 'Other',
   };
   final start = _iso(workout.startedAt);

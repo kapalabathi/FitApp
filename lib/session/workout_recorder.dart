@@ -25,6 +25,12 @@ class WorkoutRecorder {
   /// Älter darf ein Messwert nicht sein, um noch als aktuell zu gelten.
   static const freshness = Duration(seconds: 5);
 
+  /// So lange gilt der letzte Wert von Fitnessgeräten und Pulssensoren, wenn
+  /// keine neuen mehr kommen. Das überbrückt kurze Verbindungsabbrüche, die
+  /// beim Laufband bis zu 16 Sekunden dauern. Ändert sich der Wert in dieser
+  /// Zeit, fällt das bei diesen Geräten kaum ins Gewicht.
+  static const bridgeGap = Duration(seconds: 20);
+
   /// Größere Sprünge im Distanzzähler eines Geräts gelten als Neustart des
   /// Zählers und werden nicht als Strecke gewertet.
   static const _maxDistanceStepM = 100.0;
@@ -137,9 +143,15 @@ class WorkoutRecorder {
   void enableAutoLap(double meters) => _autoLapEveryM = meters;
 
   /// Meldet ein Gerät an. [dedicatedHeartRate] kennzeichnet Pulssensoren; ihr
-  /// Puls hat Vorrang vor dem, den ein Fitnessgerät mitliefert.
-  void addSource(String id, {required bool dedicatedHeartRate}) {
-    _sources.add(_Source(id, dedicatedHeartRate));
+  /// Puls hat Vorrang vor dem, den ein Fitnessgerät mitliefert. Mit
+  /// [bridgeGaps] gilt der letzte Wert länger, siehe [bridgeGap]; Sensoren,
+  /// die im Stillstand einfach nichts mehr senden, bleiben ohne.
+  void addSource(
+    String id, {
+    required bool dedicatedHeartRate,
+    bool bridgeGaps = false,
+  }) {
+    _sources.add(_Source(id, dedicatedHeartRate, bridgeGaps: bridgeGaps));
   }
 
   void pause() => _paused = true;
@@ -280,6 +292,20 @@ class WorkoutRecorder {
     final now = _clock();
     for (final source in _ordered(metric)) {
       final reading = source.values[metric];
+      final limit = source.bridgeGaps ? bridgeGap : freshness;
+      if (reading != null && now.difference(reading.at) <= limit) {
+        return reading.value;
+      }
+    }
+    return null;
+  }
+
+  /// Wie [value], aber nur mit wirklich frischen Werten, ohne Überbrückung.
+  /// Für Entscheidungen, die sich nicht auf alte Werte stützen dürfen.
+  double? liveValue(Metric metric) {
+    final now = _clock();
+    for (final source in _ordered(metric)) {
+      final reading = source.values[metric];
       if (reading != null && now.difference(reading.at) <= freshness) {
         return reading.value;
       }
@@ -377,10 +403,13 @@ class WorkoutRecorder {
 }
 
 class _Source {
-  _Source(this.id, this.dedicatedHeartRate);
+  _Source(this.id, this.dedicatedHeartRate, {this.bridgeGaps = false});
 
   final String id;
   final bool dedicatedHeartRate;
+
+  /// Der letzte Wert gilt länger, siehe [WorkoutRecorder.bridgeGap].
+  final bool bridgeGaps;
   final Map<Metric, _Reading> values = {};
 }
 

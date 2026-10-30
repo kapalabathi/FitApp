@@ -161,7 +161,7 @@ void main() {
       expect(sportFromStrava('Walk', trainer: false), Sport.hiking);
       expect(sportFromStrava('VirtualRide', trainer: false), Sport.indoorBike);
       // Radfahren im Freien kennt die App nicht als eigene Sportart.
-      expect(sportFromStrava('Ride', trainer: false), Sport.other);
+      expect(sportFromStrava('Ride', trainer: false), Sport.cycling);
       expect(sportFromStrava('Swim', trainer: false), Sport.other);
     });
   });
@@ -202,6 +202,42 @@ void main() {
 
       expect(db.workout(workout.id)!.stravaId, 4711);
       expect(db.workout(workout.id)!.imported, isFalse);
+    });
+
+    test('mehrere Trainings: überspringt Hochgeladene und zählt das Ergebnis',
+        () async {
+      final done = db.startWorkout(Sport.treadmill, DateTime(2026, 10, 12, 8));
+      db.addSample(done, const Sample(t: 1, distanceM: 3));
+      db.finishWorkout(done);
+      db.setStravaId(done, 99);
+      strava.uploadStatus = [
+        {'activity_id': 4711, 'error': null},
+      ];
+      final progress = <int>[];
+      final result = await service.uploadMany(
+        [workout, db.workout(done)!],
+        onProgress: (n, _) => progress.add(n),
+      );
+      expect(result.uploaded, 1);
+      expect(result.skipped, 1);
+      expect(result.failed, 0);
+      expect(result.summary, '1 hochgeladen, 1 übersprungen');
+      expect(progress, [0, 1, 2]);
+      expect(db.workout(workout.id)!.stravaId, 4711);
+    });
+
+    test('mehrere Trainings: ein Fehler hält die übrigen nicht auf', () async {
+      final other = db.startWorkout(Sport.treadmill, DateTime(2026, 10, 12, 8));
+      db.addSample(other, const Sample(t: 1, distanceM: 3));
+      db.finishWorkout(other);
+      strava.uploadStatus = [
+        {'activity_id': null, 'error': 'kaputt'},
+        {'activity_id': 4712, 'error': null},
+      ];
+      final result = await service.uploadMany([workout, db.workout(other)!]);
+      expect(result.uploaded, 1);
+      expect(result.failed, 1);
+      expect(result.firstError, contains('kaputt'));
     });
 
     test('eine von Strava abgelehnte Datei wird gemeldet', () async {

@@ -53,7 +53,7 @@ void main() {
     await syncBoth();
     for (final db in [phone, tablet]) {
       expect(db.exercises(), hasLength(213));
-      expect(db.programs(), hasLength(32));
+      expect(db.programs(), hasLength(37));
       expect(db.intervalTemplates(), hasLength(2));
     }
     final again = await synchronize(tablet, drive);
@@ -172,7 +172,7 @@ void main() {
 
     final program = tablet.programs().firstWhere((p) => p.name == 'Mein Zirkel');
     expect(program.items.single.exerciseUuid, exerciseUuid);
-    expect(tablet.programs(), hasLength(33));
+    expect(tablet.programs(), hasLength(38));
   });
 
   test('eine geänderte mitgelieferte Übung setzt sich gegen die unveränderte '
