@@ -4,6 +4,22 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.17.0] – 2026-10-30
+
+Erste Fassung von I-062 auf Wunsch des Nutzers. Die Zähl-Logik ist durch automatische Tests gedeckt, **Kamera und Erkennung sind aber noch nie auf einem echten Gerät gelaufen**. Der Stand davor liegt als Git-Tag `v0.16.0` vor.
+
+### Hinzugefügt
+- **Hero-WODs mit Kamera** (I-062): Unter Programme → „Kurse & Atem" stehen vier Workouts auf Zeit, zugeschnitten auf Klimmzugstange und Körpergewicht: Murph halbiert, JT skaliert, Ryan skaliert, Jason skaliert. Die Kamera erkennt die Haltung, zählt die Wiederholungen der laufenden Übung und schaltet selbst zum nächsten Abschnitt.
+- **Kamerawahl:** Front- oder Rückkamera vor dem Start wählbar und gemerkt, im Training jederzeit per Knopf umschaltbar. Der Zähler läuft dabei weiter.
+- Über dem Kamerabild liegt das erkannte Gerüst. Die App meldet, wenn die Person nicht richtig im Bild ist, und nennt je Übung die beste Kameraposition.
+- Fehlzählungen lassen sich mit + und − korrigieren, „Weiter" schließt einen Abschnitt von Hand ab. Ohne Kamera geht das Workout damit auch rein von Hand.
+- Gespeichert wird das Training mit Puls und jedem Abschnitt als Satz samt Dauer. Die Bestzeit steht bei jedem Workout; abgebrochene Durchgänge zählen nicht.
+- Die Bilder werden nur auf dem Phone ausgewertet und nicht gespeichert. Die App fragt beim ersten Mal nach der Kamera-Erlaubnis.
+- 12 automatische Tests dazu (insgesamt 266).
+
+### Geändert
+- Die APK ist durch die Erkennung um etwa 57 MB größer geworden (173 statt 116 MB).
+
 ## [0.16.0] – 2026-10-30
 
 Sieben Punkte aus dem Ideenspeicher, vom Nutzer ausgewählt. Alles ist durch automatische Tests gedeckt, aber **noch nicht am Gerät erprobt**.

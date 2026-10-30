@@ -408,6 +408,8 @@ void main() {
         scrollable: find.descendant(
             of: find.byType(CoursesAndBreathList),
             matching: find.byType(Scrollable)));
+    await tester.ensureVisible(find.text('Kastenatmung'));
+    await tester.pumpAndSettle();
     await tester.tap(find.text('Kastenatmung'));
     await tester.pumpAndSettle();
     expect(find.text('Ein 4 s · Aus 4 s'), findsOneWidget);

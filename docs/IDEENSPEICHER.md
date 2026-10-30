@@ -81,7 +81,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
 | I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Neu | Vorschlag |
-| I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | Neu | Nutzer |
+| I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | In Arbeit | Nutzer |
 
 ## Details
 
@@ -214,3 +214,5 @@ Wiederholungen lassen sich aus Gelenkwinkeln zählen. Weil im Workout feststeht,
 Zu zerlegen in: (1) Prototyp mit einer Übung, z. B. Kniebeuge, um die Genauigkeit am echten Gerät zu prüfen (M); (2) Zähler für die häufigsten Workout-Übungen wie Liegestütz, Klimmzug, Sit-up und Burpee, eingebunden in I-058 (L); (3) Zeiten je Übung und automatischer Übungswechsel (L); (4) freie Erkennung (XL, offen).
 
 Risiken: Der ganze Körper muss im Bild sein, die Kamera braucht einen festen Platz. Übungen am Boden und schnelle Bewegungen sind schwieriger, weil Gliedmaßen sich verdecken. Dauerbetrieb von Kamera und Erkennung belastet Akku und Temperatur. Saubere Ausführung bewertet der Zähler damit noch nicht. Baut auf I-058 auf.
+
+Stand Version 0.17.0: Die Schritte 1 bis 3 sind als erste Fassung gebaut, mit vier Hero-WODs und ohne die Workout-Formate aus I-058, weil ein eigener einfacher Ablauf genügte. Gezählt wird über Gelenkwinkel; die Grenzwerte sind Schätzungen und müssen am Gerät eingestellt werden. Noch nie mit echter Kamera gelaufen.

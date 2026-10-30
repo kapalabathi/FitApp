@@ -4,8 +4,10 @@ import '../breath/breath_models.dart';
 import '../data/database.dart';
 import '../programs/courses.dart';
 import '../programs/program_models.dart';
+import '../vision/hero_workouts.dart';
 import 'breath_pages.dart';
 import 'format.dart';
+import 'hero_pages.dart';
 import 'program_start.dart';
 import 'workout_actions.dart';
 
@@ -346,6 +348,31 @@ class CoursesAndBreathList extends StatelessWidget {
               },
             );
           }),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
+          child: Text('Hero-WODs mit Kamera',
+              style: theme.textTheme.titleMedium),
+        ),
+        for (final w in heroWorkouts)
+          ListTile(
+            leading: const Icon(Icons.videocam_outlined),
+            title: Text(w.name),
+            subtitle: Text([
+              '${w.totalReps} Wiederholungen',
+              if (heroBestTime(db, w) case final best?)
+                'Bestzeit ${formatDuration(best)}',
+            ].join('  ·  ')),
+            onTap: () async {
+              await Navigator.of(context).push(MaterialPageRoute(
+                builder: (_) => HeroWorkoutPage(
+                  db: db,
+                  workout: w,
+                  onWorkoutSaved: onWorkoutSaved,
+                ),
+              ));
+              onChanged();
+            },
+          ),
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: Text('Atemübungen', style: theme.textTheme.titleMedium),
