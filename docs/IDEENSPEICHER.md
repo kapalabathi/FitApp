@@ -81,6 +81,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Neu | Vorschlag |
 | I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
 | I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Neu | Vorschlag |
+| I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | Neu | Nutzer |
 
 ## Details
 
@@ -204,3 +205,12 @@ Grundlage ist der „Calisthenics & Freeletics Übungskatalog" des Nutzers vom 2
 **Bewusst nicht vorgesehen:** Elite-Skills wie Planche und Human Flag, Ring-Übungen, Langhantel-Workouts, Hero WODs und die unsicheren Götter-Workouts aus den Scribd-Quellen.
 
 **Fehler im Katalog, nicht übernehmen:** Devil Press ist kein Burpee mit zwei Liegestützen, sondern ein Burpee auf Kurzhanteln mit Zug über den Kopf (G-180). Sprawls sind leichter als Burpees, stehen dort aber mit ★★★ gegen ★★. „Reverse Lunge" bedeutet im Bend-Teil den halben Spagat.
+
+### I-062 – Wiederholungen per Kamera zählen
+Wunsch des Nutzers vom 2026-10-30, vor allem für Workouts wie die Benchmark-WODs: durchtrainieren, ohne die App zu bedienen. Technisch geeignet ist Pose-Erkennung auf dem Gerät (etwa Google ML Kit oder MediaPipe): Sie liefert je Kamerabild die Lage der Gelenke, die Bilder bleiben auf dem Phone.
+
+Wiederholungen lassen sich aus Gelenkwinkeln zählen. Weil im Workout feststeht, welche Übung als Nächstes kommt, muss die App die Übung nicht frei erkennen, sondern nur die erwartete zählen. Das ist deutlich zuverlässiger. Freie Erkennung beliebiger Übungen ist erst ein späterer Schritt.
+
+Zu zerlegen in: (1) Prototyp mit einer Übung, z. B. Kniebeuge, um die Genauigkeit am echten Gerät zu prüfen (M); (2) Zähler für die häufigsten Workout-Übungen wie Liegestütz, Klimmzug, Sit-up und Burpee, eingebunden in I-058 (L); (3) Zeiten je Übung und automatischer Übungswechsel (L); (4) freie Erkennung (XL, offen).
+
+Risiken: Der ganze Körper muss im Bild sein, die Kamera braucht einen festen Platz. Übungen am Boden und schnelle Bewegungen sind schwieriger, weil Gliedmaßen sich verdecken. Dauerbetrieb von Kamera und Erkennung belastet Akku und Temperatur. Saubere Ausführung bewertet der Zähler damit noch nicht. Baut auf I-058 auf.
