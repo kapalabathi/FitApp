@@ -94,7 +94,7 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
     };
     final manual = {
       for (final b in w.blocks)
-        if (!b.isRun && b.kind == null) b.label,
+        if (b.counted && b.kind == null) b.label,
     };
     return Scaffold(
       appBar: AppBar(title: Text(w.name)),
@@ -108,6 +108,10 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 96),
         children: [
           Text(w.description, style: theme.textTheme.bodyLarge),
+          const SizedBox(height: 8),
+          Text(w.isOriginal ? 'Original' : 'Abweichungen vom Original',
+              style: theme.textTheme.titleSmall),
+          for (final d in w.deviations) Text('•  $d'),
           const SizedBox(height: 8),
           Text([
             if (w.totalReps > 0) '${w.totalReps} Wiederholungen',
@@ -199,11 +203,20 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
   void initState() {
     super.initState();
     _camera.start(widget.lens);
+    _session.addListener(_tick);
     _announce();
+  }
+
+  /// Der Takt der Trainingssitzung beendet abgelaufene Pausen.
+  void _tick() {
+    if (_finishing) return;
+    final change = _run.tick(_elapsed);
+    if (change != null) _apply(change);
   }
 
   @override
   void dispose() {
+    _session.removeListener(_tick);
     _camera.dispose();
     super.dispose();
   }
@@ -212,8 +225,9 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     final block = _run.current;
     if (block == null) return;
     _session.signals.change();
-    _session.signals.say(
-        block.isRun ? block.title : '${block.reps} ${block.label}');
+    _session.signals.say(block.counted
+        ? '${block.reps} ${block.label}'
+        : block.title);
   }
 
   void _onPose(BodyPose pose, Duration at) {
@@ -247,7 +261,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
   void _logFinishedSplits() {
     for (final s in _run.splits.skip(_loggedSplits)) {
       _loggedSplits++;
-      if (s.block.isRun) continue;
+      if (s.block.exerciseKey == null) continue;
       _session.recorder.db.addSetLog(
         _session.recorder.workoutId,
         SetLog(
@@ -260,11 +274,13 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     }
   }
 
-  /// Die Laufzeiten als Text für die Notiz des Trainings.
+  /// Läufe und Übungen, die die App nicht kennt, als Text für die Notiz des
+  /// Trainings.
   String get _runTimes => [
         for (final s in _run.splits)
-          if (s.block.isRun)
-            '${s.block.title}: ${formatDuration(s.seconds)}',
+          if (s.block.exerciseKey == null && !s.block.isRest)
+            '${s.block.isRun ? s.block.title : '${s.reps} ${s.block.label}'}: '
+                '${formatDuration(s.seconds)}',
       ].join('\n');
 
   void _finish({required bool complete}) {
@@ -302,6 +318,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
 
   String _hint(HeroBlock block) {
     final counter = _counter;
+    if (block.isRest) return 'Geht von selbst weiter';
     if (block.isRun) {
       return counter == null
           ? 'Zum Abschluss „Lauf beendet" tippen'
@@ -367,7 +384,10 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                     Text(
                         block.isRun
                             ? formatDuration(_run.blockSeconds(_elapsed))
-                            : '${_run.count} / ${block.reps}',
+                            : block.isRest
+                                ? formatDuration(
+                                    block.restS! - _run.blockSeconds(_elapsed))
+                                : '${_run.count} / ${block.reps}',
                         style: theme.textTheme.displayMedium
                             ?.copyWith(fontWeight: FontWeight.w600)),
                     Text(_hint(block), style: theme.textTheme.bodySmall),
@@ -384,7 +404,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                         const SizedBox(width: 8),
                         IconButton.filledTonal(
                           tooltip: 'Eine Wiederholung weniger',
-                          onPressed: block == null || block.isRun
+                          onPressed: block == null || !block.counted
                               ? null
                               : () => setState(_run.removeRep),
                           icon: const Icon(Icons.remove),
@@ -392,7 +412,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
                         const SizedBox(width: 8),
                         IconButton.filledTonal(
                           tooltip: 'Eine Wiederholung mehr',
-                          onPressed: block == null || block.isRun
+                          onPressed: block == null || !block.counted
                               ? null
                               : () => _apply(_run.addManualRep(_elapsed)),
                           icon: const Icon(Icons.add),

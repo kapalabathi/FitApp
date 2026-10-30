@@ -205,15 +205,48 @@ void main() {
   group('Workouts', () {
     test('alle Übungen sind vorhanden, Titel sind eindeutig', () {
       final known = {for (final e in builtinExercises) e.key};
-      expect(heroWorkouts, hasLength(17));
-      expect(heroWorkouts.map((w) => w.title).toSet(), hasLength(17));
+      expect(heroWorkouts.map((w) => w.title).toSet(),
+          hasLength(heroWorkouts.length));
       for (final w in heroWorkouts) {
         for (final b in w.blocks) {
-          if (b.isRun) continue;
-          expect(known, contains(b.exerciseKey), reason: w.name);
-          expect(b.reps, greaterThan(0));
+          if (b.exerciseKey != null) {
+            expect(known, contains(b.exerciseKey), reason: w.name);
+          }
+          if (!b.isRun && !b.isRest) expect(b.reps, greaterThan(0));
         }
       }
+    });
+
+    test('zu jedem skalierten WOD gibt es das Original', () {
+      final names = {
+        for (final w in heroWorkouts)
+          if (w.isOriginal) w.name,
+      };
+      for (final w in heroWorkouts.where((w) => !w.isOriginal)) {
+        final base = w.name.split(',').first;
+        expect(names, contains(base), reason: w.name);
+        expect(w.deviations, isNotEmpty);
+      }
+      // Skaliert heißt nie Original, und umgekehrt.
+      for (final w in heroWorkouts) {
+        expect(w.name.contains(','), !w.isOriginal, reason: w.name);
+      }
+    });
+
+    test('die Originale haben die richtigen Mengen', () {
+      int sum(String name, String label) => heroWorkouts
+          .firstWhere((w) => w.name == name)
+          .blocks
+          .where((b) => b.label == label)
+          .fold(0, (a, b) => a + b.reps);
+      expect(sum('Ryan', 'Muscle-ups'), 35);
+      expect(sum('Jason', 'Muscle-ups'), 50);
+      expect(sum('JT', 'Ring-Dips'), 45);
+      expect(sum('Barbara', 'Kniebeugen'), 250);
+      expect(sum('Angie', 'Sit-ups'), 100);
+      expect(sum('Annie', 'Double-Unders'), 150);
+      expect(sum('Fran', 'Thruster 43 kg'), 45);
+      expect(sum('Linda', 'Bankdrücken 1 × Körpergewicht'), 55);
     });
 
     test('der volle Murph hat zwei Läufe und alle Wiederholungen', () {
@@ -223,27 +256,30 @@ void main() {
       expect(m.runMeters, 3200);
       expect(m.totalReps, 600);
       expect(m.blocks.first.title, 'Lauf 1,6 km');
+      expect(m.isOriginal, isTrue);
+      expect(heroWorkouts.firstWhere((w) => w.name == 'Murph, ohne Weste')
+          .deviations, ['Ohne 9-kg-Weste']);
     });
 
     test('Girls und Heros stehen unter eigenem Titel', () {
       final helen = heroWorkouts.firstWhere((w) => w.name.startsWith('Helen'));
-      expect(helen.title, 'Girl: Helen, skaliert');
-      expect(heroWorkouts.first.title, 'Hero: Murph, halbiert');
+      expect(helen.title, 'Girl: Helen');
+      expect(heroWorkouts.first.title, 'Hero: Murph');
     });
 
     test('die Mengen stimmen', () {
       int sum(String name, String label) => heroWorkouts
-          .firstWhere((w) => w.name.startsWith(name))
+          .firstWhere((w) => w.name == name)
           .blocks
           .where((b) => b.label == label)
           .fold(0, (a, b) => a + b.reps);
-      expect(sum('Murph', 'Klimmzüge'), 50);
-      expect(sum('Murph', 'Liegestütze'), 100);
-      expect(sum('Murph', 'Kniebeugen'), 150);
-      expect(sum('JT', 'Bank-Dips'), 45);
-      expect(sum('Ryan', 'Burpees'), 105);
-      expect(sum('Jason', 'Kniebeugen'), 250);
-      expect(sum('Jason', 'Klimmzüge'), 50);
+      expect(sum('Murph, halbiert', 'Klimmzüge'), 50);
+      expect(sum('Murph, halbiert', 'Liegestütze'), 100);
+      expect(sum('Murph, halbiert', 'Kniebeugen'), 150);
+      expect(sum('JT, skaliert', 'Bank-Dips'), 45);
+      expect(sum('Ryan, skaliert', 'Burpees'), 105);
+      expect(sum('Jason, skaliert', 'Kniebeugen'), 250);
+      expect(sum('Jason, skaliert', 'Klimmzüge'), 50);
     });
   });
 
@@ -302,6 +338,25 @@ void main() {
       final run = HeroRun(withRun);
       expect(run.addManualRep(100), isNull);
       expect(run.count, 0);
+    });
+
+    test('eine Pause endet von selbst', () {
+      final run = HeroRun(HeroWorkout(
+        name: 'Pause',
+        description: '',
+        equipment: '',
+        blocks: const [
+          HeroBlock('A', null, 1, null),
+          HeroBlock.rest(180),
+          HeroBlock('B', null, 1, null),
+        ],
+      ));
+      run.addManualRep(10);
+      expect(run.current!.isRest, isTrue);
+      expect(run.addManualRep(11), isNull);
+      expect(run.tick(100), isNull);
+      expect(run.tick(190), HeroChange.blockDone);
+      expect(run.current!.label, 'B');
     });
 
     test('schaltet weiter und misst die Abschnitte', () {

@@ -348,37 +348,40 @@ class CoursesAndBreathList extends StatelessWidget {
               },
             );
           }),
-        for (final family in HeroFamily.values) ...[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
-            child: Text('${family.label}-WODs mit Kamera',
-                style: theme.textTheme.titleMedium),
+        for (final family in HeroFamily.values)
+          ExpansionTile(
+            leading: const Icon(Icons.videocam_outlined),
+            title: Text('${family.label}-WODs mit Kamera'),
+            subtitle: Text('${heroWorkouts.where((w) => w.family == family).length} '
+                'Workouts'),
+            children: [
+              for (final w in heroWorkouts.where((w) => w.family == family))
+                ListTile(
+                  leading: Icon(w.runMeters > 0
+                      ? Icons.directions_run
+                      : Icons.fitness_center),
+                  title: Text(w.name),
+                  subtitle: Text([
+                    w.isOriginal ? 'Original' : 'Skaliert',
+                    if (w.totalReps > 0) '${w.totalReps} Wdh.',
+                    if (w.runMeters > 0)
+                      '${formatKm(w.runMeters.toDouble())} km',
+                    if (heroBestTime(db, w) case final best?)
+                      'Bestzeit ${formatDuration(best)}',
+                  ].join('  ·  ')),
+                  onTap: () async {
+                    await Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => HeroWorkoutPage(
+                        db: db,
+                        workout: w,
+                        onWorkoutSaved: onWorkoutSaved,
+                      ),
+                    ));
+                    onChanged();
+                  },
+                ),
+            ],
           ),
-          for (final w in heroWorkouts.where((w) => w.family == family))
-            ListTile(
-              leading: Icon(w.runMeters > 0
-                  ? Icons.directions_run
-                  : Icons.videocam_outlined),
-              title: Text(w.name),
-              subtitle: Text([
-                if (w.totalReps > 0) '${w.totalReps} Wiederholungen',
-                if (w.runMeters > 0)
-                  '${formatKm(w.runMeters.toDouble())} km Lauf',
-                if (heroBestTime(db, w) case final best?)
-                  'Bestzeit ${formatDuration(best)}',
-              ].join('  ·  ')),
-              onTap: () async {
-                await Navigator.of(context).push(MaterialPageRoute(
-                  builder: (_) => HeroWorkoutPage(
-                    db: db,
-                    workout: w,
-                    onWorkoutSaved: onWorkoutSaved,
-                  ),
-                ));
-                onChanged();
-              },
-            ),
-        ],
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
           child: Text('Atemübungen', style: theme.textTheme.titleMedium),

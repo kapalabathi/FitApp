@@ -4,6 +4,19 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.19.0] – 2026-10-30
+
+### Hinzugefügt
+- **Originale aller WODs mit festem Ablauf:** JT, Ryan, Jason, Michael, DT, Angie, Barbara, Annie, Karen, Fran, Diane, Elizabeth, Grace, Isabel, Jackie, Linda, Amanda, Helen, Eva, Kelly und Nancy, dazu der bisherige Murph und Griff als Originale. Damit sind es 39 Workouts: 23 Originale und 16 skalierte Fassungen.
+- **Jede skalierte Fassung nennt ihre Abweichungen** einzeln, etwa „Klimmzüge statt Muscle-ups" oder „Läufe 800 m statt 1,6 km". In der Liste steht bei jedem Workout „Original" oder „Skaliert".
+- Übungen ohne Kamerazähler oder ohne Eintrag in der App, wie Muscle-ups oder Ring-Dips, zählst du von Hand; ihre Zeiten stehen in der Notiz des Trainings.
+- Barbara hat ihre 3-Minuten-Pausen; Pausen laufen von selbst ab.
+- Hero- und Girl-WODs sind in der Liste zugeklappt.
+- 3 automatische Tests dazu (insgesamt 282).
+
+### Geändert
+- „Murph" ist jetzt das Original mit 9-kg-Weste; ohne Weste gibt es „Murph, ohne Weste". „Michael" ist das Original mit Rückenstreckern, die bisherige Fassung heißt „Michael, skaliert". Bisherige Bestzeiten unter diesen Namen bleiben beim alten Namen stehen.
+
 ## [0.18.0] – 2026-10-30
 
 Die Kamera ist auf dem Gerät des Nutzers gelaufen. Die Zählung ist weiterhin nicht auf ihre Genauigkeit geprüft.
