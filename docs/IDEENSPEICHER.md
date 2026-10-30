@@ -200,7 +200,7 @@ Grundlage ist der „Calisthenics & Freeletics Übungskatalog" des Nutzers vom 2
 
 **I-058:** Die App kennt bisher nur feste Runden. Neu wären Formate mit eigener Wertung und einem Bestwert je Workout. Geeignete erste Workouts: Cindy, Angie, Aphrodite, Tabata-Varianten. Die mitgelieferten Abläufe vor der Übernahme prüfen, weil der Katalog seine Quellen teils selbst als unsicher bezeichnet.
 
-**I-061:** Nicht die ganze Bend-Bibliothek übernehmen: Sie überschneidet sich stark mit dem Bestand, und jedes Bild muss geprüft werden. Kandidaten sind Froggers, Squat Thrust, Standups, Couch Stretch, Pancake und 90/90.
+**I-061:** Nicht die ganze Bend-Bibliothek übernehmen: Sie überschneidet sich stark mit dem Bestand, und jedes Bild muss geprüft werden. Kandidaten: an der Stange Klimmzug mit Fußhilfe, Jumping Pullups, Halten oben; mit Kurzhanteln Schulterdrücken, Seitheben, einarmiges Rudern, Bizeps-Curl, rumänisches Kreuzheben, Bodendrücken; ohne Geräte Froggers, Squat Thrust, Standups, Crunch, Gesäßbrücke beidbeinig, Box-Kniebeuge, Wand-Liegestütz, Pancake. Dazu kommen die sieben Übungen der Routinen aus I-057.
 
 **Bewusst nicht vorgesehen:** Elite-Skills wie Planche und Human Flag, Ring-Übungen, Langhantel-Workouts, Hero WODs und die unsicheren Götter-Workouts aus den Scribd-Quellen.
 
