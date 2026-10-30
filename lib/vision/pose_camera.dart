@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:google_mlkit_pose_detection/google_mlkit_pose_detection.dart';
 
+import 'pose_smoother.dart';
 import 'rep_counter.dart';
 
 /// Kamera samt Haltungserkennung. Die Bilder werden nur auf dem Gerät
@@ -49,8 +50,9 @@ class PoseCamera extends ChangeNotifier {
   bool _switching = false;
   bool _disposed = false;
 
-  /// Die zuletzt erkannte Haltung, für das Gerüst über dem Bild.
+  /// Die beruhigte Haltung für das Gerüst über dem Bild.
   BodyPose pose = const {};
+  final PoseSmoother _smoother = PoseSmoother();
 
   /// Größe des aufrecht gedrehten Bildes, auf das sich [pose] bezieht.
   Size imageSize = Size.zero;
@@ -122,6 +124,7 @@ class PoseCamera extends ChangeNotifier {
     controller = c;
     error = null;
     pose = const {};
+    _smoother.reset();
     await c.startImageStream(_onImage);
     notifyListeners();
   }
@@ -151,14 +154,16 @@ class PoseCamera extends ChangeNotifier {
       imageSize = rotated
           ? Size(image.height.toDouble(), image.width.toDouble())
           : Size(image.width.toDouble(), image.height.toDouble());
-      pose = found.isEmpty
+      final BodyPose raw = found.isEmpty
           ? const {}
           : {
               for (final e in _landmarks.entries)
                 if (found.first.landmarks[e.key] case final l?)
                   e.value: PosePoint(l.x, l.y, l.likelihood),
             };
-      onPose(pose, _clock.elapsed);
+      final at = _clock.elapsed;
+      pose = _smoother.update(raw, at, imageSize.longestSide);
+      onPose(raw, at);
       notifyListeners();
     } catch (_) {
       // Ein einzelnes unlesbares Bild darf das Training nicht stören.

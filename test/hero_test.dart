@@ -3,6 +3,7 @@ import 'package:fitapp/data/models.dart';
 import 'package:fitapp/programs/builtin_exercises.dart';
 import 'package:fitapp/ui/hero_pages.dart';
 import 'package:fitapp/vision/hero_workouts.dart';
+import 'package:fitapp/vision/pose_smoother.dart';
 import 'package:fitapp/vision/rep_counter.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -110,6 +111,15 @@ void main() {
       expect(c.tracking, isTrue);
     });
 
+    test('kurze Aussetzer lassen die Erkennung nicht flackern', () {
+      final c = RepCounter(RepKind.squat);
+      c.add(bent(170), Duration.zero);
+      c.add(const {}, const Duration(milliseconds: 800));
+      expect(c.tracking, isTrue);
+      c.add(const {}, const Duration(milliseconds: 1200));
+      expect(c.tracking, isFalse);
+    });
+
     test('Burpees zählen über die Lage des Oberkörpers', () {
       final c = RepCounter(RepKind.burpee);
       var t = Duration.zero;
@@ -126,6 +136,51 @@ void main() {
       hold(false);
       hold(true);
       expect(c.count, 2);
+    });
+  });
+
+  group('Ruhiges Gerüst', () {
+    const scale = 1000.0;
+    BodyPose at(double x, {double likelihood = 0.9}) =>
+        {Joint.leftWrist: PosePoint(x, 100, likelihood)};
+    Duration ms(int v) => Duration(milliseconds: v);
+
+    test('kleines Zittern wird stark gedämpft', () {
+      final s = PoseSmoother();
+      s.update(at(100), ms(0), scale);
+      final out = s.update(at(105), ms(100), scale);
+      expect(out[Joint.leftWrist]!.x, lessThan(102.5));
+    });
+
+    test('große Bewegungen folgen sofort', () {
+      final s = PoseSmoother();
+      s.update(at(100), ms(0), scale);
+      final out = s.update(at(300), ms(100), scale);
+      expect(out[Joint.leftWrist]!.x, closeTo(300, 0.01));
+    });
+
+    test('kurze Lücken bleiben stehen, lange lassen das Gelenk verschwinden',
+        () {
+      final s = PoseSmoother();
+      s.update(at(100), ms(0), scale);
+      expect(s.update(const {}, ms(600), scale)[Joint.leftWrist], isNotNull);
+      expect(s.update(const {}, ms(800), scale)[Joint.leftWrist], isNull);
+    });
+
+    test('um die Schwelle herum flackert nichts', () {
+      final s = PoseSmoother();
+      // Unsicher: erscheint nicht
+      expect(s.update(at(100, likelihood: 0.4), ms(0), scale), isEmpty);
+      s.update(at(100), ms(100), scale);
+      // Sichtbar: bleibt trotz gleicher Unsicherheit
+      expect(s.update(at(100, likelihood: 0.4), ms(200), scale), isNotEmpty);
+    });
+
+    test('nach dem Zurücksetzen ist nichts mehr da', () {
+      final s = PoseSmoother();
+      s.update(at(100), ms(0), scale);
+      s.reset();
+      expect(s.update(const {}, ms(10), scale), isEmpty);
     });
   });
 

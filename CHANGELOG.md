@@ -4,6 +4,12 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.17.1] – 2026-10-30
+
+### Behoben
+- Das Gerüst über dem Kamerabild zitterte und flackerte (Rückmeldung des Nutzers). Kleine Bewegungen werden jetzt geglättet, große folgen weiter sofort. Ein Gelenk bleibt bei kurzen Erkennungslücken bis 0,7 Sekunden stehen und verschwindet nicht schon bei knapper Unsicherheit. Auch der Hinweis „Nicht im Bild" flackert nicht mehr. Das Zählen arbeitet weiter mit den ungeglätteten Werten.
+- Sechs automatische Tests dazu (insgesamt 272).
+
 ## [0.17.0] – 2026-10-30
 
 Erste Fassung von I-062 auf Wunsch des Nutzers. Die Zähl-Logik ist durch automatische Tests gedeckt, **Kamera und Erkennung sind aber noch nie auf einem echten Gerät gelaufen**. Der Stand davor liegt als Git-Tag `v0.16.0` vor.

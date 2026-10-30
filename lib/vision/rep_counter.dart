@@ -67,6 +67,10 @@ class RepCounter {
   /// Unsicherer erkannte Gelenke werden nicht verwendet.
   static const minLikelihood = 0.5;
 
+  /// So lange gilt eine Person nach dem letzten sicheren Bild noch als
+  /// erkannt; einzelne Aussetzer lassen den Hinweis nicht flackern.
+  static const trackingGrace = Duration(seconds: 1);
+
   /// Geglättet wird über so viele Bilder, damit einzelne Ausreißer nichts
   /// zählen.
   static const smoothing = 3;
@@ -80,6 +84,7 @@ class RepCounter {
   bool _seenHigh = false;
   bool _wentLow = false;
   Duration? _lastRep;
+  Duration? _lastSeen;
 
   int count = 0;
 
@@ -93,8 +98,13 @@ class RepCounter {
   /// vollendet wurde.
   bool add(BodyPose pose, Duration at) {
     final raw = _measure(pose);
-    tracking = raw != null;
-    if (raw == null) return false;
+    if (raw == null) {
+      final seen = _lastSeen;
+      tracking = seen != null && at - seen <= trackingGrace;
+      return false;
+    }
+    tracking = true;
+    _lastSeen = at;
     _recent.add(raw);
     if (_recent.length > smoothing) _recent.removeAt(0);
     final sorted = [..._recent]..sort();

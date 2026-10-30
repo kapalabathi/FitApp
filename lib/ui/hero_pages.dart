@@ -447,10 +447,6 @@ class _SkeletonPainter extends CustomPainter {
       final pa = pose[a];
       final pb = pose[b];
       if (pa == null || pb == null) continue;
-      if (pa.likelihood < RepCounter.minLikelihood ||
-          pb.likelihood < RepCounter.minLikelihood) {
-        continue;
-      }
       canvas.drawLine(place(pa), place(pb), paint);
     }
   }
