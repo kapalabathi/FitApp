@@ -1418,7 +1418,8 @@
   ],
   "auf_zeit": false,
   "stufe": 1,
-  "seiten": true
+  "seiten": true,
+  "leichter": "cali_58_gesaessbruecke"
  },
  "G-133": {
   "anleitung": "Im Stand so hoch wie möglich auf die Zehenspitzen drücken und langsam absenken. Schwerer auf einem Bein.",
@@ -2012,7 +2013,8 @@
   ],
   "auf_zeit": null,
   "stufe": 1,
-  "schwerer": "cali_02_liegestuetz_knie"
+  "schwerer": "cali_02_liegestuetz_knie",
+  "leichter": "cali_60_wand_liegestuetz"
  },
  "G-188": {
   "anleitung": "Füße auf eine Bank oder einen Stuhl, Hände schulterbreit am Boden. Körper gerade halten und die Brust zum Boden senken, dann hochdrücken. Mehr Last auf Schultern und oberer Brust.",
@@ -2065,7 +2067,7 @@
   "auf_zeit": null,
   "stufe": 1,
   "leichter": "cali_45_aktives_haengen",
-  "schwerer": "cali_47_negativer_klimmzug"
+  "schwerer": "cali_55_jumping_pullup"
  },
  "G-193": {
   "anleitung": "Mit einem Sprung oder von einem Stuhl in die obere Klimmzugposition, Kinn über der Stange. So langsam wie möglich bis zum gestreckten Hang absenken, etwa drei bis fünf Sekunden.",
@@ -2075,7 +2077,7 @@
   ],
   "auf_zeit": null,
   "stufe": 2,
-  "leichter": "cali_46_schulterblatt_klimmzug"
+  "leichter": "cali_54_klimmzug_fusshilfe"
  },
  "G-194": {
   "anleitung": "Auf den Barren stützen, Arme gestreckt, Schultern weit nach unten weg von den Ohren. Körper ruhig und gerade halten. Grundlage für Dips.",
@@ -2394,7 +2396,7 @@
   ],
   "auf_zeit": false,
   "stufe": 1,
-  "leichter": "cali_45_aktives_haengen",
+  "leichter": "cali_55_jumping_pullup",
   "schwerer": "cali_47_negativer_klimmzug"
  },
  "G-221": {
@@ -2406,7 +2408,8 @@
   ],
   "auf_zeit": false,
   "stufe": 1,
-  "schwerer": "cali_47_negativer_klimmzug"
+  "schwerer": "cali_54_klimmzug_fusshilfe",
+  "leichter": "cali_46_schulterblatt_klimmzug"
  },
  "G-222": {
   "anleitung": "Mit einem Sprung oder vom Stuhl in die obere Klimmzugposition. Das Kinn über der Stange halten, die Schultern bleiben tief. Kontrolliert ablassen.",
@@ -2468,8 +2471,7 @@
    "gesaess"
   ],
   "auf_zeit": false,
-  "stufe": 1,
-  "schwerer": "crossfit_01_air_squat"
+  "stufe": 1
  },
  "G-229": {
   "anleitung": "Eine Armlänge vor die Wand stellen, die Hände auf Schulterhöhe aufsetzen. Mit geradem Körper die Brust zur Wand senken und wieder wegdrücken.",
@@ -2479,7 +2481,7 @@
   ],
   "auf_zeit": false,
   "stufe": 1,
-  "schwerer": "cali_02_liegestuetz_knie"
+  "schwerer": "cali_41_liegestuetz_erhoeht"
  },
  "G-230": {
   "anleitung": "Mit gestreckten Beinen weit gegrätscht sitzen, Zehen nach oben. Das Becken nach vorn kippen und den Oberkörper mit langem Rücken zwischen die Beine sinken lassen. Ruhig atmen.",

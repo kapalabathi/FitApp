@@ -210,7 +210,7 @@ void main() {
       final byKey = {
         for (final e in upgraded.exercises()) e.builtinKey: e,
       };
-      expect(byKey, hasLength(213));
+      expect(byKey, hasLength(237));
       expect(byKey['yoga_45_fisch']!.poseGroup, PoseGroup.backbend);
       expect(byKey['yoga_45_fisch']!.areas, isNotEmpty);
       expect(byKey['yoga_05_kindhaltung']!.harderUuid,
@@ -240,6 +240,24 @@ void main() {
       expect(byKey['yoga_70_gluehwuermchen']!.areas, isNotEmpty);
       expect(byKey['cali_20_kraehe']!.harderUuid,
           'builtin-yoga_70_gluehwuermchen');
+    });
+
+    test('Fassung 16 bringt die Auswahl für Routinen und Workouts', () {
+      final raw = sqlite3.openInMemory();
+      AppDatabase(raw);
+      raw.execute("DELETE FROM exercises WHERE builtin_key IN "
+          "('crossfit_52_seitheben', 'dehnen_48_wandengel')");
+      raw.execute("UPDATE exercises SET name = 'Eigener Name', updated_at = 99 "
+          "WHERE uuid = 'builtin-yoga_16_boot'");
+      raw.execute('PRAGMA user_version = 15');
+      final upgraded = AppDatabase(raw);
+      addTearDown(upgraded.close);
+      final byKey = {for (final e in upgraded.exercises()) e.builtinKey: e};
+      expect(byKey, hasLength(237));
+      expect(byKey['crossfit_52_seitheben']!.category,
+          ExerciseCategory.crossfit);
+      expect(byKey['dehnen_48_wandengel']!.timed, isFalse);
+      expect(byKey['yoga_16_boot']!.name, 'Eigener Name');
     });
 
     test('mitgelieferte Programme üben einseitige Haltungen beidseitig', () {

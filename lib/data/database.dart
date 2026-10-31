@@ -329,6 +329,11 @@ class AppDatabase {
       _addBuiltinPrograms(builtinProgramsBatch4);
       _db.execute('PRAGMA user_version = 15');
     }
+    if (version < 16) {
+      // Gezielte Auswahl: 24 Übungen (G-214 bis G-237, I-061).
+      _addNewBuiltinExercises();
+      _db.execute('PRAGMA user_version = 16');
+    }
   }
 
   /// Legt mitgelieferte Programme an, die es noch nicht gibt, gleich mit

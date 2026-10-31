@@ -80,7 +80,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Umgesetzt, ungetestet | Vorschlag |
 | I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
-| I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | In Arbeit | Vorschlag |
+| I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | In Arbeit | Nutzer |
 | I-063 | Fitnessgeräte im Studio besser finden: Dienstdaten und Herstellernamen auswerten, unbekannte Geräte beim Hinzufügen prüfen, Suchergebnis teilen | Geräte | S | Umgesetzt, ungetestet | Nutzer |
 | I-064 | Verbindung stabiler: kein Suchlauf neben laufenden Verbindungen, sauberes Neuverbinden, verstummte Verbindungen erkennen, schneller Funktakt zum Ausprobieren | Geräte | S | Umgesetzt, ungetestet | Nutzer |
@@ -228,3 +228,5 @@ Stand Version 0.20.0: I-058 umgesetzt mit den Formaten auf Zeit, so viel wie mö
 Die Liste aller offenen Prüfungen am Gerät steht in [MANUELLE-TESTS.md](MANUELLE-TESTS.md).
 
 Stand Version 0.21.0: I-041 rechnet nach Edwards ohne neue Profilangaben: Minuten je Pulsbereich mal 1 bis 5, ab 50 % des Maximalpulses. I-042 legt beliebig viele Trainings übereinander; als gleiches Workout gelten gleiche Sportart und gleicher Titel. I-050 rechnet mit 6 Sekunden je Atemzug. I-061: 24 Übungen stehen als G-214 bis G-237 in Grafikliste und `tools/uebungen.json`; die Grafiken fehlen noch, erst danach kommen sie mit `python tools/uebungen_erzeugen.py grafiken/medium` in die App.
+
+Stand Version 0.21.1: I-061 umgesetzt, G-214 bis G-237 sind mit Grafiken in der App. Bestehende Installationen bekommen sie über Datenbankfassung 16. Fünf Grafiken (G-220, G-221, G-222, G-231, G-234) wurden nach der Prüfung neu erzeugt.

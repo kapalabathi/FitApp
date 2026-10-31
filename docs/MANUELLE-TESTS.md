@@ -1,6 +1,6 @@
 # Manuelle Tests
 
-Stand: Version 0.21.0 (2026-10-31). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
+Stand: Version 0.21.1 (2026-10-31). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
 
 ## 1 Zuerst: Update ohne Datenverlust
 
@@ -86,6 +86,7 @@ Hand am Not-Stopp, Obergrenze vorsichtig wählen.
 - [ ] Atemübung: Passt der Kreis zu den Ansagen? Wechselatmung sagt die Nasenseite (I-048).
 - [ ] Atemanhalten erst nach Freischaltung (I-052).
 - [ ] Routine „Nach dem Lauf" einmal durchspielen (I-057).
+- [ ] Nach dem Update sind die neuen Übungen da, z. B. Seitheben und Wandengel; Bilder passen (I-061).
 - [ ] Im Programm eine Übung auf Atemzüge stellen: Anzeige zählt abwärts, Ansage stimmt (I-050).
 - [ ] Gesamtlänge der Kurs-Einheit passt zur Stufe; Schulterstand, Pflug und Fisch stehen vor der Entspannung (I-053).
 

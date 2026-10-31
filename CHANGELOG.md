@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.21.1] – 2026-10-31
+
+### Hinzugefügt
+- **24 weitere Übungen** (I-061): sechs mit kleinen Kurzhanteln, drei an der Klimmzugstange, sieben ohne Geräte und acht zum Dehnen und für die Routinen. Damit 237 Übungen.
+
 ## [0.21.0] – 2026-10-31
 
 ### Hinzugefügt
