@@ -3,7 +3,9 @@ import 'package:latlong2/latlong.dart';
 
 import '../data/database.dart';
 import '../data/models.dart';
+import '../stats/compare.dart';
 import '../stats/stats.dart';
+import 'compare_page.dart';
 import 'format.dart';
 import 'line_chart.dart';
 import 'route_map.dart';
@@ -200,6 +202,11 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
         ? const <String, String>{}
         : {for (final e in db.exercises()) e.uuid: e.name};
     final maxHr = HeartProfile.load(db).maxHr(DateTime.now());
+    final load = maxHr == null
+        ? null
+        : db.workoutLoads(maxHr, workoutId: workoutId).firstOrNull?.load;
+    if (load != null) facts.add(('Belastung', '$load'));
+    final runs = sameWorkouts(db.workouts(), w);
     final zones = maxHr == null || w.avgHeartRate == null
         ? null
         : db.zoneSeconds(HeartZone.thresholds(maxHr), workoutId: workoutId);
@@ -225,6 +232,17 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                     }
                   },
                   child: const Text('Zu Strava hochladen'),
+                ),
+              if (runs.length > 1)
+                PopupMenuItem(
+                  value: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (_) => ComparePage(
+                      db: db,
+                      workouts: runs,
+                      title: w.title ?? w.sport.label,
+                    ),
+                  )),
+                  child: Text('Alle ${runs.length} Durchgänge vergleichen'),
                 ),
               for (final format in ExportFormat.values)
                 PopupMenuItem(

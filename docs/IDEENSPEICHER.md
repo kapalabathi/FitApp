@@ -60,8 +60,8 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-038 | Schnellstart: letztes Training wiederholen, Favoriten auf der Startseite | Bedienung | S | Umgesetzt, ungetestet | Vorschlag |
 | I-039 | Kraft-Protokoll: Sätze, Wiederholungen und Gewicht je Übung erfassen, Verlauf je Übung | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-040 | Ziele mit Fortschritt: z. B. Kilometer im Monat oder Einheiten je Woche | Auswertung | M | Neu | Vorschlag |
-| I-041 | Trainingsbelastung aus dem Puls: Belastung je Einheit und Verlauf über Wochen | Auswertung | M | Neu | Vorschlag |
-| I-042 | Zwei Trainings vergleichen: Kurven übereinander | Auswertung | M | Neu | Vorschlag |
+| I-041 | Trainingsbelastung aus dem Puls: Belastung je Einheit und Verlauf über Wochen | Auswertung | M | Umgesetzt, ungetestet | Vorschlag |
+| I-042 | Zwei Trainings vergleichen: Kurven übereinander | Auswertung | M | Umgesetzt, ungetestet | Vorschlag |
 | I-043 | Wochenplan: geplante Einheiten im Kalender mit Erinnerung | Programme | L | Neu | Vorschlag |
 | I-044 | Energieverbrauch aus Puls, Gewicht und Alter schätzen, wenn das Gerät keinen liefert | Auswertung | S | Umgesetzt, ungetestet | Vorschlag |
 | I-045 | Automatische Sicherung: regelmäßig eine Sicherungsdatei in einem gewählten Ordner ablegen | Daten | S | Umgesetzt, ungetestet | Vorschlag |
@@ -69,7 +69,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-047 | „Je Seite": Übung spielt beide Seiten ab und sagt den Seitenwechsel an | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-048 | Geführte Atemübungen (Pranayama): Phasen mit Verhältnis, Nasenseite, Zyklen, ruhiger Takt | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-049 | Aufbaukurse: Programme in Stufen über mehrere Wochen, Weiterschalten wenn eine Stufe sitzt | Programme | L | Umgesetzt, ungetestet | Vorschlag |
-| I-050 | Haltedauer wahlweise in Atemzügen statt Sekunden | Programme | S | Neu | Vorschlag |
+| I-050 | Haltedauer wahlweise in Atemzügen statt Sekunden | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-051 | Vorstufen und Varianten einer Übung verknüpfen (leichter / schwerer) | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-052 | Hinweise je Übung, Warnung bei Umkehrhaltungen und Atemanhalten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-053 | Umkehrhaltungen Pflug, Schulterstand, Unterarmstand und Kopfstand; Schulterstand und Pflug im Yoga-Grundkurs | Programme | S | Umgesetzt, ungetestet | Nutzer |
@@ -80,8 +80,10 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Umgesetzt, ungetestet | Vorschlag |
 | I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
-| I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Neu | Vorschlag |
+| I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | In Arbeit | Vorschlag |
 | I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | In Arbeit | Nutzer |
+| I-063 | Fitnessgeräte im Studio besser finden: Dienstdaten und Herstellernamen auswerten, unbekannte Geräte beim Hinzufügen prüfen, Suchergebnis teilen | Geräte | S | Umgesetzt, ungetestet | Nutzer |
+| I-064 | Verbindung stabiler: kein Suchlauf neben laufenden Verbindungen, sauberes Neuverbinden, verstummte Verbindungen erkennen, schneller Funktakt zum Ausprobieren | Geräte | S | Umgesetzt, ungetestet | Nutzer |
 
 ## Details
 
@@ -224,3 +226,5 @@ Stand Version 0.19.0: 39 Workouts, davon 23 Originale und 16 skalierte Fassungen
 Stand Version 0.20.0: I-058 umgesetzt mit den Formaten auf Zeit, so viel wie möglich (AMRAP), jede Minute (EMOM) und Maximalwerte. Das Ergebnis steht in der ersten Zeile der Notiz, daraus liest sich der Bestwert. Damit 50 Workouts, 28 Originale und 22 skalierte Fassungen. Die Mengen von Lynne stammen wie bei Eva, Nancy, Jackie, Isabel, Linda und Amanda aus allgemeinem Wissen.
 
 Die Liste aller offenen Prüfungen am Gerät steht in [MANUELLE-TESTS.md](MANUELLE-TESTS.md).
+
+Stand Version 0.21.0: I-041 rechnet nach Edwards ohne neue Profilangaben: Minuten je Pulsbereich mal 1 bis 5, ab 50 % des Maximalpulses. I-042 legt beliebig viele Trainings übereinander; als gleiches Workout gelten gleiche Sportart und gleicher Titel. I-050 rechnet mit 6 Sekunden je Atemzug. I-061: 24 Übungen stehen als G-214 bis G-237 in Grafikliste und `tools/uebungen.json`; die Grafiken fehlen noch, erst danach kommen sie mit `python tools/uebungen_erzeugen.py grafiken/medium` in die App.

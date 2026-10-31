@@ -1,6 +1,6 @@
 # Grafikliste Übungen (zu I-020)
 
-213 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-213`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
+237 Grafiken. Jede Grafik hat eine feste Nummer (`G-001` bis `G-237`) und einen festen Dateinamen. Die Liste ist zugleich die Vorauswahl an Übungen für I-007.
 
 ## Allgemeine Vorgaben für alle Grafiken
 
@@ -315,15 +315,46 @@ Ergänzt am 2026-10-14 auf Wunsch des Nutzers. Die Krähe gibt es bereits als G-
 |-----|-------|-------|---------|-------|------------------------|
 | G-213 | `yoga_70_gluehwuermchen` | Glühwürmchen (Tittibhasana) | Front | 1 | Armbalance von vorn gesehen: Die Figur trägt ihr ganzes Gewicht nur auf beiden Händen, die flach und schulterbreit zwischen den Beinen am Boden stehen, Finger nach vorn, Arme fast gestreckt. Die Rückseiten der Oberschenkel liegen hoch auf den Oberarmen, nah an den Schultern. Beide Beine sind GESTRECKT, weit gegrätscht und schräg nach vorn oben gehoben, die Füße mindestens auf Höhe der Schultern, Zehen gestreckt. Das Gesäß schwebt frei über dem Boden, kein Fuß und kein Knie berührt die Matte. Oberkörper leicht nach vorn geneigt zwischen den Beinen, Kopf gehoben, Blick nach vorn. |
 
+## Auswahl für Routinen und Workouts (I-061)
+
+Für die Ausstattung des Nutzers: kleine Kurzhanteln und Klimmzugstange, dazu Übungen ohne Geräte und für die Routinen. In Workouts sind die Kurzhanteln klein zu zeichnen.
+
+| Nr. | Datei | Übung | Ansicht | Posen | Was zu sehen sein muss |
+|-----|-------|-------|---------|-------|------------------------|
+| G-214 | `crossfit_51_schulterdruecken` | Kurzhantel-Schulterdrücken | Front | 2 | Links: aufrechter Stand, je eine kleine Kurzhantel auf Schulterhöhe, Ellbogen unter den Händen, Handflächen nach vorn. Rechts: beide Arme gestreckt senkrecht über dem Kopf, die Hanteln über den Schultern. Rücken gerade, Füße hüftbreit. |
+| G-215 | `crossfit_52_seitheben` | Seitheben | Front | 2 | Links: aufrechter Stand, die Arme hängen seitlich, je eine kleine Kurzhantel neben dem Oberschenkel. Rechts: beide Arme fast gestreckt seitlich bis genau auf Schulterhöhe gehoben, Ellbogen minimal gebeugt, Handrücken zeigen nach oben. Nicht höher als die Schultern. |
+| G-216 | `crossfit_53_einarmiges_rudern` | Einarmiges Rudern | Seite | 2 | Vorgebeugter Stand mit Ausfallschritt, die vordere Hand stützt sich auf dem vorderen Oberschenkel, der Rücken ist gerade und fast waagerecht. Links: der hintere Arm hängt gestreckt senkrecht nach unten mit einer Kurzhantel. Rechts: der Ellbogen ist nach hinten oben gezogen, die Hantel neben der Hüfte. Blick zum Boden. |
+| G-217 | `crossfit_54_bizeps_curl` | Bizeps-Curl | Front | 2 | Links: aufrechter Stand, die Arme hängen gestreckt, je eine kleine Kurzhantel, Handflächen nach vorn. Rechts: beide Unterarme nach oben gebeugt, die Hanteln vor den Schultern, die Ellbogen bleiben eng am Körper und bewegen sich nicht. |
+| G-218 | `crossfit_55_rumaenisches_kreuzheben` | Rumänisches Kreuzheben | Seite | 2 | Links: aufrechter Stand, die Hanteln hängen vor den Oberschenkeln. Rechts: die Hüfte ist weit nach hinten geschoben, der Oberkörper mit geradem Rücken fast waagerecht nach vorn geneigt, die Knie nur leicht gebeugt, die Arme hängen senkrecht, die Hanteln auf Höhe der Schienbeine. Kein runder Rücken. |
+| G-219 | `crossfit_56_bodendruecken` | Bodendrücken | Seite | 2 | Rückenlage auf der Matte, die Knie gebeugt, die Füße flach am Boden. Links: die Oberarme liegen seitlich am Boden auf, die Unterarme zeigen senkrecht nach oben, die Hanteln über den Ellbogen. Rechts: beide Arme gestreckt senkrecht nach oben, die Hanteln über der Brust. |
+| G-220 | `cali_54_klimmzug_fusshilfe` | Klimmzug mit Fußhilfe | Seite | 2 | Klimmzugstange über der Figur, darunter ein niedriger Stuhl oder eine Box. Links: gestreckter Hang im Obergriff, ein Fuß steht auf dem Stuhl, das Knie ist gebeugt. Rechts: das Kinn ist über der Stange, die Arme sind gebeugt, das Bein auf dem Stuhl ist weiter gestreckt und schiebt mit. Das andere Bein hängt frei. |
+| G-221 | `cali_55_jumping_pullup` | Jumping Pullup | Seite | 2 | Niedrig genug montierte Klimmzugstange oder Stuhl unter der Stange. Links: tiefe Hocke unter der Stange, die Arme gestreckt nach oben, die Hände greifen die Stange. Rechts: im Sprung, die Füße frei über dem Boden, das Kinn über der Stange, die Arme gebeugt. |
+| G-222 | `cali_56_halten_oben` | Klimmzug oben halten | Seite | 1 | Klimmzugstange, die Figur hängt in der obersten Position: das Kinn ist über der Stange, die Arme sind vollständig gebeugt, die Ellbogen zeigen nach unten, die Schultern sind tief. Beine geschlossen, Füße frei über dem Boden. |
+| G-223 | `crossfit_57_froggers` | Froggers | Seite | 2 | Links: hoher Stütz mit gestreckten Armen, Hände am Boden, die Beine gestreckt nach hinten. Rechts: die Hände bleiben an derselben Stelle, beide Füße sind mit einem Sprung neben die Hände gezogen, tiefe Hocke, die Knie außen neben den Armen, Oberkörper aufgerichtet, Blick nach vorn. |
+| G-224 | `crossfit_58_squat_thrust` | Squat Thrust | Seite | 2 | Links: tiefe Hocke, beide Hände am Boden vor den Füßen. Rechts: hoher Stütz, beide Beine gestreckt nach hinten gesprungen, der Körper bildet eine gerade Linie von Kopf bis Ferse. Kein Liegestütz und kein Strecksprung. |
+| G-225 | `crossfit_59_standup` | Stand-up | Seite | 2 | Links: Rückenlage auf der Matte, die Beine gestreckt, die Arme gestreckt über dem Kopf am Boden. Rechts: aufrechter Stand auf der Matte, die Arme gestreckt nach oben. Dazwischen der Pfeil. |
+| G-226 | `cali_57_crunch` | Crunch | Seite | 2 | Rückenlage, die Knie gebeugt, die Füße flach am Boden, die Hände seitlich an den Schläfen. Links: Schultern liegen am Boden. Rechts: nur der obere Rücken und die Schultern sind leicht vom Boden gehoben, der untere Rücken bleibt am Boden, kein vollständiger Sit-up. |
+| G-227 | `cali_58_gesaessbruecke` | Gesäßbrücke | Seite | 2 | Rückenlage, die Knie gebeugt, beide Füße flach am Boden, die Arme neben dem Körper. Links: das Gesäß liegt am Boden. Rechts: die Hüfte ist gehoben, Knie, Hüfte und Schultern bilden eine gerade Linie, beide Füße stehen fest am Boden. |
+| G-228 | `cali_59_box_kniebeuge` | Kniebeuge zum Stuhl | Seite | 2 | Hinter der Figur steht ein schlichter Stuhl. Links: aufrechter Stand vor dem Stuhl, die Arme nach vorn. Rechts: das Gesäß berührt gerade die Sitzfläche, die Knie sind gebeugt, die Füße flach am Boden, der Oberkörper leicht nach vorn geneigt, die Arme gestreckt nach vorn als Gegengewicht. |
+| G-229 | `cali_60_wand_liegestuetz` | Wand-Liegestütz | Seite | 2 | Rechts im Bild eine Wand. Die Figur steht eine Armlänge entfernt und lehnt schräg zur Wand, der Körper gerade von Kopf bis Ferse, die Füße flach am Boden. Links: die Arme sind gestreckt, die Hände auf Schulterhöhe an der Wand. Rechts: die Arme sind gebeugt, die Brust ist nah an der Wand. |
+| G-230 | `dehnen_41_pancake` | Pancake | Front | 1 | Sitz am Boden, die gestreckten Beine weit gegrätscht, die Zehen zeigen nach oben. Der Oberkörper neigt sich mit geradem Rücken aus der Hüfte nach vorn zwischen die Beine, die Arme sind nach vorn am Boden abgelegt. |
+| G-231 | `dehnen_42_soleus` | Soleus-Dehnung | Seite | 1 | Rechts im Bild eine Wand, beide Hände stützen daran. Schrittstellung zur Wand: Das hintere Knie ist deutlich gebeugt, die hintere Ferse bleibt fest am Boden, das vordere Bein ist ebenfalls leicht gebeugt. |
+| G-232 | `dehnen_43_90_90_sitz` | 90/90-Sitz | Schräg | 1 | Sitz am Boden: Das vordere Bein liegt quer vor dem Körper, Oberschenkel nach vorn, Knie im rechten Winkel, Unterschenkel quer. Das hintere Bein liegt seitlich neben dem Körper, Oberschenkel zur Seite, Knie ebenfalls im rechten Winkel, Unterschenkel nach hinten. Oberkörper aufrecht über dem vorderen Bein, Hände stützen leicht. |
+| G-233 | `dehnen_44_couch_stretch` | Couch-Dehnung | Seite | 1 | Links im Bild eine Wand. Das hintere Knie liegt nah an der Wand am Boden, der hintere Unterschenkel steht senkrecht an der Wand, der Fußrücken liegt an der Wand. Das vordere Bein steht im Ausfallschritt, Fuß flach, Knie über dem Knöchel. Der Oberkörper ist aufrecht, die Hände auf dem vorderen Oberschenkel, Blick nach rechts. |
+| G-234 | `dehnen_45_becken_kippen` | Becken kippen | Seite | 2 | Rückenlage, die Knie gebeugt, die Füße flach am Boden, die Arme neben dem Körper. Links: leichtes Hohlkreuz, ein kleiner Spalt zwischen unterem Rücken und Boden. Rechts: das Becken ist nach hinten gekippt, der untere Rücken liegt flach am Boden. Das Gesäß bleibt am Boden. |
+| G-235 | `dehnen_46_kinn_zurueck` | Kinn zurückziehen | Seite | 2 | Nur der Oberkörper und der Kopf im aufrechten Sitz oder Stand. Links: der Kopf ist nach vorn geschoben. Rechts: der Kopf ist waagerecht nach hinten gezogen, das Ohr steht über der Schulter, ein leichtes Doppelkinn, der Blick bleibt geradeaus. Der Kopf wird weder gehoben noch gesenkt. |
+| G-236 | `dehnen_47_nacken_schraeg` | Nacken schräg nach vorn | Schräg | 1 | Aufrechter Sitz. Der Kopf ist zur Seite gedreht und schräg nach unten zur Achsel geneigt, die Hand derselben Seite liegt leicht auf dem Hinterkopf. Der andere Arm hängt locker, die Schulter dieser Seite bleibt tief. |
+| G-237 | `dehnen_48_wandengel` | Wandengel | Front | 2 | Die Figur steht mit dem Rücken an der Wand, Gesäß, Schultern und Hinterkopf berühren sie. Links: die Arme liegen im rechten Winkel an der Wand, Ellbogen auf Schulterhöhe, Unterarme nach oben. Rechts: die Arme sind fast gestreckt nach oben an der Wand geschoben. Handrücken bleiben an der Wand. |
+
 ## Zusammenfassung
 
 | Kategorie | Nummern | Anzahl |
 |-----------|---------|--------|
 | Yoga | G-001 – G-020, G-081 – G-100, G-161 – G-176, G-200 – G-213 | 70 |
-| Crossfit | G-021 – G-040, G-101 – G-120, G-177 – G-186 | 50 |
-| Calisthenics | G-041 – G-060, G-121 – G-140, G-187 – G-199 | 53 |
-| Dehnen | G-061 – G-080, G-141 – G-160 | 40 |
-| **Gesamt** | | **213** |
+| Crossfit | G-021 – G-040, G-101 – G-120, G-177 – G-186, G-214 – G-219, G-223 – G-225 | 59 |
+| Calisthenics | G-041 – G-060, G-121 – G-140, G-187 – G-199, G-220 – G-222, G-226 – G-229 | 60 |
+| Dehnen | G-061 – G-080, G-141 – G-160, G-230 – G-237 | 48 |
+| **Gesamt** | | **237** |
 
 Die Erweiterung G-081 bis G-160 (Stand 2026-10-11) kommt ohne Geräte aus. Bei
 Crossfit trägt die Figur weiterhin Sportschuhe, sonst ist sie barfuß.

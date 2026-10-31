@@ -203,6 +203,17 @@ class _ProgramEditorPageState extends State<ProgramEditorPage> {
 }
 
 /// Vorgabe einer Übung im Programm: Zeit oder Wiederholungen, Pause danach.
+enum _Unit {
+  seconds('Zeit', 'Sekunden'),
+  breaths('Atemzüge', 'Atemzüge'),
+  reps('Wdh.', 'Wiederholungen');
+
+  const _Unit(this.short, this.label);
+
+  final String short;
+  final String label;
+}
+
 class _ItemDialog extends StatefulWidget {
   const _ItemDialog({required this.item, required this.name});
 
@@ -214,7 +225,11 @@ class _ItemDialog extends StatefulWidget {
 }
 
 class _ItemDialogState extends State<_ItemDialog> {
-  late bool _timed = widget.item.timed;
+  late _Unit _unit = widget.item.breaths
+      ? _Unit.breaths
+      : widget.item.timed
+          ? _Unit.seconds
+          : _Unit.reps;
   late bool _bothSides = widget.item.bothSides;
   late final _amount = TextEditingController(text: '${widget.item.amount}');
   late final _rest = TextEditingController(text: '${widget.item.restS}');
@@ -236,10 +251,25 @@ class _ItemDialogState extends State<_ItemDialog> {
     }
     Navigator.of(context)
         .pop(widget.item.copyWith(
-            timed: _timed,
+            timed: _unit != _Unit.reps,
+            breaths: _unit == _Unit.breaths,
             amount: amount,
             restS: rest,
             bothSides: _bothSides));
+  }
+
+  /// Beim Wechsel zwischen Zeit und Atemzügen bleibt die Dauer gleich.
+  void _setUnit(_Unit unit) {
+    final amount = int.tryParse(_amount.text.trim());
+    if (amount != null) {
+      if (_unit == _Unit.seconds && unit == _Unit.breaths) {
+        final breaths = (amount / ProgramItem.breathS).round();
+        _amount.text = '${breaths < 1 ? 1 : breaths}';
+      } else if (_unit == _Unit.breaths && unit == _Unit.seconds) {
+        _amount.text = '${amount * ProgramItem.breathS}';
+      }
+    }
+    setState(() => _unit = unit);
   }
 
   @override
@@ -250,19 +280,23 @@ class _ItemDialogState extends State<_ItemDialog> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SegmentedButton<bool>(
-              segments: const [
-                ButtonSegment(value: true, label: Text('Zeit')),
-                ButtonSegment(value: false, label: Text('Wiederholungen')),
+            SegmentedButton<_Unit>(
+              segments: [
+                for (final u in _Unit.values)
+                  ButtonSegment(value: u, label: Text(u.short)),
               ],
-              selected: {_timed},
-              onSelectionChanged: (s) => setState(() => _timed = s.first),
+              selected: {_unit},
+              onSelectionChanged: (s) => _setUnit(s.first),
             ),
             TextField(
               controller: _amount,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(
-                  labelText: _timed ? 'Sekunden' : 'Wiederholungen'),
+                labelText: _unit.label,
+                helperText: _unit == _Unit.breaths
+                    ? 'Ein Atemzug zählt ${ProgramItem.breathS} Sekunden'
+                    : null,
+              ),
             ),
             SwitchListTile(
               contentPadding: EdgeInsets.zero,

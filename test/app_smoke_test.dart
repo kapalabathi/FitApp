@@ -110,6 +110,8 @@ void main() {
       await tester.tap(find.text('Pulszonen'));
       await tester.pumpAndSettle();
       expect(find.text('Geburtsjahr eingeben'), findsOneWidget);
+      await tester.ensureVisible(find.text('Bestwerte'));
+      await tester.pumpAndSettle();
       await tester.tap(find.text('Bestwerte'));
       await tester.pumpAndSettle();
       expect(find.text('Längstes Training'), findsOneWidget);

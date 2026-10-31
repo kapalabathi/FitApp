@@ -63,13 +63,15 @@ class WorkoutSession extends ChangeNotifier {
         device.deviceId,
         dedicatedHeartRate: device.kind == DeviceKind.heartRate,
         bridgeGaps: device.kind == DeviceKind.heartRate ||
-            device.kind == DeviceKind.fitnessMachine,
+            device.kind == DeviceKind.fitnessMachine ||
+            device.kind == DeviceKind.likelyMachine,
       );
       final connection = SensorConnection(
         device,
         onData: _onData,
         onLinkLost: _onLinkLost,
         onLinkRestored: _onLinkRestored,
+        fastLink: recorder.db.setting(SensorConnection.fastLinkKey) == '1',
       )..addListener(_onLinkChanged);
       connections.add(connection);
       connection.start();
@@ -601,9 +603,11 @@ class WorkoutSession extends ChangeNotifier {
 String programAnnouncement(ProgramPhase phase) {
   if (phase.isSideSwitch) return 'Seite wechseln';
   if (phase.isRest) return 'Pause. Danach: ${phase.exercise.name}';
-  final amount = phase.item.timed
-      ? '${phase.item.amount} Sekunden'
-      : '${phase.item.amount} Wiederholungen';
+  final amount = phase.item.breaths
+      ? phase.item.amountLabel.replaceFirst(' je Seite', '')
+      : phase.item.timed
+          ? '${phase.item.amount} Sekunden'
+          : '${phase.item.amount} Wiederholungen';
   return switch (phase.side) {
     Side.right => '${phase.exercise.name}, rechte Seite, $amount',
     Side.left => 'Linke Seite, $amount',

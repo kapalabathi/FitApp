@@ -275,9 +275,17 @@ class _PhaseView extends StatelessWidget {
     final scheme = theme.colorScheme;
     final remaining = run.remainingInPhase;
     final next = run.nextExercise;
+    final breaths = remaining == null ? null : phase.breathsLeft(remaining);
     final counter = Text(
-      remaining != null ? formatDuration(remaining) : '${phase.item.amount} ×',
-      style: theme.textTheme.displayLarge?.copyWith(
+      breaths != null
+          ? '$breaths ${breaths == 1 ? 'Atemzug' : 'Atemzüge'}'
+          : remaining != null
+              ? formatDuration(remaining)
+              : '${phase.item.amount} ×',
+      style: (breaths != null
+              ? theme.textTheme.displaySmall
+              : theme.textTheme.displayLarge)
+          ?.copyWith(
         fontWeight: FontWeight.w600,
         color: remaining != null && remaining <= ProgramRun.warningFromS
             ? scheme.error

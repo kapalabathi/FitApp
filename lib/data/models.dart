@@ -150,6 +150,19 @@ class Workout {
       durationS > 0 && distanceM > 0 ? distanceM / durationS * 3.6 : null;
 }
 
+/// Die Belastung eines Trainings, aus der Zeit in den Pulszonen.
+class WorkoutLoad {
+  const WorkoutLoad({
+    required this.workoutId,
+    required this.startedAt,
+    required this.load,
+  });
+
+  final int workoutId;
+  final DateTime startedAt;
+  final int load;
+}
+
 /// Die Messwerte einer aktiven Sekunde. [t] zählt aktive Sekunden ab 1.
 class Sample {
   const Sample({
@@ -272,10 +285,14 @@ class LinkLoss {
   }
 }
 
+/// Der Grund, wenn die App selbst neu verbindet, weil nichts mehr kommt.
+const linkSilentReason = 'No Data From Device';
+
 /// Übersetzt die Gründe für einen Verbindungsabbruch, die Android meldet.
 String linkReasonLabel(String? reason) {
   if (reason == null || reason.isEmpty) return 'ohne Angabe von Android';
   const known = {
+    linkSilentReason: 'keine Daten mehr, von der App neu verbunden',
     'Connection Timeout':
         'Funkverbindung abgerissen (Zeitüberschreitung)',
     'LMP Response Timeout / LL Response Timeout':

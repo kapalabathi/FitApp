@@ -1352,6 +1352,34 @@ class AppDatabase {
     return [for (final z in row.values) (z as int?) ?? 0];
   }
 
+  /// Die Belastung je Training nach Edwards: Minuten je Pulsbereich mal
+  /// Gewicht 1 bis 5, ab 50 % des Maximalpulses. Trainings ohne Puls fehlen.
+  List<WorkoutLoad> workoutLoads(
+    int maxHr, {
+    int? workoutId,
+    DateTime? since,
+  }) {
+    final bounds = [for (final f in loadBandStarts) (maxHr * f).round()];
+    return _db.select(
+      'SELECT w.id AS id, w.started_at AS started_at, '
+      '(SUM(s.hr >= ?1) + SUM(s.hr >= ?2) + SUM(s.hr >= ?3) + '
+      'SUM(s.hr >= ?4) + SUM(s.hr >= ?5)) AS weighted '
+      'FROM samples s JOIN workouts w ON w.id = s.workout_id '
+      'WHERE s.hr IS NOT NULL AND w.deleted = 0 '
+      'AND (?6 IS NULL OR w.id = ?6) '
+      'AND (?7 IS NULL OR w.started_at >= ?7) '
+      'GROUP BY w.id ORDER BY w.started_at',
+      [...bounds, workoutId, since?.millisecondsSinceEpoch],
+    ).map((r) {
+      return WorkoutLoad(
+        workoutId: r['id'] as int,
+        startedAt: DateTime.fromMillisecondsSinceEpoch(r['started_at'] as int),
+        // Jede Grenze zählt einmal: Wer über der vierten liegt, hat Gewicht 4.
+        load: ((r['weighted'] as int? ?? 0) / 60).round(),
+      );
+    }).toList();
+  }
+
   /// Berechnet die Bestwerte eines Trainings und merkt sie.
   void computeBestEfforts(int workoutId) {
     final recorded = samples(workoutId);

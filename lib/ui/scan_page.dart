@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:universal_ble/universal_ble.dart';
 
 import '../ble/device_kind.dart';
+import '../ble/device_probe.dart';
 
 /// Sucht Bluetooth-Geräte in der Nähe. Ein Tipp auf ein Gerät schließt die
 /// Seite und gibt es als Ergebnis zurück.
@@ -42,9 +44,15 @@ class _ScanPageState extends State<ScanPage> {
     final known = _devices[device.deviceId];
     // Name und Dienste kommen oft in getrennten Funkpaketen; nichts davon
     // darf durch ein späteres, ärmeres Paket verloren gehen.
-    if (known != null) {
-      if ((device.name ?? '').isEmpty) device.name = known.name;
-      device.services = {...known.services, ...device.services}.toList();
+    if (known != null && (device.name ?? '').isEmpty) device.name = known.name;
+    // Manche Geräte nennen ihren Dienst nur als Dienstdaten.
+    device.services = {
+      ...?known?.services,
+      ...device.services,
+      ...device.serviceData.keys,
+    }.toList();
+    if (device.manufacturerDataList.isEmpty && known != null) {
+      device.manufacturerDataList = known.manufacturerDataList;
     }
     setState(() => _devices[device.deviceId] = device);
   }
@@ -101,6 +109,15 @@ class _ScanPageState extends State<ScanPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Gerät hinzufügen'),
+        actions: [
+          if (_devices.isNotEmpty)
+            IconButton(
+              tooltip: 'Suchergebnis teilen',
+              icon: const Icon(Icons.ios_share),
+              onPressed: () => SharePlus.instance
+                  .share(ShareParams(text: scanReport(_devices.values))),
+            ),
+        ],
         bottom: _scanning
             ? const PreferredSize(
                 preferredSize: Size.fromHeight(4),
@@ -122,6 +139,16 @@ class _ScanPageState extends State<ScanPage> {
             value: _onlyKnown,
             onChanged: (v) => setState(() => _onlyKnown = v),
           ),
+          if (_onlyKnown && _devices.length > devices.length)
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(
+                'Viele Geräte im Studio nennen erst nach dem Verbinden, was '
+                'sie können. Findest du deins nicht, schalte den Filter aus '
+                'und tippe es an: Die App prüft es dann.',
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
+            ),
           if (_message != null)
             Padding(
               padding: const EdgeInsets.all(16),

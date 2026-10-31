@@ -206,8 +206,10 @@ class _ProgramDetailPageState extends State<ProgramDetailPage> {
                 leading: ExerciseImage(exercise: exercise, size: 56),
                 title: Text(exercise.name),
                 subtitle: Text([
-                  '${item.timed ? '${item.amount} Sekunden' : '${item.amount} Wiederholungen'}'
-                      '${item.bothSides ? ' je Seite' : ''}',
+                  item.breaths
+                      ? item.amountLabel
+                      : '${item.timed ? '${item.amount} Sekunden' : '${item.amount} Wiederholungen'}'
+                          '${item.bothSides ? ' je Seite' : ''}',
                   if (item.restS > 0) '${item.restS} s Pause',
                 ].join('  ·  ')),
               )

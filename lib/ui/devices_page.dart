@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:universal_ble/universal_ble.dart';
 
 import '../ble/device_kind.dart';
+import '../ble/device_probe.dart';
+import '../ble/sensor_connection.dart';
 import '../data/database.dart';
 import '../data/models.dart';
 import 'device_page.dart';
@@ -34,12 +36,68 @@ class _DevicesPageState extends State<DevicesPage> {
     );
     if (found == null) return;
     final name = (found.name ?? '').isEmpty ? 'Gerät' : found.name!;
+    var kind = DeviceKind.detect(found.name, found.services);
+    if (kind == DeviceKind.unknown || kind == DeviceKind.likelyMachine) {
+      final checked = await _check(found, name, kind);
+      if (checked == null) return;
+      kind = checked;
+    }
     widget.db.saveDevice(SavedDevice(
       deviceId: found.deviceId,
       name: name,
-      kind: DeviceKind.detect(found.name, found.services),
+      kind: kind,
     ));
     _load();
+  }
+
+  /// Verbindet sich mit einem Gerät, das die Suche nicht einordnen konnte.
+  /// Gibt die Art zurück oder `null`, wenn es nicht gemerkt werden soll.
+  Future<DeviceKind?> _check(
+      BleDevice device, String name, DeviceKind fallback) async {
+    final navigator = Navigator.of(context);
+    showDialog<void>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => const AlertDialog(
+        content: Row(
+          children: [
+            CircularProgressIndicator(),
+            SizedBox(width: 24),
+            Expanded(child: Text('Gerät wird geprüft …')),
+          ],
+        ),
+      ),
+    );
+    final result = await probeDevice(device);
+    navigator.pop();
+    if (!mounted) return null;
+    if (result.supported) return result.kind(device.name);
+    final keep = await showDialog<bool>(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(name),
+        content: SingleChildScrollView(
+          child: SelectableText(result.connected
+              ? 'Das Gerät sendet nichts, was die App versteht. Es bietet:\n'
+                  '${result.serviceLabels.join('\n')}'
+              : 'Die Verbindung kam nicht zustande. Vielleicht nimmt das '
+                  'Gerät keine Verbindung an oder ist schon mit einer '
+                  'anderen App oder dem Studiosystem verbunden.\n\n'
+                  '${result.error}'),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context, false),
+            child: const Text('Verwerfen'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.pop(context, true),
+            child: const Text('Trotzdem merken'),
+          ),
+        ],
+      ),
+    );
+    return keep == true ? fallback : null;
   }
 
   Future<void> _rename(SavedDevice d) async {
@@ -113,45 +171,51 @@ class _DevicesPageState extends State<DevicesPage> {
         icon: const Icon(Icons.add),
         label: const Text('Gerät hinzufügen'),
       ),
-      body: _devices.isEmpty
-          ? const Center(
-              child: Padding(
-                padding: EdgeInsets.all(32),
-                child: Text(
-                  'Noch keine Geräte gemerkt.\nGemerkte Geräte verbinden sich '
-                  'beim Trainingsstart von selbst.',
-                  textAlign: TextAlign.center,
-                ),
+      body: ListView(
+        padding: const EdgeInsets.only(bottom: 88),
+        children: [
+          SwitchListTile(
+            title: const Text('Schneller Funktakt'),
+            subtitle: const Text(
+                'Zum Ausprobieren bei Abbrüchen. Braucht etwas mehr Akku.'),
+            value: widget.db.setting(SensorConnection.fastLinkKey) == '1',
+            onChanged: (on) => setState(() => widget.db
+                .setSetting(SensorConnection.fastLinkKey, on ? '1' : '0')),
+          ),
+          if (_devices.isEmpty)
+            const Padding(
+              padding: EdgeInsets.all(32),
+              child: Text(
+                'Noch keine Geräte gemerkt.\nGemerkte Geräte verbinden sich '
+                'beim Trainingsstart von selbst.',
+                textAlign: TextAlign.center,
               ),
-            )
-          : ListView(
-              padding: const EdgeInsets.only(bottom: 88),
-              children: [
-                for (final d in _devices)
-                  ListTile(
-                    leading: Icon(d.kind.icon),
-                    title: Text(d.name),
-                    subtitle: Text(d.kind.label),
-                    trailing: PopupMenuButton<VoidCallback>(
-                      onSelected: (action) => action(),
-                      itemBuilder: (_) => [
-                        PopupMenuItem(
-                          value: () => _diagnose(d),
-                          child: const Text('Prüfen und Gerätebericht'),
-                        ),
-                        PopupMenuItem(
-                          value: () => _rename(d),
-                          child: const Text('Umbenennen'),
-                        ),
-                        PopupMenuItem(
-                          value: () => _forget(d),
-                          child: const Text('Entfernen'),
-                        ),
-                      ],
-                    ),
-                  ),
-              ],
             ),
+          for (final d in _devices)
+            ListTile(
+              leading: Icon(d.kind.icon),
+              title: Text(d.name),
+              subtitle: Text(d.kind.label),
+              trailing: PopupMenuButton<VoidCallback>(
+                onSelected: (action) => action(),
+                itemBuilder: (_) => [
+                  PopupMenuItem(
+                    value: () => _diagnose(d),
+                    child: const Text('Prüfen und Gerätebericht'),
+                  ),
+                  PopupMenuItem(
+                    value: () => _rename(d),
+                    child: const Text('Umbenennen'),
+                  ),
+                  PopupMenuItem(
+                    value: () => _forget(d),
+                    child: const Text('Entfernen'),
+                  ),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 }

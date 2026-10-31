@@ -250,11 +250,13 @@ class ProgramItem {
     required this.amount,
     this.restS = 0,
     this.bothSides = false,
+    this.breaths = false,
   });
 
   final String exerciseUuid;
 
-  /// `true`: [amount] sind Sekunden. `false`: [amount] sind Wiederholungen.
+  /// `true`: [amount] sind Sekunden, mit [breaths] Atemzüge.
+  /// `false`: [amount] sind Wiederholungen.
   final bool timed;
   final int amount;
 
@@ -265,26 +267,46 @@ class ProgramItem {
   /// [amount]; dazwischen liegt ein kurzer Seitenwechsel.
   final bool bothSides;
 
+  /// Die Übung auf Zeit wird in Atemzügen gehalten: [amount] zählt sie.
+  final bool breaths;
+
   /// So lange dauert der Wechsel von der rechten zur linken Seite.
   static const sideSwitchS = 5;
 
-  String get amountLabel =>
-      '${timed ? '$amount s' : '$amount ×'}${bothSides ? ' je Seite' : ''}';
+  /// So lange rechnet die App für einen ruhigen Atemzug.
+  static const breathS = 6;
+
+  /// Die Haltedauer einer Seite in Sekunden.
+  int get holdSeconds => breaths ? amount * breathS : amount;
+
+  String get _unitLabel => breaths
+      ? '$amount ${amount == 1 ? 'Atemzug' : 'Atemzüge'}'
+      : timed
+          ? '$amount s'
+          : '$amount ×';
+
+  String get amountLabel => '$_unitLabel${bothSides ? ' je Seite' : ''}';
 
   /// Dauer einschließlich zweiter Seite und Pause; Wiederholungen zählen 0.
   int get timedSeconds =>
-      (timed ? amount : 0) * (bothSides ? 2 : 1) +
+      (timed ? holdSeconds : 0) * (bothSides ? 2 : 1) +
       (bothSides ? sideSwitchS : 0) +
       restS;
 
-  ProgramItem copyWith(
-          {bool? timed, int? amount, int? restS, bool? bothSides}) =>
+  ProgramItem copyWith({
+    bool? timed,
+    int? amount,
+    int? restS,
+    bool? bothSides,
+    bool? breaths,
+  }) =>
       ProgramItem(
         exerciseUuid: exerciseUuid,
         timed: timed ?? this.timed,
         amount: amount ?? this.amount,
         restS: restS ?? this.restS,
         bothSides: bothSides ?? this.bothSides,
+        breaths: breaths ?? this.breaths,
       );
 
   Map<String, Object?> toJson() => {
@@ -293,6 +315,7 @@ class ProgramItem {
         'amount': amount,
         'rest': restS,
         if (bothSides) 'sides': true,
+        if (breaths) 'breaths': true,
       };
 
   static ProgramItem fromJson(Map<String, Object?> j) => ProgramItem(
@@ -301,6 +324,7 @@ class ProgramItem {
         amount: (j['amount'] as num?)?.toInt() ?? 0,
         restS: (j['rest'] as num?)?.toInt() ?? 0,
         bothSides: j['sides'] as bool? ?? false,
+        breaths: j['breaths'] as bool? ?? false,
       );
 }
 

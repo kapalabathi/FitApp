@@ -1,6 +1,6 @@
 # Manuelle Tests
 
-Stand: Version 0.20.0 (2026-10-30). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
+Stand: Version 0.21.0 (2026-10-31). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
 
 ## 1 Zuerst: Update ohne Datenverlust
 
@@ -38,6 +38,9 @@ Stand: Version 0.20.0 (2026-10-30). Alles hier ist durch automatische Tests gede
 - [ ] Automatische Pause: Band anhalten, weiterlaufen (I-036).
 - [ ] Display sperren: Läuft die Aufzeichnung weiter (I-022)?
 
+- [ ] Bei Abbrüchen eine Einheit mit „Schneller Funktakt" unter Geräte laufen und die Zahl der Abbrüche vergleichen (I-064). Wird es schlechter, wieder ausschalten.
+- [ ] Erscheint im Abschnitt „Verbindung" der Grund „keine Daten mehr"?
+
 ## 4 Zielpuls (I-032)
 
 Hand am Not-Stopp, Obergrenze vorsichtig wählen.
@@ -51,6 +54,17 @@ Hand am Not-Stopp, Obergrenze vorsichtig wählen.
 - [ ] Band von Hand anhalten: Es startet nicht von selbst.
 - [ ] „Stoppen" beendet die Regelung.
 - [ ] Bleibt der Puls ruhig, oder schwingt er hin und her?
+
+## 4a Vergleich und Belastung
+
+- [ ] Ein Workout mehrmals: Im Training „Alle Durchgänge vergleichen", Kurven und Legende passen (I-042).
+- [ ] Im Verlauf zwei Läufe auswählen, vergleichen, zwischen Zeit und Strecke wechseln.
+- [ ] Neuer Reiter „Belastung": Werte plausibel? Das Training zeigt dieselbe Zahl (I-041).
+
+## 4b Geräte im Studio (I-063)
+
+- [ ] Suchen, Filter aus, Teilen-Knopf: Liste schicken.
+- [ ] Unbekanntes Gerät antippen: Was meldet die Prüfung?
 
 ## 5 Bike und SkiErg
 
@@ -72,6 +86,7 @@ Hand am Not-Stopp, Obergrenze vorsichtig wählen.
 - [ ] Atemübung: Passt der Kreis zu den Ansagen? Wechselatmung sagt die Nasenseite (I-048).
 - [ ] Atemanhalten erst nach Freischaltung (I-052).
 - [ ] Routine „Nach dem Lauf" einmal durchspielen (I-057).
+- [ ] Im Programm eine Übung auf Atemzüge stellen: Anzeige zählt abwärts, Ansage stimmt (I-050).
 - [ ] Gesamtlänge der Kurs-Einheit passt zur Stufe; Schulterstand, Pflug und Fisch stehen vor der Entspannung (I-053).
 
 ## 8 Bedienung

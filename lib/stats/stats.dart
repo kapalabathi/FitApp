@@ -158,6 +158,84 @@ enum HeartZone {
 }
 
 // ---------------------------------------------------------------------------
+// Belastung
+// ---------------------------------------------------------------------------
+
+/// Die Anteile des Maximalpulses, ab denen Gewicht 1 bis 5 gilt.
+const loadBandStarts = [0.5, 0.6, 0.7, 0.8, 0.9];
+
+/// Die Belastung einer Woche.
+class LoadWeek {
+  const LoadWeek(this.start, this.load, this.count);
+
+  final DateTime start;
+  final int load;
+
+  /// Trainings mit Pulsdaten.
+  final int count;
+}
+
+/// Die Belastung der letzten [weeks] Wochen, älteste zuerst.
+List<LoadWeek> buildLoadWeeks(
+  List<WorkoutLoad> loads, {
+  required DateTime now,
+  int weeks = 12,
+}) {
+  final current = periodStart(now, VolumePeriod.week);
+  final starts = [
+    for (var i = weeks - 1; i >= 0; i--)
+      DateTime(current.year, current.month, current.day - 7 * i),
+  ];
+  return [
+    for (final start in starts)
+      () {
+        final inWeek = loads.where((l) =>
+            periodStart(l.startedAt, VolumePeriod.week) == start);
+        return LoadWeek(start, inWeek.fold(0, (sum, l) => sum + l.load),
+            inWeek.length);
+      }(),
+  ];
+}
+
+/// Die letzten sieben Tage gegenüber dem Wochenschnitt der vier Wochen davor.
+class LoadTrend {
+  const LoadTrend(this.recent, this.usual);
+
+  final int recent;
+
+  /// Üblicher Wochenwert; 0, wenn es davor keine Daten gibt.
+  final int usual;
+
+  /// Das Verhältnis, oder `null` ohne Vergleichswert.
+  double? get ratio => usual == 0 ? null : recent / usual;
+
+  String get label {
+    final r = ratio;
+    if (r == null) return 'Noch kein Vergleichswert aus den Wochen davor.';
+    if (r > 1.5) return 'Deutlich mehr als sonst';
+    if (r > 1.2) return 'Etwas mehr als sonst';
+    if (r >= 0.8) return 'Im üblichen Bereich';
+    return 'Weniger als sonst';
+  }
+}
+
+LoadTrend loadTrend(List<WorkoutLoad> loads, DateTime now) {
+  final recentFrom = now.subtract(const Duration(days: 7));
+  final usualFrom = recentFrom.subtract(const Duration(days: 28));
+  var recent = 0;
+  var earlier = 0;
+  for (final l in loads) {
+    if (l.startedAt.isAfter(now)) continue;
+    if (!l.startedAt.isBefore(recentFrom)) {
+      recent += l.load;
+    } else if (!l.startedAt.isBefore(usualFrom)) {
+      earlier += l.load;
+    }
+  }
+  return LoadTrend(recent, (earlier / 4).round());
+}
+
+// ---------------------------------------------------------------------------
 // Umfang je Woche und Monat
 // ---------------------------------------------------------------------------
 

@@ -494,6 +494,121 @@ class _ZonesViewState extends State<ZonesView> {
 }
 
 // ---------------------------------------------------------------------------
+// Belastung
+// ---------------------------------------------------------------------------
+
+/// Die Belastung aus dem Puls über die letzten zwölf Wochen.
+class LoadView extends StatelessWidget {
+  const LoadView({super.key, required this.db});
+
+  final AppDatabase db;
+
+  static final _label = DateFormat('d.M.', 'de');
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
+    final now = DateTime.now();
+    final maxHr = HeartProfile.load(db).maxHr(now);
+    if (maxHr == null) {
+      return const Center(
+        child: Padding(
+          padding: EdgeInsets.all(32),
+          child: Text(
+            'Für die Belastung braucht die App deinen Maximalpuls. Trage ihn '
+            'unter Pulszonen im Profil ein.',
+            textAlign: TextAlign.center,
+          ),
+        ),
+      );
+    }
+    final loads = db.workoutLoads(maxHr,
+        since: now.subtract(const Duration(days: 7 * 13)));
+    final weeks = buildLoadWeeks(loads, now: now);
+    final trend = loadTrend(loads, now);
+    final largest = weeks.fold(0, (a, w) => a > w.load ? a : w.load);
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: [
+        Text('Letzte 7 Tage: ${trend.recent}',
+            style: theme.textTheme.headlineSmall),
+        Text(trend.usual == 0
+            ? trend.label
+            : '${trend.label}  ·  sonst ${trend.usual} je Woche'),
+        const SizedBox(height: 16),
+        Text('Belastung je Woche  ·  max $largest',
+            style: theme.textTheme.labelMedium),
+        const SizedBox(height: 8),
+        SizedBox(
+          height: 200,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              for (var i = 0; i < weeks.length; i++)
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      SizedBox(
+                        height: 16,
+                        child: FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            weeks[i].load == 0 ? '' : '${weeks[i].load}',
+                            style: theme.textTheme.labelSmall,
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: FractionallySizedBox(
+                            heightFactor:
+                                largest == 0 ? 0 : weeks[i].load / largest,
+                            widthFactor: 0.7,
+                            child: DecoratedBox(
+                              decoration: BoxDecoration(
+                                color: i == weeks.length - 1
+                                    ? scheme.primary
+                                    : scheme.primaryContainer,
+                                borderRadius: const BorderRadius.vertical(
+                                    top: Radius.circular(4)),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        (weeks.length - 1 - i).isEven
+                            ? _label.format(weeks[i].start)
+                            : '',
+                        style: theme.textTheme.labelSmall,
+                        maxLines: 1,
+                        softWrap: false,
+                        overflow: TextOverflow.visible,
+                      ),
+                    ],
+                  ),
+                ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          'Jede Minute zählt je nach Puls 1 bis 5 Punkte: ab 50 % des '
+          'Maximalpulses 1 Punkt, ab 90 % 5 Punkte. Trainings ohne Puls '
+          'zählen nicht. Die Zahl ist ein Richtwert für den Vergleich mit '
+          'dir selbst.',
+          style: theme.textTheme.bodySmall,
+        ),
+      ],
+    );
+  }
+}
+
+// ---------------------------------------------------------------------------
 // Bestwerte
 // ---------------------------------------------------------------------------
 

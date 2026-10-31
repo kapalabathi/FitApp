@@ -31,7 +31,15 @@ class SensorConnection extends ChangeNotifier {
     required this.onData,
     this.onLinkLost,
     this.onLinkRestored,
+    this.fastLink = false,
   });
+
+  /// Unter diesem Schlüssel steht die Einstellung für [fastLink].
+  static const fastLinkKey = 'ble.fastLink';
+
+  /// Bittet Android um einen schnelleren Funktakt. Kostet etwas Akku und
+  /// nicht jedes Gerät mag es, darum nur auf Wunsch.
+  final bool fastLink;
 
   /// Die bestehende Verbindung ist abgebrochen; [reason] ist der Grund, den
   /// Android meldet.
@@ -41,7 +49,7 @@ class SensorConnection extends ChangeNotifier {
   final void Function(SavedDevice device)? onLinkRestored;
 
   static const _connectTimeout = Duration(seconds: 15);
-  static const _retryDelay = Duration(seconds: 3);
+  static const _cleanupTimeout = Duration(seconds: 2);
 
   /// In diesem Abstand bekommt ein steuerbares Fitnessgerät ein
   /// Lebenszeichen. Das Domyos-Laufband trennt die Verbindung, wenn es
@@ -60,6 +68,7 @@ class SensorConnection extends ChangeNotifier {
   bool _lostReported = false;
   Completer<void>? _lost;
   Timer? _keepAlive;
+  LinkWatch? _watch;
   bool _stopped = false;
 
   LinkState _state = LinkState.connecting;
@@ -107,10 +116,10 @@ class SensorConnection extends ChangeNotifier {
 
   Future<void> _run() async {
     var first = true;
-    // Nach einem Abbruch wird einmal sofort neu verbunden; meist ist das
-    // Gerät noch da, und die Lücke bleibt so kurz, dass sie nicht auffällt.
-    // Erst wenn das scheitert, folgen Wartezeit und Suche.
-    var retryAtOnce = false;
+    // Nach einem Abbruch wird fast sofort neu verbunden; meist ist das Gerät
+    // noch da, und die Lücke bleibt so kurz, dass sie nicht auffällt. Erst
+    // wenn das mehrmals scheitert, folgt eine Suche.
+    var failures = 0;
     while (!_stopped) {
       _setState(first ? LinkState.connecting : LinkState.reconnecting);
       first = false;
@@ -119,7 +128,9 @@ class SensorConnection extends ChangeNotifier {
         await _device.connect(timeout: _connectTimeout);
         final lost = _lost = Completer<void>();
         final services = await _device.discoverServices();
+        final watch = _watch = LinkWatch();
         await _subscribe(services);
+        if (fastLink) await _requestFastLink();
         final machine = control = await MachineControl.attach(services, _subs);
         if (_stopped) break;
         lastError = null;
@@ -130,8 +141,12 @@ class SensorConnection extends ChangeNotifier {
           onLinkRestored?.call(saved);
         }
         if (machine != null) {
-          _keepAlive =
-              Timer.periodic(_keepAliveInterval, (_) => machine.keepAlive());
+          _keepAlive = Timer.periodic(_keepAliveInterval, (_) async {
+            watch.answered(await machine.keepAlive());
+            if (!watch.stale) return;
+            _lostReason = linkSilentReason;
+            _signalLost();
+          });
         }
         _setState(LinkState.connected);
         _lostReason = null;
@@ -144,18 +159,24 @@ class SensorConnection extends ChangeNotifier {
         lastError = '$e';
       }
       _keepAlive?.cancel();
+      _watch = null;
       control = null;
       await _dropSubscriptions();
       if (_stopped) break;
       _setState(LinkState.reconnecting);
-      if (wasConnected && !retryAtOnce) {
-        retryAtOnce = true;
-        continue;
+      // Ein Fehlversuch oder eine verstummte Verbindung darf nichts
+      // Halboffenes zurücklassen, sonst scheitert auch der nächste Versuch.
+      if (!wasConnected || _lostReason == linkSilentReason) {
+        try {
+          await _device.disconnect(timeout: _cleanupTimeout);
+        } catch (_) {
+          // War nicht verbunden.
+        }
       }
-      retryAtOnce = false;
-      await Future<void>.delayed(_retryDelay);
+      failures = wasConnected ? 0 : failures + 1;
+      await Future<void>.delayed(reconnectDelay(failures));
       if (_stopped) break;
-      await _refreshScan();
+      if (scanBeforeReconnect(failures)) await _refreshScan();
     }
     _keepAlive?.cancel();
     // Ein Verbindungsaufbau, der beim Stoppen noch lief, kann erst danach
@@ -177,6 +198,7 @@ class SensorConnection extends ChangeNotifier {
           }
           final decode = decoder.create();
           _subs.add(c.onValueReceived.listen((bytes) {
+            _watch?.sawData();
             try {
               final values = decode(bytes);
               if (values.isNotEmpty) onData(saved, values);
@@ -187,6 +209,15 @@ class SensorConnection extends ChangeNotifier {
           await c.notifications.subscribe();
         }
       }
+    }
+  }
+
+  Future<void> _requestFastLink() async {
+    try {
+      await UniversalBle.requestConnectionPriority(
+          saved.deviceId, BleConnectionPriority.highPerformance);
+    } catch (_) {
+      // Dann bleibt es beim üblichen Takt.
     }
   }
 
@@ -323,13 +354,16 @@ class MachineControl {
 
   /// Meldet sich beim Gerät, damit es die Verbindung nicht wegen Stille
   /// trennt. Dafür dient die Bitte um Steuererlaubnis: Sie ändert nichts am
-  /// laufenden Training und darf beliebig oft gestellt werden.
-  Future<void> keepAlive() async {
+  /// laufenden Training und darf beliebig oft gestellt werden. Gibt zurück,
+  /// ob das Gerät geantwortet hat.
+  Future<bool> keepAlive() async {
     try {
       final answer = await _send(ftmsRequestControl);
       if (answer.success) _hasControl = true;
+      return true;
     } catch (_) {
       // Ein verpasstes Lebenszeichen ist kein Fehler; das nächste folgt.
+      return false;
     }
   }
 

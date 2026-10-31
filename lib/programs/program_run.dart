@@ -40,8 +40,13 @@ class ProgramPhase {
       : isRest
           ? item.restS
           : item.timed
-              ? item.amount
+              ? item.holdSeconds
               : null;
+
+  /// Hält die Übung in Atemzügen: wie viele bei [secondsLeft] noch bleiben.
+  int? breathsLeft(int secondsLeft) => !isRest && item.breaths
+      ? (secondsLeft / ProgramItem.breathS).ceil()
+      : null;
 }
 
 sealed class ProgramEvent {

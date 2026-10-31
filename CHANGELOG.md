@@ -4,6 +4,20 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.21.0] – 2026-10-31
+
+### Hinzugefügt
+- **Trainings vergleichen** (I-042): Im Verlauf mehrere Trainings auswählen oder in einem Training „Alle Durchgänge vergleichen" wählen. Die Kurven liegen übereinander, wahlweise über Zeit oder Strecke, mit gemeinsamer Stelle zum Ablesen.
+- **Belastung** (I-041): Punkte aus der Zeit in den Pulsbereichen, je Training und als Verlauf über zwölf Wochen.
+- **Haltedauer in Atemzügen** (I-050): im Programm wählbar, ein Atemzug zählt 6 Sekunden.
+- **Geräte im Studio** (I-063): Die Suche wertet Dienstdaten und Herstellernamen aus. Unbekannte Geräte werden beim Hinzufügen geprüft, das Suchergebnis lässt sich teilen.
+
+### Geändert
+- **Verbindung** (I-064): Neu verbunden wird nach kurzer Wartezeit, gesucht erst nach drei Fehlversuchen, damit die übrigen Geräte nicht gestört werden. Halboffene Verbindungen werden aufgeräumt, verstummte Fitnessgeräte erkannt. Der schnelle Funktakt lässt sich unter Geräte einschalten.
+
+### Vorbereitet
+- 24 weitere Übungen (I-061) in der Grafikliste; sie kommen mit ihren Grafiken in die App.
+
 ## [0.20.0] – 2026-10-30
 
 ### Hinzugefügt

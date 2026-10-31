@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../data/database.dart';
 import '../data/models.dart';
+import 'compare_page.dart';
 import 'format.dart';
 import 'stats_views.dart';
 import 'strava_page.dart';
@@ -222,7 +223,7 @@ class _HistoryPageState extends State<HistoryPage> {
         if (!didPop) setState(_selected.clear);
       },
       child: DefaultTabController(
-      length: 4,
+      length: 5,
       child: Scaffold(
         appBar: AppBar(
           leading: _selected.isEmpty
@@ -243,6 +244,18 @@ class _HistoryPageState extends State<HistoryPage> {
                 onPressed: () => setState(
                   () => _selected.addAll(_workouts.map((w) => w.id)),
                 ),
+              ),
+              IconButton(
+                tooltip: 'Kurven vergleichen',
+                icon: const Icon(Icons.stacked_line_chart),
+                onPressed: _selected.length < 2
+                    ? null
+                    : () => Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => ComparePage(
+                            db: widget.db,
+                            workouts: _selectedWorkouts,
+                          ),
+                        )),
               ),
               PopupMenuButton<ExportFormat>(
                 tooltip: 'Exportieren',
@@ -311,6 +324,7 @@ class _HistoryPageState extends State<HistoryPage> {
               Tab(text: 'Trainings'),
               Tab(text: 'Umfang'),
               Tab(text: 'Pulszonen'),
+              Tab(text: 'Belastung'),
               Tab(text: 'Bestwerte'),
             ],
           ),
@@ -320,6 +334,7 @@ class _HistoryPageState extends State<HistoryPage> {
             list,
             VolumeView(db: widget.db),
             ZonesView(db: widget.db),
+            LoadView(db: widget.db),
             RecordsView(db: widget.db),
           ],
         ),
