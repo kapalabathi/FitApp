@@ -1,7 +1,13 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:file_picker/file_picker.dart';
+import 'package:path/path.dart' as p;
 import 'package:saf_stream/saf_stream.dart';
 import 'package:saf_util/saf_util.dart';
 
 import '../data/database.dart';
+import '../platform/app_platform.dart';
 import 'sync_engine.dart';
 
 /// Legt regelmäßig eine Sicherungsdatei in einem Ordner ab, den der Nutzer
@@ -29,6 +35,13 @@ abstract final class AutoBackup {
   /// Lässt den Nutzer den Ordner wählen und merkt ihn sich. Gibt zurück, ob
   /// ein Ordner gewählt wurde.
   static Future<bool> chooseFolder(AppDatabase db) async {
+    if (AppPlatform.isDesktop) {
+      final path = await FilePicker.getDirectoryPath(
+          dialogTitle: 'Ordner für die Sicherung');
+      if (path == null) return false;
+      useFolder(db, path);
+      return true;
+    }
     final folder = await SafUtil().pickDirectory(
       writePermission: true,
       persistablePermission: true,
@@ -38,6 +51,13 @@ abstract final class AutoBackup {
       ..setSetting(_folderUriKey, folder.uri)
       ..setSetting(_folderNameKey, folder.name);
     return true;
+  }
+
+  /// Merkt sich am PC einen normalen Ordner.
+  static void useFolder(AppDatabase db, String path) {
+    db
+      ..setSetting(_folderUriKey, path)
+      ..setSetting(_folderNameKey, path);
   }
 
   static void disable(AppDatabase db) {
@@ -68,15 +88,20 @@ abstract final class AutoBackup {
     final time = now ?? DateTime.now();
     final store = MemorySyncStore();
     await synchronize(db, store);
-    await SafStream().writeFileBytes(
-      uri,
-      fileName(time),
-      'application/octet-stream',
-      store.toBackup(),
-      overwrite: true,
-    );
+    await _write(uri, fileName(time), store.toBackup());
     db.setSetting(_lastRunKey, '${time.millisecondsSinceEpoch}');
   }
+
+  static Future<void> _write(String folder, String name, Uint8List bytes) =>
+      AppPlatform.isDesktop
+          ? File(p.join(folder, name)).writeAsBytes(bytes, flush: true)
+          : SafStream().writeFileBytes(
+              folder,
+              name,
+              'application/octet-stream',
+              bytes,
+              overwrite: true,
+            );
 
   /// Sichert, wenn ein Ordner gewählt ist und heute noch nicht gesichert
   /// wurde. Fehler bleiben still; der nächste Anlass versucht es wieder.

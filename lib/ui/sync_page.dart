@@ -5,12 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../data/database.dart';
+import '../platform/app_platform.dart';
 import '../sync/auto_backup.dart';
 import '../sync/drive_sync.dart';
 import '../sync/sync_engine.dart';
+import 'file_handover.dart';
 import 'format.dart';
 
 /// Abgleich zwischen den Geräten: über Google Drive oder von Hand über eine
@@ -27,12 +28,14 @@ class SyncPage extends StatefulWidget {
 class _SyncPageState extends State<SyncPage> {
   late final _clientId = TextEditingController(
       text: widget.db.setting(DriveSync.webClientIdKey) ?? '');
+  final _clientSecret = TextEditingController();
   bool _busy = false;
   String? _message;
 
   @override
   void dispose() {
     _clientId.dispose();
+    _clientSecret.dispose();
     super.dispose();
   }
 
@@ -60,7 +63,17 @@ class _SyncPageState extends State<SyncPage> {
 
   Future<String> _syncDrive() async {
     final clientId = _clientId.text.trim();
-    if (clientId.isEmpty) return 'Bitte zuerst die Web-Client-ID eintragen.';
+    if (clientId.isEmpty) return 'Bitte zuerst die Client-ID eintragen.';
+    if (AppPlatform.isDesktop) {
+      final auth = DriveSync.desktopAuth();
+      if (_clientSecret.text.trim().isNotEmpty) {
+        await auth.setSecret(_clientSecret.text);
+        _clientSecret.clear();
+      }
+      if (!await auth.hasSecret) {
+        return 'Bitte zuerst das Client-Secret eintragen.';
+      }
+    }
     widget.db.setSetting(DriveSync.webClientIdKey, clientId);
     final result = await DriveSync.run(widget.db, interactive: true);
     // Nach dem ersten erfolgreichen Abgleich läuft er von selbst weiter.
@@ -77,11 +90,9 @@ class _SyncPageState extends State<SyncPage> {
     final file = File(p.join(
         (await getTemporaryDirectory()).path, 'fitapp_sicherung_$stamp.fitapp'));
     await file.writeAsBytes(store.toBackup());
-    await SharePlus.instance.share(ShareParams(
-      files: [XFile(file.path)],
-      subject: 'FitApp-Sicherung',
-    ));
-    return 'Sicherung erstellt.';
+    final done = await handOverFiles([XFile(file.path)],
+        subject: 'FitApp-Sicherung');
+    return done ? 'Sicherung erstellt.' : 'Nichts gespeichert.';
   }
 
   Future<String> _importBackup() async {
@@ -204,15 +215,26 @@ class _SyncPageState extends State<SyncPage> {
             'Der automatische Abgleich braucht eine einmalige Einrichtung in '
             'der Google-Cloud-Konsole; die Schritte stehen in der Datei '
             'docs/GOOGLE-DRIVE-EINRICHTUNG.md des Projekts. Am Ende trägst du '
-            'hier die Web-Client-ID ein.',
+            'hier die Client-ID ein, am PC die des Typs „Desktop-App" samt '
+            'Client-Secret.',
           ),
           TextField(
             controller: _clientId,
-            decoration: const InputDecoration(
-              labelText: 'Web-Client-ID',
+            decoration: InputDecoration(
+              labelText: AppPlatform.isDesktop
+                  ? 'Desktop-Client-ID'
+                  : 'Web-Client-ID',
               hintText: '….apps.googleusercontent.com',
             ),
           ),
+          if (AppPlatform.isDesktop)
+            TextField(
+              controller: _clientSecret,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'Client-Secret (nur beim ersten Mal)',
+              ),
+            ),
           const SizedBox(height: 12),
           FilledButton.icon(
             onPressed: _busy ? null : () => _run(_syncDrive),

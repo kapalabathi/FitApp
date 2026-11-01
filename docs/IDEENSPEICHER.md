@@ -33,7 +33,7 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-011 | Intervall-Timer steuert Laufband-Geschwindigkeit automatisch | Timer / Geräte | M | Umgesetzt | Nutzer |
 | I-012 | Daten mehrerer Geräte in einer Einheit koppeln (z. B. Laufband + Brustgurt) | Geräte | M | Umgesetzt | Nutzer |
 | I-013 | Geräteunabhängige Anbindung über Standardprofile, um möglichst viele Geräte abzudecken | Geräte | L | Umgesetzt | Nutzer |
-| I-014 | Windows-Version für den Laptop (optional) | Plattform | ? | Neu | Nutzer |
+| I-014 | Windows-Version für den Laptop (optional) | Plattform | L | In Arbeit | Nutzer |
 | I-015 | Synchronisation der Trainings zwischen Phone, Tablet und Laptop über Google Drive | Daten | L | Umgesetzt, ungetestet | Nutzer |
 | I-016 | Trainings direkt zum eigenen Strava-Konto hochladen | Strava | M | Umgesetzt, ungetestet | Nutzer |
 | I-017 | Aktivitäten aus Strava importieren (u. a. Uhr-Aufzeichnungen mit GPS) | Strava | M | Umgesetzt, ungetestet | Nutzer |
@@ -230,3 +230,5 @@ Die Liste aller offenen Prüfungen am Gerät steht in [MANUELLE-TESTS.md](MANUEL
 Stand Version 0.21.0: I-041 rechnet nach Edwards ohne neue Profilangaben: Minuten je Pulsbereich mal 1 bis 5, ab 50 % des Maximalpulses. I-042 legt beliebig viele Trainings übereinander; als gleiches Workout gelten gleiche Sportart und gleicher Titel. I-050 rechnet mit 6 Sekunden je Atemzug. I-061: 24 Übungen stehen als G-214 bis G-237 in Grafikliste und `tools/uebungen.json`; die Grafiken fehlen noch, erst danach kommen sie mit `python tools/uebungen_erzeugen.py grafiken/medium` in die App.
 
 Stand Version 0.21.1: I-061 umgesetzt, G-214 bis G-237 sind mit Grafiken in der App. Bestehende Installationen bekommen sie über Datenbankfassung 16. Fünf Grafiken (G-220, G-221, G-222, G-231, G-234) wurden nach der Prüfung neu erzeugt.
+
+Stand Version 0.22.0: I-014 als eigenes Programm für Windows und Linux entschieden, nicht im Browser: Dort wären Bluetooth, Aufzeichnung und Datenbank unzuverlässig. Der Code ist vorbereitet, gebaut und am Gerät geprüft ist die Fassung noch nicht, siehe [DESKTOP.md](DESKTOP.md).

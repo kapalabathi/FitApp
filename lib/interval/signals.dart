@@ -1,10 +1,11 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_tts/flutter_tts.dart';
 
 import '../data/database.dart';
+import '../platform/app_platform.dart';
 import 'interval_models.dart';
 import 'interval_run.dart';
+import 'speaker.dart';
 
 /// Welche Signale die App im Training gibt. Wird in der Datenbank gemerkt.
 class SignalSettings {
@@ -111,20 +112,17 @@ Signals Function(SignalSettings settings) createSignals = DeviceSignals.new;
 /// Töne, Vibration und Sprachansage über das Gerät.
 class DeviceSignals implements Signals {
   DeviceSignals(this.settings) {
-    if (settings.tone) {
+    if (settings.tone && !AppPlatform.isDesktop) {
       // Musik anderer Apps wird für den Ton kurz leiser, läuft aber weiter.
       AudioPlayer.global.setAudioContext(
         AudioContextConfig(focus: AudioContextConfigFocus.duckOthers).build(),
       );
     }
-    if (settings.voice) {
-      _tts.setLanguage('de-DE');
-    }
   }
 
   final SignalSettings settings;
   final Map<String, AudioPlayer> _players = {};
-  final FlutterTts _tts = FlutterTts();
+  late final Speaker _speaker = Speaker.forDevice();
 
   @override
   void warn() => _play('warn');
@@ -143,7 +141,7 @@ class DeviceSignals implements Signals {
 
   @override
   void say(String text) {
-    if (settings.voice) _tts.speak(text);
+    if (settings.voice) _speaker.say(text);
   }
 
   void _play(String sound) {
@@ -163,6 +161,6 @@ class DeviceSignals implements Signals {
     for (final p in _players.values) {
       p.dispose();
     }
-    _tts.stop();
+    if (settings.voice) _speaker.stop();
   }
 }

@@ -23,7 +23,8 @@ Der Fingerabdruck gehört zum Schlüssel, mit dem dieser Rechner die App signier
 4. **Android-Client:** Unter „APIs & Dienste" → „Anmeldedaten" → „Anmeldedaten erstellen" → „OAuth-Client-ID" den Typ „Android" wählen und Paketname und SHA-1-Fingerabdruck aus der Tabelle oben eintragen.
 5. **Web-Client:** Am selben Ort eine zweite OAuth-Client-ID vom Typ „Webanwendung" anlegen. Weitere Angaben sind nicht nötig. Die angezeigte Client-ID endet auf `.apps.googleusercontent.com`.
 6. **In der App:** Verlauf → Synchronisation, die Web-Client-ID eintragen und „Jetzt abgleichen" tippen. Beim ersten Mal fragt Google nach der Anmeldung und nach dem Zugriff auf die App-Daten in Drive.
-7. **Auf dem zweiten Gerät:** dieselbe Web-Client-ID eintragen und abgleichen. Dasselbe Google-Konto verwenden.
+7. **Am PC (Windows oder Linux):** Eine weitere OAuth-Client-ID vom Typ „Desktop-App" anlegen. In der App Client-ID und Client-Secret dieses Clients eintragen; Google öffnet zur Anmeldung den Browser. Solange die App im Status „Test" ist, läuft die Anmeldung nach etwa sieben Tagen ab und muss wiederholt werden.
+8. **Auf dem zweiten Gerät:** dieselbe Web-Client-ID eintragen und abgleichen. Dasselbe Google-Konto verwenden.
 
 Nach dem ersten erfolgreichen Abgleich läuft er von selbst: beim Start der App und nach jedem Training.
 

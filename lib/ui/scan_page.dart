@@ -1,11 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:universal_ble/universal_ble.dart';
 
 import '../ble/device_kind.dart';
 import '../ble/device_probe.dart';
+import 'file_handover.dart';
 
 /// Sucht Bluetooth-Geräte in der Nähe. Ein Tipp auf ein Gerät schließt die
 /// Seite und gibt es als Ergebnis zurück.
@@ -114,8 +114,13 @@ class _ScanPageState extends State<ScanPage> {
             IconButton(
               tooltip: 'Suchergebnis teilen',
               icon: const Icon(Icons.ios_share),
-              onPressed: () => SharePlus.instance
-                  .share(ShareParams(text: scanReport(_devices.values))),
+              onPressed: () async {
+                final messenger = ScaffoldMessenger.of(context);
+                if (await handOverText(scanReport(_devices.values))) {
+                  messenger.showSnackBar(const SnackBar(
+                      content: Text('In die Zwischenablage kopiert.')));
+                }
+              },
             ),
         ],
         bottom: _scanning

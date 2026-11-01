@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../platform/app_platform.dart';
 import '../ble/device_kind.dart';
 import '../data/database.dart';
 import '../data/models.dart';
@@ -33,7 +34,10 @@ class StartPage extends StatefulWidget {
 class _StartPageState extends State<StartPage> {
   // Yoga, Crossfit, Calisthenics und Dehnen laufen über den Bereich
   // „Programme".
-  static final _sports = Sport.values.where((s) => s.freeRecording).toList();
+  static List<Sport> get _sports => [
+        for (final s in Sport.values)
+          if (s.freeRecording && (AppPlatform.hasGps || !s.usesGps)) s,
+      ];
 
   static const _autoPauseKey = 'training.autoPause';
 

@@ -1,6 +1,6 @@
 # Manuelle Tests
 
-Stand: Version 0.21.1 (2026-10-31). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
+Stand: Version 0.22.0 (2026-11-01). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
 
 ## 1 Zuerst: Update ohne Datenverlust
 
@@ -98,6 +98,16 @@ Hand am Not-Stopp, Obergrenze vorsichtig wählen.
 - [ ] Verlauf: Auswahl, dann Zurück-Taste hebt sie auf und verlässt die App nicht (I-028).
 - [ ] Filter „Haltung" und Varianten auf der Übungsseite (I-046, I-051).
 - [ ] Tablet: Seiten sehen vernünftig aus.
+
+## 8a Windows und Linux (I-014)
+
+- [ ] Programm startet, alte Daten bleiben getrennt vom Phone.
+- [ ] Laufband und Brustgurt koppeln, eine Einheit aufzeichnen.
+- [ ] Ansagen und Töne sind zu hören.
+- [ ] Export und automatische Sicherung landen im gewählten Ordner.
+- [ ] Workout zählt von Hand, ohne Kamera.
+- [ ] Sicherungsdatei vom Phone einspielen.
+- [ ] Google Drive mit dem Desktop-Client abgleichen, nach einem Neustart läuft es ohne neue Anmeldung.
 
 ## 9 Dienste, nur wenn eingerichtet
 

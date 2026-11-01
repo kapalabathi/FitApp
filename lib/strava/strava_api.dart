@@ -4,6 +4,8 @@ import 'dart:typed_data';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
+import '../platform/app_platform.dart';
+
 /// Ablage für Zugangsdaten. Auf dem Gerät liegt sie im verschlüsselten
 /// Speicher von Android; so bleiben die Daten auch bei einer späteren
 /// Synchronisation der Datenbank außen vor.
@@ -55,8 +57,13 @@ class StravaApi {
 
   /// Dorthin schickt Strava nach der Anmeldung zurück. In der Strava-
   /// Anwendung muss als „Authorization Callback Domain" `localhost` stehen.
-  static const redirectUri = 'fitapp://localhost/strava';
-  static const callbackScheme = 'fitapp';
+  /// Am PC wartet die App auf einem Port des eigenen Rechners.
+  static String get redirectUri => AppPlatform.isDesktop
+      ? '$_desktopCallback/strava'
+      : 'fitapp://localhost/strava';
+  static String get callbackScheme =>
+      AppPlatform.isDesktop ? _desktopCallback : 'fitapp';
+  static const _desktopCallback = 'http://localhost:43823';
   static const scopes = ['activity:write', 'activity:read_all'];
 
   static const _host = 'www.strava.com';

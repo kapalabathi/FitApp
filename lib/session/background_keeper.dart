@@ -1,5 +1,7 @@
 import 'package:flutter_foreground_task/flutter_foreground_task.dart';
 
+import '../platform/app_platform.dart';
+
 /// Hält die App während eines Trainings mit Bluetooth-Geräten am Leben, auch
 /// bei gesperrtem Display oder wenn eine andere App im Vordergrund ist.
 ///
@@ -15,6 +17,9 @@ abstract final class BackgroundKeeper {
   /// Startet den Dienst. Schlägt das fehl, läuft das Training trotzdem; es
   /// ist dann nur nicht vor dem Schlafenlegen geschützt.
   static Future<void> start(String title) async {
+    // Der PC legt die App nicht schlafen; die Bildschirmsperre verhindert
+    // die Trainingssitzung selbst.
+    if (AppPlatform.isDesktop) return;
     try {
       if (!_initialized) {
         FlutterForegroundTask.init(

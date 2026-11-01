@@ -1,6 +1,8 @@
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 
+import '../platform/app_platform.dart';
+
 import 'geo.dart';
 
 /// Das GPS des Phones als Quelle für Standorte.
@@ -9,6 +11,7 @@ abstract final class PhoneGps {
   /// Gibt `null` zurück, wenn aufgezeichnet werden kann, sonst den Grund,
   /// warum nicht.
   static Future<String?> prepare() async {
+    if (!AppPlatform.hasGps) return 'Am PC gibt es keine GPS-Aufzeichnung.';
     if (!await Geolocator.isLocationServiceEnabled()) {
       return 'Der Standortdienst des Geräts ist ausgeschaltet.';
     }

@@ -5,6 +5,9 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:googleapis/drive/v3.dart' as drive;
 
 import '../data/database.dart';
+import '../platform/app_platform.dart';
+import '../strava/strava_api.dart';
+import 'desktop_google_auth.dart';
 import 'sync_engine.dart';
 
 /// Der Ablageort im Google Drive des Nutzers. Die Dateien liegen im
@@ -67,6 +70,10 @@ abstract final class DriveSync {
 
   static const _scopes = [drive.DriveApi.driveAppdataScope];
 
+  /// Die Anmeldung am PC.
+  static DesktopGoogleAuth desktopAuth() =>
+      DesktopGoogleAuth(const SecureSecretStore());
+
   static bool _initialized = false;
 
   /// Ob die Synchronisation eingerichtet und eingeschaltet ist.
@@ -76,6 +83,16 @@ abstract final class DriveSync {
 
   static Future<DriveSyncStore> _store(AppDatabase db,
       {required bool interactive}) async {
+    if (AppPlatform.isDesktop) {
+      final client = await desktopAuth().client(
+          db.setting(webClientIdKey) ?? '', _scopes,
+          interactive: interactive);
+      if (client == null) {
+        throw const DriveSyncException(
+            'Nicht bei Google angemeldet. Bitte einmal von Hand abgleichen.');
+      }
+      return DriveSyncStore(drive.DriveApi(client));
+    }
     final signIn = GoogleSignIn.instance;
     if (!_initialized) {
       await signIn.initialize(serverClientId: db.setting(webClientIdKey));
@@ -126,7 +143,9 @@ abstract final class DriveSync {
     }
   }
 
-  static Future<void> signOut() => GoogleSignIn.instance.signOut();
+  static Future<void> signOut() => AppPlatform.isDesktop
+      ? desktopAuth().signOut()
+      : GoogleSignIn.instance.signOut();
 }
 
 class DriveSyncException implements Exception {

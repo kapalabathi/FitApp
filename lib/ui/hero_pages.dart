@@ -6,6 +6,7 @@ import '../data/models.dart';
 import '../interval/signals.dart';
 import '../session/workout_session.dart';
 import '../vision/hero_workouts.dart';
+import '../platform/app_platform.dart';
 import '../vision/pose_camera.dart';
 import '../vision/rep_counter.dart';
 import 'format.dart';
@@ -151,6 +152,13 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
             w.equipment,
           ].join('  ·  ')),
           Text(best ?? 'Noch kein Bestwert'),
+          if (!AppPlatform.hasCamera) ...[
+            const SizedBox(height: 12),
+            const Text('Am PC zählt keine Kamera mit. Du zählst mit + und −, '
+                'und „Weiter" führt zum nächsten Abschnitt.'),
+            if (w.runMeters > 0)
+              const Text('Einen Lauf beendest du mit „Lauf beendet".'),
+          ] else ...[
           const SizedBox(height: 16),
           Text('Kamera', style: theme.textTheme.titleMedium),
           const SizedBox(height: 8),
@@ -192,6 +200,7 @@ class _HeroWorkoutPageState extends State<HeroWorkoutPage> {
           const Text('Zählt die Kamera falsch, korrigierst du mit + und −, '
               'oder gehst mit „Weiter" zum nächsten Abschnitt. Die Bilder '
               'werden nur auf dem Phone ausgewertet und nicht gespeichert.'),
+          ],
         ],
       ),
     );
@@ -217,7 +226,8 @@ class HeroPlayerPage extends StatefulWidget {
 
 class _HeroPlayerPageState extends State<HeroPlayerPage> {
   late final HeroRun _run = HeroRun(widget.workout);
-  late final PoseCamera _camera = PoseCamera(onPose: _onPose);
+  late final PoseCamera? _camera =
+      AppPlatform.hasCamera ? PoseCamera(onPose: _onPose) : null;
   late RepCounter? _counter = _newCounter();
   bool _finishing = false;
 
@@ -232,7 +242,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
   @override
   void initState() {
     super.initState();
-    _camera.start(widget.lens);
+    _camera?.start(widget.lens);
     _session.addListener(_tick);
     _announce();
   }
@@ -247,7 +257,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
   @override
   void dispose() {
     _session.removeListener(_tick);
-    _camera.dispose();
+    _camera?.dispose();
     super.dispose();
   }
 
@@ -365,11 +375,11 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
     final counter = _counter;
     if (block.isRest) return 'Geht von selbst weiter';
     if (block.isRun) {
-      return counter == null
+      return counter == null || !AppPlatform.hasCamera
           ? 'Zum Abschluss „Lauf beendet" tippen'
           : 'Endet mit der ersten Wiederholung der nächsten Übung';
     }
-    if (counter == null) return 'Von Hand zählen';
+    if (counter == null || !AppPlatform.hasCamera) return 'Von Hand zählen';
     final hint = counter.kind.hint;
     return counter.tracking ? hint : 'Nicht im Bild: $hint';
   }
@@ -383,7 +393,7 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
         if (!didPop) _confirmStop();
       },
       child: ListenableBuilder(
-        listenable: Listenable.merge([_session, _camera]),
+        listenable: Listenable.merge([_session, ?_camera]),
         builder: (context, _) {
           final block = _run.current;
           final heartRate =
@@ -393,10 +403,10 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
               automaticallyImplyLeading: false,
               title: Text(widget.workout.name),
               actions: [
-                if (_camera.canSwitch)
+                if (_camera case final camera? when camera.canSwitch)
                   IconButton(
                     tooltip: 'Kamera wechseln',
-                    onPressed: _camera.switchCamera,
+                    onPressed: camera.switchCamera,
                     icon: const Icon(Icons.cameraswitch),
                   ),
               ],
@@ -409,7 +419,10 @@ class _HeroPlayerPageState extends State<HeroPlayerPage> {
             body: SafeArea(
               child: Column(
                 children: [
-                  Expanded(child: _CameraView(camera: _camera)),
+                  if (_camera case final camera?)
+                    Expanded(child: _CameraView(camera: camera))
+                  else
+                    const Spacer(),
                   if (block != null) ...[
                     Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),

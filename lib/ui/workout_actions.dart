@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart' as p;
 import 'package:path_provider/path_provider.dart';
-import 'package:share_plus/share_plus.dart';
 
 import '../data/database.dart';
 import '../data/models.dart';
@@ -18,6 +17,7 @@ import '../gps/phone_gps.dart';
 import '../import/file_import.dart';
 import '../strava/strava_api.dart';
 import '../strava/strava_service.dart';
+import 'file_handover.dart';
 import 'format.dart';
 
 enum ExportFormat {
@@ -127,12 +127,12 @@ Future<void> exportWorkouts(BuildContext context, AppDatabase db,
           content: Text('$skipped ohne Strecke ausgelassen; '
               '${files.length} werden exportiert.')));
     }
-    await SharePlus.instance.share(ShareParams(
-      files: files,
+    await handOverFiles(
+      files,
       subject: workouts.length == 1
           ? workouts.single.title ?? workouts.single.sport.label
           : '${files.length} Trainings aus FitApp',
-    ));
+    );
   } catch (e) {
     messenger.showSnackBar(
         SnackBar(content: Text('Export fehlgeschlagen: $e')));

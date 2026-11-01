@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 
 import '../data/database.dart';
+import '../platform/app_platform.dart';
 import '../strava/strava_api.dart';
 import '../strava/strava_service.dart';
 
@@ -86,6 +87,7 @@ class _StravaPageState extends State<StravaPage> {
     final callback = await FlutterWebAuth2.authenticate(
       url: (await _api.authorizeUri()).toString(),
       callbackUrlScheme: StravaApi.callbackScheme,
+      options: FlutterWebAuth2Options(useWebview: !AppPlatform.isDesktop),
     );
     await _api.completeAuthorization(callback);
     return 'Mit Strava verbunden.';

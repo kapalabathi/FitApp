@@ -4,6 +4,14 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.22.0] – 2026-11-01
+
+### Hinzugefügt
+- **Vorbereitung für Windows und Linux** (I-014): Plattformordner, Sicherung und Export über normale Ordner, Anmeldung bei Google und Strava im Browser, Sprachansagen unter Linux. Kamera und GPS entfallen am PC. Die Fassung ist noch nicht gebaut, siehe [docs/DESKTOP.md](docs/DESKTOP.md).
+
+### Behoben
+- Ein Test hing am festen Datum seines Beispieltrainings und schlug nach 30 Tagen fehl.
+
 ## [0.21.1] – 2026-10-31
 
 ### Hinzugefügt

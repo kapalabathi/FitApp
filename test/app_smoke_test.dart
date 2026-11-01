@@ -22,7 +22,7 @@ void main() {
   tearDown(() => db.close());
 
   int recordWorkout() {
-    final id = db.startWorkout(Sport.indoorBike, DateTime(2026, 10, 1, 18, 30));
+    final id = db.startWorkout(Sport.indoorBike, DateTime.now().subtract(const Duration(days: 2)));
     for (var t = 1; t <= 120; t++) {
       db.addSample(
         id,
