@@ -4,6 +4,11 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.22.1] – 2026-11-07
+
+### Hinzugefügt
+- Im Abschnitt „Verbindung" eines Trainings lässt sich das Protokoll der Abbrüche teilen: Zeitpunkt, Gerät, Grund im Wortlaut von Android und Dauer.
+
 ## [0.22.0] – 2026-11-01
 
 ### Hinzugefügt

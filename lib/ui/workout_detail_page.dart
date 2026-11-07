@@ -6,6 +6,7 @@ import '../data/models.dart';
 import '../stats/compare.dart';
 import '../stats/stats.dart';
 import 'compare_page.dart';
+import 'file_handover.dart';
 import 'format.dart';
 import 'line_chart.dart';
 import 'route_map.dart';
@@ -235,13 +236,15 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 ),
               if (runs.length > 1)
                 PopupMenuItem(
-                  value: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => ComparePage(
-                      db: db,
-                      workouts: runs,
-                      title: w.title ?? w.sport.label,
+                  value: () => Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => ComparePage(
+                        db: db,
+                        workouts: runs,
+                        title: w.title ?? w.sport.label,
+                      ),
                     ),
-                  )),
+                  ),
                   child: Text('Alle ${runs.length} Durchgänge vergleichen'),
                 ),
               for (final format in ExportFormat.values)
@@ -253,9 +256,14 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 value: () async {
                   final messenger = ScaffoldMessenger.of(context);
                   final problem = await rememberTrainingLocation(db);
-                  messenger.showSnackBar(SnackBar(
-                      content: Text(problem ??
-                          'Aktueller Standort als Trainingsort gemerkt.')));
+                  messenger.showSnackBar(
+                    SnackBar(
+                      content: Text(
+                        problem ??
+                            'Aktueller Standort als Trainingsort gemerkt.',
+                      ),
+                    ),
+                  );
                 },
                 child: const Text('Trainingsort neu festlegen'),
               ),
@@ -336,8 +344,9 @@ class _WorkoutDetailPageState extends State<WorkoutDetailPage> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: Text(exerciseNames[s.exerciseUuid] ??
-                          'Gelöschte Übung'),
+                      child: Text(
+                        exerciseNames[s.exerciseUuid] ?? 'Gelöschte Übung',
+                      ),
                     ),
                     Text(formatSet(s)),
                   ],
@@ -452,12 +461,31 @@ class _LinkLosses extends StatelessWidget {
       children: [
         Text('Verbindung', style: theme.textTheme.titleSmall),
         const SizedBox(height: 4),
-        Text([
-          '${losses.length} ${losses.length == 1 ? 'Abbruch' : 'Abbrüche'}',
-          if (average != null) 'im Mittel $average s getrennt',
-        ].join(', ')),
+        Text(
+          [
+            '${losses.length} ${losses.length == 1 ? 'Abbruch' : 'Abbrüche'}',
+            if (average != null) 'im Mittel $average s getrennt',
+          ].join(', '),
+        ),
         for (final e in byReason.entries)
           Text('${e.value} × ${e.key}', style: theme.textTheme.bodySmall),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: TextButton.icon(
+            onPressed: () async {
+              final messenger = ScaffoldMessenger.of(context);
+              if (await handOverText(linkLossReport(losses))) {
+                messenger.showSnackBar(
+                  const SnackBar(
+                    content: Text('In die Zwischenablage kopiert.'),
+                  ),
+                );
+              }
+            },
+            icon: const Icon(Icons.ios_share),
+            label: const Text('Protokoll teilen'),
+          ),
+        ),
         ExpansionTile(
           tilePadding: EdgeInsets.zero,
           title: const Text('Alle Abbrüche'),
@@ -468,13 +496,12 @@ class _LinkLosses extends StatelessWidget {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
-                      width: 64,
-                      child: Text(formatDuration(l.t)),
-                    ),
+                    SizedBox(width: 64, child: Text(formatDuration(l.t))),
                     Expanded(
-                      child: Text('${l.device}: ${l.reasonLabel}'
-                          '${l.downS == null ? ', nicht zurückgekommen' : ', ${l.downS} s'}'),
+                      child: Text(
+                        '${l.device}: ${l.reasonLabel}'
+                        '${l.downS == null ? ', nicht zurückgekommen' : ', ${l.downS} s'}',
+                      ),
                     ),
                   ],
                 ),

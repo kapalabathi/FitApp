@@ -24,8 +24,12 @@ enum Metric {
 /// nicht mehr ändern.
 enum Sport {
   treadmill('treadmill', 'Laufband', Icons.directions_run, indoorMachine: true),
-  indoorBike('indoor_bike', 'Indoor-Bike', Icons.directions_bike,
-      indoorMachine: true),
+  indoorBike(
+    'indoor_bike',
+    'Indoor-Bike',
+    Icons.directions_bike,
+    indoorMachine: true,
+  ),
   skiErg('ski_erg', 'SkiErg', Icons.downhill_skiing, indoorMachine: true),
   running('running', 'Laufen', Icons.directions_run),
   hiking('hiking', 'Spazieren/Wandern', Icons.hiking),
@@ -45,10 +49,10 @@ enum Sport {
   /// Schneller bewegt man sich in dieser Sportart nicht; höhere Werte vom
   /// GPS sind Messfehler.
   double get maxPlausibleSpeedMps => switch (this) {
-        Sport.running => 10,
-        Sport.cycling => 25,
-        _ => 5,
-      };
+    Sport.running => 10,
+    Sport.cycling => 25,
+    _ => 5,
+  };
 
   /// Lässt sich auf der Startseite frei starten; die übrigen Sportarten
   /// laufen über Trainingsprogramme.
@@ -62,10 +66,10 @@ enum Sport {
   final bool indoorMachine;
 
   String get cadenceLabel => switch (this) {
-        Sport.skiErg => 'Schlagfrequenz',
-        Sport.treadmill || Sport.running => 'Schrittfrequenz',
-        _ => 'Trittfrequenz',
-      };
+    Sport.skiErg => 'Schlagfrequenz',
+    Sport.treadmill || Sport.running => 'Schrittfrequenz',
+    _ => 'Trittfrequenz',
+  };
 
   /// Früher eine eigene Sportart, seit Version 0.4.2 Teil von [hiking].
   static const _formerWalkingId = 'walking';
@@ -285,6 +289,14 @@ class LinkLoss {
   }
 }
 
+/// Die Abbrüche als Text zum Weitergeben, je Zeile Zeitpunkt in Sekunden,
+/// Gerät, Grund im Wortlaut von Android und Dauer.
+String linkLossReport(List<LinkLoss> losses) => [
+  for (final l in losses)
+    '${l.t} s | ${l.device} | ${l.reason ?? 'ohne Grund'} | '
+        '${l.downS == null ? 'nicht zurück' : '${l.downS} s getrennt'}',
+].join('\n');
+
 /// Der Grund, wenn die App selbst neu verbindet, weil nichts mehr kommt.
 const linkSilentReason = 'No Data From Device';
 
@@ -293,8 +305,7 @@ String linkReasonLabel(String? reason) {
   if (reason == null || reason.isEmpty) return 'ohne Angabe von Android';
   const known = {
     linkSilentReason: 'keine Daten mehr, von der App neu verbunden',
-    'Connection Timeout':
-        'Funkverbindung abgerissen (Zeitüberschreitung)',
+    'Connection Timeout': 'Funkverbindung abgerissen (Zeitüberschreitung)',
     'LMP Response Timeout / LL Response Timeout':
         'Gerät antwortet nicht mehr (Zeitüberschreitung)',
     'Remote User Terminated Connection': 'vom Gerät beendet',
