@@ -30,6 +30,9 @@ class _DevicesPageState extends State<DevicesPage> {
 
   void _load() => setState(() => _devices = widget.db.devices());
 
+  KeepAliveMode get _keepAliveMode => KeepAliveMode.fromId(
+      widget.db.setting(SensorConnection.keepAliveKey));
+
   Future<void> _add() async {
     final found = await Navigator.of(context).push<BleDevice>(
       MaterialPageRoute(builder: (_) => const ScanPage()),
@@ -181,6 +184,31 @@ class _DevicesPageState extends State<DevicesPage> {
             value: widget.db.setting(SensorConnection.fastLinkKey) == '1',
             onChanged: (on) => setState(() => widget.db
                 .setSetting(SensorConnection.fastLinkKey, on ? '1' : '0')),
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text('Lebenszeichen an Laufband und Bike'),
+                const SizedBox(height: 8),
+                SegmentedButton<KeepAliveMode>(
+                  segments: [
+                    for (final m in KeepAliveMode.values)
+                      ButtonSegment(value: m, label: Text(m.label)),
+                  ],
+                  selected: {_keepAliveMode},
+                  onSelectionChanged: (s) => setState(() => widget.db
+                      .setSetting(SensorConnection.keepAliveKey, s.first.id)),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  '${_keepAliveMode.description}. Zum Ausprobieren, wenn '
+                  'ein Gerät die Verbindung regelmäßig trennt.',
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+              ],
+            ),
           ),
           if (_devices.isEmpty)
             const Padding(

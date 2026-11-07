@@ -11,6 +11,24 @@ import 'ftms_control.dart';
 import 'link_monitor.dart';
 import 'uuids.dart';
 
+/// Womit sich die App bei einem steuerbaren Gerät meldet, damit es die
+/// Verbindung nicht wegen Stille trennt. Wählbar, um herauszufinden, was ein
+/// Gerät verträgt.
+enum KeepAliveMode {
+  control('control', 'Steuererlaubnis', 'Bittet alle 20 s um Steuererlaubnis'),
+  read('read', 'Lesen', 'Liest alle 20 s die Fähigkeiten des Geräts'),
+  off('off', 'Aus', 'Sendet kein Lebenszeichen');
+
+  const KeepAliveMode(this.id, this.label, this.description);
+
+  final String id;
+  final String label;
+  final String description;
+
+  static KeepAliveMode fromId(String? id) =>
+      values.firstWhere((m) => m.id == id, orElse: () => control);
+}
+
 enum LinkState {
   connecting('Verbinde …'),
   connected('Verbunden'),
@@ -32,7 +50,13 @@ class SensorConnection extends ChangeNotifier {
     this.onLinkLost,
     this.onLinkRestored,
     this.fastLink = false,
+    this.keepAliveMode = KeepAliveMode.control,
   });
+
+  /// Unter diesem Schlüssel steht die Einstellung für [keepAliveMode].
+  static const keepAliveKey = 'ble.keepAlive';
+
+  final KeepAliveMode keepAliveMode;
 
   /// Unter diesem Schlüssel steht die Einstellung für [fastLink].
   static const fastLinkKey = 'ble.fastLink';
@@ -140,9 +164,9 @@ class SensorConnection extends ChangeNotifier {
           _lostReported = false;
           onLinkRestored?.call(saved);
         }
-        if (machine != null) {
+        if (machine != null && keepAliveMode != KeepAliveMode.off) {
           _keepAlive = Timer.periodic(_keepAliveInterval, (_) async {
-            watch.answered(await machine.keepAlive());
+            watch.answered(await machine.keepAlive(keepAliveMode));
             if (!watch.stale) return;
             _lostReason = linkSilentReason;
             _signalLost();
@@ -253,11 +277,12 @@ class SensorConnection extends ChangeNotifier {
 
 /// Setzt Zielwerte an einem FTMS-Gerät.
 class MachineControl {
-  MachineControl._(this._point, this.features, this._ranges);
+  MachineControl._(this._point, this._feature, this.features, this._ranges);
 
   static const _answerTimeout = Duration(seconds: 3);
 
   final BleCharacteristic _point;
+  final BleCharacteristic? _feature;
 
   /// Was das Gerät laut eigener Auskunft annimmt; `null`, wenn es dazu
   /// nichts sagt.
@@ -292,8 +317,8 @@ class MachineControl {
     final point = find(Uuids.ftmsControlPoint);
     if (point == null) return null;
     FtmsFeatures? features;
+    final feature = find(Uuids.ftmsFeature);
     try {
-      final feature = find(Uuids.ftmsFeature);
       if (feature != null) features = FtmsFeatures.parse(await feature.read());
     } catch (_) {
       // Ohne Auskunft wird jeder Zielwert versucht; das Gerät antwortet dann.
@@ -313,7 +338,7 @@ class MachineControl {
         TargetKind.speed, Uuids.supportedSpeedRange, FtmsRange.parseSpeed);
     await readRange(TargetKind.resistance, Uuids.supportedResistanceRange,
         FtmsRange.parseResistance);
-    final control = MachineControl._(point, features, ranges);
+    final control = MachineControl._(point, feature, features, ranges);
     subscriptions.add(point.onValueReceived.listen(control._onAnswer));
     await point.indications.subscribe();
     return control;
@@ -353,11 +378,17 @@ class MachineControl {
   }
 
   /// Meldet sich beim Gerät, damit es die Verbindung nicht wegen Stille
-  /// trennt. Dafür dient die Bitte um Steuererlaubnis: Sie ändert nichts am
+  /// trennt. Üblich ist die Bitte um Steuererlaubnis: Sie ändert nichts am
   /// laufenden Training und darf beliebig oft gestellt werden. Gibt zurück,
   /// ob das Gerät geantwortet hat.
-  Future<bool> keepAlive() async {
+  Future<bool> keepAlive([KeepAliveMode mode = KeepAliveMode.control]) async {
     try {
+      if (mode == KeepAliveMode.read) {
+        final feature = _feature;
+        if (feature == null) return false;
+        await feature.read().timeout(_answerTimeout);
+        return true;
+      }
       final answer = await _send(ftmsRequestControl);
       if (answer.success) _hasControl = true;
       return true;

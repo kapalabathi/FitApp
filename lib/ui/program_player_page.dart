@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../data/models.dart';
+import '../programs/progression.dart';
 import '../programs/program_models.dart';
 import '../programs/program_run.dart';
 import '../session/workout_session.dart';
@@ -37,6 +38,21 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
 
   /// Belegt die Eingaben für [phase] vor: die geplanten Wiederholungen und
   /// das zuletzt bei dieser Übung verwendete Gewicht.
+  /// Je Übung einmal ermittelt; Sätze aus dem laufenden Training zählen
+  /// noch nicht mit.
+  final Map<String, Progression> _progressions = {};
+
+  Progression _progression(Exercise exercise) =>
+      _progressions[exercise.uuid] ??= progressionAfter(
+        _session.recorder.db
+            .exerciseHistory(exercise.uuid)
+            .where((s) =>
+                s.performedAt?.millisecondsSinceEpoch !=
+                _session.recorder.startedAt.millisecondsSinceEpoch)
+            .toList(),
+        hasHarder: _exercises.containsKey(exercise.harderUuid),
+      );
+
   void _prepareInput(ProgramPhase phase) {
     if (identical(_inputFor, phase)) return;
     _inputFor = phase;
@@ -148,6 +164,7 @@ class _ProgramPlayerPageState extends State<ProgramPlayerPage> {
                             phase: phase,
                             easier: _exercises[phase.exercise.easierUuid],
                             harder: _exercises[phase.exercise.harderUuid],
+                            progression: _progression(phase.exercise),
                             onSwap: _session.swapExercise,
                           ),
                   ),
@@ -258,6 +275,7 @@ class _PhaseView extends StatelessWidget {
     required this.phase,
     this.easier,
     this.harder,
+    this.progression = Progression.none,
     required this.onSwap,
   });
 
@@ -267,6 +285,9 @@ class _PhaseView extends StatelessWidget {
   /// Die leichtere und schwerere Variante der Übung, falls es sie gibt.
   final Exercise? easier;
   final Exercise? harder;
+
+  /// Ob die Übung beim letzten Mal gut genug lief für die nächste Stufe.
+  final Progression progression;
   final void Function(Exercise) onSwap;
 
   @override
@@ -331,6 +352,14 @@ class _PhaseView extends StatelessWidget {
         Center(child: counter),
         if (!phase.isRest)
           AreaChips(areas: phase.exercise.areas, centered: true),
+        if (!phase.isRest && progression != Progression.none)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: Text(progression.label,
+                textAlign: TextAlign.center,
+                style: theme.textTheme.titleSmall
+                    ?.copyWith(color: scheme.primary)),
+          ),
         if (!phase.isRest && (easier != null || harder != null))
           Padding(
             padding: const EdgeInsets.only(top: 8),
@@ -346,11 +375,17 @@ class _PhaseView extends StatelessWidget {
                     label: Text('Leichter: ${e.name}'),
                   ),
                 if (harder case final e?)
-                  OutlinedButton.icon(
-                    onPressed: () => onSwap(e),
-                    icon: const Icon(Icons.north, size: 18),
-                    label: Text('Schwerer: ${e.name}'),
-                  ),
+                  progression == Progression.harder
+                      ? FilledButton.icon(
+                          onPressed: () => onSwap(e),
+                          icon: const Icon(Icons.north, size: 18),
+                          label: Text('Schwerer: ${e.name}'),
+                        )
+                      : OutlinedButton.icon(
+                          onPressed: () => onSwap(e),
+                          icon: const Icon(Icons.north, size: 18),
+                          label: Text('Schwerer: ${e.name}'),
+                        ),
               ],
             ),
           ),

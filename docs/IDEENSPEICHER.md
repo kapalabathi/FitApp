@@ -79,11 +79,13 @@ Jede Idee bekommt eine feste, fortlaufende Nummer (`I-001`, `I-002`, …). Numme
 | I-057 | Fertige Routinen aus vorhandenen Übungen: Post-Run, Hips, Lower Back, Sleep, Tech Neck | Programme | S | Umgesetzt, ungetestet | Vorschlag |
 | I-058 | Workout-Formate mit Bestzeit: auf Zeit, AMRAP, EMOM, Leitern wie 21-15-9 | Programme | L | Umgesetzt, ungetestet | Vorschlag |
 | I-059 | „Leichter/Schwerer" beim Abspielen eines Programms über die Variantenketten | Programme | S | Umgesetzt, ungetestet | Vorschlag |
-| I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Neu | Vorschlag |
+| I-060 | Progressionsregel: bei 3 × 12–15 sauberen Wiederholungen die nächste Stufe vorschlagen | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-061 | Gezielte Auswahl von 20–25 weiteren Übungen für Routinen und Workouts | Programme | M | Umgesetzt, ungetestet | Vorschlag |
 | I-062 | Kamera erkennt die Körperhaltung und zählt Wiederholungen und Zeiten im Workout mit | Programme | XL | In Arbeit | Nutzer |
 | I-063 | Fitnessgeräte im Studio besser finden: Dienstdaten und Herstellernamen auswerten, unbekannte Geräte beim Hinzufügen prüfen, Suchergebnis teilen | Geräte | S | Umgesetzt, ungetestet | Nutzer |
 | I-064 | Verbindung stabiler: kein Suchlauf neben laufenden Verbindungen, sauberes Neuverbinden, verstummte Verbindungen erkennen, schneller Funktakt zum Ausprobieren | Geräte | S | Umgesetzt, ungetestet | Nutzer |
+| I-065 | Lebenszeichen an Laufband und Bike wählbar: Steuererlaubnis, Lesen oder aus | Geräte | S | Umgesetzt, ungetestet | Vorschlag |
+| I-066 | Leere App bietet an, eine Sicherung einzuspielen | Daten | S | Umgesetzt, ungetestet | Vorschlag |
 
 ## Details
 
@@ -232,3 +234,5 @@ Stand Version 0.21.0: I-041 rechnet nach Edwards ohne neue Profilangaben: Minute
 Stand Version 0.21.1: I-061 umgesetzt, G-214 bis G-237 sind mit Grafiken in der App. Bestehende Installationen bekommen sie über Datenbankfassung 16. Fünf Grafiken (G-220, G-221, G-222, G-231, G-234) wurden nach der Prüfung neu erzeugt.
 
 Stand Version 0.22.0: I-014 als eigenes Programm für Windows und Linux entschieden, nicht im Browser: Dort wären Bluetooth, Aufzeichnung und Datenbank unzuverlässig. Der Code ist vorbereitet, gebaut und am Gerät geprüft ist die Fassung noch nicht, siehe [DESKTOP.md](DESKTOP.md).
+
+Stand Version 0.23.0: Die FIT-Datei vom 2026-11-01 zeigt 23 Abbrüche des Laufbands im Abstand von 68 bis 77 s, alle als beendete Verbindung, nicht als Zeitüberschreitung. Die früheren Abstände von 146 bis 290 s waren Vielfache davon: Das Lebenszeichen hat nie geholfen, das Band trennt offenbar rund 70 s nach jedem Verbindungsaufbau. I-065 macht das Lebenszeichen wählbar, um das zu testen. I-060 schlägt nach 3 Sätzen mit je mindestens 12 Wiederholungen im letzten Training die schwerere Variante vor, bei Übungen mit Gewicht mehr Gewicht.

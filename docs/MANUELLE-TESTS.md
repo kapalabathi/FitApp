@@ -1,6 +1,6 @@
 # Manuelle Tests
 
-Stand: Version 0.22.0 (2026-11-01). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
+Stand: Version 0.23.0 (2026-11-07). Alles hier ist durch automatische Tests gedeckt, lief aber noch nicht oder nur teilweise am echten Gerät. Die Nummern in Klammern verweisen auf den [Ideenspeicher](IDEENSPEICHER.md).
 
 ## 1 Zuerst: Update ohne Datenverlust
 
@@ -8,6 +8,7 @@ Stand: Version 0.22.0 (2026-11-01). Alles hier ist durch automatische Tests gede
 - [ ] Automatische Sicherung einschalten: Ordner wählen, prüfen, ob die Datei dort liegt (I-045).
 - [ ] Neue APK **über die alte** installieren, nicht vorher deinstallieren. Meldung von Android notieren.
 - [ ] Sind alle Trainings noch da? Falls nicht: Wie genau wurde installiert?
+- [ ] Bei leerer App erscheint oben der Hinweis auf eine Sicherung (I-066).
 - [ ] Sicherung testweise einspielen: Nichts darf doppelt erscheinen.
 
 ## 2 Kamera und Workouts
@@ -40,6 +41,8 @@ Stand: Version 0.22.0 (2026-11-01). Alles hier ist durch automatische Tests gede
 
 - [ ] Bei Abbrüchen eine Einheit mit „Schneller Funktakt" unter Geräte laufen und die Zahl der Abbrüche vergleichen (I-064). Wird es schlechter, wieder ausschalten.
 - [ ] Erscheint im Abschnitt „Verbindung" der Grund „keine Daten mehr"?
+- [ ] Nach jedem Lauf „Protokoll teilen" und schicken.
+- [ ] Lebenszeichen unter Geräte nacheinander auf „Lesen" und „Aus" stellen, je ein Lauf von mindestens 10 Minuten (I-065). Ändert sich der Abstand der Abbrüche von etwa 70 s?
 
 ## 4 Zielpuls (I-032)
 
@@ -87,6 +90,7 @@ Hand am Not-Stopp, Obergrenze vorsichtig wählen.
 - [ ] Atemanhalten erst nach Freischaltung (I-052).
 - [ ] Routine „Nach dem Lauf" einmal durchspielen (I-057).
 - [ ] Nach dem Update sind die neuen Übungen da, z. B. Seitheben und Wandengel; Bilder passen (I-061).
+- [ ] Nach 3 × 12 Wiederholungen erscheint beim nächsten Mal der Vorschlag zur schwereren Variante, der Knopf ist hervorgehoben (I-060).
 - [ ] Im Programm eine Übung auf Atemzüge stellen: Anzeige zählt abwärts, Ansage stimmt (I-050).
 - [ ] Gesamtlänge der Kurs-Einheit passt zur Stufe; Schulterstand, Pflug und Fisch stehen vor der Entspannung (I-053).
 

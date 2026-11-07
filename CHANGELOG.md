@@ -4,6 +4,13 @@ Alle nennenswerten Änderungen am Projekt werden hier festgehalten.
 Format nach [Keep a Changelog](https://keepachangelog.com/de/1.1.0/), Versionierung nach [Semantic Versioning](https://semver.org/lang/de/).
 Einträge verweisen, wo möglich, auf die Nummer im [Ideenspeicher](docs/IDEENSPEICHER.md).
 
+## [0.23.0] – 2026-11-07
+
+### Hinzugefügt
+- **Progressionsregel** (I-060): Nach 3 Sätzen mit je mindestens 12 Wiederholungen im letzten Training schlägt die App im Programm und auf der Übungsseite die schwerere Variante vor, bei Übungen mit Gewicht mehr Gewicht.
+- **Lebenszeichen wählbar** (I-065): Unter Geräte lässt sich wählen, ob die App Laufband und Bike um Steuererlaubnis bittet, nur ihre Fähigkeiten liest oder gar nichts sendet. Zum Eingrenzen der regelmäßigen Abbrüche am Laufband.
+- **Hinweis bei leerer App** (I-066): Ohne Trainings bietet die Startseite an, eine Sicherung einzuspielen.
+
 ## [0.22.1] – 2026-11-07
 
 ### Hinzugefügt

@@ -7,6 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 import '../data/database.dart';
 import '../data/models.dart';
+import '../programs/progression.dart';
 import '../programs/program_models.dart';
 import 'area_chips.dart';
 import 'breath_pages.dart';
@@ -139,7 +140,8 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
             _variant('Leichter', easier),
             _variant('Schwerer', harder),
           ],
-          _SetHistory(db: widget.db, exercise: _exercise),
+          _SetHistory(
+              db: widget.db, exercise: _exercise, hasHarder: harder != null),
         ],
       ),
     );
@@ -149,10 +151,15 @@ class _ExerciseDetailPageState extends State<ExerciseDetailPage> {
 /// Was mit dieser Übung bisher trainiert wurde: Bestwerte und die Sätze der
 /// letzten Trainings (Kraft-Protokoll).
 class _SetHistory extends StatelessWidget {
-  const _SetHistory({required this.db, required this.exercise});
+  const _SetHistory({
+    required this.db,
+    required this.exercise,
+    required this.hasHarder,
+  });
 
   final AppDatabase db;
   final Exercise exercise;
+  final bool hasHarder;
 
   /// So viele Trainings zeigt der Verlauf.
   static const _shownDays = 8;
@@ -192,6 +199,14 @@ class _SetHistory extends StatelessWidget {
           ].join('  ·  '),
           style: theme.textTheme.bodySmall,
         ),
+        if (progressionAfter(history, hasHarder: hasHarder)
+            case final p when p != Progression.none)
+          Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(p.label,
+                style: theme.textTheme.titleSmall
+                    ?.copyWith(color: theme.colorScheme.primary)),
+          ),
         const SizedBox(height: 8),
         for (final entry in byWorkout.entries.take(_shownDays))
           Padding(

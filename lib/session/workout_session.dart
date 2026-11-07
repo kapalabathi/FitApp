@@ -72,6 +72,8 @@ class WorkoutSession extends ChangeNotifier {
         onLinkLost: _onLinkLost,
         onLinkRestored: _onLinkRestored,
         fastLink: recorder.db.setting(SensorConnection.fastLinkKey) == '1',
+        keepAliveMode: KeepAliveMode.fromId(
+            recorder.db.setting(SensorConnection.keepAliveKey)),
       )..addListener(_onLinkChanged);
       connections.add(connection);
       connection.start();

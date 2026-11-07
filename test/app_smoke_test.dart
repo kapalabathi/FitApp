@@ -18,11 +18,18 @@ void main() {
     createSignals = (_) => const SilentSignals();
     return initializeDateFormatting('de');
   });
-  setUp(() => db = AppDatabase.inMemory());
+  // Der Hinweis der leeren App auf eine Sicherung hat eigene Tests und
+  // verschiebt hier nur die Seiten.
+  setUp(
+    () => db = AppDatabase.inMemory()..setFlag('hint.restoreDismissed', true),
+  );
   tearDown(() => db.close());
 
   int recordWorkout() {
-    final id = db.startWorkout(Sport.indoorBike, DateTime.now().subtract(const Duration(days: 2)));
+    final id = db.startWorkout(
+      Sport.indoorBike,
+      DateTime.now().subtract(const Duration(days: 2)),
+    );
     for (var t = 1; t <= 120; t++) {
       db.addSample(
         id,
@@ -42,14 +49,20 @@ void main() {
   }
 
   for (final size in const [Size(400, 800), Size(1280, 800)]) {
-    testWidgets('Rundgang durch alle Bereiche bei ${size.width.round()} px',
-        (tester) async {
+    testWidgets('Rundgang durch alle Bereiche bei ${size.width.round()} px', (
+      tester,
+    ) async {
       tester.view.physicalSize = size;
       tester.view.devicePixelRatio = 1;
       addTearDown(tester.view.reset);
 
-      db.saveDevice(const SavedDevice(
-          deviceId: 'AA:BB', name: 'Brustgurt', kind: DeviceKind.heartRate));
+      db.saveDevice(
+        const SavedDevice(
+          deviceId: 'AA:BB',
+          name: 'Brustgurt',
+          kind: DeviceKind.heartRate,
+        ),
+      );
       recordWorkout();
 
       await tester.pumpWidget(FitApp(db: db, recoveredWorkouts: 1));
@@ -58,11 +71,15 @@ void main() {
       // Start: Sportarten und das gemerkte Gerät, als Pulssensor vorgewählt
       expect(find.text('Laufband'), findsOneWidget);
       expect(find.text('SkiErg'), findsOneWidget);
-      await tester.scrollUntilVisible(find.byType(CheckboxListTile), 200,
-          scrollable: find.byType(Scrollable).first);
+      await tester.scrollUntilVisible(
+        find.byType(CheckboxListTile),
+        200,
+        scrollable: find.byType(Scrollable).first,
+      );
       expect(
-          tester.widget<CheckboxListTile>(find.byType(CheckboxListTile)).value,
-          isTrue);
+        tester.widget<CheckboxListTile>(find.byType(CheckboxListTile)).value,
+        isTrue,
+      );
       expect(find.textContaining('gerettet'), findsOneWidget);
 
       // Programme: mitgelieferte Programme und die Übungsbibliothek
@@ -131,8 +148,9 @@ void main() {
     });
   }
 
-  testWidgets('eine Vorlage lässt sich anlegen und erscheint in der Liste',
-      (tester) async {
+  testWidgets('eine Vorlage lässt sich anlegen und erscheint in der Liste', (
+    tester,
+  ) async {
     await tester.pumpWidget(FitApp(db: db));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Intervalle'));
@@ -151,7 +169,9 @@ void main() {
     await tester.tap(find.text('Abschnitt'));
     await tester.pumpAndSettle();
     await tester.enterText(
-        find.widgetWithText(TextField, 'Bezeichnung'), 'Hart');
+      find.widgetWithText(TextField, 'Bezeichnung'),
+      'Hart',
+    );
     await tester.enterText(find.widgetWithText(TextField, 'Minuten'), '1');
     await tester.enterText(find.widgetWithText(TextField, 'Sekunden'), '30');
     await tester.tap(find.text('Übernehmen'));
@@ -165,8 +185,9 @@ void main() {
     await tester.tap(find.text('Speichern'));
     await tester.pumpAndSettle();
     expect(find.text('Pyramide'), findsOneWidget);
-    final saved =
-        db.intervalTemplates().firstWhere((t) => t.name == 'Pyramide');
+    final saved = db.intervalTemplates().firstWhere(
+      (t) => t.name == 'Pyramide',
+    );
     expect(saved.blocks.single.repeat, 2);
     expect(saved.blocks.single.steps.single.durationS, 90);
 
@@ -186,28 +207,31 @@ void main() {
       await tester.pump(const Duration(seconds: 3));
     }
 
-    testWidgets('pausieren und danach beenden speichert und zeigt das Training',
-        (tester) async {
-      await startWorkout(tester);
+    testWidgets(
+      'pausieren und danach beenden speichert und zeigt das Training',
+      (tester) async {
+        await startWorkout(tester);
 
-      await tester.tap(find.text('Pause'));
-      await tester.pump(const Duration(seconds: 10));
-      expect(find.text('Sonstiges – pausiert'), findsOneWidget);
+        await tester.tap(find.text('Pause'));
+        await tester.pump(const Duration(seconds: 10));
+        expect(find.text('Sonstiges – pausiert'), findsOneWidget);
 
-      await tester.tap(find.widgetWithText(FilledButton, 'Beenden'));
-      await tester.pumpAndSettle();
-      expect(find.text('Training beenden?'), findsOneWidget);
-      await tester.tap(find.widgetWithText(FilledButton, 'Beenden').last);
-      await tester.pumpAndSettle();
+        await tester.tap(find.widgetWithText(FilledButton, 'Beenden'));
+        await tester.pumpAndSettle();
+        expect(find.text('Training beenden?'), findsOneWidget);
+        await tester.tap(find.widgetWithText(FilledButton, 'Beenden').last);
+        await tester.pumpAndSettle();
 
-      // Die Pause zählt nicht mit; die Detailansicht des Trainings ist offen.
-      expect(find.text('Training beenden?'), findsNothing);
-      expect(find.text('Dauer'), findsOneWidget);
-      expect(db.workouts().single.durationS, 3);
-    });
+        // Die Pause zählt nicht mit; die Detailansicht des Trainings ist offen.
+        expect(find.text('Training beenden?'), findsNothing);
+        expect(find.text('Dauer'), findsOneWidget);
+        expect(db.workouts().single.durationS, 3);
+      },
+    );
 
-    testWidgets('„Weiter trainieren" schließt die Rückfrage und zählt weiter',
-        (tester) async {
+    testWidgets('„Weiter trainieren" schließt die Rückfrage und zählt weiter', (
+      tester,
+    ) async {
       await startWorkout(tester);
 
       await tester.tap(find.widgetWithText(FilledButton, 'Beenden'));
@@ -225,73 +249,84 @@ void main() {
     });
   });
 
-  testWidgets('ein Programm wird geführt abgespielt und als Training gespeichert',
-      (tester) async {
-    // Hochformat wie auf einem Phone, damit die ganze Übung sichtbar ist.
-    tester.view.physicalSize = const Size(500, 1300);
-    tester.view.devicePixelRatio = 1;
-    addTearDown(tester.view.reset);
+  testWidgets(
+    'ein Programm wird geführt abgespielt und als Training gespeichert',
+    (tester) async {
+      // Hochformat wie auf einem Phone, damit die ganze Übung sichtbar ist.
+      tester.view.physicalSize = const Size(500, 1300);
+      tester.view.devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
 
-    final ids = {for (final e in db.exercises()) e.builtinKey: e.uuid};
-    db.saveProgram(Program(
-      name: 'Aaa Testprogramm',
-      category: ExerciseCategory.yoga,
-      items: [
-        ProgramItem(
-            exerciseUuid: ids['yoga_01_berghaltung']!,
-            timed: true,
-            amount: 5,
-            restS: 3),
-        ProgramItem(
-            exerciseUuid: ids['cali_01_liegestuetz']!, timed: false, amount: 10),
-      ],
-    ));
-    await tester.pumpWidget(FitApp(db: db));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Programme').first);
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Aaa Testprogramm'));
-    await tester.pumpAndSettle();
-    expect(find.text('10 Wiederholungen'), findsOneWidget);
-    await tester.tap(find.text('Start'));
-    await tester.pumpAndSettle();
+      final ids = {for (final e in db.exercises()) e.builtinKey: e.uuid};
+      db.saveProgram(
+        Program(
+          name: 'Aaa Testprogramm',
+          category: ExerciseCategory.yoga,
+          items: [
+            ProgramItem(
+              exerciseUuid: ids['yoga_01_berghaltung']!,
+              timed: true,
+              amount: 5,
+              restS: 3,
+            ),
+            ProgramItem(
+              exerciseUuid: ids['cali_01_liegestuetz']!,
+              timed: false,
+              amount: 10,
+            ),
+          ],
+        ),
+      );
+      await tester.pumpWidget(FitApp(db: db));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Programme').first);
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Aaa Testprogramm'));
+      await tester.pumpAndSettle();
+      expect(find.text('10 Wiederholungen'), findsOneWidget);
+      await tester.tap(find.text('Start'));
+      await tester.pumpAndSettle();
 
-    // Erste Übung auf Zeit
-    expect(find.text('Berghaltung (Tadasana)'), findsOneWidget);
-    expect(find.text('Danach: Liegestütz'), findsOneWidget);
-    await tester.pump(const Duration(seconds: 5));
+      // Erste Übung auf Zeit
+      expect(find.text('Berghaltung (Tadasana)'), findsOneWidget);
+      expect(find.text('Danach: Liegestütz'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 5));
 
-    // Pause mit Vorschau
-    expect(find.text('Pause – danach:'), findsOneWidget);
-    await tester.pump(const Duration(seconds: 3));
+      // Pause mit Vorschau
+      expect(find.text('Pause – danach:'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 3));
 
-    // Übung mit Wiederholungen wartet auf „Fertig"
-    // (große Anzeige und der Zähler zum Nachtragen)
-    expect(find.text('10 ×'), findsNWidgets(2));
-    expect(find.text('Letzte Übung'), findsOneWidget);
-    await tester.pump(const Duration(seconds: 4));
-    // Nur 8 geschafft, mit 5,5 kg Zusatzgewicht
-    await tester.tap(find.byTooltip('Eine Wiederholung weniger'));
-    await tester.tap(find.byTooltip('Eine Wiederholung weniger'));
-    await tester.pump();
-    expect(find.text('8 ×'), findsOneWidget);
-    await tester.enterText(
-        find.widgetWithText(TextFormField, 'Gewicht kg'), '5,5');
-    await tester.tap(find.text('Fertig'));
-    await tester.pump();
-    expect(find.text('Programm beendet'), findsOneWidget);
+      // Übung mit Wiederholungen wartet auf „Fertig"
+      // (große Anzeige und der Zähler zum Nachtragen)
+      expect(find.text('10 ×'), findsNWidgets(2));
+      expect(find.text('Letzte Übung'), findsOneWidget);
+      await tester.pump(const Duration(seconds: 4));
+      // Nur 8 geschafft, mit 5,5 kg Zusatzgewicht
+      await tester.tap(find.byTooltip('Eine Wiederholung weniger'));
+      await tester.tap(find.byTooltip('Eine Wiederholung weniger'));
+      await tester.pump();
+      expect(find.text('8 ×'), findsOneWidget);
+      await tester.enterText(
+        find.widgetWithText(TextFormField, 'Gewicht kg'),
+        '5,5',
+      );
+      await tester.tap(find.text('Fertig'));
+      await tester.pump();
+      expect(find.text('Programm beendet'), findsOneWidget);
 
-    await tester.tap(find.text('Speichern'));
-    await tester.pumpAndSettle();
-    final workout = db.workouts().single;
-    expect(workout.sport, Sport.yoga);
-    expect(workout.durationS, 12);
-    expect(db.setLogs(workout.id).map(formatSet), ['5 s', '8 × 5,5 kg']);
-    expect(find.text('Dauer'), findsOneWidget);
-  });
+      await tester.tap(find.text('Speichern'));
+      await tester.pumpAndSettle();
+      final workout = db.workouts().single;
+      expect(workout.sport, Sport.yoga);
+      expect(workout.durationS, 12);
+      expect(db.setLogs(workout.id).map(formatSet), ['5 s', '8 × 5,5 kg']);
+      expect(find.text('Dauer'), findsOneWidget);
+    },
+  );
 
-  testWidgets('der Yoga-Grundkurs führt durch eine Einheit samt Atemübung',
-      (tester) async {
+  testWidgets('der Yoga-Grundkurs führt durch eine Einheit samt Atemübung', (
+    tester,
+  ) async {
     // Schmal wie ein kleines Phone
     tester.view.physicalSize = const Size(360, 1400);
     tester.view.devicePixelRatio = 1;
@@ -341,13 +376,10 @@ void main() {
 
     expect(find.text('1 von 6 Einheiten (2 Wochen à 3)'), findsOneWidget);
     expect(find.text('Tag 2 – Vorbeugen und Hüfte'), findsOneWidget);
-    expect(
-      db.workouts().map((w) => w.title).toSet(),
-      {
-        'Yoga-Grundkurs · Stufe 1 · Tag 1 – Stehhaltungen',
-        'Atemübung: Bauchatmung',
-      },
-    );
+    expect(db.workouts().map((w) => w.title).toSet(), {
+      'Yoga-Grundkurs · Stufe 1 · Tag 1 – Stehhaltungen',
+      'Atemübung: Bauchatmung',
+    });
   });
 
   testWidgets('eine Übung zeigt Gruppe, Hinweis und Varianten', (tester) async {
@@ -387,9 +419,9 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Speichern'));
     await tester.pumpAndSettle();
-    final saved = db
-        .exercises()
-        .firstWhere((e) => e.builtinKey == 'yoga_03_heraufschauender_hund');
+    final saved = db.exercises().firstWhere(
+      (e) => e.builtinKey == 'yoga_03_heraufschauender_hund',
+    );
     expect(saved.level, 3);
     expect(saved.sanskrit, 'Urdhva Mukha Svanasana');
     expect(saved.easierUuid, 'builtin-yoga_04_kobra');
@@ -406,10 +438,14 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Kurse & Atem'));
     await tester.pumpAndSettle();
-    await tester.scrollUntilVisible(find.text('Kastenatmung'), 200,
-        scrollable: find.descendant(
-            of: find.byType(CoursesAndBreathList),
-            matching: find.byType(Scrollable)));
+    await tester.scrollUntilVisible(
+      find.text('Kastenatmung'),
+      200,
+      scrollable: find.descendant(
+        of: find.byType(CoursesAndBreathList),
+        matching: find.byType(Scrollable),
+      ),
+    );
     await tester.ensureVisible(find.text('Kastenatmung'));
     await tester.pumpAndSettle();
     await tester.tap(find.text('Kastenatmung'));
@@ -426,8 +462,10 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.text('Verstanden, freischalten'));
     await tester.pumpAndSettle();
-    expect(find.text('Ein 4 s · Halten 4 s · Aus 4 s · Leer 4 s'),
-        findsOneWidget);
+    expect(
+      find.text('Ein 4 s · Halten 4 s · Aus 4 s · Leer 4 s'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('Maximalpuls eingeben zeigt die Pulszonen', (tester) async {
@@ -443,11 +481,15 @@ void main() {
 
     await tester.tap(find.text('Speichern'));
     await tester.pump();
-    expect(find.text('Bitte Geburtsjahr oder Maximalpuls eingeben.'),
-        findsOneWidget);
+    expect(
+      find.text('Bitte Geburtsjahr oder Maximalpuls eingeben.'),
+      findsOneWidget,
+    );
 
     await tester.enterText(
-        find.widgetWithText(TextField, 'Eigener Maximalpuls (optional)'), '180');
+      find.widgetWithText(TextField, 'Eigener Maximalpuls (optional)'),
+      '180',
+    );
     await tester.tap(find.text('Speichern'));
     await tester.pumpAndSettle();
     expect(find.text('Maximalpuls 180'), findsOneWidget);
@@ -458,8 +500,9 @@ void main() {
     expect(find.textContaining('0 %'), findsWidgets);
   });
 
-  testWidgets('ein Training lässt sich umbenennen und mit Notiz versehen',
-      (tester) async {
+  testWidgets('ein Training lässt sich umbenennen und mit Notiz versehen', (
+    tester,
+  ) async {
     final id = recordWorkout();
     await tester.pumpWidget(FitApp(db: db));
     await tester.pumpAndSettle();
@@ -469,8 +512,14 @@ void main() {
     await tester.pumpAndSettle();
     await tester.tap(find.byTooltip('Training bearbeiten'));
     await tester.pumpAndSettle();
-    await tester.enterText(find.widgetWithText(TextField, 'Titel'), 'Feierabend');
-    await tester.enterText(find.widgetWithText(TextField, 'Notiz'), 'Gute Beine');
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Titel'),
+      'Feierabend',
+    );
+    await tester.enterText(
+      find.widgetWithText(TextField, 'Notiz'),
+      'Gute Beine',
+    );
     await tester.tap(find.text('Speichern'));
     await tester.pumpAndSettle();
 
@@ -483,8 +532,9 @@ void main() {
     expect(find.text('Feierabend'), findsOneWidget);
   });
 
-  testWidgets('die Zurück-Taste hebt die Auswahl im Verlauf auf',
-      (tester) async {
+  testWidgets('die Zurück-Taste hebt die Auswahl im Verlauf auf', (
+    tester,
+  ) async {
     final id = recordWorkout();
     db.updateWorkout(id, title: 'Eins', sport: Sport.indoorBike, notes: '');
     await tester.pumpWidget(FitApp(db: db));
@@ -501,17 +551,26 @@ void main() {
     expect(find.text('Eins'), findsOneWidget);
   });
 
-  testWidgets('Zielpuls erscheint nur mit Gerät und Pulssensor',
-      (tester) async {
+  testWidgets('Zielpuls erscheint nur mit Gerät und Pulssensor', (
+    tester,
+  ) async {
     tester.view.physicalSize = const Size(500, 1400);
     tester.view.devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    db.saveDevice(const SavedDevice(
-        deviceId: 'GURT', name: 'Brustgurt', kind: DeviceKind.heartRate));
-    db.saveDevice(const SavedDevice(
+    db.saveDevice(
+      const SavedDevice(
+        deviceId: 'GURT',
+        name: 'Brustgurt',
+        kind: DeviceKind.heartRate,
+      ),
+    );
+    db.saveDevice(
+      const SavedDevice(
         deviceId: 'BAND',
         name: 'Laufband',
-        kind: DeviceKind.fitnessMachine));
+        kind: DeviceKind.fitnessMachine,
+      ),
+    );
     await tester.pumpWidget(FitApp(db: db));
     await tester.pumpAndSettle();
     expect(find.text('Zielpuls halten'), findsNothing);
@@ -523,56 +582,73 @@ void main() {
     expect(find.text('Höchstens km/h'), findsOneWidget);
   });
 
-  testWidgets('im Verlauf lassen sich mehrere Trainings auswählen und löschen',
-      (tester) async {
-    final keep = recordWorkout();
-    final first = recordWorkout();
-    final second = recordWorkout();
-    db.updateWorkout(keep, title: 'Bleibt', sport: Sport.indoorBike, notes: '');
-    db.updateWorkout(first, title: 'Eins', sport: Sport.indoorBike, notes: '');
-    db.updateWorkout(second, title: 'Zwei', sport: Sport.indoorBike, notes: '');
+  testWidgets(
+    'im Verlauf lassen sich mehrere Trainings auswählen und löschen',
+    (tester) async {
+      final keep = recordWorkout();
+      final first = recordWorkout();
+      final second = recordWorkout();
+      db.updateWorkout(
+        keep,
+        title: 'Bleibt',
+        sport: Sport.indoorBike,
+        notes: '',
+      );
+      db.updateWorkout(
+        first,
+        title: 'Eins',
+        sport: Sport.indoorBike,
+        notes: '',
+      );
+      db.updateWorkout(
+        second,
+        title: 'Zwei',
+        sport: Sport.indoorBike,
+        notes: '',
+      );
 
-    await tester.pumpWidget(FitApp(db: db));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Verlauf'));
-    await tester.pumpAndSettle();
+      await tester.pumpWidget(FitApp(db: db));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Verlauf'));
+      await tester.pumpAndSettle();
 
-    // Langes Drücken beginnt die Auswahl, danach wählt einfaches Tippen.
-    await tester.longPress(find.text('Eins'));
-    await tester.pumpAndSettle();
-    expect(find.text('1 ausgewählt'), findsOneWidget);
-    await tester.tap(find.text('Zwei'));
-    await tester.pumpAndSettle();
-    expect(find.text('2 ausgewählt'), findsOneWidget);
-    expect(find.text('Dauer'), findsNothing); // keine Detailansicht geöffnet
+      // Langes Drücken beginnt die Auswahl, danach wählt einfaches Tippen.
+      await tester.longPress(find.text('Eins'));
+      await tester.pumpAndSettle();
+      expect(find.text('1 ausgewählt'), findsOneWidget);
+      await tester.tap(find.text('Zwei'));
+      await tester.pumpAndSettle();
+      expect(find.text('2 ausgewählt'), findsOneWidget);
+      expect(find.text('Dauer'), findsNothing); // keine Detailansicht geöffnet
 
-    // Erneutes Tippen nimmt ein Training wieder aus der Auswahl.
-    await tester.tap(find.text('Zwei'));
-    await tester.pumpAndSettle();
-    expect(find.text('1 ausgewählt'), findsOneWidget);
-    await tester.tap(find.text('Zwei'));
-    await tester.pumpAndSettle();
+      // Erneutes Tippen nimmt ein Training wieder aus der Auswahl.
+      await tester.tap(find.text('Zwei'));
+      await tester.pumpAndSettle();
+      expect(find.text('1 ausgewählt'), findsOneWidget);
+      await tester.tap(find.text('Zwei'));
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byTooltip('Exportieren'));
-    await tester.pumpAndSettle();
-    expect(find.text('Als FIT exportieren'), findsOneWidget);
-    expect(find.text('Als GPX exportieren'), findsOneWidget);
-    expect(find.text('Als FIT mit Trainingsort exportieren'), findsOneWidget);
-    await tester.tapAt(const Offset(5, 5)); // Menü schließen
-    await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Exportieren'));
+      await tester.pumpAndSettle();
+      expect(find.text('Als FIT exportieren'), findsOneWidget);
+      expect(find.text('Als GPX exportieren'), findsOneWidget);
+      expect(find.text('Als FIT mit Trainingsort exportieren'), findsOneWidget);
+      await tester.tapAt(const Offset(5, 5)); // Menü schließen
+      await tester.pumpAndSettle();
 
-    await tester.tap(find.byTooltip('Ausgewählte löschen'));
-    await tester.pumpAndSettle();
-    expect(find.text('2 Trainings löschen?'), findsOneWidget);
-    await tester.tap(find.text('Löschen'));
-    await tester.pumpAndSettle();
+      await tester.tap(find.byTooltip('Ausgewählte löschen'));
+      await tester.pumpAndSettle();
+      expect(find.text('2 Trainings löschen?'), findsOneWidget);
+      await tester.tap(find.text('Löschen'));
+      await tester.pumpAndSettle();
 
-    expect(db.workouts().map((w) => w.id), [keep]);
-    expect(find.text('Bleibt'), findsOneWidget);
-    expect(find.text('Eins'), findsNothing);
-    // Die Auswahl ist beendet, die normale Kopfzeile zurück.
-    expect(find.byTooltip('Strava'), findsOneWidget);
-  });
+      expect(db.workouts().map((w) => w.id), [keep]);
+      expect(find.text('Bleibt'), findsOneWidget);
+      expect(find.text('Eins'), findsNothing);
+      // Die Auswahl ist beendet, die normale Kopfzeile zurück.
+      expect(find.byTooltip('Strava'), findsOneWidget);
+    },
+  );
 
   testWidgets('„Alle auswählen" und das Aufheben der Auswahl', (tester) async {
     recordWorkout();
@@ -595,8 +671,7 @@ void main() {
   });
 
   for (final scale in const [1.0, 1.6]) {
-    testWidgets(
-        'lange Übungsnamen haben im Raster Platz für zwei Zeilen '
+    testWidgets('lange Übungsnamen haben im Raster Platz für zwei Zeilen '
         '(Schriftgröße ×$scale)', (tester) async {
       tester.view.physicalSize = const Size(400, 800);
       tester.view.devicePixelRatio = 1;
@@ -618,7 +693,9 @@ void main() {
         400,
         maxScrolls: 80,
         scrollable: find.descendant(
-            of: find.byType(GridView), matching: find.byType(Scrollable)),
+          of: find.byType(GridView),
+          matching: find.byType(Scrollable),
+        ),
       );
       const oneLine = 14 * 1.43;
       expect(tester.getSize(name).height, greaterThan(oneLine * scale * 1.5));
@@ -652,8 +729,11 @@ void main() {
 
     // Ein Tipp in eine andere Kurve verschiebt die Stelle überall. Bei
     // Sekunde 50 hat der Pulssensor ausgesetzt.
-    final speedChart = find.byWidgetPredicate((w) =>
-        w is GestureDetector && w.onHorizontalDragUpdate != null).at(1);
+    final speedChart = find
+        .byWidgetPredicate(
+          (w) => w is GestureDetector && w.onHorizontalDragUpdate != null,
+        )
+        .at(1);
     final box = tester.getRect(speedChart);
     await tester.tapAt(Offset(box.left + box.width * 49 / 119, box.center.dy));
     await tester.pumpAndSettle();
